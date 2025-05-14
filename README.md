@@ -85,6 +85,42 @@ Le projet utilise Prisma avec PostgreSQL. Pour configurer votre base de données
 2. Mettez à jour l'URL de connexion dans le fichier `.env`
 3. Exécutez les migrations avec `npx prisma migrate dev`
 
+## Scripts de sauvegarde et restauration
+
+Le projet dispose de scripts pour faciliter la gestion des versions et le dépannage :
+
+### Sauvegarde
+
+Pour sauvegarder l'état actuel du projet :
+
+```bash
+# Avec un nom personnalisé
+./scripts/save.sh nom_de_version
+
+# Sans nom (utilisera automatiquement la date actuelle)
+./scripts/save.sh
+```
+
+### Restauration
+
+Pour restaurer le projet à une version précédente :
+
+```bash
+./scripts/restore.sh nom_de_version
+```
+
+Cela créera également une branche de sauvegarde avant la restauration, au cas où vous souhaiteriez revenir à l'état précédent.
+
+### Nettoyage
+
+Pour nettoyer l'application en cas de problèmes :
+
+```bash
+./scripts/clean.sh
+```
+
+Ce script arrête les processus Node.js en cours, supprime les fichiers temporaires et les caches, réinstalle les dépendances et reconstruit l'application.
+
 ## Contribuer au projet
 
 1. Forker le projet
