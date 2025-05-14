@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inevent - Système de Gestion d'Événements
 
-## Getting Started
+Inevent est une application moderne de gestion d'événements construite avec Next.js, permettant aux organisateurs de créer, gérer et suivre leurs événements, ainsi que de faciliter l'enregistrement et le check-in des participants via QR code.
 
-First, run the development server:
+## Fonctionnalités principales
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🗓️ **Gestion d'événements** : Création, modification et suppression d'événements
+- 👥 **Gestion des participants** : Inscription, envoi d'e-mails et gestion des présences
+- 📱 **Check-in par QR code** : Système de check-in rapide via scan de QR code
+- 📊 **Tableau de bord** : Visualisation des statistiques et métriques clés
+- 🖨️ **Badges et certificats** : Génération de badges et certificats personnalisés
+- 🔒 **Authentification** : Système d'authentification sécurisé avec NextAuth
+
+## Structure du projet
+
+```
+inevent/
+├── prisma/                 # Schéma et migrations de base de données
+├── public/                 # Fichiers statiques
+├── src/
+│   ├── app/                # Routes de l'application (Next.js App Router)
+│   │   ├── api/            # Routes API
+│   │   ├── auth/           # Pages d'authentification
+│   │   ├── dashboard/      # Pages du tableau de bord
+│   │   │   └── eventslist/ # Page de check-in des participants
+│   ├── components/         # Composants réutilisables
+│   │   ├── dashboard/      # Composants du tableau de bord
+│   │   ├── auth/           # Composants d'authentification
+│   │   └── ...            
+│   ├── lib/                # Utilitaires et bibliothèques
+│   │   └── supabase.ts     # Configuration de Supabase
+│   └── types/              # Types et interfaces TypeScript
+├── .env                    # Variables d'environnement
+├── package.json            # Dépendances et scripts
+└── README.md               # Documentation du projet
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies utilisées
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework** : Next.js 15
+- **Langage** : TypeScript
+- **Base de données** : PostgreSQL (via Prisma)
+- **Stockage** : Supabase
+- **Authentification** : NextAuth.js
+- **Style** : CSS Modules et Tailwind CSS
+- **Icônes** : Heroicons
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation et démarrage
 
-## Learn More
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/votre-utilisateur/inevent.git
+   cd inevent
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Installez les dépendances :
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Configurez votre fichier `.env` avec vos propres variables d'environnement.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Générez le client Prisma :
+   ```bash
+   npx prisma generate
+   ```
 
-## Deploy on Vercel
+5. Créez et migrez la base de données :
+   ```bash
+   npx prisma migrate dev --name init
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. Lancez le serveur de développement :
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+7. Accédez à l'application à l'adresse [http://localhost:3000](http://localhost:3000)
+
+## Configuration de la base de données
+
+Le projet utilise Prisma avec PostgreSQL. Pour configurer votre base de données :
+
+1. Installez PostgreSQL localement ou utilisez un service cloud
+2. Mettez à jour l'URL de connexion dans le fichier `.env`
+3. Exécutez les migrations avec `npx prisma migrate dev`
+
+## Contribuer au projet
+
+1. Forker le projet
+2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Committer vos changements (`git commit -m 'Ajout d'une nouvelle fonctionnalité'`)
+4. Pusher sur la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request
+
+## Bonnes pratiques de développement
+
+- **Nommage** : Utilisez des noms explicites pour les composants et fonctions
+- **Organisation** : Maintenez une séparation claire entre les composants, pages et utilitaires
+- **Commentaires** : Ajoutez des commentaires pour expliquer les parties complexes du code
+- **TypeScript** : Utilisez correctement les types pour améliorer la maintenabilité
+- **Tests** : Écrivez des tests pour les fonctionnalités importantes
+
+## Ressources supplémentaires
+
+- [Documentation Next.js](https://nextjs.org/docs)
+- [Documentation Prisma](https://www.prisma.io/docs)
+- [Documentation Supabase](https://supabase.io/docs)
+- [Documentation NextAuth.js](https://next-auth.js.org/)

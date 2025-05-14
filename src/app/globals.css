@@ -1,26 +1,1548 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary-color: #81B441;
+  --black: #000000;
+  --gray-light: #f3f4f6;
+  --gray-medium: #9ca3af;
+  --gray-dark: #4b5563;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f9fafb;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  position: relative;
+}
+
+.dashboard-content {
+  flex: 1;
+  margin-left: 16rem; /* Correspond à la largeur de la sidebar */
+  transition: margin-left 0.3s ease;
+  min-width: 0;
+  width: calc(100% - 16rem);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* Quand la sidebar est réduite */
+.dashboard-content-collapsed {
+  margin-left: 4rem;
+  width: calc(100% - 4rem);
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+.dashboard-main {
+  padding: 0;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.dashboard-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #111827;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.dashboard-description {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* Boutons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary:hover {
+  background-color: #6a9636;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.stat-card {
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
+  position: relative;
+  transition: all 0.3s ease;
+  background-color: white;
+  border-left: 4px solid var(--primary-color);
+  padding: 1.5rem;
+}
+
+.stat-card:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.stat-card:nth-child(2) {
+  border-left-color: #3b82f6;
+}
+
+.stat-card:nth-child(3) {
+  border-left-color: #f59e0b;
+}
+
+.stat-card:nth-child(4) {
+  border-left-color: #10b981;
+}
+
+.stat-info {
+  position: relative;
+  z-index: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+/* Events Table */
+.event-table-container {
+  width: 100%;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.event-table-header {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.event-table-cell {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.event-name {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.event-slug {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.event-table-row {
+  transition: background-color 0.2s;
+}
+
+.event-table-row:hover {
+  background-color: #f9fafb;
+}
+
+.event-table-row.selected-row {
+  background-color: rgba(129, 180, 65, 0.1);
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #d1d5db;
+  border-radius: 0.25rem;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.checkbox:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 0.25rem;
+  height: 0.5rem;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  @apply w-full;
+}
+
+.pagination-button {
+  @apply inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:ring-offset-1 transition-colors;
+}
+
+.pagination-button-disabled {
+  @apply bg-gray-100 text-gray-400 cursor-not-allowed hover:bg-gray-100 focus:ring-0;
+}
+
+.pagination-number {
+  @apply inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-300 bg-white text-gray-700 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:ring-offset-1 transition-colors;
+}
+
+.pagination-number-active {
+  @apply z-10 bg-[#81B441] border-[#81B441] text-white hover:bg-[#6a9636];
+}
+
+/* Check-in Button Styles */
+.checkin-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkin-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(129, 180, 65, 0.3);
+}
+
+.checkin-button-loading {
+  position: relative;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.checkin-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(22, 101, 52, 0.3);
+  border-radius: 50%;
+  border-top-color: #166534;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+
+/* Specific button for participant check-in */
+.participant-checkin-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 0;
+  border: none;
+  text-decoration: none;
+  appearance: none;
+}
+
+.participant-checkin-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(129, 180, 65, 0.3);
+}
+
+.participant-checkin-button:active {
+  transform: scale(0.97);
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+  @apply flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200;
+}
+
+.selected-count {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.bulk-actions {
+  @apply flex items-center space-x-2;
+}
+
+.bulk-action-btn {
+  @apply inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-50 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors;
+}
+
+.bulk-action-delete {
+  @apply inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition-colors;
+}
+
+/* Responsive Table */
+@media (max-width: 1024px) {
+  .event-table-container {
+    overflow-x: auto;
+  }
+  
+  .event-table {
+    min-width: 800px;
+  }
+}
+
+/* Event cards */
+.event-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-card-image {
+  height: 160px;
+  background-color: #f3f4f6;
+  position: relative;
+}
+
+.event-card-content {
+  padding: 1.25rem;
+}
+
+.event-card-title {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.event-card-date {
+  font-size: 0.875rem;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Check-in Page Styles - Modern Design */
+.checkin-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  position: relative;
+  background: radial-gradient(ellipse at center, #111a20 0%, #050a10 100%);
+  color: white;
+  overflow-x: hidden;
+}
+
+.checkin-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(129, 180, 65, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 75% 75%, rgba(76, 128, 25, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(129, 180, 65, 0.08) 0%, transparent 70%);
+  background-size: 200% 200%;
+  z-index: 1;
+  pointer-events: none;
+  animation: background-pulse 20s ease infinite;
+}
+
+/* Effets de particules pour l'arrière-plan */
+.checkin-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 0.5px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 0.5px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.18) 0.5px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px, 12px 12px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.checkin-brand-logo {
+  width: 135px;
+  height: 135px;
+  margin: 0 auto 2rem;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.7));
+  animation: logo-pulse 4s ease-in-out infinite;
+}
+
+/* Animation pour le logo */
+@keyframes logo-pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.7));
+  }
+  50% {
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 20px rgba(129, 180, 65, 0.3));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.7));
+  }
+}
+
+.checkin-brand-logo svg circle:first-child {
+  transition: all 0.5s ease;
+}
+
+.checkin-brand-logo:hover svg circle:first-child {
+  stroke-width: 3;
+  stroke: #81B441;
+}
+
+/* Ajouter un effet de "pulse" subtil à l'arrière-plan */
+@keyframes background-pulse {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+}
+  100% {
+    background-position: 0% 0%;
+}
+}
+
+.checkin-welcome {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.checkin-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.checkin-subtitle {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.checkin-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .checkin-options-container {
+    flex-direction: row;
+    gap: 3rem;
+  }
+}
+
+.checkin-option {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 250px;
+}
+
+.checkin-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(129, 180, 65, 0.2);
+  border-color: rgba(129, 180, 65, 0.3);
+}
+
+.checkin-option-icon {
+  background: rgba(129, 180, 65, 0.15);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.checkin-option-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #81B441;
+}
+
+.checkin-option-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.checkin-option-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+.checkin-scanner-active {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.checkin-qr-reader {
+  width: 100% !important;
+  height: 350px !important;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.checkin-result {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.checkin-success-icon {
+  background: rgba(16, 185, 129, 0.2);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.checkin-success-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #10b981;
+}
+
+.checkin-error-icon {
+  background: rgba(239, 68, 68, 0.2);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.checkin-error-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #ef4444;
+}
+
+.checkin-participant-details {
+  margin-bottom: 1.5rem;
+}
+
+.checkin-participant-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: white;
+}
+
+.checkin-participant-type {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  background: rgba(129, 180, 65, 0.2);
+  color: #81B441;
+  border: 1px solid rgba(129, 180, 65, 0.3);
+}
+
+.checkin-timestamp {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 2rem;
+}
+
+.checkin-button {
+  background: linear-gradient(90deg, #81B441 0%, #a1d065 100%);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 10px rgba(129, 180, 65, 0.3);
+  display: inline-block;
+  margin: 0 0.5rem;
+}
+
+.checkin-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(129, 180, 65, 0.4);
+}
+
+.checkin-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.checkin-button-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+.checkin-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 15px rgba(255, 255, 255, 0.1);
+}
+
+.checkin-form {
+  width: 100%;
+  text-align: left;
+}
+
+.checkin-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.checkin-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.checkin-form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkin-form-input:focus {
+  outline: none;
+  border-color: rgba(129, 180, 65, 0.5);
+  box-shadow: 0 0 0 2px rgba(129, 180, 65, 0.25);
+}
+
+.checkin-form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.checkin-buttons-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.checkin-error-message {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+}
+
+.checkin-error-title {
+  color: #ef4444;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.checkin-footer {
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.checkin-powered-by {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loader animation for check-in button */
+.checkin-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: checkin-spinner 0.8s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes checkin-spinner {
+  to {transform: rotate(360deg);}
+}
+
+/* Nouvelles options de check-in avec design moderne */
+.checkin-options-new {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.checkin-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  height: 280px;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.checkin-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(129, 180, 65, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(129, 180, 65, 0.3);
+}
+
+.checkin-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(129, 180, 65, 0.08) 0%, rgba(0, 0, 0, 0) 60%);
+  z-index: 0;
+}
+
+.checkin-card-icon {
+  background: rgba(0, 0, 0, 0.5);
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(129, 180, 65, 0.3);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 20px rgba(129, 180, 65, 0.2);
+  transition: all 0.3s ease;
+}
+
+.checkin-card:hover .checkin-card-icon {
+  border-color: rgba(129, 180, 65, 0.5);
+  box-shadow: 0 0 25px rgba(129, 180, 65, 0.3);
+  transform: scale(1.05);
+}
+
+.checkin-card-icon svg {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.checkin-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.checkin-card-description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  max-width: 90%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.checkin-card-arrow {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .checkin-options-new {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+  .checkin-card {
+    flex: 1;
+    min-width: 280px;
+}
+}
+
+@media (max-width: 767px) {
+  .checkin-card {
+    padding: 2rem 1.5rem;
+    height: 250px;
+    aspect-ratio: auto;
+}
+
+  .checkin-card-icon {
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    margin-bottom: 1.25rem;
+}
+
+  .checkin-card-icon svg {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .checkin-card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+  .checkin-card-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* Bouton de retour vers l'événement */
+.back-to-event-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.back-button:hover {
+  background-color: rgba(129, 180, 65, 0.2);
+  border-color: rgba(129, 180, 65, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.back-button svg {
+  margin-right: 8px;
+  color: #81B441;
+}
+
+@media (max-width: 768px) {
+  .back-to-event-button {
+    top: 15px;
+    left: 15px;
+}
+
+  .back-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .back-button svg {
+    margin-right: 6px;
+  }
+}
+
+/* Styles pour la recherche de participants */
+.search-container {
+  width: 100%;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.participants-list {
+  margin-top: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.loading-indicator .checkin-spinner {
+  margin-right: 0.75rem;
+}
+
+.participants-search-results {
+  width: 100%;
+}
+
+.participant-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.participant-result-item:last-child {
+  border-bottom: none;
+}
+
+.participant-result-item:hover {
+  background: rgba(129, 180, 65, 0.1);
+}
+
+.participant-info {
+  display: flex;
+    flex-direction: column;
+}
+
+.participant-name {
+  font-weight: 500;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.participant-email {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.participant-type {
+  background: rgba(129, 180, 65, 0.15);
+  color: #81B441;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Styles personnalisés pour le scanner QR */
+#html5-qrcode-button-camera-start,
+#html5-qrcode-button-camera-stop {
+  background: linear-gradient(90deg, #81B441 0%, #a1d065 100%);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 10px rgba(129, 180, 65, 0.3);
+  margin: 0.5rem 0;
+}
+
+#html5-qrcode-button-camera-start:hover,
+#html5-qrcode-button-camera-stop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(129, 180, 65, 0.4);
+}
+
+.custom-scan-region {
+  border: 3px solid #81B441 !important;
+  box-shadow: 0 0 0 4px rgba(129, 180, 65, 0.3) !important;
+  animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(129, 180, 65, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(129, 180, 65, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(129, 180, 65, 0);
+  }
+}
+
+/* Améliorations pour le conteneur du scanner QR */
+#qr-reader {
+  width: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+#qr-reader__dashboard {
+  background: rgba(0, 0, 0, 0.5) !important;
+  padding: 15px !important;
+  border-radius: 12px !important;
+  margin-bottom: 20px !important;
+}
+
+#qr-reader__scan_region img {
+  display: none !important; /* Masquer l'image d'aperçu qui peut être dérangeante */
+}
+
+/* Check-in specifics */
+.check-in-page select {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  color: white !important;
+  padding: 8px !important;
+  border-radius: 6px !important;
+  margin-bottom: 15px !important;
+}
+
+/* Réinitialisation globale des styles select pour tout le site */
+select {
+  background-color: white !important;
+  color: #374151 !important;
+  border: 1px solid #D1D5DB !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+}
+
+/* Modal select styles - avec une plus forte spécificité */
+.modal-container select,
+.bg-white select,
+div.bg-white select,
+.modal select,
+#modal select,
+[role="dialog"] select,
+div[role="dialog"] select {
+  background-color: white !important;
+  background: white !important;
+  color: #374151 !important;
+  border: 1px solid #D1D5DB !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+}
+
+/* Add hover effect - avec une plus forte spécificité */
+.modal-container select:hover,
+.bg-white select:hover,
+div.bg-white select:hover,
+.modal select:hover,
+#modal select:hover,
+[role="dialog"] select:hover,
+div[role="dialog"] select:hover {
+  border-color: #9CA3AF !important;
+}
+
+/* Add focus style - avec une plus forte spécificité */
+.modal-container select:focus,
+.bg-white select:focus,
+div.bg-white select:focus,
+.modal select:focus,
+#modal select:focus,
+[role="dialog"] select:focus,
+div[role="dialog"] select:focus {
+  border-color: #81B441 !important;
+  box-shadow: 0 0 0 3px rgba(129, 180, 65, 0.2) !important;
+}
+
+/* Style du texte dans le scanner */
+#qr-reader__dashboard_section_csr span {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 14px !important;
+}
+
+/* Cacher les éléments que nous ne voulons pas afficher par défaut */
+#html5-qrcode-anchor-scan-type-change {
+  display: none !important;
+}
+
+/* Styles pour les étapes du check-in */
+.terms-content {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.terms-text {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.participant-name-display {
+  background: rgba(129, 180, 65, 0.15);
+  border: 1px solid rgba(129, 180, 65, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.terms-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  position: relative;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.terms-checkbox:checked {
+  background-color: #81B441;
+  border-color: #81B441;
+}
+
+.terms-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.acceptance-label {
+  color: white;
+  font-size: 0.95rem;
+}
+
+.participant-details-form {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-value {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.checkin-success-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.checkin-success-message {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.success-result {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(0, 0, 0, 0.5) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Animation pour l'écran de succès */
+@keyframes success-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-result {
+  animation: success-fade-in 0.5s ease-out forwards;
+}
+
+/* Style pour désactiver un bouton */
+.checkin-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Mise en forme spécifique pour l'écran de vérification des détails */
+.form-group {
+  transition: transform 0.2s ease;
+}
+
+.form-group:hover {
+  transform: translateX(5px);
+}
+
+/* Styles pour l'affichage des erreurs amélioré */
+.checkin-error-help {
+  background: rgba(255, 59, 48, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0 1.5rem;
+  text-align: left;
+  border-left: 3px solid rgba(255, 59, 48, 0.5);
+}
+
+.checkin-error-help-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.checkin-error-help-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.checkin-error-help-list li {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.checkin-error-message {
+  color: rgba(255, 59, 48, 0.9);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  font-family: monospace;
+  word-break: break-word;
+}
+
+/* Styles pour la liste des participants */
+.participants-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 40vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.participant-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid rgba(129, 180, 65, 0.5);
+}
+
+.participant-item:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: translateX(2px);
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.participant-name {
+  font-weight: 600;
+  color: white;
+}
+
+.participant-email {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.participant-shortcode {
+  display: inline-block;
+  background-color: rgba(129, 180, 65, 0.2);
+  color: #81B441;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(129, 180, 65, 0.3);
+}
+
+.participant-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.participant-type {
+  background: rgba(129, 180, 65, 0.15);
+  color: #81B441;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.participant-checked-in {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  color: white;
+}
+
+.error-message {
+  color: #ef4444;
+  padding: 1rem;
+  text-align: center;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+}
+
+.no-results {
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
 }

@@ -1,0 +1,11 @@
+{
+  "name": "inevent-admin-scripts",
+  "version": "1.0.0",
+  "description": "Scripts pour l'administration de l'application Inevent",
+  "main": "create-admin.js",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "bcrypt": "^5.1.0"
+  }
+} 
