@@ -7356,6 +7356,8 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     type: string | null
+    jobTitle: string | null
+    company: string | null
     eventId: string | null
     qrCode: string | null
     shortCode: string | null
@@ -7372,6 +7374,8 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     type: string | null
+    jobTitle: string | null
+    company: string | null
     eventId: string | null
     qrCode: string | null
     shortCode: string | null
@@ -7388,6 +7392,8 @@ export namespace Prisma {
     email: number
     phone: number
     type: number
+    jobTitle: number
+    company: number
     eventId: number
     qrCode: number
     shortCode: number
@@ -7406,6 +7412,8 @@ export namespace Prisma {
     email?: true
     phone?: true
     type?: true
+    jobTitle?: true
+    company?: true
     eventId?: true
     qrCode?: true
     shortCode?: true
@@ -7422,6 +7430,8 @@ export namespace Prisma {
     email?: true
     phone?: true
     type?: true
+    jobTitle?: true
+    company?: true
     eventId?: true
     qrCode?: true
     shortCode?: true
@@ -7438,6 +7448,8 @@ export namespace Prisma {
     email?: true
     phone?: true
     type?: true
+    jobTitle?: true
+    company?: true
     eventId?: true
     qrCode?: true
     shortCode?: true
@@ -7527,6 +7539,8 @@ export namespace Prisma {
     email: string
     phone: string
     type: string
+    jobTitle: string | null
+    company: string | null
     eventId: string
     qrCode: string
     shortCode: string | null
@@ -7560,6 +7574,8 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     type?: boolean
+    jobTitle?: boolean
+    company?: boolean
     eventId?: boolean
     qrCode?: boolean
     shortCode?: boolean
@@ -7577,6 +7593,8 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     type?: boolean
+    jobTitle?: boolean
+    company?: boolean
     eventId?: boolean
     qrCode?: boolean
     shortCode?: boolean
@@ -7594,6 +7612,8 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     type?: boolean
+    jobTitle?: boolean
+    company?: boolean
     eventId?: boolean
     qrCode?: boolean
     shortCode?: boolean
@@ -7611,6 +7631,8 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     type?: boolean
+    jobTitle?: boolean
+    company?: boolean
     eventId?: boolean
     qrCode?: boolean
     shortCode?: boolean
@@ -7620,7 +7642,7 @@ export namespace Prisma {
     checkInTime?: boolean
   }
 
-  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "type" | "eventId" | "qrCode" | "shortCode" | "createdAt" | "updatedAt" | "checkedIn" | "checkInTime", ExtArgs["result"]["registration"]>
+  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "type" | "jobTitle" | "company" | "eventId" | "qrCode" | "shortCode" | "createdAt" | "updatedAt" | "checkedIn" | "checkInTime", ExtArgs["result"]["registration"]>
   export type RegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
   }
@@ -7643,6 +7665,8 @@ export namespace Prisma {
       email: string
       phone: string
       type: string
+      jobTitle: string | null
+      company: string | null
       eventId: string
       qrCode: string
       shortCode: string | null
@@ -8080,6 +8104,8 @@ export namespace Prisma {
     readonly email: FieldRef<"Registration", 'String'>
     readonly phone: FieldRef<"Registration", 'String'>
     readonly type: FieldRef<"Registration", 'String'>
+    readonly jobTitle: FieldRef<"Registration", 'String'>
+    readonly company: FieldRef<"Registration", 'String'>
     readonly eventId: FieldRef<"Registration", 'String'>
     readonly qrCode: FieldRef<"Registration", 'String'>
     readonly shortCode: FieldRef<"Registration", 'String'>
@@ -10945,6 +10971,8 @@ export namespace Prisma {
     email: 'email',
     phone: 'phone',
     type: 'type',
+    jobTitle: 'jobTitle',
+    company: 'company',
     eventId: 'eventId',
     qrCode: 'qrCode',
     shortCode: 'shortCode',
@@ -11519,6 +11547,8 @@ export namespace Prisma {
     email?: StringFilter<"Registration"> | string
     phone?: StringFilter<"Registration"> | string
     type?: StringFilter<"Registration"> | string
+    jobTitle?: StringNullableFilter<"Registration"> | string | null
+    company?: StringNullableFilter<"Registration"> | string | null
     eventId?: StringFilter<"Registration"> | string
     qrCode?: StringFilter<"Registration"> | string
     shortCode?: StringNullableFilter<"Registration"> | string | null
@@ -11536,6 +11566,8 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     type?: SortOrder
+    jobTitle?: SortOrderInput | SortOrder
+    company?: SortOrderInput | SortOrder
     eventId?: SortOrder
     qrCode?: SortOrder
     shortCode?: SortOrderInput | SortOrder
@@ -11558,6 +11590,8 @@ export namespace Prisma {
     email?: StringFilter<"Registration"> | string
     phone?: StringFilter<"Registration"> | string
     type?: StringFilter<"Registration"> | string
+    jobTitle?: StringNullableFilter<"Registration"> | string | null
+    company?: StringNullableFilter<"Registration"> | string | null
     eventId?: StringFilter<"Registration"> | string
     createdAt?: DateTimeFilter<"Registration"> | Date | string
     updatedAt?: DateTimeFilter<"Registration"> | Date | string
@@ -11573,6 +11607,8 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     type?: SortOrder
+    jobTitle?: SortOrderInput | SortOrder
+    company?: SortOrderInput | SortOrder
     eventId?: SortOrder
     qrCode?: SortOrder
     shortCode?: SortOrderInput | SortOrder
@@ -11595,6 +11631,8 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Registration"> | string
     phone?: StringWithAggregatesFilter<"Registration"> | string
     type?: StringWithAggregatesFilter<"Registration"> | string
+    jobTitle?: StringNullableWithAggregatesFilter<"Registration"> | string | null
+    company?: StringNullableWithAggregatesFilter<"Registration"> | string | null
     eventId?: StringWithAggregatesFilter<"Registration"> | string
     qrCode?: StringWithAggregatesFilter<"Registration"> | string
     shortCode?: StringNullableWithAggregatesFilter<"Registration"> | string | null
@@ -12260,6 +12298,8 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    jobTitle?: string | null
+    company?: string | null
     qrCode: string
     shortCode?: string | null
     createdAt?: Date | string
@@ -12276,6 +12316,8 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    jobTitle?: string | null
+    company?: string | null
     eventId: string
     qrCode: string
     shortCode?: string | null
@@ -12292,6 +12334,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12308,6 +12352,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: StringFieldUpdateOperationsInput | string
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12324,6 +12370,8 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    jobTitle?: string | null
+    company?: string | null
     eventId: string
     qrCode: string
     shortCode?: string | null
@@ -12340,6 +12388,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12355,6 +12405,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: StringFieldUpdateOperationsInput | string
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13016,6 +13068,8 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     type?: SortOrder
+    jobTitle?: SortOrder
+    company?: SortOrder
     eventId?: SortOrder
     qrCode?: SortOrder
     shortCode?: SortOrder
@@ -13032,6 +13086,8 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     type?: SortOrder
+    jobTitle?: SortOrder
+    company?: SortOrder
     eventId?: SortOrder
     qrCode?: SortOrder
     shortCode?: SortOrder
@@ -13048,6 +13104,8 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     type?: SortOrder
+    jobTitle?: SortOrder
+    company?: SortOrder
     eventId?: SortOrder
     qrCode?: SortOrder
     shortCode?: SortOrder
@@ -14192,6 +14250,8 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    jobTitle?: string | null
+    company?: string | null
     qrCode: string
     shortCode?: string | null
     createdAt?: Date | string
@@ -14207,6 +14267,8 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    jobTitle?: string | null
+    company?: string | null
     qrCode: string
     shortCode?: string | null
     createdAt?: Date | string
@@ -14361,6 +14423,8 @@ export namespace Prisma {
     email?: StringFilter<"Registration"> | string
     phone?: StringFilter<"Registration"> | string
     type?: StringFilter<"Registration"> | string
+    jobTitle?: StringNullableFilter<"Registration"> | string | null
+    company?: StringNullableFilter<"Registration"> | string | null
     eventId?: StringFilter<"Registration"> | string
     qrCode?: StringFilter<"Registration"> | string
     shortCode?: StringNullableFilter<"Registration"> | string | null
@@ -14948,6 +15012,8 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    jobTitle?: string | null
+    company?: string | null
     qrCode: string
     shortCode?: string | null
     createdAt?: Date | string
@@ -15026,6 +15092,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15041,6 +15109,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15056,6 +15126,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     shortCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

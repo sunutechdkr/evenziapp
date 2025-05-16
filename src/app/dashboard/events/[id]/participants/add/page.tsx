@@ -93,16 +93,18 @@ export default function AddParticipantPage({ params }: { params: { id: string } 
     setFormStatus('loading');
     
     try {
-      // Préparer les données - Ne conserver que les champs existants dans le schéma
+      // Préparer les données en incluant tous les champs du formulaire
       const payloadData = {
         firstName: participant.firstName,
         lastName: participant.lastName,
         email: participant.email,
         phone: participant.phone,
+        jobTitle: participant.jobTitle,
+        company: participant.company,
         type: participant.type,
       };
       
-      // Appeler l'API pour créer un participant
+      // Appeler l&apos;API pour créer un participant
       const response = await fetch(`/api/events/${params.id}/registrations`, {
         method: 'POST',
         headers: {
@@ -129,7 +131,7 @@ export default function AddParticipantPage({ params }: { params: { id: string } 
     } catch (error) {
       console.error('Erreur:', error);
       setFormStatus('error');
-      toast.error('Erreur lors de l\'ajout du participant');
+      toast.error('Erreur lors de l&apos;ajout du participant');
       
       // Réinitialiser le statut après un délai
       setTimeout(() => {
@@ -156,7 +158,7 @@ export default function AddParticipantPage({ params }: { params: { id: string } 
   // Afficher une notification pour les champs additionnels
   useEffect(() => {
     if (participant.jobTitle || participant.company) {
-      toast.info('Note: Les champs Fonction et Entreprise ne sont pas stockés en base de données mais seront visibles sur le badge', 
+      toast('Note: Les champs Fonction et Entreprise sont maintenant stockés dans la base de données.', 
         { duration: 5000, id: 'fields-info' });
     }
   }, []);
@@ -250,7 +252,7 @@ export default function AddParticipantPage({ params }: { params: { id: string } 
                 <ExclamationCircleIcon className="h-6 w-6 text-red-500" />
               </div>
               <div className="ml-4">
-                <h3 className="text-lg font-medium text-red-800">Erreur lors de l'ajout du participant</h3>
+                <h3 className="text-lg font-medium text-red-800">Erreur lors de l&apos;ajout du participant</h3>
                 <p className="text-red-700 mt-1">
                   Veuillez vérifier les informations et réessayer.
                 </p>
@@ -484,7 +486,6 @@ export default function AddParticipantPage({ params }: { params: { id: string } 
                       />
                     </div>
                     <p className="mt-1 text-xs text-gray-500">
-                      Ce champ apparaîtra sur le badge mais n&apos;est pas stocké en base de données
                     </p>
                   </div>
                   
@@ -505,7 +506,6 @@ export default function AddParticipantPage({ params }: { params: { id: string } 
                       />
                     </div>
                     <p className="mt-1 text-xs text-gray-500">
-                      Ce champ apparaîtra sur le badge mais n&apos;est pas stocké en base de données
                     </p>
                   </div>
                 </div>

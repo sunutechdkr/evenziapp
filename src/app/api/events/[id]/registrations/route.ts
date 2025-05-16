@@ -62,6 +62,8 @@ export async function GET(
         email, 
         phone, 
         type, 
+        job_title as "jobTitle",
+        company,
         event_id as "eventId", 
         qr_code as "qrCode", 
         short_code as "shortCode",
@@ -170,6 +172,8 @@ export async function POST(
         email, 
         phone, 
         type, 
+        job_title,
+        company,
         qr_code, 
         short_code, 
         event_id, 
@@ -184,6 +188,8 @@ export async function POST(
         ${email}, 
         ${phone}, 
         ${type || "PARTICIPANT"}, 
+        ${jobTitle || null},
+        ${company || null},
         ${qrCode}, 
         ${shortCode}, 
         ${id}, 
@@ -202,6 +208,8 @@ export async function POST(
         email, 
         phone, 
         type, 
+        job_title as "jobTitle",
+        company,
         qr_code as "qrCode", 
         short_code as "shortCode", 
         created_at as "createdAt",
@@ -212,7 +220,7 @@ export async function POST(
     
     // Loguer les informations additionnelles pour référence future
     if (jobTitle || company) {
-      console.log(`Additional info for registration ${registrationId}: jobTitle=${jobTitle}, company=${company}`);
+      console.log(`Registration ${registrationId} includes professional info: jobTitle=${jobTitle}, company=${company}`);
     }
     
     console.log(`Created registration with ID: ${registrationId}, shortCode/qrCode: ${shortCode}`);

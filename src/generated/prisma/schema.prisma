@@ -99,6 +99,8 @@ model Registration {
   email       String
   phone       String
   type        String    @default("PARTICIPANT")
+  jobTitle    String?   @map("job_title")
+  company     String?   @map("company")
   eventId     String    @map("event_id")
   qrCode      String    @unique @map("qr_code")
   shortCode   String?   @unique @map("short_code")

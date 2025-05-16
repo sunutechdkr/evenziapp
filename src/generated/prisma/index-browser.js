@@ -187,6 +187,8 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   type: 'type',
+  jobTitle: 'jobTitle',
+  company: 'company',
   eventId: 'eventId',
   qrCode: 'qrCode',
   shortCode: 'shortCode',

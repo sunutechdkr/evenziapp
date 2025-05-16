@@ -105,7 +105,8 @@ export async function PUT(request: Request, context: RouteContext) {
         email,
         phone,
         type: type || "PARTICIPANT",
-        // Autres champs si nécessaire
+        jobTitle,
+        company,
       },
     });
     
