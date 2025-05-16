@@ -1,0 +1,51 @@
+Pour ajouter le bouton "Aperçu" dans le dashboard d'événement, veuillez suivre ces étapes :
+
+1. Ouvrez le fichier src/app/dashboard/events/[id]/page.tsx dans un éditeur de code
+
+2. Ajoutez "EyeIcon" à la liste des imports en haut du fichier :
+   ```
+   import { 
+     ArrowLeftIcon, 
+     UserPlusIcon, 
+     DocumentTextIcon, 
+     ShareIcon, 
+     PencilIcon, 
+     XMarkIcon,
+     PhotoIcon,
+     QrCodeIcon,
+     CalendarIcon,
+     UsersIcon,
+     EyeIcon
+   } from "@heroicons/react/24/outline";
+   ```
+
+3. Localisez la section des boutons d'action (recherchez "flex items-center space-x-3")
+
+4. Ajoutez le nouveau bouton "Aperçu" avant le bouton "Check-in" :
+   ```
+   <div className="flex items-center space-x-3">
+     <Link 
+       href={`/dashboard/events/${eventId}/apercu`}
+       className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+     >
+       <EyeIcon className="w-4 h-4 mr-2" />
+       Aperçu
+     </Link>
+     <Link 
+       href={`/checkin/${event?.slug}`}
+       className="inline-flex items-center justify-center px-4 py-2 bg-[#81B441] text-white text-sm font-medium rounded-md shadow-sm hover:bg-[#6a9636] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441]"
+     >
+       <QrCodeIcon className="w-5 h-5 mr-2" />
+       Check-in
+     </Link>
+     <Link 
+       href={`/dashboard/events/${eventId}/edit`}
+       className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+     >
+       <PencilIcon className="w-4 h-4 mr-2" />
+       Modifier
+     </Link>
+   </div>
+   ```
+
+5. Sauvegardez le fichier et redémarrez le serveur si nécessaire 

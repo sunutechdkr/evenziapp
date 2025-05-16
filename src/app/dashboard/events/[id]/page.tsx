@@ -1,19 +1,21 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { 
   ArrowLeftIcon, 
   UserPlusIcon, 
   DocumentTextIcon, 
   ShareIcon, 
   PencilIcon, 
+  XMarkIcon,
   PhotoIcon,
   QrCodeIcon,
-  CalendarIcon
+  CalendarIcon,
+  UsersIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 
@@ -244,8 +246,19 @@ export default function EventDetailsPage() {
                       <div className="p-3 bg-green-50 rounded-lg">
                         <QrCodeIcon className="w-6 h-6 text-green-500" />
                     </div>
-                    </div>
-                    </div>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-gray-100">
+                    <Link 
+                      href={`/checkin/${event?.slug}`}
+                      className="text-sm text-green-600 hover:text-green-800 font-medium flex items-center"
+                    >
+                      Aller à la page de check-in
+                      <svg className="w-4 h-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
                   
                   {/* Carte 3: Jours restants */}
                   <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
@@ -300,21 +313,15 @@ export default function EventDetailsPage() {
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <div className="flex justify-between items-start mb-6">
                     <h2 className="text-xl font-bold text-gray-900">Détails de l'événement</h2>
-                    <button
-                      onClick={() => {
-                        if (event?.slug) {
-                          const url = window.location.origin + `/events/${event.slug}`;
-                          navigator.clipboard.writeText(url);
-                          alert("Lien copié dans le presse-papier!");
-                        }
-                      }}
+                    <Link
+                      href={`/dashboard/events/${eventId}/share`}
                       className="inline-flex items-center text-gray-700 hover:text-gray-900"
                     >
                       <ShareIcon className="w-5 h-5 mr-2" />
                       Partager l'événement
-                    </button>
-                      </div>
-                      
+                    </Link>
+                  </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <div className="h-40 bg-gray-100 rounded-lg mb-4 overflow-hidden">

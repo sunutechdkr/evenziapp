@@ -5,18 +5,12 @@ import {
   ChevronLeftIcon,
   PlusIcon,
   CalendarIcon,
-  PencilIcon,
-  TrashIcon,
-  MapPinIcon,
-  UserIcon,
-  UserGroupIcon,
   ArrowPathIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   ArrowDownTrayIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
-import SessionFormModal from "@/components/sessions/SessionFormModal";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { format } from "date-fns";
@@ -47,19 +41,25 @@ type Session = {
 };
 
 export default function EventSessionsPage({ params }: { params: { id: string } }) {
+  const [eventId, setEventId] = useState<string>("");
   const [event, setEvent] = useState<Event | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedSession, setSelectedSession] = useState<Session | undefined>(undefined);
   const [filterLocation, setFilterLocation] = useState<string>('');
   const [filterSpeaker, setFilterSpeaker] = useState<string>('');
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
   
-  const eventId = params.id;
+  // Extraire les paramètres une fois au chargement du composant
+  useEffect(() => {
+    if (params && params.id) {
+      setEventId(params.id);
+    }
+  }, [params]);
 
   // Récupérer les détails de l'événement et les sessions au chargement
   useEffect(() => {
+    if (!eventId) return;
+    
     const fetchData = async () => {
       try {
         // Récupérer les détails de l'événement
@@ -85,6 +85,8 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
   }, [eventId]);
 
   const refreshSessions = async () => {
+    if (!eventId) return;
+    
     setLoading(true);
     try {
       const response = await fetch(`/api/events/${eventId}/sessions`);
@@ -98,42 +100,6 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleAddSession = () => {
-    setSelectedSession(undefined);
-    setIsModalOpen(true);
-  };
-
-  const handleEditSession = (session: Session) => {
-    setSelectedSession(session);
-    setIsModalOpen(true);
-  };
-
-  const handleDeleteSession = async (sessionId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette session ?')) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/events/${eventId}/sessions/${sessionId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de la suppression de la session');
-      }
-
-      setSessions(sessions.filter(s => s.id !== sessionId));
-      toast.success('Session supprimée avec succès');
-    } catch (error) {
-      console.error('Erreur:', error);
-      toast.error('Une erreur est survenue lors de la suppression');
-    }
-  };
-
-  const handleModalSuccess = () => {
-    refreshSessions();
   };
 
   // Obtenir les lieux uniques pour le filtre
@@ -202,6 +168,8 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
 
   // Fonction pour exporter les sessions au format Excel
   const handleExportSessions = () => {
+    if (!eventId) return;
+    
     // Préparation de l'URL de l'API d'exportation
     const exportUrl = `/api/events/${eventId}/export/sessions`;
     
@@ -252,7 +220,7 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
                 onClick={refreshSessions}
                 className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441]"
               >
-                <ArrowPathIcon className="w-4 h-4 mr-2" />
+                <ArrowPathIcon className="w-5 h-5 mr-2" />
                 Actualiser
               </button>
               
@@ -260,17 +228,17 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
                 onClick={handleExportSessions}
                 className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441]"
               >
-                <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
+                <ArrowDownTrayIcon className="w-5 h-5 mr-2" />
                 Exporter Excel
               </button>
-              
-              <button
-                onClick={handleAddSession}
+
+              <Link
+                href={`/dashboard/events/${eventId}/sessions/create`}
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#81B441] hover:bg-[#72a139] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441]"
               >
                 <PlusIcon className="w-5 h-5 mr-2" />
                 Ajouter une session
-              </button>
+              </Link>
             </div>
           </div>
           
@@ -333,16 +301,16 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
               <h3 className="text-lg font-medium text-gray-900">Aucune session</h3>
               <p className="mt-1 text-sm text-gray-500">
                 {sessions.length > 0 
-                  ? "Aucune session ne correspond aux critères de filtrage sélectionnés."
+                  ? "Filtrer ou rechercher parmi les sessions disponibles pour afficher les résultats."
                   : "Vous n'avez pas encore ajouté de sessions à cet événement."}
               </p>
-              <button
-                onClick={handleAddSession}
+              <Link
+                href={`/dashboard/events/${eventId}/sessions/create`}
                 className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#81B441] hover:bg-[#72a139] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441]"
               >
                 <PlusIcon className="h-5 w-5 mr-2" />
                 Ajouter votre première session
-              </button>
+              </Link>
             </div>
           ) : (
             // Vue liste organisée par jour
@@ -373,63 +341,27 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
                   {(expandedDay === day || expandedDay === null) && (
                     <ul role="list" className="divide-y divide-gray-200">
                       {sessionsByDay[day].map((session) => (
-                        <li key={session.id} className="p-4 sm:p-6 hover:bg-gray-50 transition-colors duration-150">
+                        <li key={session.id} className="p-4 sm:p-6 hover:bg-gray-50 transition-colors duration-150 relative">
                           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                             <div className="flex-1 min-w-0">
                               <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                                <h3 className="text-lg font-medium text-gray-900">
+                                <span className="text-lg font-medium text-gray-900">
                                   {session.title}
-                                </h3>
+                                </span>
                                 <div className="px-2 py-1 bg-[#81B441]/10 text-[#81B441] text-xs font-medium rounded-full">
                                   {session.start_time} - {session.end_time}
                                 </div>
                               </div>
-                              
-                              {session.description && (
-                                <p className="text-sm text-gray-500 mb-3">
-                                  {session.description}
-                                </p>
-                              )}
-                              
-                              <div className="flex flex-wrap gap-3 text-sm text-gray-500">
-                                {session.location && (
-                                  <div className="flex items-center">
-                                    <MapPinIcon className="h-4 w-4 mr-1 text-gray-400" />
-                                    <span>{session.location}</span>
-                                  </div>
-                                )}
-                                {session.speaker && (
-                                  <div className="flex items-center">
-                                    <UserIcon className="h-4 w-4 mr-1 text-gray-400" />
-                                    <span>{session.speaker}</span>
-                                  </div>
-                                )}
-                                {session.capacity && (
-                                  <div className="flex items-center">
-                                    <UserGroupIcon className="h-4 w-4 mr-1 text-gray-400" />
-                                    <span>{session.capacity} places</span>
-                                  </div>
-                                )}
-                              </div>
                             </div>
-                            
-                            <div className="flex sm:flex-col gap-2 sm:self-start">
-                              <button
-                                onClick={() => handleEditSession(session)}
-                                className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#81B441]"
-                              >
-                                <PencilIcon className="h-4 w-4 mr-1.5" />
-                                Modifier
-                              </button>
-                              <button
-                                onClick={() => handleDeleteSession(session.id)}
-                                className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-1 focus:ring-red-500"
-                              >
-                                <TrashIcon className="h-4 w-4 mr-1.5" />
-                                Supprimer
-                              </button>
+                            <div className="self-center">
+                              <ChevronLeftIcon className="h-5 w-5 text-gray-400 transform rotate-180" />
                             </div>
                           </div>
+                          <Link
+                            href={`/dashboard/events/${eventId}/sessions/${session.id}`}
+                            className="absolute inset-0 cursor-pointer z-10"
+                            aria-label={`Voir les détails de la session ${session.title}`}
+                          />
                         </li>
                       ))}
                     </ul>
@@ -440,15 +372,6 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
           )}
         </div>
       </main>
-
-      {/* Modal de formulaire */}
-      <SessionFormModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        session={selectedSession}
-        eventId={eventId}
-        onSuccess={handleModalSuccess}
-      />
 
       {/* Styles pour le spinner */}
       <style jsx>{`

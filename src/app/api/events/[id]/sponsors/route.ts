@@ -28,18 +28,18 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session) {
-    return NextResponse.json(
-      { message: "Non autorisé" },
-      { status: 401 }
-    );
-  }
-  
-  const id = params.id;
-  
   try {
+    const session = await getServerSession(authOptions);
+  
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+    
+    const id = params.id;
+    
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
       where: { id },
@@ -52,12 +52,15 @@ export async function GET(
       );
     }
 
-    // Récupérer tous les sponsors de l'événement en utilisant prisma.$queryRaw
-    const sponsors = await prisma.$queryRaw`
-      SELECT * FROM sponsors
-      WHERE event_id = ${id}
-      ORDER BY created_at DESC
-    `;
+    // Récupérer tous les sponsors de l'événement
+    const sponsors = await prisma.sponsor.findMany({
+      where: {
+        eventId: id
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
 
     return NextResponse.json(sponsors);
   } catch (error) {
@@ -74,24 +77,26 @@ export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session) {
-    return NextResponse.json(
-      { message: "Non autorisé" },
-      { status: 401 }
-    );
-  }
-  
-  const id = params.id;
-  
   try {
+    const session = await getServerSession(authOptions);
+  
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+    
+    const id = params.id;
+    console.log("POST sponsor - ID événement:", id);
+    
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
       where: { id },
     });
     
     if (!event) {
+      console.log("Événement non trouvé:", id);
       return NextResponse.json(
         { message: "Événement non trouvé" },
         { status: 404 }
@@ -106,6 +111,8 @@ export async function POST(
     const level = formData.get("level")?.toString();
     const visible = formData.get("visible") === "true";
     const logoFile = formData.get("logo") as File | null;
+    
+    console.log("Données du sponsor:", { name, level, visible });
 
     if (!name) {
       return NextResponse.json(
@@ -118,58 +125,54 @@ export async function POST(
 
     // Si un logo a été envoyé, le sauvegarder
     if (logoFile) {
-      const bytes = await logoFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      
-      // Créer un nom de fichier unique
-      const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
-      const relativePath = `/uploads/sponsors/${uniqueFilename}`;
-      const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
-      
-      // S'assurer que le répertoire existe
       try {
-        await mkdir(uploadDir, { recursive: true });
-      } catch (error) {
-        console.error("Erreur lors de la création du répertoire:", error);
-      }
-      
-      const filePath = join(uploadDir, uniqueFilename);
-      
-      try {
+        console.log("Traitement du logo:", logoFile.name);
+        const bytes = await logoFile.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        // Créer un nom de fichier unique
+        const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
+        const relativePath = `/uploads/sponsors/${uniqueFilename}`;
+        const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
+        
+        // S'assurer que le répertoire existe
+        try {
+          await mkdir(uploadDir, { recursive: true });
+        } catch (error) {
+          console.error("Erreur lors de la création du répertoire:", error);
+        }
+        
+        const filePath = join(uploadDir, uniqueFilename);
+        
         await writeFile(filePath, buffer);
         logoPath = relativePath;
-      } catch (error) {
-        console.error("Erreur lors de l'enregistrement du logo:", error);
-        return NextResponse.json(
-          { message: "Erreur lors de l'enregistrement du logo" },
-          { status: 500 }
-        );
+        console.log("Logo sauvegardé:", relativePath);
+      } catch (logoError) {
+        console.error("Erreur lors du traitement du logo:", logoError);
+        // Continuer sans logo plutôt que d'échouer complètement
+        logoPath = null;
       }
     }
 
-    // Créer le nouveau sponsor en utilisant prisma.$executeRaw
-    const now = new Date();
-    const sponsorId = uuidv4();
+    // Créer le nouveau sponsor avec Prisma Client
+    const sponsor = await prisma.sponsor.create({
+      data: {
+        name,
+        description: description || undefined,
+        logo: logoPath,
+        website: website || undefined,
+        level: level as any || "GOLD",
+        visible,
+        eventId: id,
+      }
+    });
     
-    await prisma.$executeRaw`
-      INSERT INTO sponsors (
-        id, name, description, logo, website, level, visible, event_id, created_at, updated_at
-      ) VALUES (
-        ${sponsorId}, ${name}, ${description || null}, ${logoPath}, ${website || null}, 
-        ${level || "GOLD"}, ${visible}, ${id}, ${now}, ${now}
-      )
-    `;
-
-    // Récupérer le sponsor créé
-    const sponsor = await prisma.$queryRaw`
-      SELECT * FROM sponsors WHERE id = ${sponsorId}
-    `;
-
-    return NextResponse.json(sponsor[0], { status: 201 });
-  } catch (error) {
+    console.log("Sponsor créé avec succès:", sponsor.id);
+    return NextResponse.json(sponsor, { status: 201 });
+  } catch (error: any) {
     console.error("Erreur lors de la création du sponsor:", error);
     return NextResponse.json(
-      { message: "Erreur lors de la création du sponsor" },
+      { message: "Erreur lors de la création du sponsor", error: error.message },
       { status: 500 }
     );
   }

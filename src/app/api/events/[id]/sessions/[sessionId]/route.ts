@@ -17,7 +17,7 @@ export async function PUT(
       );
     }
 
-    const { id, sessionId } = await params;
+    const { id, sessionId } = params;
     const body = await request.json();
     const {
       title,
@@ -117,7 +117,7 @@ export async function DELETE(
       );
     }
 
-    const { id, sessionId } = await params;
+    const { id, sessionId } = params;
     
     // Utiliser $executeRaw pour supprimer la session
     await prisma.$executeRaw`
@@ -130,6 +130,59 @@ export async function DELETE(
     console.error("Error deleting session:", error);
     return NextResponse.json(
       { error: "Error deleting session" },
+      { status: 500 }
+    );
+  }
+}
+
+// GET /api/events/[id]/sessions/[sessionId] - Récupérer une session spécifique
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string; sessionId: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { error: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+
+    const { id, sessionId } = params;
+    console.log("Récupération de la session:", { id, sessionId });
+
+    // Vérifier que l'événement existe
+    const event = await prisma.event.findUnique({
+      where: { id },
+    });
+    
+    if (!event) {
+      return NextResponse.json(
+        { error: "Événement non trouvé" },
+        { status: 404 }
+      );
+    }
+
+    // Récupérer la session
+    const sessionData = await prisma.$queryRaw`
+      SELECT * FROM event_sessions 
+      WHERE id = ${sessionId} AND event_id = ${id}
+    `;
+
+    if (!sessionData || !Array.isArray(sessionData) || sessionData.length === 0) {
+      return NextResponse.json(
+        { error: "Session non trouvée" },
+        { status: 404 }
+      );
+    }
+
+    console.log("Session trouvée:", sessionData[0].id);
+    return NextResponse.json(sessionData[0]);
+  } catch (error) {
+    console.error("Error fetching session:", error);
+    return NextResponse.json(
+      { error: "Error fetching session", details: String(error) },
       { status: 500 }
     );
   }

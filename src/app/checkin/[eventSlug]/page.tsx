@@ -794,15 +794,15 @@ export default function CheckInPage() {
                         <div className="loading-indicator">
                           <span className="checkin-spinner"></span>
                           <span>Recherche en cours...</span>
-                        </div>
-                      ) : (
+              </div>
+            ) : (
                         <ParticipantList 
                           query={manualEmail} 
                           eventSlug={eventSlug} 
                           onSelectParticipant={handleParticipantSelect} 
                         />
                       )}
-                    </div>
+                </div>
                   )}
                 </div>
 

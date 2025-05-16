@@ -13,32 +13,34 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string; sponsorId: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session) {
-    return NextResponse.json(
-      { message: "Non autorisé" },
-      { status: 401 }
-    );
-  }
-  
-  const { id, sponsorId } = params;
-  
   try {
-    // Récupérer le sponsor spécifique
-    const sponsors = await prisma.$queryRaw`
-      SELECT * FROM sponsors
-      WHERE id = ${sponsorId} AND event_id = ${id}
-    `;
+    const session = await getServerSession(authOptions);
     
-    if (!sponsors || (sponsors as any[]).length === 0) {
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+    
+    const { id, sponsorId } = params;
+    
+    // Récupérer le sponsor spécifique
+    const sponsor = await prisma.sponsor.findFirst({
+      where: {
+        id: sponsorId,
+        eventId: id
+      }
+    });
+    
+    if (!sponsor) {
       return NextResponse.json(
         { message: "Sponsor non trouvé" },
         { status: 404 }
       );
     }
     
-    return NextResponse.json(sponsors[0]);
+    return NextResponse.json(sponsor);
   } catch (error) {
     console.error("Erreur lors de la récupération du sponsor:", error);
     return NextResponse.json(
@@ -53,27 +55,29 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: string; sponsorId: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session) {
-    return NextResponse.json(
-      { message: "Non autorisé" },
-      { status: 401 }
-    );
-  }
-  
-  const { id, sponsorId } = params;
-  
   try {
-    // Vérifier que le sponsor existe
-    const existingSponsorResult = await prisma.$queryRaw`
-      SELECT * FROM sponsors
-      WHERE id = ${sponsorId} AND event_id = ${id}
-    `;
+    const session = await getServerSession(authOptions);
     
-    const existingSponsor = Array.isArray(existingSponsorResult) && existingSponsorResult.length > 0 ? existingSponsorResult[0] : null;
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+    
+    const { id, sponsorId } = params;
+    console.log("PUT sponsor - ID événement:", id, "ID sponsor:", sponsorId);
+    
+    // Vérifier que le sponsor existe
+    const existingSponsor = await prisma.sponsor.findFirst({
+      where: {
+        id: sponsorId,
+        eventId: id
+      }
+    });
     
     if (!existingSponsor) {
+      console.log("Sponsor non trouvé:", sponsorId);
       return NextResponse.json(
         { message: "Sponsor non trouvé" },
         { status: 404 }
@@ -88,6 +92,8 @@ export async function PUT(
     const level = formData.get("level")?.toString();
     const visible = formData.get("visible") === "true";
     const logoFile = formData.get("logo") as File | null;
+    
+    console.log("Données de mise à jour du sponsor:", { name, level, visible });
 
     if (!name) {
       return NextResponse.json(
@@ -96,73 +102,73 @@ export async function PUT(
       );
     }
 
-    let logoPath = (existingSponsor as any).logo;
+    let logoPath = existingSponsor.logo;
 
     // Si un nouveau logo a été envoyé, le sauvegarder
     if (logoFile) {
-      const bytes = await logoFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      
-      // Créer un nom de fichier unique
-      const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
-      const relativePath = `/uploads/sponsors/${uniqueFilename}`;
-      const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
-      
-      // S'assurer que le répertoire existe
       try {
-        await mkdir(uploadDir, { recursive: true });
-      } catch (error) {
-        console.error("Erreur lors de la création du répertoire:", error);
-      }
-      
-      const filePath = join(uploadDir, uniqueFilename);
-      
-      try {
+        console.log("Traitement du nouveau logo:", logoFile.name);
+        const bytes = await logoFile.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        // Créer un nom de fichier unique
+        const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
+        const relativePath = `/uploads/sponsors/${uniqueFilename}`;
+        const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
+        
+        // S'assurer que le répertoire existe
+        try {
+          await mkdir(uploadDir, { recursive: true });
+        } catch (error) {
+          console.error("Erreur lors de la création du répertoire:", error);
+        }
+        
+        const filePath = join(uploadDir, uniqueFilename);
+        
         await writeFile(filePath, buffer);
         
         // Supprimer l'ancien logo s'il existe
-        if ((existingSponsor as any).logo) {
-          const oldLogoPath = join(process.cwd(), 'public', (existingSponsor as any).logo);
+        if (existingSponsor.logo) {
+          const oldLogoPath = join(process.cwd(), 'public', existingSponsor.logo);
           if (existsSync(oldLogoPath)) {
-            await unlink(oldLogoPath);
+            try {
+              await unlink(oldLogoPath);
+              console.log("Ancien logo supprimé:", existingSponsor.logo);
+            } catch (unlinkError) {
+              console.error("Erreur lors de la suppression de l'ancien logo:", unlinkError);
+            }
           }
         }
         
         logoPath = relativePath;
-      } catch (error) {
-        console.error("Erreur lors de l'enregistrement du logo:", error);
-        return NextResponse.json(
-          { message: "Erreur lors de l'enregistrement du logo" },
-          { status: 500 }
-        );
+        console.log("Nouveau logo sauvegardé:", relativePath);
+      } catch (logoError) {
+        console.error("Erreur lors du traitement du logo:", logoError);
+        // Garder l'ancien logo plutôt que d'échouer
       }
     }
 
-    // Mettre à jour le sponsor
-    const now = new Date();
+    // Mettre à jour le sponsor avec Prisma Client
+    const updatedSponsor = await prisma.sponsor.update({
+      where: {
+        id: sponsorId
+      },
+      data: {
+        name,
+        description: description || undefined,
+        logo: logoPath,
+        website: website || undefined,
+        level: level as any || "GOLD",
+        visible
+      }
+    });
     
-    await prisma.$executeRaw`
-      UPDATE sponsors
-      SET name = ${name},
-          description = ${description || null},
-          logo = ${logoPath},
-          website = ${website || null},
-          level = ${level || "GOLD"},
-          visible = ${visible},
-          updated_at = ${now}
-      WHERE id = ${sponsorId} AND event_id = ${id}
-    `;
-
-    // Récupérer le sponsor mis à jour
-    const updatedSponsor = await prisma.$queryRaw`
-      SELECT * FROM sponsors WHERE id = ${sponsorId}
-    `;
-
-    return NextResponse.json(Array.isArray(updatedSponsor) ? updatedSponsor[0] : null);
-  } catch (error) {
+    console.log("Sponsor mis à jour avec succès:", updatedSponsor.id);
+    return NextResponse.json(updatedSponsor);
+  } catch (error: any) {
     console.error("Erreur lors de la mise à jour du sponsor:", error);
     return NextResponse.json(
-      { message: "Erreur lors de la mise à jour du sponsor" },
+      { message: "Erreur lors de la mise à jour du sponsor", error: error.message },
       { status: 500 }
     );
   }
@@ -173,25 +179,25 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string; sponsorId: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session) {
-    return NextResponse.json(
-      { message: "Non autorisé" },
-      { status: 401 }
-    );
-  }
-  
-  const { id, sponsorId } = params;
-  
   try {
-    // Vérifier que le sponsor existe
-    const existingSponsorResult = await prisma.$queryRaw`
-      SELECT * FROM sponsors
-      WHERE id = ${sponsorId} AND event_id = ${id}
-    `;
+    const session = await getServerSession(authOptions);
     
-    const existingSponsor = Array.isArray(existingSponsorResult) && existingSponsorResult.length > 0 ? existingSponsorResult[0] : null;
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+    
+    const { id, sponsorId } = params;
+    
+    // Vérifier que le sponsor existe
+    const existingSponsor = await prisma.sponsor.findFirst({
+      where: {
+        id: sponsorId,
+        eventId: id
+      }
+    });
     
     if (!existingSponsor) {
       return NextResponse.json(
@@ -201,28 +207,30 @@ export async function DELETE(
     }
 
     // Supprimer le logo s'il existe
-    if ((existingSponsor as any).logo) {
-      const logoPath = join(process.cwd(), 'public', (existingSponsor as any).logo);
+    if (existingSponsor.logo) {
+      const logoPath = join(process.cwd(), 'public', existingSponsor.logo);
       if (existsSync(logoPath)) {
         try {
           await unlink(logoPath);
+          console.log("Logo supprimé:", existingSponsor.logo);
         } catch (error) {
           console.error("Erreur lors de la suppression du logo:", error);
         }
       }
     }
 
-    // Supprimer le sponsor
-    await prisma.$executeRaw`
-      DELETE FROM sponsors
-      WHERE id = ${sponsorId} AND event_id = ${id}
-    `;
+    // Supprimer le sponsor avec Prisma Client
+    await prisma.sponsor.delete({
+      where: {
+        id: sponsorId
+      }
+    });
 
     return NextResponse.json({ message: "Sponsor supprimé avec succès" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erreur lors de la suppression du sponsor:", error);
     return NextResponse.json(
-      { message: "Erreur lors de la suppression du sponsor" },
+      { message: "Erreur lors de la suppression du sponsor", error: error.message },
       { status: 500 }
     );
   }

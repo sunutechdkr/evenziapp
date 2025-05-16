@@ -16,9 +16,6 @@ import {
   ChevronRightIcon,
   XMarkIcon,
   ChevronLeftIcon,
-  ChevronDownIcon,
-  UserGroupIcon,
-  BriefcaseIcon,
   Bars3Icon
 } from "@heroicons/react/24/outline";
 
@@ -31,6 +28,7 @@ const navigation = [
   { name: "Badge", href: "/dashboard/badges", icon: IdentificationIcon },
   { name: "Communication", href: "/dashboard/communications", icon: EnvelopeIcon },
   { name: "Réglages", href: "/dashboard/settings", icon: Cog6ToothIcon },
+  { name: "Shadcn UI", href: "/shadcn-example", icon: HomeIcon, highlight: true },
 ];
 
 /**
@@ -231,7 +229,7 @@ export function Sidebar({ onExpandChange }: { onExpandChange?: (expanded: boolea
     }
     return pathname.startsWith(href);
   };
-  
+
   return (
     <>
       {/* Version mobile: bouton d'ouverture */}
@@ -298,7 +296,7 @@ export function Sidebar({ onExpandChange }: { onExpandChange?: (expanded: boolea
               </div>
             </div>
             {/* Bouton pour réduire la sidebar (version desktop) */}
-            <button
+            <button 
               className="hidden md:block text-gray-400 hover:text-white p-1 rounded-md transition-colors"
               onClick={() => toggleExpand(!isExpanded)}
             >
@@ -321,26 +319,40 @@ export function Sidebar({ onExpandChange }: { onExpandChange?: (expanded: boolea
           
           {/* Navigation principale */}
           <nav className="flex-1 px-3 pb-4 mt-2 space-y-2">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
+          {navigation.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
                 className={`
                   block py-2 px-3 rounded-md transition-colors duration-200
-                  ${isActive(item.href, item.exact) 
-                    ? 'bg-[#81B441] text-white' 
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  ${item.highlight 
+                    ? 'bg-purple-100 text-purple-900 hover:bg-purple-200' 
+                    : isActive(item.href, item.exact) 
+                      ? 'bg-[#81B441] text-white' 
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                   }
                 `}
               >
                 <div className="flex items-center">
-                  <item.icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                  {isExpanded && <span className="text-sm">{item.name}</span>}
+                  <item.icon className={`
+                    mr-3 h-5 w-5 flex-shrink-0
+                    ${item.highlight ? 'text-purple-700' : isActive(item.href, item.exact) ? 'text-white' : 'text-gray-400'}
+                  `} />
+              {isExpanded && (
+                    <div className="flex items-center">
+                      <span className="text-sm">{item.name}</span>
+                      {item.highlight && (
+                        <span className="ml-2 inline-flex items-center rounded-full bg-purple-500 px-2 py-0.5 text-xs font-medium text-white">
+                          Nouveau
+                </span>
+              )}
+                    </div>
+                  )}
                 </div>
-              </Link>
-            ))}
-          </nav>
-          
+            </Link>
+          ))}
+        </nav>
+        
           {/* Pied de sidebar */}
           <div className="p-3 mt-auto">
             <div className="py-2 px-3 bg-gray-700/50 rounded-md">
