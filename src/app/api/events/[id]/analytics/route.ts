@@ -48,6 +48,74 @@ export async function GET(
       ? registrationStatsQuery[0]
       : { total: 0, checked_in: 0 };
     
+    // Récupérer le nombre de participants par type
+    const participantTypesQuery = await prisma.$queryRaw`
+      SELECT 
+        type, 
+        COUNT(*) as count
+      FROM registrations
+      WHERE event_id = ${eventId}
+      GROUP BY type
+      ORDER BY count DESC
+    `;
+    
+    const participantTypes = Array.isArray(participantTypesQuery)
+      ? participantTypesQuery.map(type => ({
+          type: type.type,
+          count: Number(type.count)
+        }))
+      : [];
+    
+    // Récupérer les sessions de l'événement avec le nombre de participants pour chacune
+    const sessionsQuery = await prisma.$queryRaw`
+      SELECT 
+        es.id,
+        es.title,
+        COUNT(sp.id) as participant_count
+      FROM 
+        event_sessions es
+      LEFT JOIN 
+        session_participants sp ON es.id = sp.session_id
+      WHERE 
+        es.event_id = ${eventId}
+      GROUP BY 
+        es.id, es.title
+      ORDER BY 
+        participant_count DESC
+      LIMIT 5
+    `;
+    
+    const topSessions = Array.isArray(sessionsQuery)
+      ? sessionsQuery.map(session => ({
+          id: session.id,
+          title: session.title,
+          participantCount: Number(session.participant_count)
+        }))
+      : [];
+    
+    // Récupérer les inscriptions par jour pour les 7 derniers jours
+    const dailyRegistrationsQuery = await prisma.$queryRaw`
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as count
+      FROM 
+        registrations
+      WHERE 
+        event_id = ${eventId}
+        AND created_at > CURRENT_DATE - INTERVAL '7 days'
+      GROUP BY 
+        DATE(created_at)
+      ORDER BY 
+        date ASC
+    `;
+    
+    const dailyRegistrations = Array.isArray(dailyRegistrationsQuery)
+      ? dailyRegistrationsQuery.map(day => ({
+          date: day.date,
+          count: Number(day.count)
+        }))
+      : [];
+    
     // Formater les résultats
     const stats = {
       event: {
@@ -60,6 +128,9 @@ export async function GET(
         total: Number(registrationStats.total) || 0,
         checkedIn: Number(registrationStats.checked_in) || 0
       },
+      participantTypes,
+      topSessions,
+      dailyRegistrations,
       period: period
     };
     
