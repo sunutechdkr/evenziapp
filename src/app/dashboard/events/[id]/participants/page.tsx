@@ -18,7 +18,6 @@ import {
   ClockIcon,
   QrCodeIcon,
   ArrowDownTrayIcon,
-  HomeIcon,
   TrashIcon,
   IdentificationIcon,
   ShareIcon,
@@ -26,17 +25,41 @@ import {
   DocumentArrowDownIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
-  EllipsisVerticalIcon,
   PencilIcon,
   TicketIcon,
   CheckIcon,
-  ArrowUturnLeftIcon
+  ArrowUturnLeftIcon,
+  BuildingOfficeIcon,
+  BriefcaseIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import html2canvas from "html2canvas";
 import { QRCodeSVG } from "qrcode.react";
+
+// Importer les composants Shadcn UI
+import { 
+  Table, 
+  TableBody, 
+  TableCaption, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 // Type d'inscription
 type Participant = {
@@ -1245,1992 +1268,910 @@ export default function EventParticipantsPage({ params }: { params: { id: string
   }
   
   return (
-    <>
-      {/* Styles CSS pour la sidebar */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .participant-sidebar-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
-          display: none;
-          z-index: 40;
-        }
-        
-        .participant-sidebar-overlay.open {
-          display: block;
-        }
-        
-        .participant-sidebar {
-          position: fixed;
-          top: 0;
-          right: -100%;
-          width: 420px;
-          max-width: 90vw;
-          height: 100vh;
-          background-color: #fff;
-          box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-          z-index: 50;
-          transition: right 0.3s ease-in-out;
-          overflow-y: auto;
-        }
-        
-        .participant-sidebar.open {
-          right: 0;
-        }
-        
-        .participant-sidebar-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .participant-sidebar-title {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: #111827;
-        }
-        
-        .participant-sidebar-close {
-          color: #6b7280;
-          transition: color 0.2s;
-        }
-        
-        .participant-sidebar-close:hover {
-          color: #111827;
-        }
-        
-        .participant-sidebar-body {
-          padding: 1.5rem;
-        }
-        
-        .participant-header-details {
-          margin-bottom: 1.5rem;
-        }
-        
-        .participant-sidebar-section {
-          margin-bottom: 1.5rem;
-          border: 1px solid #e5e7eb;
-          border-radius: 0.5rem;
-          overflow: hidden;
-        }
-        
-        .participant-sidebar-section-title {
-          padding: 0.75rem 1rem;
-          font-size: 1rem;
-          font-weight: 600;
-          color: #374151;
-          background-color: #f9fafb;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .participant-sidebar-content {
-          padding: 1rem;
-        }
-        
-        .participant-sidebar-info {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-        
-        .participant-sidebar-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-        
-        .participant-sidebar-label {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #6b7280;
-        }
-        
-        .participant-sidebar-value {
-          font-size: 0.975rem;
-          color: #111827;
-        }
-        
-        .participant-status-badge {
-          display: inline-block;
-          padding: 0.25rem 0.75rem;
-          border-radius: 9999px;
-          font-size: 0.75rem;
-          font-weight: 600;
-        }
-        
-        .participant-status-badge.participant {
-          background-color: #dbeafe;
-          color: #1e40af;
-          border: 1px solid #bfdbfe;
-        }
-        
-        .participant-status-badge.speaker {
-          background-color: #dcfce7;
-          color: #15803d;
-          border: 1px solid #bbf7d0;
-        }
-        
-        .participant-status-badge.registered {
-          background-color: #dcfce7;
-          color: #166534;
-          border: 1px solid #bbf7d0;
-          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        
-        .participant-status-badge.not-registered {
-          background-color: #f3f4f6;
-          color: #374151;
-          border: 1px solid #e5e7eb;
-        }
-        
-        .participant-row {
-          cursor: pointer;
-        }
-        
-        .bulk-actions-bar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0.75rem 1.5rem;
-          background-color: #f3f4f6;
-          border-top: 1px solid #e5e7eb;
-        }
-        
-        .selected-count {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #374151;
-        }
-        
-        .bulk-actions {
-          display: flex;
-          gap: 0.5rem;
-        }
-        
-        .bulk-action-btn, .bulk-action-delete {
-          display: flex;
-          align-items: center;
-          gap: 0.25rem;
-          padding: 0.375rem 0.75rem;
-          border-radius: 0.375rem;
-          font-size: 0.75rem;
-          font-weight: 500;
-          cursor: pointer;
-        }
-        
-        .bulk-action-btn {
-          background-color: white;
-          color: #4b5563;
-          border: 1px solid #d1d5db;
-        }
-        
-        .bulk-action-btn:hover {
-          background-color: #f9fafb;
-        }
-        
-        .bulk-action-delete {
-          background-color: #fee2e2;
-          color: #b91c1c;
-          border: 1px solid #fecaca;
-        }
-        
-        .bulk-action-delete:hover {
-          background-color: #fef2f2;
-        }
-        
-        .pagination-container {
-          border-top: 1px solid #e5e7eb;
-        }
-        
-        .pagination-button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 2rem;
-          height: 2rem;
-          border-radius: 0.375rem;
-          background-color: white;
-          border: 1px solid #d1d5db;
-          color: #374151;
-          cursor: pointer;
-        }
-        
-        .pagination-button:hover:not(.pagination-button-disabled) {
-          background-color: #f9fafb;
-        }
-        
-        .pagination-button-disabled {
-          cursor: not-allowed;
-          color: #9ca3af;
-          background-color: #f3f4f6;
-        }
-        
-        .pagination-number {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 2rem;
-          height: 2rem;
-          border-radius: 0.375rem;
-          font-size: 0.875rem;
-          background-color: white;
-          border: 1px solid #d1d5db;
-          color: #374151;
-          cursor: pointer;
-        }
-        
-        .pagination-number:hover:not(.pagination-number-active) {
-          background-color: #f9fafb;
-        }
-        
-        .pagination-number-active {
-          background-color: #81B441;
-          border-color: #81B441;
-          color: white;
-        }
-        
-        .checkbox {
-          width: 1.25rem;
-          height: 1.25rem;
-          border-radius: 0.25rem;
-          border: 1px solid #d1d5db;
-          cursor: pointer;
-          transition: background-color 0.2s, border-color 0.2s;
-        }
-        
-        .checkbox:checked {
-          background-color: #81B441;
-          border-color: #81B441;
-        }
-        
-        .form-group {
-          margin-bottom: 1rem;
-        }
-        
-        .form-label {
-          display: block;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #374151;
-          margin-bottom: 0.375rem;
-        }
-        
-        .form-input, .form-select {
-          width: 100%;
-          padding: 0.5rem 0.75rem;
-          border-radius: 0.375rem;
-          border: 1px solid #d1d5db;
-          font-size: 0.875rem;
-          color: #1f2937;
-        }
-        
-        .form-input:focus, .form-select:focus {
-          outline: none;
-          border-color: #81B441;
-          box-shadow: 0 0 0 3px rgba(129, 180, 65, 0.2);
-        }
-        
-        .btn-cancel {
-          padding: 0.5rem 1rem;
-          border-radius: 0.375rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #4b5563;
-          background-color: white;
-          border: 1px solid #d1d5db;
-          cursor: pointer;
-        }
-        
-        .btn-cancel:hover {
-          background-color: #f9fafb;
-        }
-        
-        .btn-primary {
-          padding: 0.5rem 1rem;
-          border-radius: 0.375rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: white;
-          background-color: #81B441;
-          border: 1px solid #81B441;
-          cursor: pointer;
-        }
-        
-        .btn-primary:hover {
-          background-color: #6a9636;
-        }
-        
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 40;
-          padding: 1rem;
-        }
-        
-        .modal-container {
-          background-color: white;
-          border-radius: 0.5rem;
-          width: 100%;
-          max-width: 600px;
-          max-height: 90vh;
-          overflow-y: auto;
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .modal-container.modal-lg {
-          max-width: 800px;
-        }
-        
-        .modal-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .modal-title {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: #111827;
-        }
-        
-        .modal-close {
-          color: #6b7280;
-          transition: color 0.2s;
-        }
-        
-        .modal-close:hover {
-          color: #111827;
-        }
-        
-        .modal-body {
-          padding: 1.5rem;
-        }
-        
-        .modal-footer {
-          display: flex;
-          justify-content: flex-end;
-          gap: 0.5rem;
-          padding: 1rem 1.5rem;
-          border-top: 1px solid #e5e7eb;
-          background-color: #f9fafb;
-        }
-        
-        .badge-card {
-          width: 100%;
-          max-width: 350px;
-          background-color: white;
-        }
-        
-        /* Ajout de styles pour les boutons de check-in */
-        .checkin-button {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s ease;
-        }
-        
-        .checkin-button-loading {
-          position: relative;
-          cursor: not-allowed;
-        }
-        
-        .checkin-button:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-        
-        .checkin-spinner {
-          display: inline-block;
-          width: 1rem;
-          height: 1rem;
-          border-radius: 50%;
-          border: 2px solid currentColor;
-          border-top-color: transparent;
-          animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}} />
-
-    <div className="dashboard-container">
-      <EventSidebar eventId={eventId} />
-      <div className="dashboard-content">
-        <main className="dashboard-main">
-          {/* Navigation Links */}
-            <div className="flex gap-4 mb-6 pt-6 pl-2">
-              <Link href="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 rounded-md hover:bg-gray-100">
-                <HomeIcon className="h-5 w-5 mr-2" />
-              <span>Accueil</span>
-            </Link>
+    <div className="participants-container bg-[#f9fafb] min-h-screen">
+      <EventSidebar eventId={eventId} activeTab="participants" />
+      
+      <div className="p-6 ml-64">
+        {/* En-tête de la page */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <div className="flex items-center space-x-2 text-sm text-gray-500 mb-1">
+              <Link href="/dashboard" className="hover:text-gray-700">Dashboard</Link>
+              <ChevronRightIcon className="h-4 w-4" />
+              <Link href="/dashboard/events" className="hover:text-gray-700">Événements</Link>
+              <ChevronRightIcon className="h-4 w-4" />
+              {event && (
+                <>
+                  <Link href={`/dashboard/events/${eventId}`} className="hover:text-gray-700 truncate max-w-[150px]">
+                    {event.name}
+                  </Link>
+                  <ChevronRightIcon className="h-4 w-4" />
+                </>
+              )}
+              <span className="font-medium text-gray-600">Participants</span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {loading ? (
+                <Skeleton className="h-8 w-48" />
+              ) : (
+                <>Participants {event?.name && <span className="text-[#81B441]">• {event.name}</span>}</>
+              )}
+            </h1>
           </div>
           
-          {/* Informations de l'événement */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 text-gray-800 border-b pb-2">Informations de l&apos;événement</h2>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="flex flex-col">
-                <div className="text-sm text-gray-500 font-medium">Date</div>
-                <div className="text-lg font-semibold flex items-center mt-1">
-                  <CalendarIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                    {event?.startDate ? format(new Date(event.startDate), "dd MMMM yyyy", { locale: fr }) : "Date non définie"}
-                </div>
-              </div>
-              
-              <div className="flex flex-col">
-                <div className="text-sm text-gray-500 font-medium">Lieu</div>
-                <div className="text-lg font-semibold flex items-center mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2 text-[#81B441]">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
-                    {event?.location || "Lieu non défini"}
-                </div>
-              </div>
-              
-              <div className="flex flex-col">
-                  <div className="text-sm text-gray-500 font-medium">Participants</div>
-                <div className="text-lg font-semibold flex items-center mt-1">
-                  <UserIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                    {participants.length} au total
-                  </div>
-                </div>
-                
-                <div className="flex flex-col">
-                  <div className="text-sm text-gray-500 font-medium">Check-in</div>
-                  <div className="text-lg font-semibold flex items-center mt-1">
-                    <TicketIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                    <span className="flex items-center">
-                      <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded-md mr-2 font-bold">{participants.filter(p => p.checkedIn).length}</span> 
-                      enregistrés
-                    </span>
-                    <span className="ml-2 text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
-                      ({participants.length > 0 
-                        ? Math.round((participants.filter(p => p.checkedIn).length / participants.length) * 100) 
-                        : 0}%)
-                    </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* En-tête */}
-          <div className="flex justify-between items-center mb-8 bg-white p-6 rounded-lg shadow-sm">
-            <div>
-              <h1 className="text-2xl font-bold flex items-center">
-                <span className="text-gray-900">Participants</span>
-                {event && (
-                  <span className="ml-3 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold">
-                    {filteredParticipants.length}
-                  </span>
-                )}
-              </h1>
-              <p className="text-sm text-gray-500 mt-1">
-                Gérez les participants inscrits à votre événement
-              </p>
-            </div>
-              <div className="flex space-x-3">
-                <Link
-                  href={`/checkin/${event?.slug}`}
-                  className="btn flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                >
-                  <TicketIcon className="h-5 w-5" />
-                  Mode Check-in
-                </Link>
-                <Link
-                  href={`/dashboard/events/${eventId}/participants/add`}
-              className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg bg-[#81B441] hover:bg-[#6a9636] text-white font-medium transition-all shadow-sm hover:shadow"
+          <div className="flex space-x-3">
+            <Button
+              variant="outline"
+              className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]"
+              onClick={downloadCsvTemplate}
             >
-              <UserPlusIcon className="h-5 w-5" />
+              <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
+              Modèle CSV
+            </Button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]">
+                  <ArrowUpTrayIcon className="h-4 w-4 mr-2" />
+                  Importer
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => document.getElementById('csv-upload')?.click()}>
+                  <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
+                  <span>Importer CSV</span>
+                  <input
+                    id="csv-upload"
+                    type="file"
+                    accept=".csv"
+                    className="hidden"
+                    onChange={handleCsvUpload}
+                  />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={openAddManualModal}>
+                  <UserPlusIcon className="h-4 w-4 mr-2" />
+                  <span>Ajouter manuellement</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <Button
+              className="bg-[#81B441] hover:bg-[#72a139] text-white"
+              onClick={() => setShowAddManual(true)}
+            >
+              <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
-                </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Carte des statistiques */}
+        <div className="grid grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">Total des participants</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">
+                {loading ? <Skeleton className="h-9 w-12" /> : participants.length}
               </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">Check-ins</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">
+                {loading ? (
+                  <Skeleton className="h-9 w-12" />
+                ) : (
+                  participants.filter(p => p.checkedIn).length
+                )}
+                <span className="text-sm font-normal text-gray-500 ml-2">
+                  {loading ? (
+                    <Skeleton className="h-5 w-12 inline-block" />
+                  ) : (
+                    participants.length > 0
+                      ? `(${Math.round((participants.filter(p => p.checkedIn).length / participants.length) * 100)}%)`
+                      : '(0%)'
+                  )}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">Intervenants</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">
+                {loading ? (
+                  <Skeleton className="h-9 w-12" />
+                ) : (
+                  participants.filter(p => p.type === 'SPEAKER').length
+                )}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">En attente</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">
+                {loading ? (
+                  <Skeleton className="h-9 w-12" />
+                ) : (
+                  participants.filter(p => !p.checkedIn).length
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Barre de recherche et filtres */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center w-full max-w-md relative">
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Rechercher un participant..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 border-gray-300 focus:border-[#81B441] focus:ring-[#81B441]"
+            />
           </div>
           
-          {/* Filtres */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex flex-wrap gap-4 items-center">
-                <div className="flex-1 min-w-[300px] relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Rechercher un participant par nom, email..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent"
-                    value={searchTerm}
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                  />
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FunnelIcon className="h-4 w-4 text-gray-400" />
-                  </div>
-                  <select
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent appearance-none bg-white"
-                    value={participantType}
-                    onChange={(e) => {
-                      setParticipantType(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                  >
-                    <option value="">Tous les types</option>
-                    <option value="PARTICIPANT">Participants</option>
-                    <option value="SPEAKER">Intervenants</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <ChevronRightIcon className="h-4 w-4 text-gray-400 transform rotate-90" />
-                  </div>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FunnelIcon className="h-4 w-4 text-gray-400" />
-                  </div>
-                  <select
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent appearance-none bg-white"
-                    value={checkinStatus}
-                    onChange={(e) => {
-                      setCheckinStatus(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                  >
-                    <option value="">Tous les statuts</option>
-                    <option value="checked-in">Enregistrés</option>
-                    <option value="not-checked-in">Non enregistrés</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <ChevronRightIcon className="h-4 w-4 text-gray-400 transform rotate-90" />
-                  </div>
-                </div>
-              </div>
-            </div>
-              
-              {/* Section d'importation/exportation */}
-              <div className="p-4 bg-gray-50 border-t border-b border-gray-200">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-700">Importation / Exportation</h3>
-                    <p className="text-xs text-gray-500 mt-1">Gérez vos participants en masse</p>
-                  </div>
-                  
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="relative">
-                      <Link
-                        href={`/dashboard/events/${eventId}/participants/import`}
-                        className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                      >
-                        <ArrowUpTrayIcon className="h-4 w-4 text-gray-500" />
-                        Importer CSV
-                      </Link>
-                    </div>
-                    
-                    <button
-                      onClick={handleBulkExport}
-                      className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                    >
-                      <ArrowDownTrayIcon className="h-4 w-4 text-gray-500" />
-                      Exporter Excel
-                    </button>
-                    
-                    <button
-                      onClick={downloadCsvTemplate}
-                      className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                    >
-                      <DocumentArrowDownIcon className="h-4 w-4 text-gray-500" />
-                      Télécharger modèle
-                    </button>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center space-x-3">
+            <Select value={participantType} onValueChange={setParticipantType}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Type de participant" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Tous les types</SelectItem>
+                <SelectItem value="PARTICIPANT">Participants</SelectItem>
+                <SelectItem value="SPEAKER">Intervenants</SelectItem>
+              </SelectContent>
+            </Select>
             
-            {/* Bulk actions bar */}
-            {selectedParticipants.length > 0 && (
-              <div className="bulk-actions-bar">
-                <div className="selected-count">
-                  {selectedParticipants.length} participant(s) sélectionné(s)
-                </div>
-                <div className="bulk-actions">
-                  <button 
-                    onClick={(e) => {
-                      e.preventDefault(); // Empêcher la navigation par défaut
-                      e.stopPropagation(); // Empêcher la propagation de l'événement
-                      if (!selectedParticipants.some(id => processing[id])) {
-                        handleBulkCheckIn();
-                      }
-                    }}
-                    type="button" // Spécifier explicitement le type button
-                    className={`bulk-action-btn bg-green-50 text-green-700 hover:bg-green-100 flex items-center gap-1 ${selectedParticipants.some(id => processing[id]) ? 'checkin-button-loading' : 'checkin-button'}`}
-                    disabled={selectedParticipants.some(id => processing[id])}
-                  >
-                    {selectedParticipants.some(id => processing[id]) ? (
-                      <>
-                        <span className="checkin-spinner border-green-700"></span>
-                        <span>Enregistrement...</span>
-                      </>
-                    ) : (
-                      <>
-                        <CheckIcon className="h-4 w-4" />
-                        <span>Enregistrer</span>
-                      </>
-                    )}
-                  </button>
-                  <button 
-                    className="bulk-action-btn"
-                    onClick={handleBulkExport}
-                  >
-                    <ArrowDownTrayIcon className="h-4 w-4" />
-                    Exporter Excel
-                  </button>
-                  <button 
-                    className="bulk-action-delete"
-                    onClick={handleBulkDelete}
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                    Supprimer
-                  </button>
-                </div>
-              </div>
-            )}
-            
-            {/* Tableau des participants */}
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-3 py-3 text-left">
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className="checkbox"
-                          checked={selectAll}
-                          onChange={handleSelectAll}
-                        />
-                      </div>
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Badge</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Téléphone</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d&apos;inscription</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {currentParticipants.length === 0 ? (
-                    <tr>
-                      <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
-                        Aucun participant ne correspond à vos critères.
-                      </td>
-                    </tr>
-                  ) : (
-                    currentParticipants.map((participant) => (
-                      <tr 
-                        key={participant.id} 
-                        className={`participant-row hover:bg-gray-50 transition-colors duration-150 ${
-                            selectedParticipants.includes(participant.id) ? 'bg-blue-50' : ''
-                        }`}
-                          onClick={() => openSidebar(participant)}
-                      >
-                        <td className="px-3 py-4 whitespace-nowrap">
-                          <input
-                            type="checkbox"
-                            className="checkbox"
-                            checked={selectedParticipants.includes(participant.id)}
-                            onChange={() => handleCheckboxChange(participant.id)}
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </td>
-                        <td className="px-4 py-4 whitespace-nowrap text-center">
-                          <button 
-                            className="inline-flex items-center justify-center p-2 rounded-full bg-[#81B441]/10 hover:bg-[#81B441]/20 transition-colors"
-                            title="Afficher badge"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleShowBadge(participant);
-                            }}
-                          >
-                            <IdentificationIcon className="h-5 w-5 text-[#81B441]" />
-                          </button>
-                        </td>
-                        <td 
-                          className="px-6 py-4 whitespace-nowrap cursor-pointer"
-                        >
-                          <div className="flex items-center">
-                              <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-semibold">
-                              {participant.firstName.charAt(0)}{participant.lastName.charAt(0)}
-                            </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">
-                                {participant.firstName} {participant.lastName}
-                              </div>
-                                {participant.jobTitle && (
-                                  <div className="text-xs text-gray-500">
-                                    {participant.jobTitle}{participant.company ? ` • ${participant.company}` : ''}
-                                  </div>
-                                )}
-                            </div>
-                          </div>
-                        </td>
-                        <td 
-                          className="px-6 py-4 whitespace-nowrap cursor-pointer"
-                        >
-                          <div className="text-sm text-gray-900">{participant.email}</div>
-                        </td>
-                        <td 
-                          className="px-6 py-4 whitespace-nowrap cursor-pointer"
-                        >
-                          <div className="text-sm text-gray-900">{participant.phone}</div>
-                        </td>
-                        <td 
-                          className="px-6 py-4 whitespace-nowrap cursor-pointer"
-                        >
-                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            ${participant.type === 'PARTICIPANT' 
-                              ? 'bg-blue-100 text-blue-800 border border-blue-200' 
-                              : 'bg-green-100 text-green-800 border border-green-200'}`}
-                          >
-                            {participant.type === 'PARTICIPANT' ? 'Participant' : 'Intervenant'}
-                          </span>
-                        </td>
-                        <td 
-                          className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 cursor-pointer"
-                        >
-                          {format(participant.registrationDate, "dd/MM/yyyy", { locale: fr })}
-                        </td>
-                          <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
-                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            ${participant.checkedIn 
-                              ? 'bg-green-100 text-green-800 border border-green-200 shadow-sm' 
-                              : 'bg-gray-100 text-gray-800 border border-gray-200'}`}
-                          >
-                            {participant.checkedIn ? (
-                              <span className="flex items-center">
-                                <CheckBadgeIcon className="h-3.5 w-3.5 mr-1" />
-                                Enregistré
-                              </span>
-                            ) : 'Non enregistré'}
-                          </span>
-                        </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div className="flex justify-center space-x-2">
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault(); // Empêcher la navigation par défaut
-                                  e.stopPropagation(); // Empêcher la propagation de l'événement
-                                  
-                                  // S'assurer que le participant n'est pas déjà enregistré et qu'il n'y a pas de traitement en cours
-                                  if (!participant.checkedIn && !processing[participant.id]) {
-                                    console.log(`Clic sur check-in pour participant: ${participant.id}`);
-                                    handleCheckInFromBadge(participant.id);
-                                  } else {
-                                    console.log('Check-in impossible: participant déjà enregistré ou traitement en cours');
-                                  }
-                                }}
-                                className={`participant-checkin-button ${
-                                  participant.checkedIn
-                                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed p-2 rounded-md'
-                                    : processing[participant.id]
-                                      ? 'bg-green-500 text-white checkin-button-loading p-2 rounded-md'
-                                      : 'bg-green-500 text-white hover:bg-green-600 shadow-md border border-green-600 transition-all duration-200 transform hover:scale-105 checkin-button p-3 rounded-md'
-                                }`}
-                                disabled={participant.checkedIn || processing[participant.id]}
-                                title={participant.checkedIn ? 'Déjà enregistré' : (processing[participant.id] ? 'Enregistrement en cours...' : 'Enregistrer ce participant')}
-                                type="button" // Spécifier explicitement le type button
-                                aria-label="Check-in"
-                              >
-                                {processing[participant.id] ? (
-                                  <span className="checkin-spinner"></span>
-                                ) : (
-                                  <>
-                                    <QrCodeIcon className={participant.checkedIn ? "h-5 w-5" : "h-6 w-6"} />
-                                    {!participant.checkedIn && (
-                                      <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-green-600 border border-green-500">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
-                                        <span className="relative">+</span>
-                                      </span>
-                                    )}
-                                  </>
-                                )}
-                              </button>
-                              <button
-                                onClick={(e) => toggleActionMenu(e, participant.id)}
-                                className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                title="Actions"
-                              >
-                                <EllipsisVerticalIcon className="h-5 w-5" />
-                              </button>
-                            </div>
-                            
-                            {showActionMenuFor === participant.id && (
-                              <div 
-                                className="absolute right-10 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200"
-                              >
-                                <div className="py-1" role="menu" aria-orientation="vertical">
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleShowBadge(participant);
-                                      setShowActionMenuFor(null);
-                                    }}
-                                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                    role="menuitem"
-                                  >
-                                    <IdentificationIcon className="mr-3 h-4 w-4 text-gray-500" />
-                                    Voir badge
-                                  </button>
-                                  <button
-                                    onClick={(e) => handleEditParticipant(e, participant)}
-                                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                    role="menuitem"
-                                  >
-                                    <PencilIcon className="mr-3 h-4 w-4 text-gray-500" />
-                                    Modifier
-                                  </button>
-                                  <button
-                                    onClick={(e) => handleDeletePrompt(e, participant)}
-                                    className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left"
-                                    role="menuitem"
-                                  >
-                                    <TrashIcon className="mr-3 h-4 w-4 text-red-500" />
-                                    Supprimer
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-            
-            {/* Pagination */}
-            {totalPages > 1 && (
-                <div className="pagination-container">
-                  <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200">
-                    <div className="flex items-center text-sm text-gray-700">
-                      <span>
-                        Affichage de <span className="font-medium">{(currentPage - 1) * participantsPerPage + 1}</span> à{' '}
-                        <span className="font-medium">{Math.min(currentPage * participantsPerPage, filteredParticipants.length)}</span> sur{' '}
-                        <span className="font-medium">{filteredParticipants.length}</span> résultats
-                      </span>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                  <button
-                        onClick={() => handlePageChange(1)}
-                    disabled={currentPage === 1}
-                        className={`pagination-button ${currentPage === 1 ? 'pagination-button-disabled' : ''}`}
-                        aria-label="Première page"
-                  >
-                        <ChevronDoubleLeftIcon className="h-4 w-4" />
-                  </button>
-                      <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className={`pagination-button ${currentPage === 1 ? 'pagination-button-disabled' : ''}`}
-                        aria-label="Page précédente"
-                      >
-                        <ChevronLeftIcon className="h-4 w-4" />
-                      </button>
-                      
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-                        <button
-                          key={pageNumber}
-                          onClick={() => handlePageChange(pageNumber)}
-                          className={`pagination-number ${pageNumber === currentPage ? 'pagination-number-active' : ''}`}
-                          aria-label={`Page ${pageNumber}`}
-                          aria-current={pageNumber === currentPage ? 'page' : undefined}
-                        >
-                          {pageNumber}
-                        </button>
-                      ))}
-                      
-                      <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className={`pagination-button ${currentPage === totalPages ? 'pagination-button-disabled' : ''}`}
-                        aria-label="Page suivante"
-                      >
-                        <ChevronRightIcon className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handlePageChange(totalPages)}
-                        disabled={currentPage === totalPages}
-                        className={`pagination-button ${currentPage === totalPages ? 'pagination-button-disabled' : ''}`}
-                        aria-label="Dernière page"
-                      >
-                        <ChevronDoubleRightIcon className="h-4 w-4" />
-                      </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            <Select value={checkinStatus} onValueChange={setCheckinStatus}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Statut check-in" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Tous les statuts</SelectItem>
+                <SelectItem value="checked-in">Enregistrés</SelectItem>
+                <SelectItem value="not-checked-in">Non enregistrés</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-
-            {/* Assurez-vous que le panneau latéral est toujours inclus */}
-          <div className={`participant-sidebar-overlay ${sidebarOpen ? 'open' : ''}`} onClick={closeSidebar}></div>
-          <div className={`participant-sidebar ${sidebarOpen ? 'open' : ''}`}>
-            {selectedParticipant && (
-              <>
-                <div className="participant-sidebar-header">
-                  <h3 className="participant-sidebar-title">Détails du participant</h3>
-                  <button className="participant-sidebar-close" onClick={closeSidebar}>
-                    <XMarkIcon className="h-6 w-6" />
-                  </button>
+        </div>
+        
+        {/* Actions groupées */}
+        {selectedParticipants.length > 0 && (
+          <div className="bg-gray-50 p-3 rounded-md border border-gray-200 mb-4 flex items-center justify-between">
+            <div className="text-sm text-gray-600">
+              <span className="font-medium">{selectedParticipants.length}</span> participant(s) sélectionné(s)
+            </div>
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:border-blue-300"
+                onClick={handleBulkCheckIn}
+              >
+                <CheckBadgeIcon className="h-4 w-4 mr-1" />
+                Check-in groupé
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-amber-600 border-amber-200 hover:bg-amber-50 hover:border-amber-300"
+                onClick={handleBulkExport}
+              >
+                <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
+                Exporter
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+                onClick={handleBulkDelete}
+              >
+                <TrashIcon className="h-4 w-4 mr-1" />
+                Supprimer
+              </Button>
+            </div>
+          </div>
+        )}
+        
+        {/* Tableau des participants */}
+        {loading ? (
+          <div className="border rounded-lg overflow-hidden">
+            <div className="h-10 bg-gray-50 border-b flex items-center px-6"></div>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="flex items-center space-x-4 p-4 border-b">
+                <Skeleton className="h-5 w-5" />
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
                 </div>
-                
-                <div className="participant-sidebar-body">
-                  <div className="participant-header-details">
-                    <div className="flex justify-center mb-4">
-                      <div className="h-24 w-24 rounded-full bg-gradient-to-r from-blue-100 to-green-100 flex items-center justify-center text-gray-700 text-xl font-medium border-4 border-white shadow-md">
-                        {selectedParticipant.firstName.charAt(0)}{selectedParticipant.lastName.charAt(0)}
-                      </div>
-                    </div>
-                    <div className="participant-header-info text-center">
-                      <h3 className="text-xl font-semibold text-gray-900">
-                        {selectedParticipant.firstName} {selectedParticipant.lastName}
-                      </h3>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {selectedParticipant.email}
-                      </p>
-                      <div className="mt-3">
-                        <span className={`participant-status-badge ${selectedParticipant.type === 'PARTICIPANT' ? 'participant' : 'speaker'}`}>
-                          {selectedParticipant.type === 'PARTICIPANT' ? 'Participant' : 'Intervenant'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="participant-sidebar-section">
-                    <h4 className="participant-sidebar-section-title flex items-center">
-                      <UserIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                      Informations de contact
-                    </h4>
-                    <div className="participant-sidebar-content">
-                      <div className="participant-sidebar-info">
-                        <div className="participant-sidebar-field">
-                          <div className="participant-sidebar-label flex items-center">
-                            <EnvelopeIcon className="h-4 w-4 mr-2 text-gray-500" />
-                            Email
-                          </div>
-                          <div className="participant-sidebar-value">{selectedParticipant.email}</div>
-                        </div>
-                        <div className="participant-sidebar-field">
-                          <div className="participant-sidebar-label flex items-center">
-                            <PhoneIcon className="h-4 w-4 mr-2 text-gray-500" />
-                            Téléphone
-                          </div>
-                          <div className="participant-sidebar-value">{selectedParticipant.phone}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="participant-sidebar-section">
-                    <h4 className="participant-sidebar-section-title flex items-center">
-                      <CalendarIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                      Détails d&apos;inscription
-                    </h4>
-                    <div className="participant-sidebar-content">
-                      <div className="participant-sidebar-info">
-                        <div className="participant-sidebar-field">
-                          <div className="participant-sidebar-label flex items-center">
-                            <CalendarIcon className="h-4 w-4 mr-2 text-gray-500" />
-                            Date d&apos;inscription
-                          </div>
-                          <div className="participant-sidebar-value">
-                            {format(selectedParticipant.registrationDate, "dd MMMM yyyy", { locale: fr })}
-                          </div>
-                        </div>
-                        <div className="participant-sidebar-field">
-                          <div className="participant-sidebar-label flex items-center">
-                            <CheckBadgeIcon className="h-4 w-4 mr-2 text-gray-500" />
-                            Statut
-                          </div>
-                          <div className="participant-sidebar-value">
-                            <span className={`participant-status-badge ${selectedParticipant.checkedIn ? 'registered' : 'not-registered'}`}>
-                              {selectedParticipant.checkedIn ? 'Enregistré' : 'Non enregistré'}
-                            </span>
-                          </div>
-                        </div>
-                        {selectedParticipant.checkedIn && selectedParticipant.checkinTime && (
-                          <div className="participant-sidebar-field">
-                            <div className="participant-sidebar-label flex items-center">
-                              <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />
-                              Date d&apos;enregistrement
-                            </div>
-                            <div className="participant-sidebar-value">
-                              {format(selectedParticipant.checkinTime, "dd MMMM yyyy HH:mm", { locale: fr })}
-                            </div>
-                          </div>
-                        )}
-                        
-                        {/* Bouton d'annulation d'enregistrement */}
-                        {selectedParticipant.checkedIn && (
-                          <div className="participant-sidebar-field mt-4">
-                            <button
-                              onClick={async () => {
-                                if (confirm("Êtes-vous sûr de vouloir annuler l'enregistrement de ce participant ?")) {
-                                  try {
-                                    setProcessing(prev => ({ ...prev, [selectedParticipant.id]: true }));
-                                    const response = await fetchWithRetry(
-                                      `/api/events/${params.id}/registrations/${selectedParticipant.id}/cancel-checkin`,
-                                      createFetchOptions('POST')
-                                    );
-                                    
-                                    if (response.ok) {
-                                      // Mettre à jour l'état local du participant
-                                      setParticipants(prev => 
-                                        prev.map(p => 
-                                          p.id === selectedParticipant.id 
-                                            ? { ...p, checkedIn: false, checkinTime: undefined } 
-                                            : p
-                                        )
-                                      );
-                                      
-                                      // Mettre à jour le participant sélectionné dans la sidebar
-                                      setSelectedParticipant({
-                                        ...selectedParticipant,
-                                        checkedIn: false,
-                                        checkinTime: undefined
-                                      });
-                                      
-                                      toast.success('Enregistrement annulé avec succès');
-                                      
-                                      // Rafraîchir la liste des participants
-                                      setTimeout(() => {
-                                        fetchParticipants();
-                                      }, 1000);
-                                    } else {
-                                      const error = await response.json();
-                                      toast.error(error.message || 'Erreur lors de l\'annulation');
-                                    }
-                                  } catch (err) {
-                                    console.error('Erreur lors de l\'annulation:', err);
-                                    toast.error('Erreur technique lors de l\'annulation');
-                                  } finally {
-                                    setProcessing(prev => ({ ...prev, [selectedParticipant.id]: false }));
-                                  }
-                                }
-                              }}
-                              className="w-full px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center"
-                              disabled={processing[selectedParticipant.id]}
-                            >
-                              {processing[selectedParticipant.id] ? (
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <Card className="text-center p-6">
+            <CardContent>
+              <div className="flex flex-col items-center justify-center py-12">
+                <XMarkIcon className="h-12 w-12 text-red-500 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Erreur de chargement</h3>
+                <p className="text-gray-500 mb-4">{error}</p>
+                <Button onClick={fetchParticipants}>Réessayer</Button>
+              </div>
+            </CardContent>
+          </Card>
+        ) : participants.length === 0 ? (
+          <Card className="text-center p-6">
+            <CardContent>
+              <div className="flex flex-col items-center justify-center py-12">
+                <UserIcon className="h-12 w-12 text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun participant</h3>
+                <p className="text-gray-500 mb-4">Commencez par ajouter des participants à votre événement</p>
+                <Button onClick={() => setShowAddManual(true)}>
+                  <UserPlusIcon className="h-4 w-4 mr-2" />
+                  Ajouter un participant
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50 hover:bg-gray-50">
+                  <TableHead className="w-[40px]">
+                    <Checkbox 
+                      checked={selectAll}
+                      onCheckedChange={handleSelectAll}
+                      aria-label="Sélectionner tous les participants"
+                    />
+                  </TableHead>
+                  <TableHead>Participant</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Téléphone</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Date d'inscription</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead className="text-center">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredParticipants.slice((currentPage - 1) * participantsPerPage, currentPage * participantsPerPage).map((participant) => (
+                  <TableRow 
+                    key={participant.id}
+                    className="hover:bg-gray-50 cursor-pointer"
+                    onClick={() => openSidebar(participant)}
+                  >
+                    <TableCell onClick={(e) => e.stopPropagation()} className="w-[40px]">
+                      <Checkbox 
+                        checked={selectedParticipants.includes(participant.id)}
+                        onCheckedChange={() => handleCheckboxChange(participant.id)}
+                        aria-label={`Sélectionner ${participant.firstName} ${participant.lastName}`}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-3">
+                        <Avatar className="h-9 w-9 bg-gradient-to-br from-blue-100 to-green-100 border border-white">
+                          <AvatarFallback className="text-gray-700">{participant.firstName.charAt(0)}{participant.lastName.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium text-gray-900">{participant.firstName} {participant.lastName}</div>
+                          {(participant.jobTitle || participant.company) && (
+                            <div className="text-xs text-gray-500 flex items-center mt-0.5">
+                              {participant.jobTitle && (
                                 <span className="flex items-center">
-                                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                  </svg>
-                                  En cours...
+                                  <BriefcaseIcon className="h-3 w-3 inline mr-1" />
+                                  {participant.jobTitle}
                                 </span>
-                              ) : (
-                                <>
-                                  <ArrowUturnLeftIcon className="h-4 w-4 mr-2" />
-                                  Annuler l&apos;enregistrement
-                                </>
                               )}
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="participant-sidebar-section">
-                    <h4 className="participant-sidebar-section-title flex items-center">
-                      <TicketIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                      Code d&apos;enregistrement
-                    </h4>
-                    <div className="participant-sidebar-content">
-                      <div className="flex flex-col items-center justify-center py-4">
-                        <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 mb-3 relative">
-                          {/* Badge si déjà enregistré */}
-                          {selectedParticipant.checkedIn && (
-                            <div className="absolute -top-3 -right-3 bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold border border-green-200 shadow-sm">
-                              Déjà enregistré
+                              {participant.jobTitle && participant.company && (
+                                <span className="mx-1">•</span>
+                              )}
+                              {participant.company && (
+                                <span className="flex items-center">
+                                  <BuildingOfficeIcon className="h-3 w-3 inline mr-1" />
+                                  {participant.company}
+                                </span>
+                              )}
                             </div>
                           )}
-                          
-                          {/* ID Card instead of QR Code */}
-                          <div className="bg-gray-50 p-5 flex items-center justify-center overflow-hidden">
-                            <div className="text-center">
-                              <QRCodeSVG 
-                                value={selectedParticipant.qrCode || selectedParticipant.shortCode || selectedParticipant.id.substring(0, 9)} 
-                                size={120} 
-                                level="M"
-                                includeMargin={true}
-                              />
-                            </div>
-                          </div>
-                          
-                          {/* Légende */}
-                          <div className="bg-gray-50 px-4 py-2 text-center border-t border-gray-100 text-sm text-gray-600 mt-2">
-                            Ce code est unique pour l&apos;événement
-                          </div>
                         </div>
-                        
-                        {/* Bouton pour voir le QR code brut */}
-                        <Link 
-                          href={`/participant-qr/${selectedParticipant.id}`}
-                          className="mb-4 px-4 py-2 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center gap-2"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2m0 0H8m10 0h1m-7-3V8m0 0h1m-1 0H9m5 0H9" />
-                          </svg>
-                          <span>Voir QR Code Brut</span>
-                        </Link>
-                        
-                        <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 text-sm text-blue-700 max-w-md">
-                          <div className="flex">
-                            <div className="flex-shrink-0">
-                              <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                            <div className="ml-3">
-                              <p className="text-sm">
-                                Ce code est unique à ce participant et cet événement.
-                                Utilisez-le pour enregistrer la présence du participant.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                          
-                        {!selectedParticipant.checkedIn && (
-                          <button
-                            type="button"
-                            disabled={processing[selectedParticipant.id]}
-                            className={`px-4 py-2 bg-gradient-to-r from-[#81B441] to-[#6a9636] text-white font-medium rounded-md shadow-sm hover:shadow-md hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[#81B441]/50 flex items-center gap-2 transition-all disabled:opacity-70 ${processing[selectedParticipant.id] ? 'checkin-button-loading' : 'checkin-button'}`}
-                            onClick={(e) => {
-                              e.preventDefault(); // Empêcher la navigation par défaut
-                              e.stopPropagation(); // Empêcher la propagation de l'événement
-                              if (!processing[selectedParticipant.id]) {
-                                handleCheckInFromBadge(selectedParticipant.id);
-                              }
-                            }}
-                          >
-                            {processing[selectedParticipant.id] ? (
-                              <>
-                                <span className="checkin-spinner border-white"></span>
-                                <span>Enregistrement...</span>
-                              </>
-                            ) : (
-                              <>
-                                <CheckIcon className="h-5 w-5" />
-                                <span>Enregistrer le participant</span>
-                              </>
-                            )}
-                          </button>
-                        )}
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-            {/* Modal d'ajout de participant - Choix du mode */}
-            {showAddModal && !showAddManual && (
-            <div className="modal-overlay">
-              <div className="modal-container modal-lg">
-                {/* En-tête avec titre et bouton de fermeture */}
-                <div className="modal-header">
-                  <h3 className="modal-title">Ajouter des participants</h3>
-                  <button 
-                    className="modal-close" 
-                    onClick={closeAddModal}
-                  >
-                    <XMarkIcon className="h-5 w-5" />
-                  </button>
-                </div>
+                    </TableCell>
+                    <TableCell>{participant.email}</TableCell>
+                    <TableCell>{participant.phone}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={participant.type === 'PARTICIPANT' ? 'default' : 'secondary'}
+                        className={
+                          participant.type === 'PARTICIPANT' 
+                            ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200' 
+                            : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
+                        }
+                      >
+                        {participant.type === 'PARTICIPANT' ? 'Participant' : 'Intervenant'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {format(participant.registrationDate, "dd/MM/yyyy", { locale: fr })}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={participant.checkedIn ? 'outline' : 'secondary'}
+                        className={
+                          participant.checkedIn 
+                            ? 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200 font-medium' 
+                            : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                        }
+                      >
+                        {participant.checkedIn ? (
+                          <span className="flex items-center">
+                            <CheckBadgeIcon className="h-3.5 w-3.5 mr-1" />
+                            Enregistré
+                          </span>
+                        ) : 'Non enregistré'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex justify-center space-x-2" onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            if (!participant.checkedIn && !processing[participant.id]) {
+                              handleCheckInFromBadge(participant.id);
+                            }
+                          }}
+                          disabled={participant.checkedIn || processing[participant.id]}
+                          className={cn(
+                            participant.checkedIn
+                              ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                              : processing[participant.id]
+                                ? 'bg-green-500 text-white'
+                                : 'bg-green-500 text-white hover:bg-green-600 border-green-600',
+                            "transition-all duration-200"
+                          )}
+                        >
+                          {processing[participant.id] ? (
+                            <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                          ) : (
+                            <QrCodeIcon className="h-4 w-4" />
+                          )}
+                        </Button>
+                        
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                              <span className="sr-only">Ouvrir le menu</span>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="h-4 w-4"
+                              >
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="12" cy="5" r="1" />
+                                <circle cx="12" cy="19" r="1" />
+                              </svg>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleShowBadge(participant)}>
+                              <IdentificationIcon className="mr-2 h-4 w-4" />
+                              <span>Voir badge</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => handleEditParticipant(e, participant)}>
+                              <PencilIcon className="mr-2 h-4 w-4" />
+                              <span>Modifier</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem 
+                              onClick={(e) => handleDeletePrompt(e, participant)}
+                              className="text-red-600 focus:text-red-700 focus:bg-red-50"
+                            >
+                              <TrashIcon className="mr-2 h-4 w-4" />
+                              <span>Supprimer</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        )}
+      </div>
+      
+      {/* Panneau latéral des détails du participant */}
+      <div className={`fixed inset-y-0 right-0 w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        {selectedParticipant && (
+          <div className="h-full flex flex-col">
+            <div className="p-5 border-b flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">Détails du participant</h3>
+              <Button variant="ghost" size="sm" onClick={closeSidebar} className="h-8 w-8 p-0">
+                <XMarkIcon className="h-5 w-5" />
+              </Button>
+            </div>
+            
+            <div className="overflow-y-auto flex-grow">
+              {/* En-tête avec Avatar */}
+              <div className="p-6 pb-2 flex flex-col items-center">
+                <Avatar className="h-24 w-24 border-4 border-white shadow-md bg-gradient-to-br from-blue-100 to-green-100">
+                  <AvatarFallback className="text-3xl font-medium text-gray-700">
+                    {selectedParticipant.firstName.charAt(0)}{selectedParticipant.lastName.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <h2 className="mt-4 text-xl font-semibold text-center text-gray-900">
+                  {selectedParticipant.firstName} {selectedParticipant.lastName}
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">{selectedParticipant.email}</p>
+                <Badge
+                  variant={selectedParticipant.type === 'PARTICIPANT' ? 'default' : 'secondary'}
+                  className={cn(
+                    "mt-3",
+                    selectedParticipant.type === 'PARTICIPANT' 
+                      ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200' 
+                      : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
+                  )}
+                >
+                  {selectedParticipant.type === 'PARTICIPANT' ? 'Participant' : 'Intervenant'}
+                </Badge>
+              </div>
+              
+              {/* Actions principales */}
+              <div className="px-6 pt-2 pb-4 grid grid-cols-2 gap-3">
+                <Button 
+                  variant="outline" 
+                  className={cn(
+                    "text-gray-700 border-gray-300",
+                    !selectedParticipant.checkedIn && "text-green-600 border-green-200 hover:bg-green-50"
+                  )}
+                  disabled={selectedParticipant.checkedIn}
+                  onClick={() => selectedParticipant && handleCheckInFromBadge(selectedParticipant.id)}
+                >
+                  <CheckBadgeIcon className="h-4 w-4 mr-2" />
+                  {selectedParticipant.checkedIn ? 'Déjà enregistré' : 'Enregistrer'}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => selectedParticipant && handleShowBadge(selectedParticipant)}
+                >
+                  <IdentificationIcon className="h-4 w-4 mr-2" />
+                  Voir badge
+                </Button>
+              </div>
+              
+              <Separator className="my-1" />
+              
+              {/* Informations personnelles */}
+              <div className="p-6">
+                <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
+                  <UserIcon className="h-4 w-4 mr-2 text-[#81B441]" />
+                  Informations personnelles
+                </h4>
                 
-                {/* Corps du modal avec deux options */}
-                <div className="modal-body">
-                  <div className="text-center mb-6">
-                    <p className="text-gray-600">Choisissez une méthode pour ajouter des participants</p>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-1">
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1 flex items-center">
+                        <EnvelopeIcon className="h-3 w-3 mr-1" />
+                        Email
+                      </p>
+                      <p className="text-sm text-gray-900">{selectedParticipant.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1 flex items-center">
+                        <PhoneIcon className="h-3 w-3 mr-1" />
+                        Téléphone
+                      </p>
+                      <p className="text-sm text-gray-900">{selectedParticipant.phone}</p>
+                    </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Option 1: Importer CSV */}
-                      <div className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                      <div className="h-14 w-14 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-blue-600">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                        </svg>
+                  <div className="grid grid-cols-2 gap-1">
+                    {selectedParticipant.jobTitle && (
+                      <div>
+                        <p className="text-xs text-gray-500 mb-1 flex items-center">
+                          <BriefcaseIcon className="h-3 w-3 mr-1" />
+                          Fonction
+                        </p>
+                        <p className="text-sm text-gray-900">{selectedParticipant.jobTitle}</p>
                       </div>
-                      <h4 className="text-lg font-semibold mb-2">Importer CSV</h4>
-                        <p className="text-sm text-center text-gray-500 mb-4">Importez une liste de participants à partir d&apos;un fichier CSV</p>
-                      
-                        <div className="mt-2 w-full">
-                        <div className="flex justify-center mb-3">
-                          <a 
-                            href="#" 
-                            className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                downloadCsvTemplate(e);
-                              }}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                            </svg>
-                            Télécharger le modèle CSV
-                          </a>
-                        </div>
-                        <label className="block mb-2 text-sm font-medium text-gray-700 text-center">
-                          Sélectionnez votre fichier CSV
-                        </label>
-                        <div className="flex items-center justify-center w-full">
-                          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 mb-3 text-gray-400">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                              </svg>
-                              <p className="mb-2 text-sm text-gray-500">
-                                <span className="font-semibold">Cliquez pour importer</span> ou glissez-déposez
-                              </p>
-                              <p className="text-xs text-gray-500">CSV uniquement (Max 10MB)</p>
-                            </div>
-                            <input 
-                              type="file" 
-                                id="csvUpload"
-                              accept=".csv" 
-                              className="hidden" 
-                              onChange={handleCsvUpload}
-                            />
-                          </label>
-                        </div>
+                    )}
+                    {selectedParticipant.company && (
+                      <div>
+                        <p className="text-xs text-gray-500 mb-1 flex items-center">
+                          <BuildingOfficeIcon className="h-3 w-3 mr-1" />
+                          Entreprise
+                        </p>
+                        <p className="text-sm text-gray-900">{selectedParticipant.company}</p>
                       </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              <Separator className="my-1" />
+              
+              {/* Informations sur l'événement */}
+              <div className="p-6">
+                <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
+                  <CalendarIcon className="h-4 w-4 mr-2 text-[#81B441]" />
+                  Informations sur l'inscription
+                </h4>
+                
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-1">
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1 flex items-center">
+                        <CalendarIcon className="h-3 w-3 mr-1" />
+                        Date d'inscription
+                      </p>
+                      <p className="text-sm text-gray-900">
+                        {format(selectedParticipant.registrationDate, "dd MMMM yyyy", { locale: fr })}
+                      </p>
                     </div>
-                    
-                    {/* Option 2: Ajout manuel */}
-                    <div 
-                      className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                        onClick={openAddManualModal}
-                    >
-                      <div className="h-14 w-14 bg-green-50 rounded-full flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-green-600">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                        </svg>
-                      </div>
-                      <h4 className="text-lg font-semibold mb-2">Ajouter manuellement</h4>
-                      <p className="text-sm text-center text-gray-500">Ajoutez un participant en remplissant un formulaire</p>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1 flex items-center">
+                        <QrCodeIcon className="h-3 w-3 mr-1" />
+                        Code QR
+                      </p>
+                      <p className="text-sm text-gray-900">{selectedParticipant.shortCode || 'Non défini'}</p>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1 flex items-center">
+                      <CheckBadgeIcon className="h-3 w-3 mr-1" />
+                      Statut d'enregistrement
+                    </p>
+                    <div>
+                      {selectedParticipant.checkedIn ? (
+                        <div className="flex items-center">
+                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                            <CheckBadgeIcon className="h-3 w-3 mr-1" />
+                            Enregistré
+                          </Badge>
+                          {selectedParticipant.checkinTime && (
+                            <span className="text-xs text-gray-500 ml-2">
+                              {format(new Date(selectedParticipant.checkinTime), "dd/MM/yyyy à HH:mm", { locale: fr })}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">
+                          Non enregistré
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            
+            {/* Actions en bas du panneau */}
+            <div className="p-5 border-t flex justify-between">
+              <Button 
+                variant="outline" 
+                className="text-red-600 border-red-200 hover:bg-red-50"
+                onClick={() => {
+                  if (selectedParticipant) {
+                    handleDeletePrompt(new MouseEvent('click') as React.MouseEvent, selectedParticipant);
+                    closeSidebar();
+                  }
+                }}
+              >
+                <TrashIcon className="h-4 w-4 mr-2" />
+                Supprimer
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  if (selectedParticipant) {
+                    handleEditParticipant(new MouseEvent('click') as React.MouseEvent, selectedParticipant);
+                    closeSidebar();
+                  }
+                }}
+              >
+                <PencilIcon className="h-4 w-4 mr-2" />
+                Modifier
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Modal d'ajout de participant */}
+      <Dialog open={showAddManual} onOpenChange={setShowAddManual}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Ajouter un participant</DialogTitle>
+            <DialogDescription>
+              Créez un nouveau participant pour cet événement.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleAddParticipant}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="firstName" className="text-sm font-medium text-gray-700">
+                    Prénom *
+                  </label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    value={newParticipant.firstName}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Prénom"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="lastName" className="text-sm font-medium text-gray-700">
+                    Nom *
+                  </label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    value={newParticipant.lastName}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Nom"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email *
+                </label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={newParticipant.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="email@exemple.com"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                  Téléphone *
+                </label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  value={newParticipant.phone}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="+33 6 12 34 56 78"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="jobTitle" className="text-sm font-medium text-gray-700">
+                    Fonction
+                  </label>
+                  <Input
+                    id="jobTitle"
+                    name="jobTitle"
+                    value={newParticipant.jobTitle}
+                    onChange={handleInputChange}
+                    placeholder="Fonction"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="company" className="text-sm font-medium text-gray-700">
+                    Entreprise
+                  </label>
+                  <Input
+                    id="company"
+                    name="company"
+                    value={newParticipant.company}
+                    onChange={handleInputChange}
+                    placeholder="Entreprise"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="type" className="text-sm font-medium text-gray-700">
+                  Type de participant
+                </label>
+                <Select
+                  value={newParticipant.type}
+                  onValueChange={(value) => setNewParticipant({...newParticipant, type: value})}
+                >
+                  <SelectTrigger id="type">
+                    <SelectValue placeholder="Choisir un type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PARTICIPANT">Participant</SelectItem>
+                    <SelectItem value="SPEAKER">Intervenant</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <DialogFooter>
+              <Button variant="outline" type="button" onClick={() => setShowAddManual(false)}>
+                Annuler
+              </Button>
+              <Button type="submit" className="bg-[#81B441] hover:bg-[#72a139]">
+                Ajouter
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Dialog de confirmation de suppression */}
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-red-600">
+              <div className="flex items-center">
+                <TrashIcon className="h-5 w-5 mr-2" />
+                Confirmer la suppression
+              </div>
+            </DialogTitle>
+            <DialogDescription>
+              {participantToDelete && (
+                <p className="text-gray-600">
+                  Êtes-vous sûr de vouloir supprimer définitivement le participant <strong>{participantToDelete.firstName} {participantToDelete.lastName}</strong> ?
+                </p>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex space-x-2 justify-end">
+            <Button variant="outline" onClick={closeDeleteConfirm}>
+              Annuler
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleDeleteParticipant}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Supprimer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Modal du badge */}
+      <Dialog open={showBadgeModal} onOpenChange={setShowBadgeModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Badge du participant</DialogTitle>
+          </DialogHeader>
+          
+          {currentBadgeParticipant && (
+            <div className="p-4 border rounded-lg bg-white shadow-sm">
+              <div id="participant-badge" className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border border-gray-200">
+                <div className="text-center mb-4">
+                  {event && event.banner ? (
+                    <img 
+                      src={event.banner}
+                      alt={event.name}
+                      className="h-12 mx-auto mb-2 object-contain"
+                      onLoad={() => setImageLoading(false)}
+                    />
+                  ) : (
+                    <h3 className="text-xl font-bold text-[#81B441] mb-2">{event?.name}</h3>
+                  )}
+                </div>
                 
-                {/* Footer avec boutons d'action */}
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn-cancel"
-                    onClick={closeAddModal}
+                <div className="w-full text-center mb-5">
+                  <div className="bg-white rounded-full h-20 w-20 mx-auto flex items-center justify-center border-4 border-[#81B441] shadow-md mb-4">
+                    <span className="text-2xl font-bold text-gray-700">
+                      {currentBadgeParticipant.firstName.charAt(0)}{currentBadgeParticipant.lastName.charAt(0)}
+                    </span>
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    {currentBadgeParticipant.firstName} {currentBadgeParticipant.lastName}
+                  </h2>
+                  
+                  {(currentBadgeParticipant.jobTitle || currentBadgeParticipant.company) && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {currentBadgeParticipant.jobTitle}
+                      {currentBadgeParticipant.jobTitle && currentBadgeParticipant.company && " • "}
+                      {currentBadgeParticipant.company}
+                    </p>
+                  )}
+                  
+                  <Badge
+                    variant={currentBadgeParticipant.type === 'PARTICIPANT' ? 'default' : 'secondary'}
+                    className={cn(
+                      "mt-2",
+                      currentBadgeParticipant.type === 'PARTICIPANT' 
+                        ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200' 
+                        : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
+                    )}
                   >
-                    Annuler
-                  </button>
+                    {currentBadgeParticipant.type === 'PARTICIPANT' ? 'Participant' : 'Intervenant'}
+                  </Badge>
+                </div>
+                
+                <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                  {currentBadgeParticipant.qrCode && (
+                    <QRCodeSVG 
+                      value={currentBadgeParticipant.qrCode}
+                      size={120}
+                      level="M"
+                      className="mx-auto"
+                    />
+                  )}
+                  <p className="text-center text-xs mt-2 font-mono text-gray-600">
+                    {currentBadgeParticipant.shortCode}
+                  </p>
                 </div>
               </div>
             </div>
           )}
           
-          {/* Modal d'ajout manuel de participant */}
-          {showAddManual && (
-            <div className="modal-overlay">
-              <div className="modal-container modal-lg">
-                {/* En-tête avec titre et bouton de fermeture */}
-                <div className="modal-header">
-                  <h3 className="modal-title">Ajouter un participant</h3>
-                  <button 
-                    className="modal-close" 
-                      onClick={closeAddManualModal}
-                  >
-                    <XMarkIcon className="h-5 w-5" />
-                  </button>
-                </div>
-                
-                {/* Corps du formulaire */}
-                <div className="modal-body">
-                  <form onSubmit={handleAddParticipant}>
-                    {/* Champ prénom */}
-                    <div className="form-group">
-                      <label htmlFor="firstName" className="form-label">
-                        Prénom <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={newParticipant.firstName}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                        placeholder="Prénom du participant"
-                      />
-                    </div>
-                    
-                    {/* Champ nom */}
-                    <div className="form-group">
-                      <label htmlFor="lastName" className="form-label">
-                        Nom <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={newParticipant.lastName}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                        placeholder="Nom du participant"
-                      />
-                    </div>
-                    
-                    {/* Champ email */}
-                    <div className="form-group">
-                      <label htmlFor="email" className="form-label">
-                        Email <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={newParticipant.email}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                        placeholder="email@exemple.com"
-                      />
-                    </div>
-                    
-                    {/* Champs supplémentaires - Fonction et Entreprise */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="form-group">
-                        <label htmlFor="jobTitle" className="form-label">
-                          Fonction
-                        </label>
-                        <input
-                          type="text"
-                          id="jobTitle"
-                          name="jobTitle"
-                          value={newParticipant.jobTitle}
-                          onChange={handleInputChange}
-                          className="form-input"
-                          placeholder="Directeur, Manager, etc."
-                        />
-                      </div>
-                      
-                      <div className="form-group">
-                        <label htmlFor="company" className="form-label">
-                          Nom de l&apos;entreprise
-                        </label>
-                        <input
-                          type="text"
-                          id="company"
-                          name="company"
-                          value={newParticipant.company}
-                          onChange={handleInputChange}
-                          className="form-input"
-                          placeholder="Nom de la société"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Champ téléphone */}
-                      <div className="form-group">
-                        <label htmlFor="phone" className="form-label">
-                          Téléphone <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          name="phone"
-                          value={newParticipant.phone}
-                          onChange={handleInputChange}
-                          required
-                          className="form-input"
-                          placeholder="+221 XX XXX XX XX"
-                        />
-                      </div>
-                      
-                      {/* Type de participant */}
-                      <div className="form-group">
-                        <label htmlFor="type" className="form-label">
-                          Type <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                          id="type"
-                          name="type"
-                          value={newParticipant.type}
-                          onChange={handleInputChange}
-                          required
-                          className="form-select"
-                        >
-                          <option value="PARTICIPANT">Participant</option>
-                          <option value="SPEAKER">Intervenant</option>
-                        </select>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                
-                {/* Footer avec boutons d'action */}
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn-cancel"
-                      onClick={closeAddManualModal}
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn-primary"
-                    onClick={handleAddParticipant}
-                  >
-                    Ajouter le participant
-                  </button>
-                </div>
-              </div>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <div className="flex justify-between w-full">
+              <Button 
+                variant="outline" 
+                onClick={handlePrintBadge}
+                className="flex-1 mr-2"
+              >
+                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Imprimer
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => currentBadgeParticipant && handleDownloadBadge()}
+                className="flex-1 ml-2"
+              >
+                <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                Télécharger
+              </Button>
             </div>
-          )}
-
-          {/* Modal pour afficher le badge */}
-          {showBadgeModal && currentBadgeParticipant && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={handleCloseBadgeModal}>
-                <div 
-                  className="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full max-h-[90vh] flex flex-col"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                {/* En-tête avec titre et bouton de fermeture */}
-                  <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                    <h3 className="text-lg font-semibold text-gray-900">Badge du participant</h3>
-                  <button 
-                      className="text-gray-500 hover:text-gray-700 transition-colors"
-                    onClick={handleCloseBadgeModal}
-                  >
-                    <XMarkIcon className="h-5 w-5" />
-                  </button>
-                </div>
-                
-                {/* Corps du modal avec le design du badge */}
-                  <div className="overflow-y-auto p-6 flex-1">
-                    <div id="participant-badge" className="badge-card border border-gray-200 rounded-lg overflow-hidden shadow-lg mx-auto" style={{ maxWidth: "350px" }}>
-                    {/* Partie supérieure avec l'image de l'événement */}
-                      <div className="h-40 overflow-hidden relative">
-                      {event?.banner ? (
-                        <img 
-                          src={event.banner} 
-                          alt="Bannière de l'événement"
-                          className="w-full h-full object-cover"
-                            onLoad={() => setImageLoading(false)} 
-                            onError={(e) => {
-                              console.error("Erreur de chargement de l'image:", e);
-                              setImageLoading(false);
-                            }}
-                        />
-                      ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-[#f0f4e3] text-gray-700">
-                            <span className="text-xl font-medium">Image de l&apos;événement</span>
-                          </div>
-                        )}
-                        {imageLoading && event?.banner && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50">
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#81B441]"></div>
-                          </div>
-                        )}
-                    </div>
-                    
-                    {/* Partie avec le QR code */}
-                      <div className="bg-white py-6 flex justify-center">
-                        {currentBadgeParticipant && (
-                          <div className="relative badge-id-container">
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
-                              <QRCodeSVG 
-                                value={currentBadgeParticipant.qrCode || currentBadgeParticipant.shortCode || currentBadgeParticipant.id.substring(0, 9)} 
-                                size={150} 
-                                level="M"
-                                includeMargin={true}
-                              />
-                            </div>
-                          </div>
-                        )}
-                    </div>
-                    
-                    {/* Informations du participant */}
-                      <div className="bg-white py-6 px-4 text-center border-t border-gray-100">
-                        {currentBadgeParticipant && (
-                          <>
-                            <h2 className="text-2xl font-bold text-gray-900">
-                        {currentBadgeParticipant.firstName}
-                      </h2>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                        {currentBadgeParticipant.lastName}
-                      </h2>
-                      
-                        {currentBadgeParticipant.jobTitle && (
-                              <p className="text-lg font-medium text-gray-700 mb-1">
-                            {currentBadgeParticipant.jobTitle}
-                          </p>
-                        )}
-                        
-                        {currentBadgeParticipant.company && (
-                              <p className="text-lg text-[#81B441] font-semibold">
-                            {currentBadgeParticipant.company}
-                          </p>
-                            )}
-                          </>
-                        )}
-                      </div>
-                      
-                      {/* Powered by inevent tag */}
-                      <div className="bg-gray-50 py-2 px-4 text-center border-t border-gray-100 text-xs text-gray-500">
-                        powered by inevent
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Footer avec boutons d'action */}
-                  <div className="p-4 border-t border-gray-200 bg-gray-50 flex flex-wrap gap-2 justify-end">
-                    {!currentBadgeParticipant.checkedIn && (
-                  <button
-                    type="button"
-                        disabled={processing[currentBadgeParticipant.id]}
-                        className={`px-3.5 py-2 bg-gradient-to-r from-[#81B441] to-[#6a9636] text-white font-medium rounded-md shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441] flex items-center gap-1.5 text-sm disabled:opacity-70 disabled:transform-none disabled:hover:shadow-md ${processing[currentBadgeParticipant.id] ? 'checkin-button-loading' : 'checkin-button'}`}
-                        onClick={(e) => {
-                          e.preventDefault(); // Empêcher la navigation par défaut
-                          e.stopPropagation(); // Empêcher la propagation de l'événement
-                          if (!processing[currentBadgeParticipant.id]) {
-                            handleCheckInFromBadge(currentBadgeParticipant.id);
-                          }
-                        }}
-                  >
-                        {processing[currentBadgeParticipant.id] ? (
-                          <>
-                            <span className="checkin-spinner border-white"></span>
-                            <span>Enregistrement...</span>
-                          </>
-                        ) : (
-                          <>
-                            <QrCodeIcon className="h-4 w-4" />
-                            <span>Enregistrer</span>
-                          </>
-                        )}
-                  </button>
-                    )}
-                    
-                    <div className="flex gap-2">
-                  <button
-                    type="button"
-                        className="px-2 py-1.5 bg-white text-gray-700 font-medium rounded-md border border-gray-300 hover:bg-gray-50 focus:outline-none flex items-center gap-1 text-sm"
-                    onClick={handlePrintBadge}
-                  >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
-                    </svg>
-                    Imprimer
-                  </button>
-                      
-                  <button
-                    type="button"
-                        className="px-2 py-1.5 bg-white text-gray-700 font-medium rounded-md border border-gray-300 hover:bg-gray-50 focus:outline-none flex items-center gap-1 text-sm"
-                        onClick={handleDownloadBadge}
-                      >
-                        <ArrowDownTrayIcon className="h-3.5 w-3.5" />
-                        Télécharger
-                      </button>
-                      
-                      <button
-                        type="button"
-                        className="px-2 py-1.5 bg-white text-gray-700 font-medium rounded-md border border-gray-300 hover:bg-gray-50 focus:outline-none flex items-center gap-1 text-sm"
-                    onClick={() => handleShareBadge(currentBadgeParticipant)}
-                  >
-                        <ShareIcon className="h-3.5 w-3.5" />
-                    Partager
-                  </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            
+            {currentBadgeParticipant && !currentBadgeParticipant.checkedIn && (
+              <Button 
+                onClick={() => currentBadgeParticipant && handleCheckInFromBadge(currentBadgeParticipant.id)}
+                className="w-full bg-[#81B441] hover:bg-[#72a139]"
+              >
+                <CheckBadgeIcon className="h-4 w-4 mr-2" />
+                Enregistrer le participant
+              </Button>
             )}
-
-            {/* Modal de modification de participant */}
-            {showEditModal && participantToEdit && (
-              <div className="modal-overlay">
-                <div className="modal-container">
-                  {/* En-tête avec titre et bouton de fermeture */}
-                  <div className="modal-header">
-                    <h3 className="modal-title">Modifier un participant</h3>
-                    <button 
-                      className="modal-close" 
-                      onClick={() => {
-                        setShowEditModal(false);
-                        setParticipantToEdit(null);
-                        document.body.classList.remove('overflow-hidden');
-                      }}
-                    >
-                      <XMarkIcon className="h-5 w-5" />
-                    </button>
-                  </div>
-                  
-                  {/* Corps du formulaire */}
-                  <div className="modal-body">
-                    <form onSubmit={handleUpdateParticipant}>
-                      {/* Champ prénom */}
-                      <div className="form-group">
-                        <label htmlFor="firstName" className="form-label">
-                          Prénom <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="firstName"
-                          name="firstName"
-                          value={newParticipant.firstName}
-                          onChange={handleInputChange}
-                          required
-                          className="form-input"
-                          placeholder="Prénom du participant"
-                        />
-                      </div>
-                      
-                      {/* Champ nom */}
-                      <div className="form-group">
-                        <label htmlFor="lastName" className="form-label">
-                          Nom <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="lastName"
-                          name="lastName"
-                          value={newParticipant.lastName}
-                          onChange={handleInputChange}
-                          required
-                          className="form-input"
-                          placeholder="Nom du participant"
-                        />
-                      </div>
-                      
-                      {/* Champ email */}
-                      <div className="form-group">
-                        <label htmlFor="email" className="form-label">
-                          Email <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={newParticipant.email}
-                          onChange={handleInputChange}
-                          required
-                          className="form-input"
-                          placeholder="email@exemple.com"
-                        />
-                      </div>
-                      
-                      {/* Champs supplémentaires - Fonction et Entreprise */}
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="form-group">
-                          <label htmlFor="jobTitle" className="form-label">
-                            Fonction
-                          </label>
-                          <input
-                            type="text"
-                            id="jobTitle"
-                            name="jobTitle"
-                            value={newParticipant.jobTitle}
-                            onChange={handleInputChange}
-                            className="form-input"
-                            placeholder="Directeur, Manager, etc."
-                          />
-                        </div>
-                        
-                        <div className="form-group">
-                          <label htmlFor="company" className="form-label">
-                            Nom de l&apos;entreprise
-                          </label>
-                          <input
-                            type="text"
-                            id="company"
-                            name="company"
-                            value={newParticipant.company}
-                            onChange={handleInputChange}
-                            className="form-input"
-                            placeholder="Nom de la société"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        {/* Champ téléphone */}
-                        <div className="form-group">
-                          <label htmlFor="phone" className="form-label">
-                            Téléphone <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={newParticipant.phone}
-                            onChange={handleInputChange}
-                            required
-                            className="form-input"
-                            placeholder="+221 XX XXX XX XX"
-                          />
-                        </div>
-                        
-                        {/* Type de participant */}
-                        <div className="form-group">
-                          <label htmlFor="type" className="form-label">
-                            Type <span className="text-red-500">*</span>
-                          </label>
-                          <select
-                            id="type"
-                            name="type"
-                            value={newParticipant.type}
-                            onChange={handleInputChange}
-                            required
-                            className="form-select"
-                          >
-                            <option value="PARTICIPANT">Participant</option>
-                            <option value="SPEAKER">Intervenant</option>
-                          </select>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  
-                  {/* Footer avec boutons d'action */}
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn-cancel"
-                      onClick={() => {
-                        setShowEditModal(false);
-                        setParticipantToEdit(null);
-                        document.body.classList.remove('overflow-hidden');
-                      }}
-                    >
-                      Annuler
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn-primary"
-                      onClick={handleUpdateParticipant}
-                    >
-                      Mettre à jour
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Modal de confirmation de suppression */}
-            {deleteConfirmOpen && participantToDelete && (
-              <div className="modal-overlay">
-                <div className="modal-container modal-sm">
-                  {/* En-tête avec titre et bouton de fermeture */}
-                  <div className="modal-header">
-                    <h3 className="modal-title">Confirmer la suppression</h3>
-                    <button 
-                      className="modal-close" 
-                      onClick={closeDeleteConfirm}
-                    >
-                      <XMarkIcon className="h-5 w-5" />
-                    </button>
-                </div>
-                  
-                  {/* Corps du modal */}
-                  <div className="modal-body">
-                    <div className="text-center mb-4">
-                      <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                        <TrashIcon className="h-6 w-6 text-red-600" />
-                      </div>
-                      <h3 className="mt-3 text-lg leading-6 font-medium text-gray-900">Supprimer le participant</h3>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Êtes-vous sûr de vouloir supprimer <strong>{participantToDelete.firstName} {participantToDelete.lastName}</strong> ? 
-                          Cette action est irréversible.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Footer avec boutons d'action */}
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn-cancel"
-                      onClick={closeDeleteConfirm}
-                    >
-                      Annuler
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-danger"
-                      onClick={handleDeleteParticipant}
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-              </div>
-            </div>
-          )}
-
-            {/* Ajouter la classe CSS pour le bouton de danger */}
-            <style dangerouslySetInnerHTML={{ __html: `
-              .btn-danger {
-                padding: 0.5rem 1rem;
-                border-radius: 0.375rem;
-                font-size: 0.875rem;
-                font-weight: 500;
-                color: white;
-                background-color: #ef4444;
-                border: 1px solid #ef4444;
-                cursor: pointer;
-              }
-              
-              .btn-danger:hover {
-                background-color: #dc2626;
-              }
-              
-              .modal-sm {
-                max-width: 450px;
-              }
-              
-              /* Styles personnalisés pour le bouton de check-in */
-              .participant-checkin-button {
-                min-width: 40px;
-                min-height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: relative;
-              }
-              
-              .participant-checkin-button:not(:disabled) {
-                animation: pulse 2s infinite;
-                box-shadow: 0 0 0 rgba(129, 180, 65, 0.4);
-              }
-              
-              @keyframes pulse {
-                0% {
-                  box-shadow: 0 0 0 0 rgba(129, 180, 65, 0.7);
-                }
-                70% {
-                  box-shadow: 0 0 0 10px rgba(129, 180, 65, 0);
-                }
-                100% {
-                  box-shadow: 0 0 0 0 rgba(129, 180, 65, 0);
-                }
-              }
-            `}} />
-
-            {/* Ajouter le style dropdown */}
-            <style dangerouslySetInnerHTML={{ __html: `
-              .dropdown-container {
-                position: relative;
-                z-index: 30;
-              }
-              
-              .dropdown-menu {
-                position: absolute;
-                right: 0;
-                top: 100%;
-                margin-top: 0.5rem;
-                width: 12rem;
-                border-radius: 0.375rem;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                background-color: white;
-                border: 1px solid #e5e7eb;
-                z-index: 50;
-                overflow: hidden;
-              }
-              
-              .participant-row {
-                position: relative;
-              }
-            `}} />
-
-            {/* Modal de confirmation d'annulation de check-in */}
-            {cancelCheckInConfirmOpen && (
-              <div className="modal-overlay">
-                <div className="modal-container modal-sm">
-                  {/* En-tête avec titre et bouton de fermeture */}
-                  <div className="modal-header">
-                    <h3 className="modal-title">Confirmer l&apos;annulation</h3>
-                    <button 
-                      className="modal-close" 
-                      onClick={closeCancelCheckInConfirm}
-                    >
-                      <XMarkIcon className="h-5 w-5" />
-                    </button>
-                  </div>
-                  
-                  {/* Corps du modal */}
-                  <div className="modal-body">
-                    <div className="flex flex-col items-center justify-center p-4">
-                      <div className="rounded-full bg-yellow-100 p-3 mb-4">
-                        <ArrowUturnLeftIcon className="h-6 w-6 text-yellow-600" />
-                      </div>
-                      <h3 className="mt-3 text-lg leading-6 font-medium text-gray-900">Êtes-vous sûr de vouloir annuler l&apos;enregistrement ?</h3>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Le statut &quot;Enregistré&quot; de ce participant sera annulé.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Footer avec boutons d'action */}
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn-cancel"
-                      onClick={closeCancelCheckInConfirm}
-                    >
-                      Annuler
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-danger"
-                      onClick={handleCancelCheckIn}
-                    >
-                      Confirmer
-                    </button>
-                  </div>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
-    </>
   );
 } 
 

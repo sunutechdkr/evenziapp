@@ -39,19 +39,211 @@ body {
 }
 
 .dashboard-content {
-  flex: 1;
-  margin-left: 16rem; /* Correspond à la largeur de la sidebar */
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 16rem;
   transition: margin-left 0.3s ease;
-  min-width: 0;
-  width: calc(100% - 16rem);
-  min-height: 100vh;
-  padding: 2rem;
 }
 
-/* Quand la sidebar est réduite */
 .dashboard-content-collapsed {
   margin-left: 4rem;
-  width: calc(100% - 4rem);
+}
+
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: -0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sidebar {
+  width: 16rem;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #e5e7eb;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  transition: width 0.3s ease;
+}
+
+.sidebar-collapsed {
+  width: 4rem;
+}
+
+/* Tableau des participants amélioré */
+@layer components {
+  /* Styles de pagination améliorés */
+  .pagination-button {
+    @apply flex items-center justify-center w-9 h-9 rounded-md border border-gray-300 bg-white text-gray-500 transition-colors hover:bg-gray-50;
+  }
+  
+  .pagination-button-disabled {
+    @apply bg-gray-100 text-gray-400 cursor-not-allowed hover:bg-gray-100;
+  }
+  
+  .pagination-number {
+    @apply flex items-center justify-center w-9 h-9 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 text-sm;
+  }
+  
+  .pagination-number-active {
+    @apply bg-[#81B441] text-white border-[#81B441] hover:bg-[#72a139];
+  }
+  
+  /* Animation pour le Check-in */
+  @keyframes pulse-border {
+    0% {
+      box-shadow: 0 0 0 0 rgba(129, 180, 65, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba(129, 180, 65, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(129, 180, 65, 0);
+    }
+  }
+  
+  .checkin-button {
+    animation: pulse-border 2s infinite;
+  }
+  
+  /* Spinner d'état de chargement */
+  .checkin-spinner {
+    @apply h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin;
+  }
+  
+  /* Styles des cartes statistiques */
+  .stat-card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-4 transition hover:shadow-md;
+  }
+  
+  .stat-card-title {
+    @apply text-sm font-medium text-gray-500 mb-1;
+  }
+  
+  .stat-card-value {
+    @apply text-3xl font-bold text-gray-900;
+  }
+  
+  /* Styles pour le panneau latéral des détails de participant */
+  .participant-sidebar-overlay {
+    @apply fixed inset-0 bg-black/25 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300;
+  }
+  
+  .participant-sidebar-overlay.open {
+    @apply opacity-100 pointer-events-auto;
+  }
+  
+  /* Styles pour badges personnalisés */
+  .badge-participant {
+    @apply bg-blue-50 text-blue-700 border border-blue-200;
+  }
+  
+  .badge-speaker {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+  
+  .badge-checked-in {
+    @apply bg-green-50 text-green-700 border border-green-200;
+  }
+  
+  .badge-not-checked-in {
+    @apply bg-gray-50 text-gray-700 border border-gray-200;
+  }
+  
+  /* Styles généraux de mise en page */
+  .content-container {
+    @apply p-6 ml-64;
+  }
+  
+  .page-heading {
+    @apply text-2xl font-bold text-gray-900 mb-6;
+  }
+  
+  .section-heading {
+    @apply text-lg font-medium text-gray-900 mb-4;
+  }
+  
+  /* Animation pour les boutons d'action */
+  .action-button-hover {
+    @apply transition-all duration-200 transform hover:scale-105;
+  }
+  
+  /* Style pour le badge QR */
+  .qr-badge {
+    @apply p-4 bg-white rounded-lg border border-gray-200 shadow-sm flex flex-col items-center;
+  }
+  
+  .qr-badge-name {
+    @apply font-bold text-gray-900 text-center mt-2;
+  }
+  
+  .qr-badge-code {
+    @apply font-mono text-xs text-gray-600 text-center mt-1;
+  }
+  
+  /* Amélioration de l'accessibilité pour les éléments interactifs */
+  .interactive:focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-[#81B441];
+  }
+}
+
+/* Animations et transitions */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* Améliorations spécifiques pour participant */
+.participant-row:hover {
+  background-color: rgba(129, 180, 65, 0.05);
+}
+
+@media print {
+  @page {
+    size: 10cm 15cm;
+    margin: 0;
+  }
+  
+  body * {
+    visibility: hidden;
+  }
+  
+  #participant-badge, #participant-badge * {
+    visibility: visible;
+  }
+  
+  #participant-badge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1548,8 +1740,6 @@ div[role="dialog"] select:focus {
   border-radius: 8px;
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -1605,8 +1795,6 @@ div[role="dialog"] select:focus {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
