@@ -246,7 +246,9 @@ export async function PUT(
       { status: 500 }
     );
   }
-} // DELETE /api/events/[id] - Supprimer un événement
+}
+
+// DELETE /api/events/[id] - Supprimer un événement
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
