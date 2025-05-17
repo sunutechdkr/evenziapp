@@ -53,6 +53,11 @@ export type event_sessions = $Result.DefaultSelection<Prisma.$event_sessionsPayl
  * 
  */
 export type Sponsor = $Result.DefaultSelection<Prisma.$SponsorPayload>
+/**
+ * Model SessionParticipant
+ * 
+ */
+export type SessionParticipant = $Result.DefaultSelection<Prisma.$SessionParticipantPayload>
 
 /**
  * Enums
@@ -280,6 +285,16 @@ export class PrismaClient<
     * ```
     */
   get sponsor(): Prisma.SponsorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sessionParticipant`: Exposes CRUD operations for the **SessionParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SessionParticipants
+    * const sessionParticipants = await prisma.sessionParticipant.findMany()
+    * ```
+    */
+  get sessionParticipant(): Prisma.SessionParticipantDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -727,7 +742,8 @@ export namespace Prisma {
     Event: 'Event',
     Registration: 'Registration',
     event_sessions: 'event_sessions',
-    Sponsor: 'Sponsor'
+    Sponsor: 'Sponsor',
+    SessionParticipant: 'SessionParticipant'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -746,7 +762,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "event" | "registration" | "event_sessions" | "sponsor"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "event" | "registration" | "event_sessions" | "sponsor" | "sessionParticipant"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1342,6 +1358,80 @@ export namespace Prisma {
           }
         }
       }
+      SessionParticipant: {
+        payload: Prisma.$SessionParticipantPayload<ExtArgs>
+        fields: Prisma.SessionParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.SessionParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.SessionParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.SessionParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.SessionParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionParticipantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>[]
+          }
+          delete: {
+            args: Prisma.SessionParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>
+          }
+          update: {
+            args: Prisma.SessionParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessionParticipantUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>[]
+          }
+          upsert: {
+            args: Prisma.SessionParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.SessionParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSessionParticipant>
+          }
+          groupBy: {
+            args: Prisma.SessionParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1434,6 +1524,7 @@ export namespace Prisma {
     registration?: RegistrationOmit
     event_sessions?: event_sessionsOmit
     sponsor?: SponsorOmit
+    sessionParticipant?: SessionParticipantOmit
   }
 
   /* Types for Logging */
@@ -1618,6 +1709,68 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountSponsorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SponsorWhereInput
+  }
+
+
+  /**
+   * Count Type RegistrationCountOutputType
+   */
+
+  export type RegistrationCountOutputType = {
+    sessions: number
+  }
+
+  export type RegistrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sessions?: boolean | RegistrationCountOutputTypeCountSessionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistrationCountOutputType
+     */
+    select?: RegistrationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionParticipantWhereInput
+  }
+
+
+  /**
+   * Count Type Event_sessionsCountOutputType
+   */
+
+  export type Event_sessionsCountOutputType = {
+    participants: number
+  }
+
+  export type Event_sessionsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participants?: boolean | Event_sessionsCountOutputTypeCountParticipantsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * Event_sessionsCountOutputType without action
+   */
+  export type Event_sessionsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event_sessionsCountOutputType
+     */
+    select?: Event_sessionsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * Event_sessionsCountOutputType without action
+   */
+  export type Event_sessionsCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionParticipantWhereInput
   }
 
 
@@ -7584,6 +7737,8 @@ export namespace Prisma {
     checkedIn?: boolean
     checkInTime?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    sessions?: boolean | Registration$sessionsArgs<ExtArgs>
+    _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
   export type RegistrationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7645,6 +7800,8 @@ export namespace Prisma {
   export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "type" | "jobTitle" | "company" | "eventId" | "qrCode" | "shortCode" | "createdAt" | "updatedAt" | "checkedIn" | "checkInTime", ExtArgs["result"]["registration"]>
   export type RegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    sessions?: boolean | Registration$sessionsArgs<ExtArgs>
+    _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RegistrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -7657,6 +7814,7 @@ export namespace Prisma {
     name: "Registration"
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
+      sessions: Prisma.$SessionParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8069,6 +8227,7 @@ export namespace Prisma {
   export interface Prisma__RegistrationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sessions<T extends Registration$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8509,6 +8668,30 @@ export namespace Prisma {
   }
 
   /**
+   * Registration.sessions
+   */
+  export type Registration$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    where?: SessionParticipantWhereInput
+    orderBy?: SessionParticipantOrderByWithRelationInput | SessionParticipantOrderByWithRelationInput[]
+    cursor?: SessionParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
+  }
+
+  /**
    * Registration without action
    */
   export type RegistrationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8560,6 +8743,7 @@ export namespace Prisma {
     capacity: number | null
     format: string | null
     banner: string | null
+    video_url: string | null
     event_id: string | null
     created_at: Date | null
     updated_at: Date | null
@@ -8578,6 +8762,7 @@ export namespace Prisma {
     capacity: number | null
     format: string | null
     banner: string | null
+    video_url: string | null
     event_id: string | null
     created_at: Date | null
     updated_at: Date | null
@@ -8596,6 +8781,7 @@ export namespace Prisma {
     capacity: number
     format: number
     banner: number
+    video_url: number
     event_id: number
     created_at: number
     updated_at: number
@@ -8624,6 +8810,7 @@ export namespace Prisma {
     capacity?: true
     format?: true
     banner?: true
+    video_url?: true
     event_id?: true
     created_at?: true
     updated_at?: true
@@ -8642,6 +8829,7 @@ export namespace Prisma {
     capacity?: true
     format?: true
     banner?: true
+    video_url?: true
     event_id?: true
     created_at?: true
     updated_at?: true
@@ -8660,6 +8848,7 @@ export namespace Prisma {
     capacity?: true
     format?: true
     banner?: true
+    video_url?: true
     event_id?: true
     created_at?: true
     updated_at?: true
@@ -8765,6 +8954,7 @@ export namespace Prisma {
     capacity: number | null
     format: string | null
     banner: string | null
+    video_url: string | null
     event_id: string
     created_at: Date
     updated_at: Date
@@ -8802,10 +8992,13 @@ export namespace Prisma {
     capacity?: boolean
     format?: boolean
     banner?: boolean
+    video_url?: boolean
     event_id?: boolean
     created_at?: boolean
     updated_at?: boolean
     events?: boolean | EventDefaultArgs<ExtArgs>
+    participants?: boolean | event_sessions$participantsArgs<ExtArgs>
+    _count?: boolean | Event_sessionsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event_sessions"]>
 
   export type event_sessionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8821,6 +9014,7 @@ export namespace Prisma {
     capacity?: boolean
     format?: boolean
     banner?: boolean
+    video_url?: boolean
     event_id?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -8840,6 +9034,7 @@ export namespace Prisma {
     capacity?: boolean
     format?: boolean
     banner?: boolean
+    video_url?: boolean
     event_id?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -8859,14 +9054,17 @@ export namespace Prisma {
     capacity?: boolean
     format?: boolean
     banner?: boolean
+    video_url?: boolean
     event_id?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type event_sessionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "start_date" | "end_date" | "start_time" | "end_time" | "location" | "speaker" | "capacity" | "format" | "banner" | "event_id" | "created_at" | "updated_at", ExtArgs["result"]["event_sessions"]>
+  export type event_sessionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "start_date" | "end_date" | "start_time" | "end_time" | "location" | "speaker" | "capacity" | "format" | "banner" | "video_url" | "event_id" | "created_at" | "updated_at", ExtArgs["result"]["event_sessions"]>
   export type event_sessionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     events?: boolean | EventDefaultArgs<ExtArgs>
+    participants?: boolean | event_sessions$participantsArgs<ExtArgs>
+    _count?: boolean | Event_sessionsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type event_sessionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     events?: boolean | EventDefaultArgs<ExtArgs>
@@ -8879,6 +9077,7 @@ export namespace Prisma {
     name: "event_sessions"
     objects: {
       events: Prisma.$EventPayload<ExtArgs>
+      participants: Prisma.$SessionParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8893,6 +9092,7 @@ export namespace Prisma {
       capacity: number | null
       format: string | null
       banner: string | null
+      video_url: string | null
       event_id: string
       created_at: Date
       updated_at: Date
@@ -9291,6 +9491,7 @@ export namespace Prisma {
   export interface Prisma__event_sessionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     events<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participants<T extends event_sessions$participantsArgs<ExtArgs> = {}>(args?: Subset<T, event_sessions$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9332,6 +9533,7 @@ export namespace Prisma {
     readonly capacity: FieldRef<"event_sessions", 'Int'>
     readonly format: FieldRef<"event_sessions", 'String'>
     readonly banner: FieldRef<"event_sessions", 'String'>
+    readonly video_url: FieldRef<"event_sessions", 'String'>
     readonly event_id: FieldRef<"event_sessions", 'String'>
     readonly created_at: FieldRef<"event_sessions", 'DateTime'>
     readonly updated_at: FieldRef<"event_sessions", 'DateTime'>
@@ -9728,6 +9930,30 @@ export namespace Prisma {
      * Limit how many event_sessions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * event_sessions.participants
+   */
+  export type event_sessions$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    where?: SessionParticipantWhereInput
+    orderBy?: SessionParticipantOrderByWithRelationInput | SessionParticipantOrderByWithRelationInput[]
+    cursor?: SessionParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
   }
 
   /**
@@ -10873,6 +11099,1085 @@ export namespace Prisma {
 
 
   /**
+   * Model SessionParticipant
+   */
+
+  export type AggregateSessionParticipant = {
+    _count: SessionParticipantCountAggregateOutputType | null
+    _min: SessionParticipantMinAggregateOutputType | null
+    _max: SessionParticipantMaxAggregateOutputType | null
+  }
+
+  export type SessionParticipantMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    participantId: string | null
+    registeredAt: Date | null
+    attendedSession: boolean | null
+    attendanceTime: Date | null
+  }
+
+  export type SessionParticipantMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    participantId: string | null
+    registeredAt: Date | null
+    attendedSession: boolean | null
+    attendanceTime: Date | null
+  }
+
+  export type SessionParticipantCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    participantId: number
+    registeredAt: number
+    attendedSession: number
+    attendanceTime: number
+    _all: number
+  }
+
+
+  export type SessionParticipantMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    participantId?: true
+    registeredAt?: true
+    attendedSession?: true
+    attendanceTime?: true
+  }
+
+  export type SessionParticipantMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    participantId?: true
+    registeredAt?: true
+    attendedSession?: true
+    attendanceTime?: true
+  }
+
+  export type SessionParticipantCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    participantId?: true
+    registeredAt?: true
+    attendedSession?: true
+    attendanceTime?: true
+    _all?: true
+  }
+
+  export type SessionParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessionParticipant to aggregate.
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionParticipants to fetch.
+     */
+    orderBy?: SessionParticipantOrderByWithRelationInput | SessionParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SessionParticipants
+    **/
+    _count?: true | SessionParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionParticipantMaxAggregateInputType
+  }
+
+  export type GetSessionParticipantAggregateType<T extends SessionParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregateSessionParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSessionParticipant[P]>
+      : GetScalarType<T[P], AggregateSessionParticipant[P]>
+  }
+
+
+
+
+  export type SessionParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionParticipantWhereInput
+    orderBy?: SessionParticipantOrderByWithAggregationInput | SessionParticipantOrderByWithAggregationInput[]
+    by: SessionParticipantScalarFieldEnum[] | SessionParticipantScalarFieldEnum
+    having?: SessionParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionParticipantCountAggregateInputType | true
+    _min?: SessionParticipantMinAggregateInputType
+    _max?: SessionParticipantMaxAggregateInputType
+  }
+
+  export type SessionParticipantGroupByOutputType = {
+    id: string
+    sessionId: string
+    participantId: string
+    registeredAt: Date
+    attendedSession: boolean
+    attendanceTime: Date | null
+    _count: SessionParticipantCountAggregateOutputType | null
+    _min: SessionParticipantMinAggregateOutputType | null
+    _max: SessionParticipantMaxAggregateOutputType | null
+  }
+
+  type GetSessionParticipantGroupByPayload<T extends SessionParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    participantId?: boolean
+    registeredAt?: boolean
+    attendedSession?: boolean
+    attendanceTime?: boolean
+    session?: boolean | event_sessionsDefaultArgs<ExtArgs>
+    participant?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionParticipant"]>
+
+  export type SessionParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    participantId?: boolean
+    registeredAt?: boolean
+    attendedSession?: boolean
+    attendanceTime?: boolean
+    session?: boolean | event_sessionsDefaultArgs<ExtArgs>
+    participant?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionParticipant"]>
+
+  export type SessionParticipantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    participantId?: boolean
+    registeredAt?: boolean
+    attendedSession?: boolean
+    attendanceTime?: boolean
+    session?: boolean | event_sessionsDefaultArgs<ExtArgs>
+    participant?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionParticipant"]>
+
+  export type SessionParticipantSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    participantId?: boolean
+    registeredAt?: boolean
+    attendedSession?: boolean
+    attendanceTime?: boolean
+  }
+
+  export type SessionParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "participantId" | "registeredAt" | "attendedSession" | "attendanceTime", ExtArgs["result"]["sessionParticipant"]>
+  export type SessionParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | event_sessionsDefaultArgs<ExtArgs>
+    participant?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+  export type SessionParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | event_sessionsDefaultArgs<ExtArgs>
+    participant?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+  export type SessionParticipantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | event_sessionsDefaultArgs<ExtArgs>
+    participant?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+
+  export type $SessionParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SessionParticipant"
+    objects: {
+      session: Prisma.$event_sessionsPayload<ExtArgs>
+      participant: Prisma.$RegistrationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      participantId: string
+      registeredAt: Date
+      attendedSession: boolean
+      attendanceTime: Date | null
+    }, ExtArgs["result"]["sessionParticipant"]>
+    composites: {}
+  }
+
+  type SessionParticipantGetPayload<S extends boolean | null | undefined | SessionParticipantDefaultArgs> = $Result.GetResult<Prisma.$SessionParticipantPayload, S>
+
+  type SessionParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessionParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessionParticipantCountAggregateInputType | true
+    }
+
+  export interface SessionParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SessionParticipant'], meta: { name: 'SessionParticipant' } }
+    /**
+     * Find zero or one SessionParticipant that matches the filter.
+     * @param {SessionParticipantFindUniqueArgs} args - Arguments to find a SessionParticipant
+     * @example
+     * // Get one SessionParticipant
+     * const sessionParticipant = await prisma.sessionParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionParticipantFindUniqueArgs>(args: SelectSubset<T, SessionParticipantFindUniqueArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SessionParticipant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessionParticipantFindUniqueOrThrowArgs} args - Arguments to find a SessionParticipant
+     * @example
+     * // Get one SessionParticipant
+     * const sessionParticipant = await prisma.sessionParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SessionParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantFindFirstArgs} args - Arguments to find a SessionParticipant
+     * @example
+     * // Get one SessionParticipant
+     * const sessionParticipant = await prisma.sessionParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionParticipantFindFirstArgs>(args?: SelectSubset<T, SessionParticipantFindFirstArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SessionParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantFindFirstOrThrowArgs} args - Arguments to find a SessionParticipant
+     * @example
+     * // Get one SessionParticipant
+     * const sessionParticipant = await prisma.sessionParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SessionParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SessionParticipants
+     * const sessionParticipants = await prisma.sessionParticipant.findMany()
+     * 
+     * // Get first 10 SessionParticipants
+     * const sessionParticipants = await prisma.sessionParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessionParticipantWithIdOnly = await prisma.sessionParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessionParticipantFindManyArgs>(args?: SelectSubset<T, SessionParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SessionParticipant.
+     * @param {SessionParticipantCreateArgs} args - Arguments to create a SessionParticipant.
+     * @example
+     * // Create one SessionParticipant
+     * const SessionParticipant = await prisma.sessionParticipant.create({
+     *   data: {
+     *     // ... data to create a SessionParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionParticipantCreateArgs>(args: SelectSubset<T, SessionParticipantCreateArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SessionParticipants.
+     * @param {SessionParticipantCreateManyArgs} args - Arguments to create many SessionParticipants.
+     * @example
+     * // Create many SessionParticipants
+     * const sessionParticipant = await prisma.sessionParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionParticipantCreateManyArgs>(args?: SelectSubset<T, SessionParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SessionParticipants and returns the data saved in the database.
+     * @param {SessionParticipantCreateManyAndReturnArgs} args - Arguments to create many SessionParticipants.
+     * @example
+     * // Create many SessionParticipants
+     * const sessionParticipant = await prisma.sessionParticipant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SessionParticipants and only return the `id`
+     * const sessionParticipantWithIdOnly = await prisma.sessionParticipant.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionParticipantCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionParticipantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SessionParticipant.
+     * @param {SessionParticipantDeleteArgs} args - Arguments to delete one SessionParticipant.
+     * @example
+     * // Delete one SessionParticipant
+     * const SessionParticipant = await prisma.sessionParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one SessionParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionParticipantDeleteArgs>(args: SelectSubset<T, SessionParticipantDeleteArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SessionParticipant.
+     * @param {SessionParticipantUpdateArgs} args - Arguments to update one SessionParticipant.
+     * @example
+     * // Update one SessionParticipant
+     * const sessionParticipant = await prisma.sessionParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionParticipantUpdateArgs>(args: SelectSubset<T, SessionParticipantUpdateArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SessionParticipants.
+     * @param {SessionParticipantDeleteManyArgs} args - Arguments to filter SessionParticipants to delete.
+     * @example
+     * // Delete a few SessionParticipants
+     * const { count } = await prisma.sessionParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionParticipantDeleteManyArgs>(args?: SelectSubset<T, SessionParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessionParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SessionParticipants
+     * const sessionParticipant = await prisma.sessionParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionParticipantUpdateManyArgs>(args: SelectSubset<T, SessionParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessionParticipants and returns the data updated in the database.
+     * @param {SessionParticipantUpdateManyAndReturnArgs} args - Arguments to update many SessionParticipants.
+     * @example
+     * // Update many SessionParticipants
+     * const sessionParticipant = await prisma.sessionParticipant.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SessionParticipants and only return the `id`
+     * const sessionParticipantWithIdOnly = await prisma.sessionParticipant.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessionParticipantUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionParticipantUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SessionParticipant.
+     * @param {SessionParticipantUpsertArgs} args - Arguments to update or create a SessionParticipant.
+     * @example
+     * // Update or create a SessionParticipant
+     * const sessionParticipant = await prisma.sessionParticipant.upsert({
+     *   create: {
+     *     // ... data to create a SessionParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SessionParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionParticipantUpsertArgs>(args: SelectSubset<T, SessionParticipantUpsertArgs<ExtArgs>>): Prisma__SessionParticipantClient<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SessionParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantCountArgs} args - Arguments to filter SessionParticipants to count.
+     * @example
+     * // Count the number of SessionParticipants
+     * const count = await prisma.sessionParticipant.count({
+     *   where: {
+     *     // ... the filter for the SessionParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionParticipantCountArgs>(
+      args?: Subset<T, SessionParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SessionParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionParticipantAggregateArgs>(args: Subset<T, SessionParticipantAggregateArgs>): Prisma.PrismaPromise<GetSessionParticipantAggregateType<T>>
+
+    /**
+     * Group by SessionParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: SessionParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SessionParticipant model
+   */
+  readonly fields: SessionParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SessionParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends event_sessionsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, event_sessionsDefaultArgs<ExtArgs>>): Prisma__event_sessionsClient<$Result.GetResult<Prisma.$event_sessionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participant<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SessionParticipant model
+   */
+  interface SessionParticipantFieldRefs {
+    readonly id: FieldRef<"SessionParticipant", 'String'>
+    readonly sessionId: FieldRef<"SessionParticipant", 'String'>
+    readonly participantId: FieldRef<"SessionParticipant", 'String'>
+    readonly registeredAt: FieldRef<"SessionParticipant", 'DateTime'>
+    readonly attendedSession: FieldRef<"SessionParticipant", 'Boolean'>
+    readonly attendanceTime: FieldRef<"SessionParticipant", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SessionParticipant findUnique
+   */
+  export type SessionParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionParticipant to fetch.
+     */
+    where: SessionParticipantWhereUniqueInput
+  }
+
+  /**
+   * SessionParticipant findUniqueOrThrow
+   */
+  export type SessionParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionParticipant to fetch.
+     */
+    where: SessionParticipantWhereUniqueInput
+  }
+
+  /**
+   * SessionParticipant findFirst
+   */
+  export type SessionParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionParticipant to fetch.
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionParticipants to fetch.
+     */
+    orderBy?: SessionParticipantOrderByWithRelationInput | SessionParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessionParticipants.
+     */
+    cursor?: SessionParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessionParticipants.
+     */
+    distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * SessionParticipant findFirstOrThrow
+   */
+  export type SessionParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionParticipant to fetch.
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionParticipants to fetch.
+     */
+    orderBy?: SessionParticipantOrderByWithRelationInput | SessionParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessionParticipants.
+     */
+    cursor?: SessionParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessionParticipants.
+     */
+    distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * SessionParticipant findMany
+   */
+  export type SessionParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionParticipants to fetch.
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionParticipants to fetch.
+     */
+    orderBy?: SessionParticipantOrderByWithRelationInput | SessionParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SessionParticipants.
+     */
+    cursor?: SessionParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionParticipants.
+     */
+    skip?: number
+    distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * SessionParticipant create
+   */
+  export type SessionParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SessionParticipant.
+     */
+    data: XOR<SessionParticipantCreateInput, SessionParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * SessionParticipant createMany
+   */
+  export type SessionParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SessionParticipants.
+     */
+    data: SessionParticipantCreateManyInput | SessionParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SessionParticipant createManyAndReturn
+   */
+  export type SessionParticipantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to create many SessionParticipants.
+     */
+    data: SessionParticipantCreateManyInput | SessionParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessionParticipant update
+   */
+  export type SessionParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SessionParticipant.
+     */
+    data: XOR<SessionParticipantUpdateInput, SessionParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which SessionParticipant to update.
+     */
+    where: SessionParticipantWhereUniqueInput
+  }
+
+  /**
+   * SessionParticipant updateMany
+   */
+  export type SessionParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SessionParticipants.
+     */
+    data: XOR<SessionParticipantUpdateManyMutationInput, SessionParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which SessionParticipants to update
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * Limit how many SessionParticipants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SessionParticipant updateManyAndReturn
+   */
+  export type SessionParticipantUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to update SessionParticipants.
+     */
+    data: XOR<SessionParticipantUpdateManyMutationInput, SessionParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which SessionParticipants to update
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * Limit how many SessionParticipants to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessionParticipant upsert
+   */
+  export type SessionParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SessionParticipant to update in case it exists.
+     */
+    where: SessionParticipantWhereUniqueInput
+    /**
+     * In case the SessionParticipant found by the `where` argument doesn't exist, create a new SessionParticipant with this data.
+     */
+    create: XOR<SessionParticipantCreateInput, SessionParticipantUncheckedCreateInput>
+    /**
+     * In case the SessionParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionParticipantUpdateInput, SessionParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * SessionParticipant delete
+   */
+  export type SessionParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which SessionParticipant to delete.
+     */
+    where: SessionParticipantWhereUniqueInput
+  }
+
+  /**
+   * SessionParticipant deleteMany
+   */
+  export type SessionParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessionParticipants to delete
+     */
+    where?: SessionParticipantWhereInput
+    /**
+     * Limit how many SessionParticipants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SessionParticipant without action
+   */
+  export type SessionParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionParticipant
+     */
+    select?: SessionParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionParticipant
+     */
+    omit?: SessionParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionParticipantInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10998,6 +12303,7 @@ export namespace Prisma {
     capacity: 'capacity',
     format: 'format',
     banner: 'banner',
+    video_url: 'video_url',
     event_id: 'event_id',
     created_at: 'created_at',
     updated_at: 'updated_at'
@@ -11020,6 +12326,18 @@ export namespace Prisma {
   };
 
   export type SponsorScalarFieldEnum = (typeof SponsorScalarFieldEnum)[keyof typeof SponsorScalarFieldEnum]
+
+
+  export const SessionParticipantScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    participantId: 'participantId',
+    registeredAt: 'registeredAt',
+    attendedSession: 'attendedSession',
+    attendanceTime: 'attendanceTime'
+  };
+
+  export type SessionParticipantScalarFieldEnum = (typeof SessionParticipantScalarFieldEnum)[keyof typeof SessionParticipantScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11557,6 +12875,7 @@ export namespace Prisma {
     checkedIn?: BoolFilter<"Registration"> | boolean
     checkInTime?: DateTimeNullableFilter<"Registration"> | Date | string | null
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    sessions?: SessionParticipantListRelationFilter
   }
 
   export type RegistrationOrderByWithRelationInput = {
@@ -11576,6 +12895,7 @@ export namespace Prisma {
     checkedIn?: SortOrder
     checkInTime?: SortOrderInput | SortOrder
     event?: EventOrderByWithRelationInput
+    sessions?: SessionParticipantOrderByRelationAggregateInput
   }
 
   export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -11598,6 +12918,7 @@ export namespace Prisma {
     checkedIn?: BoolFilter<"Registration"> | boolean
     checkInTime?: DateTimeNullableFilter<"Registration"> | Date | string | null
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    sessions?: SessionParticipantListRelationFilter
   }, "id" | "qrCode" | "shortCode">
 
   export type RegistrationOrderByWithAggregationInput = {
@@ -11658,10 +12979,12 @@ export namespace Prisma {
     capacity?: IntNullableFilter<"event_sessions"> | number | null
     format?: StringNullableFilter<"event_sessions"> | string | null
     banner?: StringNullableFilter<"event_sessions"> | string | null
+    video_url?: StringNullableFilter<"event_sessions"> | string | null
     event_id?: StringFilter<"event_sessions"> | string
     created_at?: DateTimeFilter<"event_sessions"> | Date | string
     updated_at?: DateTimeFilter<"event_sessions"> | Date | string
     events?: XOR<EventScalarRelationFilter, EventWhereInput>
+    participants?: SessionParticipantListRelationFilter
   }
 
   export type event_sessionsOrderByWithRelationInput = {
@@ -11677,10 +13000,12 @@ export namespace Prisma {
     capacity?: SortOrderInput | SortOrder
     format?: SortOrderInput | SortOrder
     banner?: SortOrderInput | SortOrder
+    video_url?: SortOrderInput | SortOrder
     event_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     events?: EventOrderByWithRelationInput
+    participants?: SessionParticipantOrderByRelationAggregateInput
   }
 
   export type event_sessionsWhereUniqueInput = Prisma.AtLeast<{
@@ -11699,10 +13024,12 @@ export namespace Prisma {
     capacity?: IntNullableFilter<"event_sessions"> | number | null
     format?: StringNullableFilter<"event_sessions"> | string | null
     banner?: StringNullableFilter<"event_sessions"> | string | null
+    video_url?: StringNullableFilter<"event_sessions"> | string | null
     event_id?: StringFilter<"event_sessions"> | string
     created_at?: DateTimeFilter<"event_sessions"> | Date | string
     updated_at?: DateTimeFilter<"event_sessions"> | Date | string
     events?: XOR<EventScalarRelationFilter, EventWhereInput>
+    participants?: SessionParticipantListRelationFilter
   }, "id">
 
   export type event_sessionsOrderByWithAggregationInput = {
@@ -11718,6 +13045,7 @@ export namespace Prisma {
     capacity?: SortOrderInput | SortOrder
     format?: SortOrderInput | SortOrder
     banner?: SortOrderInput | SortOrder
+    video_url?: SortOrderInput | SortOrder
     event_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -11744,6 +13072,7 @@ export namespace Prisma {
     capacity?: IntNullableWithAggregatesFilter<"event_sessions"> | number | null
     format?: StringNullableWithAggregatesFilter<"event_sessions"> | string | null
     banner?: StringNullableWithAggregatesFilter<"event_sessions"> | string | null
+    video_url?: StringNullableWithAggregatesFilter<"event_sessions"> | string | null
     event_id?: StringWithAggregatesFilter<"event_sessions"> | string
     created_at?: DateTimeWithAggregatesFilter<"event_sessions"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"event_sessions"> | Date | string
@@ -11827,6 +13156,70 @@ export namespace Prisma {
     eventId?: StringWithAggregatesFilter<"Sponsor"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
+  }
+
+  export type SessionParticipantWhereInput = {
+    AND?: SessionParticipantWhereInput | SessionParticipantWhereInput[]
+    OR?: SessionParticipantWhereInput[]
+    NOT?: SessionParticipantWhereInput | SessionParticipantWhereInput[]
+    id?: StringFilter<"SessionParticipant"> | string
+    sessionId?: StringFilter<"SessionParticipant"> | string
+    participantId?: StringFilter<"SessionParticipant"> | string
+    registeredAt?: DateTimeFilter<"SessionParticipant"> | Date | string
+    attendedSession?: BoolFilter<"SessionParticipant"> | boolean
+    attendanceTime?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
+    session?: XOR<Event_sessionsScalarRelationFilter, event_sessionsWhereInput>
+    participant?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }
+
+  export type SessionParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    participantId?: SortOrder
+    registeredAt?: SortOrder
+    attendedSession?: SortOrder
+    attendanceTime?: SortOrderInput | SortOrder
+    session?: event_sessionsOrderByWithRelationInput
+    participant?: RegistrationOrderByWithRelationInput
+  }
+
+  export type SessionParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionId_participantId?: SessionParticipantSessionIdParticipantIdCompoundUniqueInput
+    AND?: SessionParticipantWhereInput | SessionParticipantWhereInput[]
+    OR?: SessionParticipantWhereInput[]
+    NOT?: SessionParticipantWhereInput | SessionParticipantWhereInput[]
+    sessionId?: StringFilter<"SessionParticipant"> | string
+    participantId?: StringFilter<"SessionParticipant"> | string
+    registeredAt?: DateTimeFilter<"SessionParticipant"> | Date | string
+    attendedSession?: BoolFilter<"SessionParticipant"> | boolean
+    attendanceTime?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
+    session?: XOR<Event_sessionsScalarRelationFilter, event_sessionsWhereInput>
+    participant?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }, "id" | "sessionId_participantId">
+
+  export type SessionParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    participantId?: SortOrder
+    registeredAt?: SortOrder
+    attendedSession?: SortOrder
+    attendanceTime?: SortOrderInput | SortOrder
+    _count?: SessionParticipantCountOrderByAggregateInput
+    _max?: SessionParticipantMaxOrderByAggregateInput
+    _min?: SessionParticipantMinOrderByAggregateInput
+  }
+
+  export type SessionParticipantScalarWhereWithAggregatesInput = {
+    AND?: SessionParticipantScalarWhereWithAggregatesInput | SessionParticipantScalarWhereWithAggregatesInput[]
+    OR?: SessionParticipantScalarWhereWithAggregatesInput[]
+    NOT?: SessionParticipantScalarWhereWithAggregatesInput | SessionParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SessionParticipant"> | string
+    sessionId?: StringWithAggregatesFilter<"SessionParticipant"> | string
+    participantId?: StringWithAggregatesFilter<"SessionParticipant"> | string
+    registeredAt?: DateTimeWithAggregatesFilter<"SessionParticipant"> | Date | string
+    attendedSession?: BoolWithAggregatesFilter<"SessionParticipant"> | boolean
+    attendanceTime?: DateTimeNullableWithAggregatesFilter<"SessionParticipant"> | Date | string | null
   }
 
   export type UserCreateInput = {
@@ -12307,6 +13700,7 @@ export namespace Prisma {
     checkedIn?: boolean
     checkInTime?: Date | string | null
     event: EventCreateNestedOneWithoutRegistrationsInput
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
   export type RegistrationUncheckedCreateInput = {
@@ -12325,6 +13719,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     checkedIn?: boolean
     checkInTime?: Date | string | null
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
   }
 
   export type RegistrationUpdateInput = {
@@ -12343,6 +13738,7 @@ export namespace Prisma {
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
   export type RegistrationUncheckedUpdateInput = {
@@ -12361,6 +13757,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
   export type RegistrationCreateManyInput = {
@@ -12429,9 +13826,11 @@ export namespace Prisma {
     capacity?: number | null
     format?: string | null
     banner?: string | null
+    video_url?: string | null
     created_at?: Date | string
     updated_at: Date | string
     events: EventCreateNestedOneWithoutEvent_sessionsInput
+    participants?: SessionParticipantCreateNestedManyWithoutSessionInput
   }
 
   export type event_sessionsUncheckedCreateInput = {
@@ -12447,9 +13846,11 @@ export namespace Prisma {
     capacity?: number | null
     format?: string | null
     banner?: string | null
+    video_url?: string | null
     event_id: string
     created_at?: Date | string
     updated_at: Date | string
+    participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type event_sessionsUpdateInput = {
@@ -12465,9 +13866,11 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     events?: EventUpdateOneRequiredWithoutEvent_sessionsNestedInput
+    participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
   }
 
   export type event_sessionsUncheckedUpdateInput = {
@@ -12483,9 +13886,11 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     event_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type event_sessionsCreateManyInput = {
@@ -12501,6 +13906,7 @@ export namespace Prisma {
     capacity?: number | null
     format?: string | null
     banner?: string | null
+    video_url?: string | null
     event_id: string
     created_at?: Date | string
     updated_at: Date | string
@@ -12519,6 +13925,7 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12536,6 +13943,7 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     event_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12629,6 +14037,67 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionParticipantCreateInput = {
+    id?: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+    session: event_sessionsCreateNestedOneWithoutParticipantsInput
+    participant: RegistrationCreateNestedOneWithoutSessionsInput
+  }
+
+  export type SessionParticipantUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    participantId: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+  }
+
+  export type SessionParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session?: event_sessionsUpdateOneRequiredWithoutParticipantsNestedInput
+    participant?: RegistrationUpdateOneRequiredWithoutSessionsNestedInput
+  }
+
+  export type SessionParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionParticipantCreateManyInput = {
+    id?: string
+    sessionId: string
+    participantId: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+  }
+
+  export type SessionParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -13061,6 +14530,16 @@ export namespace Prisma {
     isNot?: EventWhereInput
   }
 
+  export type SessionParticipantListRelationFilter = {
+    every?: SessionParticipantWhereInput
+    some?: SessionParticipantWhereInput
+    none?: SessionParticipantWhereInput
+  }
+
+  export type SessionParticipantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type RegistrationCountOrderByAggregateInput = {
     id?: SortOrder
     firstName?: SortOrder
@@ -13136,6 +14615,7 @@ export namespace Prisma {
     capacity?: SortOrder
     format?: SortOrder
     banner?: SortOrder
+    video_url?: SortOrder
     event_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -13158,6 +14638,7 @@ export namespace Prisma {
     capacity?: SortOrder
     format?: SortOrder
     banner?: SortOrder
+    video_url?: SortOrder
     event_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -13176,6 +14657,7 @@ export namespace Prisma {
     capacity?: SortOrder
     format?: SortOrder
     banner?: SortOrder
+    video_url?: SortOrder
     event_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -13239,6 +14721,48 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSponsorLevelFilter<$PrismaModel>
     _max?: NestedEnumSponsorLevelFilter<$PrismaModel>
+  }
+
+  export type Event_sessionsScalarRelationFilter = {
+    is?: event_sessionsWhereInput
+    isNot?: event_sessionsWhereInput
+  }
+
+  export type RegistrationScalarRelationFilter = {
+    is?: RegistrationWhereInput
+    isNot?: RegistrationWhereInput
+  }
+
+  export type SessionParticipantSessionIdParticipantIdCompoundUniqueInput = {
+    sessionId: string
+    participantId: string
+  }
+
+  export type SessionParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    participantId?: SortOrder
+    registeredAt?: SortOrder
+    attendedSession?: SortOrder
+    attendanceTime?: SortOrder
+  }
+
+  export type SessionParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    participantId?: SortOrder
+    registeredAt?: SortOrder
+    attendedSession?: SortOrder
+    attendanceTime?: SortOrder
+  }
+
+  export type SessionParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    participantId?: SortOrder
+    registeredAt?: SortOrder
+    attendedSession?: SortOrder
+    attendanceTime?: SortOrder
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -13565,6 +15089,20 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput
   }
 
+  export type SessionParticipantCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
+    createMany?: SessionParticipantCreateManyParticipantInputEnvelope
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+  }
+
+  export type SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
+    createMany?: SessionParticipantCreateManyParticipantInputEnvelope
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+  }
+
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
@@ -13577,10 +15115,52 @@ export namespace Prisma {
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutRegistrationsInput, EventUpdateWithoutRegistrationsInput>, EventUncheckedUpdateWithoutRegistrationsInput>
   }
 
+  export type SessionParticipantUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
+    upsert?: SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput | SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: SessionParticipantCreateManyParticipantInputEnvelope
+    set?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    disconnect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    delete?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    update?: SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput | SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: SessionParticipantUpdateManyWithWhereWithoutParticipantInput | SessionParticipantUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+  }
+
+  export type SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
+    upsert?: SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput | SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: SessionParticipantCreateManyParticipantInputEnvelope
+    set?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    disconnect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    delete?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    update?: SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput | SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: SessionParticipantUpdateManyWithWhereWithoutParticipantInput | SessionParticipantUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+  }
+
   export type EventCreateNestedOneWithoutEvent_sessionsInput = {
     create?: XOR<EventCreateWithoutEvent_sessionsInput, EventUncheckedCreateWithoutEvent_sessionsInput>
     connectOrCreate?: EventCreateOrConnectWithoutEvent_sessionsInput
     connect?: EventWhereUniqueInput
+  }
+
+  export type SessionParticipantCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SessionParticipantCreateWithoutSessionInput, SessionParticipantUncheckedCreateWithoutSessionInput> | SessionParticipantCreateWithoutSessionInput[] | SessionParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutSessionInput | SessionParticipantCreateOrConnectWithoutSessionInput[]
+    createMany?: SessionParticipantCreateManySessionInputEnvelope
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+  }
+
+  export type SessionParticipantUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SessionParticipantCreateWithoutSessionInput, SessionParticipantUncheckedCreateWithoutSessionInput> | SessionParticipantCreateWithoutSessionInput[] | SessionParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutSessionInput | SessionParticipantCreateOrConnectWithoutSessionInput[]
+    createMany?: SessionParticipantCreateManySessionInputEnvelope
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
   export type EventUpdateOneRequiredWithoutEvent_sessionsNestedInput = {
@@ -13589,6 +15169,34 @@ export namespace Prisma {
     upsert?: EventUpsertWithoutEvent_sessionsInput
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEvent_sessionsInput, EventUpdateWithoutEvent_sessionsInput>, EventUncheckedUpdateWithoutEvent_sessionsInput>
+  }
+
+  export type SessionParticipantUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SessionParticipantCreateWithoutSessionInput, SessionParticipantUncheckedCreateWithoutSessionInput> | SessionParticipantCreateWithoutSessionInput[] | SessionParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutSessionInput | SessionParticipantCreateOrConnectWithoutSessionInput[]
+    upsert?: SessionParticipantUpsertWithWhereUniqueWithoutSessionInput | SessionParticipantUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SessionParticipantCreateManySessionInputEnvelope
+    set?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    disconnect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    delete?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    update?: SessionParticipantUpdateWithWhereUniqueWithoutSessionInput | SessionParticipantUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SessionParticipantUpdateManyWithWhereWithoutSessionInput | SessionParticipantUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+  }
+
+  export type SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SessionParticipantCreateWithoutSessionInput, SessionParticipantUncheckedCreateWithoutSessionInput> | SessionParticipantCreateWithoutSessionInput[] | SessionParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionParticipantCreateOrConnectWithoutSessionInput | SessionParticipantCreateOrConnectWithoutSessionInput[]
+    upsert?: SessionParticipantUpsertWithWhereUniqueWithoutSessionInput | SessionParticipantUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SessionParticipantCreateManySessionInputEnvelope
+    set?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    disconnect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    delete?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
+    update?: SessionParticipantUpdateWithWhereUniqueWithoutSessionInput | SessionParticipantUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SessionParticipantUpdateManyWithWhereWithoutSessionInput | SessionParticipantUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
   export type EventCreateNestedOneWithoutSponsorsInput = {
@@ -13607,6 +15215,34 @@ export namespace Prisma {
     upsert?: EventUpsertWithoutSponsorsInput
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutSponsorsInput, EventUpdateWithoutSponsorsInput>, EventUncheckedUpdateWithoutSponsorsInput>
+  }
+
+  export type event_sessionsCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<event_sessionsCreateWithoutParticipantsInput, event_sessionsUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: event_sessionsCreateOrConnectWithoutParticipantsInput
+    connect?: event_sessionsWhereUniqueInput
+  }
+
+  export type RegistrationCreateNestedOneWithoutSessionsInput = {
+    create?: XOR<RegistrationCreateWithoutSessionsInput, RegistrationUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutSessionsInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
+  export type event_sessionsUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<event_sessionsCreateWithoutParticipantsInput, event_sessionsUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: event_sessionsCreateOrConnectWithoutParticipantsInput
+    upsert?: event_sessionsUpsertWithoutParticipantsInput
+    connect?: event_sessionsWhereUniqueInput
+    update?: XOR<XOR<event_sessionsUpdateToOneWithWhereWithoutParticipantsInput, event_sessionsUpdateWithoutParticipantsInput>, event_sessionsUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutSessionsNestedInput = {
+    create?: XOR<RegistrationCreateWithoutSessionsInput, RegistrationUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutSessionsInput
+    upsert?: RegistrationUpsertWithoutSessionsInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutSessionsInput, RegistrationUpdateWithoutSessionsInput>, RegistrationUncheckedUpdateWithoutSessionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -14179,8 +15815,10 @@ export namespace Prisma {
     capacity?: number | null
     format?: string | null
     banner?: string | null
+    video_url?: string | null
     created_at?: Date | string
     updated_at: Date | string
+    participants?: SessionParticipantCreateNestedManyWithoutSessionInput
   }
 
   export type event_sessionsUncheckedCreateWithoutEventsInput = {
@@ -14196,8 +15834,10 @@ export namespace Prisma {
     capacity?: number | null
     format?: string | null
     banner?: string | null
+    video_url?: string | null
     created_at?: Date | string
     updated_at: Date | string
+    participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type event_sessionsCreateOrConnectWithoutEventsInput = {
@@ -14258,6 +15898,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     checkedIn?: boolean
     checkInTime?: Date | string | null
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
   export type RegistrationUncheckedCreateWithoutEventInput = {
@@ -14275,6 +15916,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     checkedIn?: boolean
     checkInTime?: Date | string | null
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
   }
 
   export type RegistrationCreateOrConnectWithoutEventInput = {
@@ -14353,6 +15995,7 @@ export namespace Prisma {
     capacity?: IntNullableFilter<"event_sessions"> | number | null
     format?: StringNullableFilter<"event_sessions"> | string | null
     banner?: StringNullableFilter<"event_sessions"> | string | null
+    video_url?: StringNullableFilter<"event_sessions"> | string | null
     event_id?: StringFilter<"event_sessions"> | string
     created_at?: DateTimeFilter<"event_sessions"> | Date | string
     updated_at?: DateTimeFilter<"event_sessions"> | Date | string
@@ -14521,6 +16164,32 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
   }
 
+  export type SessionParticipantCreateWithoutParticipantInput = {
+    id?: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+    session: event_sessionsCreateNestedOneWithoutParticipantsInput
+  }
+
+  export type SessionParticipantUncheckedCreateWithoutParticipantInput = {
+    id?: string
+    sessionId: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+  }
+
+  export type SessionParticipantCreateOrConnectWithoutParticipantInput = {
+    where: SessionParticipantWhereUniqueInput
+    create: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type SessionParticipantCreateManyParticipantInputEnvelope = {
+    data: SessionParticipantCreateManyParticipantInput | SessionParticipantCreateManyParticipantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EventUpsertWithoutRegistrationsInput = {
     update: XOR<EventUpdateWithoutRegistrationsInput, EventUncheckedUpdateWithoutRegistrationsInput>
     create: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
@@ -14582,6 +16251,34 @@ export namespace Prisma {
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
   }
 
+  export type SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput = {
+    where: SessionParticipantWhereUniqueInput
+    update: XOR<SessionParticipantUpdateWithoutParticipantInput, SessionParticipantUncheckedUpdateWithoutParticipantInput>
+    create: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput = {
+    where: SessionParticipantWhereUniqueInput
+    data: XOR<SessionParticipantUpdateWithoutParticipantInput, SessionParticipantUncheckedUpdateWithoutParticipantInput>
+  }
+
+  export type SessionParticipantUpdateManyWithWhereWithoutParticipantInput = {
+    where: SessionParticipantScalarWhereInput
+    data: XOR<SessionParticipantUpdateManyMutationInput, SessionParticipantUncheckedUpdateManyWithoutParticipantInput>
+  }
+
+  export type SessionParticipantScalarWhereInput = {
+    AND?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+    OR?: SessionParticipantScalarWhereInput[]
+    NOT?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+    id?: StringFilter<"SessionParticipant"> | string
+    sessionId?: StringFilter<"SessionParticipant"> | string
+    participantId?: StringFilter<"SessionParticipant"> | string
+    registeredAt?: DateTimeFilter<"SessionParticipant"> | Date | string
+    attendedSession?: BoolFilter<"SessionParticipant"> | boolean
+    attendanceTime?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
+  }
+
   export type EventCreateWithoutEvent_sessionsInput = {
     id?: string
     name: string
@@ -14635,6 +16332,32 @@ export namespace Prisma {
   export type EventCreateOrConnectWithoutEvent_sessionsInput = {
     where: EventWhereUniqueInput
     create: XOR<EventCreateWithoutEvent_sessionsInput, EventUncheckedCreateWithoutEvent_sessionsInput>
+  }
+
+  export type SessionParticipantCreateWithoutSessionInput = {
+    id?: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+    participant: RegistrationCreateNestedOneWithoutSessionsInput
+  }
+
+  export type SessionParticipantUncheckedCreateWithoutSessionInput = {
+    id?: string
+    participantId: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+  }
+
+  export type SessionParticipantCreateOrConnectWithoutSessionInput = {
+    where: SessionParticipantWhereUniqueInput
+    create: XOR<SessionParticipantCreateWithoutSessionInput, SessionParticipantUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SessionParticipantCreateManySessionInputEnvelope = {
+    data: SessionParticipantCreateManySessionInput | SessionParticipantCreateManySessionInput[]
+    skipDuplicates?: boolean
   }
 
   export type EventUpsertWithoutEvent_sessionsInput = {
@@ -14696,6 +16419,22 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type SessionParticipantUpsertWithWhereUniqueWithoutSessionInput = {
+    where: SessionParticipantWhereUniqueInput
+    update: XOR<SessionParticipantUpdateWithoutSessionInput, SessionParticipantUncheckedUpdateWithoutSessionInput>
+    create: XOR<SessionParticipantCreateWithoutSessionInput, SessionParticipantUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SessionParticipantUpdateWithWhereUniqueWithoutSessionInput = {
+    where: SessionParticipantWhereUniqueInput
+    data: XOR<SessionParticipantUpdateWithoutSessionInput, SessionParticipantUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type SessionParticipantUpdateManyWithWhereWithoutSessionInput = {
+    where: SessionParticipantScalarWhereInput
+    data: XOR<SessionParticipantUpdateManyMutationInput, SessionParticipantUncheckedUpdateManyWithoutSessionInput>
   }
 
   export type EventCreateWithoutSponsorsInput = {
@@ -14812,6 +16551,186 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type event_sessionsCreateWithoutParticipantsInput = {
+    id: string
+    title: string
+    description?: string | null
+    start_date: Date | string
+    end_date: Date | string
+    start_time: string
+    end_time: string
+    location?: string | null
+    speaker?: string | null
+    capacity?: number | null
+    format?: string | null
+    banner?: string | null
+    video_url?: string | null
+    created_at?: Date | string
+    updated_at: Date | string
+    events: EventCreateNestedOneWithoutEvent_sessionsInput
+  }
+
+  export type event_sessionsUncheckedCreateWithoutParticipantsInput = {
+    id: string
+    title: string
+    description?: string | null
+    start_date: Date | string
+    end_date: Date | string
+    start_time: string
+    end_time: string
+    location?: string | null
+    speaker?: string | null
+    capacity?: number | null
+    format?: string | null
+    banner?: string | null
+    video_url?: string | null
+    event_id: string
+    created_at?: Date | string
+    updated_at: Date | string
+  }
+
+  export type event_sessionsCreateOrConnectWithoutParticipantsInput = {
+    where: event_sessionsWhereUniqueInput
+    create: XOR<event_sessionsCreateWithoutParticipantsInput, event_sessionsUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type RegistrationCreateWithoutSessionsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    event: EventCreateNestedOneWithoutRegistrationsInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutSessionsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    eventId: string
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+  }
+
+  export type RegistrationCreateOrConnectWithoutSessionsInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutSessionsInput, RegistrationUncheckedCreateWithoutSessionsInput>
+  }
+
+  export type event_sessionsUpsertWithoutParticipantsInput = {
+    update: XOR<event_sessionsUpdateWithoutParticipantsInput, event_sessionsUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<event_sessionsCreateWithoutParticipantsInput, event_sessionsUncheckedCreateWithoutParticipantsInput>
+    where?: event_sessionsWhereInput
+  }
+
+  export type event_sessionsUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: event_sessionsWhereInput
+    data: XOR<event_sessionsUpdateWithoutParticipantsInput, event_sessionsUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type event_sessionsUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    start_time?: StringFieldUpdateOperationsInput | string
+    end_time?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    speaker?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EventUpdateOneRequiredWithoutEvent_sessionsNestedInput
+  }
+
+  export type event_sessionsUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    start_time?: StringFieldUpdateOperationsInput | string
+    end_time?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    speaker?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
+    event_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegistrationUpsertWithoutSessionsInput = {
+    update: XOR<RegistrationUpdateWithoutSessionsInput, RegistrationUncheckedUpdateWithoutSessionsInput>
+    create: XOR<RegistrationCreateWithoutSessionsInput, RegistrationUncheckedCreateWithoutSessionsInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutSessionsInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutSessionsInput, RegistrationUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type RegistrationUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AccountCreateManyUserInput = {
@@ -15001,6 +16920,7 @@ export namespace Prisma {
     capacity?: number | null
     format?: string | null
     banner?: string | null
+    video_url?: string | null
     created_at?: Date | string
     updated_at: Date | string
   }
@@ -15047,8 +16967,10 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
   }
 
   export type event_sessionsUncheckedUpdateWithoutEventsInput = {
@@ -15064,8 +16986,10 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type event_sessionsUncheckedUpdateManyWithoutEventsInput = {
@@ -15081,6 +17005,7 @@ export namespace Prisma {
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     format?: NullableStringFieldUpdateOperationsInput | string | null
     banner?: NullableStringFieldUpdateOperationsInput | string | null
+    video_url?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15100,6 +17025,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutEventInput = {
@@ -15117,6 +17043,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
   export type RegistrationUncheckedUpdateManyWithoutEventInput = {
@@ -15170,6 +17097,70 @@ export namespace Prisma {
     visible?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionParticipantCreateManyParticipantInput = {
+    id?: string
+    sessionId: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+  }
+
+  export type SessionParticipantUpdateWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session?: event_sessionsUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type SessionParticipantUncheckedUpdateWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionParticipantUncheckedUpdateManyWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionParticipantCreateManySessionInput = {
+    id?: string
+    participantId: string
+    registeredAt?: Date | string
+    attendedSession?: boolean
+    attendanceTime?: Date | string | null
+  }
+
+  export type SessionParticipantUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    participant?: RegistrationUpdateOneRequiredWithoutSessionsNestedInput
+  }
+
+  export type SessionParticipantUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionParticipantUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendedSession?: BoolFieldUpdateOperationsInput | boolean
+    attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

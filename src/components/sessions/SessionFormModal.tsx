@@ -2,9 +2,12 @@
 
 import { Fragment, useState, useEffect, useRef } from "react";
 import { Dialog, Transition, Menu } from "@headlessui/react";
-import { XMarkIcon, CalendarIcon, ClockIcon, MapPinIcon, UserIcon, UsersIcon, ChevronDownIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, MapPinIcon, UserIcon, UsersIcon, ChevronDownIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 import { MultiSelect, Option } from "@/components/ui/multi-select";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
+import { Calendar } from "@/components/ui/calendar";
 
 type Session = {
   id: string;
@@ -19,6 +22,7 @@ type Session = {
   capacity?: number;
   format?: string;
   banner?: string;
+  video_url?: string;
 };
 
 type SessionFormModalProps = {
@@ -27,6 +31,16 @@ type SessionFormModalProps = {
   session?: Session;
   eventId: string;
   onSuccess: () => void;
+};
+
+// Fonction utilitaire pour valider les URLs
+const isValidUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 const formatOptions = [
@@ -64,7 +78,8 @@ export default function SessionFormModal({
       speaker: "",
       capacity: undefined,
       format: "physique",
-      banner: ""
+      banner: "",
+      video_url: ""
     }
   );
 
@@ -83,41 +98,61 @@ export default function SessionFormModal({
   const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]);
   const [loadingParticipants, setLoadingParticipants] = useState(false);
 
-  // Récupérer les dates de l&apos;événement
+  // État pour les dates sélectionnées avec DatePicker
+  const [startDate, setStartDate] = useState<Date | undefined>(
+    session?.start_date ? new Date(session.start_date) : undefined
+  );
+  const [endDate, setEndDate] = useState<Date | undefined>(
+    session?.end_date ? new Date(session.end_date) : undefined
+  );
+
+  // Mettre à jour formData lorsque les dates changent
+  useEffect(() => {
+    if (startDate) {
+      const formattedDate = startDate.toISOString().split('T')[0];
+      setFormData(prev => ({ ...prev, start_date: formattedDate }));
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    if (endDate) {
+      const formattedDate = endDate.toISOString().split('T')[0];
+      setFormData(prev => ({ ...prev, end_date: formattedDate }));
+    }
+  }, [endDate]);
+
+  // Récupérer les dates de l'événement
   useEffect(() => {
     const fetchEventDates = async () => {
       try {
         const response = await fetch(`/api/events/${eventId}`);
-        if (!response.ok) throw new Error("Erreur lors de la récupération de l&apos;événement");
+        if (!response.ok) throw new Error("Erreur lors de la récupération de l'événement");
         const data = await response.json();
         
         // Convertir les dates au format YYYY-MM-DD pour les inputs date
-        const startDate = new Date(data.startDate);
-        const endDate = new Date(data.endDate);
+        const eventStartDate = new Date(data.startDate);
+        const eventEndDate = new Date(data.endDate);
         
         setEventDates({
-          startDate: startDate.toISOString().split('T')[0],
-          endDate: endDate.toISOString().split('T')[0]
+          startDate: eventStartDate.toISOString().split('T')[0],
+          endDate: eventEndDate.toISOString().split('T')[0]
         });
         
-        // Si c&apos;est une nouvelle session, initialiser les dates avec la date de début de l&apos;événement
-        if (!session && !formData.start_date) {
-          setFormData(prev => ({
-            ...prev,
-            start_date: startDate.toISOString().split('T')[0],
-            end_date: startDate.toISOString().split('T')[0]
-          }));
+        // Si c'est une nouvelle session, initialiser les dates avec la date de début de l'événement
+        if (!session && !startDate) {
+          setStartDate(eventStartDate);
+          setEndDate(eventStartDate);
         }
       } catch (error) {
         console.error("Erreur:", error);
-        toast.error("Impossible de récupérer les informations de l&apos;événement");
+        toast.error("Impossible de récupérer les informations de l'événement");
       }
     };
 
     if (isOpen) {
       fetchEventDates();
     }
-  }, [isOpen, eventId, session, formData.start_date]);
+  }, [isOpen, eventId, session, startDate]);
 
   // Initialiser la prévisualisation de la bannière si elle existe déjà
   useEffect(() => {
@@ -210,6 +245,16 @@ export default function SessionFormModal({
 
     if (!formData.end_time) {
       newErrors.end_time = "L'heure de fin est obligatoire";
+    }
+
+    // Vérifier si un lien vidéo est requis
+    if (formData.format === "video" && !formData.video_url) {
+      newErrors.video_url = "Le lien vidéo est obligatoire pour ce format";
+    }
+
+    // Valider le format d'URL du lien vidéo s'il est présent
+    if (formData.video_url && !isValidUrl(formData.video_url)) {
+      newErrors.video_url = "Le lien vidéo doit être une URL valide (commençant par http:// ou https://)";
     }
 
     if (formData.start_date && formData.end_date) {
@@ -513,148 +558,49 @@ export default function SessionFormModal({
                   </div>
 
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="start_date"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Date de début <span className="text-red-500">*</span>
-                      </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <CalendarIcon className="h-5 w-5 text-gray-400" />
-                        </div>
-                        <input
-                          type="date"
-                          name="start_date"
-                          id="start_date"
-                          required
-                          min={eventDates?.startDate}
-                          max={eventDates?.endDate}
-                          className={`pl-10 block w-full rounded-md ${
-                            errors.start_date ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#81B441] focus:ring-[#81B441]'
-                          } sm:text-sm h-11 placeholder-gray-400`}
-                          value={formData.start_date || ""}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              start_date: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      {errors.start_date && (
-                        <p className="mt-1 text-sm text-red-600">{errors.start_date}</p>
-                      )}
-                      {eventDates && (
-                        <p className="mt-1 text-xs text-gray-500 text-left">
-                          Période de l&apos;événement: {new Date(eventDates.startDate).toLocaleDateString()} - {new Date(eventDates.endDate).toLocaleDateString()}
-                        </p>
-                      )}
-                    </div>
+                    <DatePicker
+                      date={startDate}
+                      setDate={setStartDate}
+                      minDate={eventDates ? new Date(eventDates.startDate) : undefined}
+                      maxDate={eventDates ? new Date(eventDates.endDate) : undefined}
+                      error={errors.start_date}
+                      required={true}
+                      label="Date de début"
+                    />
 
-                    <div>
-                      <label
-                        htmlFor="end_date"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Date de fin <span className="text-red-500">*</span>
-                      </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <CalendarIcon className="h-5 w-5 text-gray-400" />
-                        </div>
-                        <input
-                          type="date"
-                          name="end_date"
-                          id="end_date"
-                          required
-                          min={formData.start_date || eventDates?.startDate}
-                          max={eventDates?.endDate}
-                          className={`pl-10 block w-full rounded-md ${
-                            errors.end_date ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#81B441] focus:ring-[#81B441]'
-                          } sm:text-sm h-11 placeholder-gray-400`}
-                          value={formData.end_date || ""}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              end_date: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      {errors.end_date && (
-                        <p className="mt-1 text-sm text-red-600">{errors.end_date}</p>
-                      )}
-                    </div>
+                    <DatePicker
+                      date={endDate}
+                      setDate={setEndDate}
+                      minDate={startDate || (eventDates ? new Date(eventDates.startDate) : undefined)}
+                      maxDate={eventDates ? new Date(eventDates.endDate) : undefined}
+                      error={errors.end_date}
+                      required={true}
+                      label="Date de fin"
+                    />
                   </div>
+                  
+                  {eventDates && (
+                    <p className="mt-1 text-xs text-gray-500 text-left">
+                      Période de l&apos;événement: {new Date(eventDates.startDate).toLocaleDateString()} - {new Date(eventDates.endDate).toLocaleDateString()}
+                    </p>
+                  )}
 
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="start_time"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Heure de début <span className="text-red-500">*</span>
-                      </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <ClockIcon className="h-5 w-5 text-gray-400" />
-                        </div>
-                        <input
-                          type="time"
-                          name="start_time"
-                          id="start_time"
-                          required
-                          className={`pl-10 block w-full rounded-md ${
-                            errors.start_time ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#81B441] focus:ring-[#81B441]'
-                          } sm:text-sm h-11 placeholder-gray-400`}
-                          value={formData.start_time || ""}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              start_time: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      {errors.start_time && (
-                        <p className="mt-1 text-sm text-red-600">{errors.start_time}</p>
-                      )}
-                    </div>
+                    <TimePicker
+                      value={formData.start_time || ""}
+                      onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+                      required
+                      label="Heure de début"
+                      error={errors.start_time}
+                    />
 
-                    <div>
-                      <label
-                        htmlFor="end_time"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Heure de fin <span className="text-red-500">*</span>
-                      </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <ClockIcon className="h-5 w-5 text-gray-400" />
-                        </div>
-                        <input
-                          type="time"
-                          name="end_time"
-                          id="end_time"
-                          required
-                          className={`pl-10 block w-full rounded-md ${
-                            errors.end_time ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#81B441] focus:ring-[#81B441]'
-                          } sm:text-sm h-11 placeholder-gray-400`}
-                          value={formData.end_time || ""}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              end_time: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      {errors.end_time && (
-                        <p className="mt-1 text-sm text-red-600">{errors.end_time}</p>
-                      )}
-                    </div>
+                    <TimePicker
+                      value={formData.end_time || ""}
+                      onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
+                      required
+                      label="Heure de fin"
+                      error={errors.end_time}
+                    />
                   </div>
 
                   <div>
@@ -684,6 +630,50 @@ export default function SessionFormModal({
                       />
                     </div>
                   </div>
+
+                  {/* Champ lien vidéo affiché conditionnellement pour les formats virtuel et lien vidéo */}
+                  {(formData.format === "virtual" || formData.format === "video") && (
+                    <div>
+                      <label
+                        htmlFor="video_url"
+                        className="block text-sm font-medium text-gray-700 text-left"
+                      >
+                        Lien vidéo {(formData.format === "video") && <span className="text-red-500">*</span>}
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <input
+                          type="url"
+                          name="video_url"
+                          id="video_url"
+                          className={`pl-10 block w-full rounded-md ${
+                            formData.format === "video" && !formData.video_url ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#81B441] focus:ring-[#81B441]'
+                          } sm:text-sm h-11 placeholder-gray-400`}
+                          value={formData.video_url || ""}
+                          placeholder={formData.format === "virtual" ? "Lien Zoom, Teams, etc." : "Lien YouTube, Vimeo, etc."}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              video_url: e.target.value,
+                            })
+                          }
+                          required={formData.format === "video"}
+                        />
+                      </div>
+                      {formData.format === "video" && !formData.video_url && errors.video_url && (
+                        <p className="mt-1 text-sm text-red-600">{errors.video_url}</p>
+                      )}
+                      <p className="mt-1 text-xs text-gray-500 text-left">
+                        {formData.format === "virtual" 
+                          ? "Lien de la visioconférence (Zoom, Teams, Google Meet, etc.)" 
+                          : "Lien de la vidéo (YouTube, Vimeo, etc.)"}
+                      </p>
+                    </div>
+                  )}
 
                   <div>
                     <label

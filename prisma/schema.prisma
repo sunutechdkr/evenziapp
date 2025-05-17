@@ -109,6 +109,7 @@ model Registration {
   checkedIn   Boolean   @default(false) @map("checked_in")
   checkInTime DateTime? @map("check_in_time")
   event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  sessions    SessionParticipant[]
 
   @@map("registrations")
 }
@@ -126,10 +127,12 @@ model event_sessions {
   capacity    Int?
   format      String?
   banner      String?
+  video_url   String?
   event_id    String
   created_at  DateTime @default(now())
   updated_at  DateTime
   events      Event    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  participants SessionParticipant[]
 }
 
 model Sponsor {
@@ -156,4 +159,19 @@ enum SponsorLevel {
   PARTNER
   MEDIA
   OTHER
+}
+
+// Table de jointure pour les participants aux sessions
+model SessionParticipant {
+  id              String         @id @default(cuid())
+  sessionId       String         @map("session_id")
+  participantId   String         @map("participant_id")
+  registeredAt    DateTime       @default(now()) @map("registered_at")
+  attendedSession Boolean        @default(false) @map("attended_session")
+  attendanceTime  DateTime?      @map("attendance_time")
+  session         event_sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  participant     Registration   @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, participantId])
+  @@map("session_participants")
 }

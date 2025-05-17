@@ -31,6 +31,7 @@ export async function PUT(
       capacity,
       format,
       banner,
+      video_url
     } = body;
 
     // Vérifier que la date de début est égale ou postérieure à la date de début de l'événement
@@ -81,6 +82,7 @@ export async function PUT(
         capacity = ${capacity ? parseInt(capacity) : null},
         format = ${format},
         banner = ${banner},
+        video_url = ${video_url},
         updated_at = ${now}
       WHERE 
         id = ${sessionId} 

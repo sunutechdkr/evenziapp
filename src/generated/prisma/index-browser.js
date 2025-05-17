@@ -211,6 +211,7 @@ exports.Prisma.Event_sessionsScalarFieldEnum = {
   capacity: 'capacity',
   format: 'format',
   banner: 'banner',
+  video_url: 'video_url',
   event_id: 'event_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -227,6 +228,15 @@ exports.Prisma.SponsorScalarFieldEnum = {
   eventId: 'eventId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  participantId: 'participantId',
+  registeredAt: 'registeredAt',
+  attendedSession: 'attendedSession',
+  attendanceTime: 'attendanceTime'
 };
 
 exports.Prisma.SortOrder = {
@@ -261,7 +271,8 @@ exports.Prisma.ModelName = {
   Event: 'Event',
   Registration: 'Registration',
   event_sessions: 'event_sessions',
-  Sponsor: 'Sponsor'
+  Sponsor: 'Sponsor',
+  SessionParticipant: 'SessionParticipant'
 };
 
 /**

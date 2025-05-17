@@ -48,6 +48,7 @@ export async function GET(
         capacity,
         format,
         banner,
+        video_url,
         created_at,
         updated_at
       FROM event_sessions
@@ -107,7 +108,8 @@ export async function POST(
       speaker,
       capacity,
       format,
-      banner
+      banner,
+      video_url
     } = body;
 
     // Valider les données obligatoires
@@ -156,6 +158,7 @@ export async function POST(
         capacity,
         format,
         banner,
+        video_url,
         event_id,
         created_at,
         updated_at
@@ -172,6 +175,7 @@ export async function POST(
         ${capacity ? parseInt(capacity) : null},
         ${format || null},
         ${banner || null},
+        ${video_url || null},
         ${id},
         ${now},
         ${now}
