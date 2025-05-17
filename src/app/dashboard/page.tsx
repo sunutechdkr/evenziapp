@@ -321,6 +321,21 @@ export default function Dashboard() {
                     </div>
                   </Link>
                 ))}
+                {/* Bloc supplémentaire avec la couleur f9fafb */}
+                <div className="bg-[#f9fafb] rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-gray-100 flex flex-col items-center justify-center p-6">
+                  <div className="mb-4">
+                    <CalendarIcon className="w-12 h-12 text-gray-400" />
+                  </div>
+                  <h3 className="font-medium text-gray-700 mb-2 text-center">Créer un nouvel événement</h3>
+                  <p className="text-gray-500 text-sm text-center mb-4">Ajoutez un nouvel événement à votre collection</p>
+                  <Link 
+                    href="/dashboard/events/create"
+                    className="text-[#81B441] hover:text-[#6a9636] flex items-center text-sm font-medium"
+                  >
+                    <PlusIcon className="w-4 h-4 mr-1" />
+                    <span>Créer un événement</span>
+                  </Link>
+                </div>
               </div>
             ) : (
               <div className="bg-white rounded-xl p-8 text-center">
