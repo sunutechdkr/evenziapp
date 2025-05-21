@@ -8,6 +8,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  STAFF
+  ORGANIZER
+  ADMIN
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -15,7 +22,8 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   password      String?
-  role          String    @default("USER")
+  role          UserRole  @default(USER)
+  permissions   String[]  @default([])
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
   accounts      Account[]

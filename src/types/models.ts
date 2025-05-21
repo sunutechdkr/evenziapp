@@ -1,5 +1,13 @@
 // Types des modèles de données de l'application
 
+// Énumération des rôles utilisateur
+export enum UserRole {
+  USER = 'USER',
+  STAFF = 'STAFF',
+  ORGANIZER = 'ORGANIZER',
+  ADMIN = 'ADMIN'
+}
+
 // Type d'utilisateur
 export type User = {
   id: string;
@@ -10,7 +18,8 @@ export type User = {
   password?: string | null;
   created_at: Date;
   updated_at: Date;
-  role: 'USER' | 'ADMIN';
+  role: UserRole;
+  permissions?: string[]; // Stockage des permissions spécifiques
 };
 
 // Type d'événement
@@ -81,4 +90,50 @@ export type VerificationToken = {
   identifier: string;
   token: string;
   expires: Date;
+};
+
+// Énumération des permissions
+export enum Permission {
+  // Permissions générales
+  CREATE_EVENT = 'create:event',
+  READ_EVENT = 'read:event',
+  UPDATE_EVENT = 'update:event',
+  DELETE_EVENT = 'delete:event',
+  
+  // Permissions spécifiques aux événements
+  MANAGE_PARTICIPANTS = 'manage:participants',
+  MANAGE_SESSIONS = 'manage:sessions',
+  MANAGE_SPEAKERS = 'manage:speakers',
+  EXPORT_DATA = 'export:data',
+  SEND_EMAILS = 'send:emails',
+  
+  // Permissions administratives
+  MANAGE_USERS = 'manage:users',
+  MANAGE_ROLES = 'manage:roles',
+  VIEW_ANALYTICS = 'view:analytics',
+}
+
+// Map des permissions par rôle
+export const DEFAULT_ROLE_PERMISSIONS = {
+  [UserRole.USER]: [
+    Permission.READ_EVENT
+  ],
+  [UserRole.STAFF]: [
+    Permission.READ_EVENT,
+    Permission.MANAGE_PARTICIPANTS,
+    Permission.EXPORT_DATA
+  ],
+  [UserRole.ORGANIZER]: [
+    Permission.CREATE_EVENT,
+    Permission.READ_EVENT,
+    Permission.UPDATE_EVENT,
+    Permission.DELETE_EVENT,
+    Permission.MANAGE_PARTICIPANTS,
+    Permission.MANAGE_SESSIONS,
+    Permission.MANAGE_SPEAKERS,
+    Permission.EXPORT_DATA,
+    Permission.SEND_EMAILS,
+    Permission.VIEW_ANALYTICS
+  ],
+  [UserRole.ADMIN]: Object.values(Permission)
 }; 

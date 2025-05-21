@@ -14,6 +14,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 declare module "next-auth" {
   interface User {
     role?: string;
+    permissions?: string[];
   }
   
   interface Session {
@@ -23,6 +24,16 @@ declare module "next-auth" {
       email?: string | null;
       image?: string | null;
       role: string;
+      permissions?: string[];
+    }
+  }
+
+  // Type pour JWT
+  declare module "next-auth/jwt" {
+    interface JWT {
+      id: string;
+      role: string;
+      permissions?: string[];
     }
   }
 }
@@ -148,6 +159,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.permissions = user.permissions || [];
       }
       return token;
     },
@@ -155,11 +167,12 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+        session.user.permissions = token.permissions as string[] || [];
       }
       return session;
     }
   },
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === 'development',
   secret: process.env.NEXTAUTH_SECRET || "DEFAULT_SECRET_FOR_DEV",
 };
 

@@ -125,6 +125,7 @@ exports.Prisma.UserScalarFieldEnum = {
   image: 'image',
   password: 'password',
   role: 'role',
+  permissions: 'permissions',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -253,6 +254,13 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.UserRole = exports.$Enums.UserRole = {
+  USER: 'USER',
+  STAFF: 'STAFF',
+  ORGANIZER: 'ORGANIZER',
+  ADMIN: 'ADMIN'
+};
+
 exports.SponsorLevel = exports.$Enums.SponsorLevel = {
   PLATINUM: 'PLATINUM',
   GOLD: 'GOLD',
