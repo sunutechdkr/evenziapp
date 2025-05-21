@@ -39,13 +39,13 @@ export const authOptions: NextAuthOptions = {
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
-      from: process.env.EMAIL_FROM || 'no-reply@inevent.app',
+      from: process.env.EMAIL_FROM || 'no-reply@ineventapp.com',
       
       // Personnaliser l'envoi d'emails avec Resend
       async sendVerificationRequest({ identifier: email, url }) {
         try {
           const { data, error } = await resend.emails.send({
-            from: 'InEvent <no-reply@inevent.app>',
+            from: 'InEvent <no-reply@ineventapp.com>',
             to: email,
             subject: 'Connexion à votre compte InEvent',
             html: `
@@ -159,6 +159,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     }
   },
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET || "DEFAULT_SECRET_FOR_DEV",
 };
 
