@@ -38,7 +38,9 @@ export async function GET(
       );
     }
     
-    const id = params.id;
+    // Attendre les paramètres avant d'y accéder
+    const paramsData = await params;
+    const id = paramsData.id;
     
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
@@ -87,7 +89,9 @@ export async function POST(
       );
     }
     
-    const id = params.id;
+    // Attendre les paramètres avant d'y accéder
+    const paramsData = await params;
+    const id = paramsData.id;
     console.log("POST sponsor - ID événement:", id);
     
     // Vérifier que l'événement existe

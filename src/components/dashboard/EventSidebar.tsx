@@ -218,10 +218,12 @@ export function NotificationPanel({
  */
 export function EventSidebar({ 
   eventId, 
-  onExpandChange 
+  onExpandChange, 
+  activeTab 
 }: { 
   eventId: string,
-  onExpandChange?: (expanded: boolean) => void 
+  onExpandChange?: (expanded: boolean) => void,
+  activeTab?: string 
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [inscriptionExpanded, setInscriptionExpanded] = useState(false);
@@ -258,7 +260,7 @@ export function EventSidebar({
       onClick: () => setInscriptionExpanded(!inscriptionExpanded),
       subItems: [
         { name: "Badges", href: `${baseUrl}/inscription/badges`, icon: IdentificationIcon },
-        { name: "Formulaire", href: `${baseUrl}/inscription/formulaire`, icon: DocumentTextIcon },
+        { name: "Formulaire", href: `${baseUrl}/formulaire`, icon: DocumentTextIcon },
       ]
     },
     { 
@@ -283,20 +285,16 @@ export function EventSidebar({
     },
   ];
 
-  // Fonction pour vérifier si un lien est actif
+  // Use activeTab to determine the active link
   const isActive = (href: string, exact: boolean = false) => {
-    // Vérifier si le code est exécuté côté client avant d'accéder à window
     if (typeof window === 'undefined') {
       return false;
     }
-    
     const pathname = window.location.pathname || "";
-    
     if (exact) {
       return pathname === href;
     }
-    
-    return pathname.startsWith(href);
+    return pathname.startsWith(href) || activeTab === href;
   };
 
   return (

@@ -4,10 +4,18 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { v4 as uuidv4 } from 'uuid';
 
+// Définir des types pour les intervenants
+type Speaker = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  [key: string]: any; // Pour permettre d'autres propriétés
+};
+
 // GET /api/events/[id]/sessions - Récupérer toutes les sessions d'un événement
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string | string[] } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -19,7 +27,9 @@ export async function GET(
       );
     }
     
-    const { id } = params;
+    // Attendre les paramètres avant d'y accéder
+    const paramsData = await params;
+    const id = Array.isArray(paramsData.id) ? paramsData.id[0] : paramsData.id;
     
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
@@ -56,7 +66,87 @@ export async function GET(
       ORDER BY start_date ASC, start_time ASC
     `;
 
-    return NextResponse.json(sessions);
+    // Récupérer tous les intervenants de cet événement pour enrichir les données
+    const registrations = await prisma.$queryRaw`
+      SELECT 
+        id, 
+        first_name as "firstName", 
+        last_name as "lastName", 
+        type
+      FROM registrations
+      WHERE event_id = ${id} AND type = 'SPEAKER'
+    `;
+
+    // Transformer les données des sessions pour enrichir les informations des intervenants
+    const enrichedSessions = await Promise.all(Array.from(sessions as any[]).map(async (session: any) => {
+      let speakerInfo: string | Speaker | Speaker[] = session.speaker;
+      
+      // Si le speaker est un ID, essayer de le convertir en objet avec firstName et lastName
+      if (session.speaker && typeof session.speaker === 'string') {
+        // Essayer de détecter si c'est un UUID (format d'ID typique)
+        if (session.speaker.includes('-') && !session.speaker.includes(',') && !session.speaker.includes('{')) {
+          // Chercher l'intervenant correspondant dans les inscriptions
+          const speakerMatch = Array.from(registrations as any[]).find((reg: any) => reg.id === session.speaker);
+          
+          if (speakerMatch) {
+            // Remplacer l'ID par un objet formaté avec firstName et lastName
+            speakerInfo = {
+              id: speakerMatch.id,
+              firstName: speakerMatch.firstName,
+              lastName: speakerMatch.lastName
+            };
+          } else {
+            // Si pas trouvé, créer un nom générique pour éviter d'afficher l'ID
+            speakerInfo = {
+              id: session.speaker,
+              firstName: `Intervenant`,
+              lastName: `${session.speaker.substring(0, 5)}`
+            };
+          }
+        }
+        
+        // Si le champ contient une virgule, c'est probablement une liste de noms
+        else if (session.speaker.includes(',')) {
+          const speakerNames = session.speaker.split(',');
+          speakerInfo = speakerNames.map((name: string, index: number) => {
+            const trimmedName = name.trim();
+            const nameParts = trimmedName.split(' ');
+            return {
+              id: `speaker-${session.id}-${index}`,
+              firstName: nameParts[0] || "Intervenant",
+              lastName: nameParts.slice(1).join(' ') || ""
+            };
+          });
+        }
+        
+        // Sinon, essayer de parser comme JSON
+        else if (session.speaker.startsWith('{') || session.speaker.startsWith('[')) {
+          try {
+            const parsed = JSON.parse(session.speaker);
+            speakerInfo = parsed;
+          } catch (e) {
+            // Garder la valeur originale si le parsing échoue
+          }
+        }
+        
+        // Si c'est juste une chaîne de caractères (nom simple)
+        else {
+          const nameParts = session.speaker.trim().split(' ');
+          speakerInfo = {
+            id: `speaker-${session.id}`,
+            firstName: nameParts[0] || "Intervenant",
+            lastName: nameParts.slice(1).join(' ') || ""
+          };
+        }
+      }
+      
+      return {
+        ...session,
+        speaker: speakerInfo
+      };
+    }));
+
+    return NextResponse.json(enrichedSessions);
   } catch (error) {
     console.error("Erreur lors de la récupération des sessions:", error);
     return NextResponse.json(
@@ -69,7 +159,7 @@ export async function GET(
 // POST /api/events/[id]/sessions - Créer une nouvelle session
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string | string[] } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -81,7 +171,9 @@ export async function POST(
       );
     }
     
-    const { id } = params;
+    // Attendre les paramètres avant d'y accéder
+    const paramsData = await params;
+    const id = Array.isArray(paramsData.id) ? paramsData.id[0] : paramsData.id;
     
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({

@@ -40,6 +40,13 @@ type Session = {
   capacity?: number;
 };
 
+// Type augmentation pour le champ speaker
+type Speaker = {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+};
+
 export default function EventSessionsPage({ params }: { params: { id: string } }) {
   const [eventId, setEventId] = useState<string>("");
   const [event, setEvent] = useState<Event | null>(null);
@@ -114,7 +121,45 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
   const uniqueSpeakers = useMemo(() => {
     const speakers = sessions
       .filter(s => s.speaker)
-      .map(s => s.speaker as string);
+      .map(s => {
+        const speaker = s.speaker;
+        
+        // Si c'est une chaîne
+        if (typeof speaker === 'string') {
+          return speaker;
+        } 
+        
+        // Si c'est un objet
+        if (speaker && typeof speaker === 'object') {
+          const speakerObj = speaker as Speaker;
+          
+          // Si c'est un objet avec firstName et lastName
+          if ('firstName' in speakerObj && 'lastName' in speakerObj) {
+            return `${speakerObj.firstName} ${speakerObj.lastName}`;
+          }
+          
+          // Si c'est un tableau
+          if (Array.isArray(speakerObj)) {
+            return speakerObj
+              .map(spk => {
+                if (spk && typeof spk === 'object' && 'firstName' in spk && 'lastName' in spk) {
+                  const typedSpeaker = spk as Speaker;
+                  return `${typedSpeaker.firstName} ${typedSpeaker.lastName}`;
+                }
+                return String(spk);
+              })
+              .join(', ');
+          }
+          
+          // Si c'est un autre type d'objet, le convertir en chaîne
+          return JSON.stringify(speakerObj);
+        }
+        
+        // Fallback pour tout autre type
+        return String(speaker);
+      });
+    
+    // Utiliser Set pour éliminer les doublons
     return [...new Set(speakers)];
   }, [sessions]);
 
@@ -255,8 +300,8 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
                     className="w-full sm:w-40 py-1.5 pl-3 pr-10 text-sm border-gray-300 focus:outline-none focus:ring-[#81B441] focus:border-[#81B441] rounded-md"
                   >
                     <option value="">Tous les lieux</option>
-                    {uniqueLocations.map((location) => (
-                      <option key={location} value={location}>
+                    {uniqueLocations.map((location, index) => (
+                      <option key={`location-${index}`} value={location}>
                         {location}
                       </option>
                     ))}
@@ -272,8 +317,8 @@ export default function EventSessionsPage({ params }: { params: { id: string } }
                     className="w-full sm:w-48 py-1.5 pl-3 pr-10 text-sm border-gray-300 focus:outline-none focus:ring-[#81B441] focus:border-[#81B441] rounded-md"
                   >
                     <option value="">Tous les intervenants</option>
-                    {uniqueSpeakers.map((speaker) => (
-                      <option key={speaker} value={speaker}>
+                    {uniqueSpeakers.map((speaker, index) => (
+                      <option key={`speaker-${index}`} value={speaker}>
                         {speaker}
                       </option>
                     ))}

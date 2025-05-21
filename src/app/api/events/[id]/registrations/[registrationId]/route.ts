@@ -12,16 +12,6 @@ interface RouteContext {
 
 // GET /api/events/[id]/registrations/[registrationId] - Get a specific registration
 export async function GET(request: Request, context: RouteContext) {
-  // Check for authentication
-  const session = await getServerSession(authOptions);
-  
-  if (!session) {
-    return NextResponse.json(
-      { message: "Unauthorized" },
-      { status: 401 }
-    );
-  }
-  
   const { id, registrationId } = context.params;
   
   try {
@@ -31,6 +21,18 @@ export async function GET(request: Request, context: RouteContext) {
         id: registrationId,
         eventId: id,
       },
+      include: {
+        event: {
+          select: {
+            id: true,
+            name: true,
+            location: true,
+            startDate: true,
+            endDate: true,
+            slug: true,
+          }
+        }
+      }
     });
     
     if (!registration) {

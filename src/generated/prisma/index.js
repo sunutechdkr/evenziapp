@@ -286,11 +286,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://mac:postgres@localhost:5432/inevent_restored?schema=public"
+        "value": null
       }
     }
   },

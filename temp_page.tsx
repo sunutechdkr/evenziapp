@@ -183,7 +183,7 @@ export default function EventDetailsPage() {
             
             <div className="flex items-center space-x-3">
               <Link 
-                href={`/dashboard/events/${eventId}/apercu`}
+                href={`/event/${eventId}`}
                 className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <EyeIcon className="w-4 h-4 mr-2" />

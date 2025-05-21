@@ -6,13 +6,16 @@ import { signIn } from "next-auth/react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function LoginPage() {
+  const [activeTab, setActiveTab] = useState<'magic-link' | 'admin'>('magic-link');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Fonction pour gérer la connexion admin avec identifiants
+  const handleAdminSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -34,6 +37,44 @@ export default function LoginPage() {
       router.refresh();
     } catch {
       setError("Une erreur s'est produite lors de la connexion");
+      setLoading(false);
+    }
+  };
+
+  // Fonction pour gérer la connexion par Magic Link
+  const handleMagicLinkSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    if (!email) {
+      setError("Veuillez saisir votre adresse email");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Stocker l'email dans sessionStorage
+      sessionStorage.setItem('verifyEmail', email);
+      
+      const result = await signIn('email', {
+        email,
+        redirect: false,
+        callbackUrl: '/dashboard',
+      });
+
+      if (result?.error) {
+        setError("Erreur lors de l'envoi du lien de connexion");
+        setLoading(false);
+        return;
+      }
+      
+      // Si la requête est réussie, rediriger vers la page de vérification
+      router.push('/auth/verify-request');
+    } catch (error) {
+      setError("Une erreur s'est produite lors de l'envoi du lien de connexion");
+      console.error(error);
       setLoading(false);
     }
   };
@@ -92,79 +133,152 @@ export default function LoginPage() {
           <p className="text-gray-400">Connectez-vous à votre compte</p>
         </div>
 
+        {/* Tabs */}
+        <div className="flex mb-6 border-b border-gray-700">
+          <button
+            onClick={() => setActiveTab('magic-link')}
+            className={`flex-1 py-3 px-4 text-sm font-medium transition-colors duration-200 ${
+              activeTab === 'magic-link'
+                ? 'text-[#81B441] border-b-2 border-[#81B441]'
+                : 'text-gray-400 hover:text-gray-300'
+            }`}
+          >
+            Magic Link
+          </button>
+          <button
+            onClick={() => setActiveTab('admin')}
+            className={`flex-1 py-3 px-4 text-sm font-medium transition-colors duration-200 ${
+              activeTab === 'admin'
+                ? 'text-[#81B441] border-b-2 border-[#81B441]'
+                : 'text-gray-400 hover:text-gray-300'
+            }`}
+          >
+            Admin
+          </button>
+        </div>
+
         {error && (
           <div className="mb-4 p-3 bg-red-900/50 text-red-300 border border-red-800 rounded-md text-sm animate-fadeIn">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
-              placeholder="votre@email.com"
-              required
-            />
+        {success && (
+          <div className="mb-4 p-3 bg-green-900/50 text-green-300 border border-green-800 rounded-md text-sm animate-fadeIn">
+            {success}
           </div>
+        )}
 
-          <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-              Mot de passe
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
-              placeholder="••••••••"
-              required
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                type="checkbox"
-                className="h-4 w-4 bg-gray-700 border-gray-600 text-[#81B441] focus:ring-[#81B441] rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
-                Se souvenir de moi
+        {/* Magic Link Form */}
+        {activeTab === 'magic-link' && (
+          <form onSubmit={handleMagicLinkSubmit} className="space-y-6">
+            <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
+              <label htmlFor="magic-email" className="block text-sm font-medium text-gray-300 mb-1">
+                Email
               </label>
+              <input
+                id="magic-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
+                placeholder="votre@email.com"
+                required
+              />
             </div>
-            <a href="#" className="text-sm text-[#81B441] hover:text-[#9ccd5b] hover:underline transition-colors duration-200">
-              Mot de passe oublié?
-            </a>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#81B441] to-[#6a9635] hover:from-[#9ccd5b] hover:to-[#81B441] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-[#81B441] transition-all duration-200 transform hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(129,180,65,0.4)]"
-            >
-              {loading ? (
-                <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Connexion en cours...
-                </span>
-              ) : (
-                "Se connecter"
-              )}
-            </button>
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#81B441] to-[#6a9635] hover:from-[#9ccd5b] hover:to-[#81B441] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-[#81B441] transition-all duration-200 transform hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(129,180,65,0.4)]"
+              >
+                {loading ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Envoi en cours...
+                  </span>
+                ) : (
+                  "Envoyer le lien de connexion"
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Admin Login Form */}
+        {activeTab === 'admin' && (
+          <form onSubmit={handleAdminSubmit} className="space-y-6">
+            <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
+              <label htmlFor="admin-email" className="block text-sm font-medium text-gray-300 mb-1">
+                Email
+              </label>
+              <input
+                id="admin-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
+                placeholder="votre@email.com"
+                required
+              />
+            </div>
+
+            <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+                Mot de passe
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 bg-gray-700 border-gray-600 text-[#81B441] focus:ring-[#81B441] rounded"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
+                  Se souvenir de moi
+                </label>
+              </div>
+              <a href="#" className="text-sm text-[#81B441] hover:text-[#9ccd5b] hover:underline transition-colors duration-200">
+                Mot de passe oublié?
+              </a>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#81B441] to-[#6a9635] hover:from-[#9ccd5b] hover:to-[#81B441] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-[#81B441] transition-all duration-200 transform hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(129,180,65,0.4)]"
+              >
+                {loading ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Connexion en cours...
+                  </span>
+                ) : (
+                  "Se connecter"
+                )}
+              </button>
+            </div>
+          </form>
+        )}
 
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-400">
