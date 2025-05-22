@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import Sidebar from "@/components/dashboard/Sidebar";
 import Link from "next/link";
 import { format, isPast, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -164,7 +164,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container flex h-screen bg-gray-50">
-      <Sidebar onExpandChange={(expanded) => setSidebarExpanded(expanded)} />
+      <Sidebar />
       <div 
         className={`dashboard-content flex-1 overflow-auto transition-all duration-300 ${
           sidebarExpanded ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-20'

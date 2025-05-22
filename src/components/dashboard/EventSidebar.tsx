@@ -14,12 +14,12 @@ import {
   IdentificationIcon,
   DocumentTextIcon,
   BellIcon,
-  UserCircleIcon,
   XMarkIcon,
   ChevronLeftIcon,
   PresentationChartLineIcon,
   Bars3Icon,
 } from "@heroicons/react/24/outline";
+import { UserProfile } from "./UserProfile";
 
 // Define types for menu items
 type SubMenuItem = {
@@ -77,54 +77,6 @@ export function NotificationCenter({
         )}
       </div>
     </>
-  );
-}
-
-/**
- * Composant AdminProfile - Profil administrateur réutilisable
- */
-export function AdminProfile({ isExpanded = true }: { isExpanded: boolean }) {
-  return (
-    <div className="admin-profile px-3 mb-2">
-      {isExpanded ? (
-        <div className="bg-gray-700 rounded-lg p-3 transition-all duration-300 hover:shadow-lg hover:shadow-black/20 border-l-2 border-[#81B441]">
-          <div className="flex items-center space-x-3">
-            <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#81B441] to-[#6a9636] flex items-center justify-center text-white font-bold">
-                AD
-              </div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
-                Admin User
-              </p>
-              <p className="text-xs text-gray-400 truncate">
-                admin@inevent.com
-              </p>
-            </div>
-            <div>
-              <button className="text-gray-400 hover:text-white">
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <button className="text-xs bg-[#81B441]/20 hover:bg-[#81B441]/30 text-white py-1 px-2 rounded transition-colors hover:shadow-md">
-              Profil
-            </button>
-            <button className="text-xs bg-gray-800 hover:bg-gray-900 text-white py-1 px-2 rounded transition-colors hover:shadow-md">
-              Déconnexion
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="flex justify-center">
-          <button className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-gray-700 transition-colors">
-            <UserCircleIcon className="h-6 w-6" />
-          </button>
-        </div>
-      )}
-    </div>
   );
 }
 
@@ -375,8 +327,8 @@ export function EventSidebar({
           </button>
         </div>
 
-          {/* Profil admin */}
-          <AdminProfile isExpanded={isExpanded} />
+          {/* Profil utilisateur */}
+          <UserProfile isExpanded={isExpanded} />
           
           {/* Centre de notifications */}
           <NotificationCenter 

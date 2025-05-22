@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import Sidebar from "@/components/dashboard/Sidebar";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { EventTable } from "@/components/dashboard/EventTable";

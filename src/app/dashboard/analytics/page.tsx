@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import Sidebar from "@/components/dashboard/Sidebar";
 import {
   Chart as ChartJS,
   CategoryScale,

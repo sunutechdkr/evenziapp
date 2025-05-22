@@ -13,7 +13,6 @@ import {
   Cog6ToothIcon,
   ChartBarIcon,
   BellIcon,
-  UserCircleIcon,
   ChevronRightIcon,
   XMarkIcon,
   ChevronLeftIcon,
@@ -23,8 +22,18 @@ import {
 import { UserRole } from "@/types/models";
 import { UserProfile } from "./UserProfile";
 
+// Type pour les éléments de navigation
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+  exact?: boolean;
+  highlight?: boolean;
+  adminOnly?: boolean;
+}
+
 // Configuration des liens de navigation
-const navigation = [
+const navigation: NavigationItem[] = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, exact: true },
   { name: "Événements", href: "/dashboard/events", icon: CalendarIcon },
   { name: "Analytique", href: "/dashboard/analytics", icon: ChartBarIcon },
@@ -35,7 +44,7 @@ const navigation = [
     name: "Gestion des utilisateurs", 
     href: "/dashboard/admin/users", 
     icon: UsersIcon,
-    adminOnly: true 
+    adminOnly: true
   },
   { name: "Réglages", href: "/dashboard/settings", icon: Cog6ToothIcon },
   { name: "Shadcn UI", href: "/shadcn-example", icon: HomeIcon, highlight: true },
@@ -291,64 +300,48 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
           
           {/* Navigation principale */}
           <nav className="flex-1 px-3 pb-4 mt-2 space-y-2">
-          {filteredNavigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
+            {filteredNavigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
                 className={`
-                  block py-2 px-3 rounded-md transition-colors duration-200
-                  ${item.highlight 
-                    ? 'bg-purple-100 text-purple-900 hover:bg-purple-200' 
-                    : isActive(item.href, item.exact) 
-                      ? 'bg-[#81B441] text-white' 
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                  }
+                  flex items-center px-2 py-2 rounded-md transition-colors duration-200
+                  ${isActive(item.href, item.exact) 
+                    ? 'bg-[#81B441] text-white' 
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'}
+                  ${item.highlight && !isActive(item.href, item.exact) 
+                    ? 'border border-dashed border-[#81B441]/50 text-[#81B441]' 
+                    : ''}
+                  ${!isExpanded ? 'justify-center' : ''}
                 `}
               >
-                <div className="flex items-center">
-                  <item.icon className={`
-                    mr-3 h-5 w-5 flex-shrink-0
-                    ${item.highlight ? 'text-purple-700' : isActive(item.href, item.exact) ? 'text-white' : 'text-gray-400'}
-                  `} />
-              {isExpanded && (
-                    <div className="flex items-center">
-                      <span className="text-sm">{item.name}</span>
-                      {item.highlight && (
-                        <span className="ml-2 inline-flex items-center rounded-full bg-purple-500 px-2 py-0.5 text-xs font-medium text-white">
-                          Nouveau
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-            </Link>
-          ))}
-        </nav>
-        
-          {/* Pied de sidebar */}
-          <div className="p-3 mt-auto">
-            <div className="py-2 px-3 bg-gray-700/50 rounded-md">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <CalendarIcon className="h-5 w-5 text-[#81B441]" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-xs text-white font-medium">Besoin d&apos;aide?</p>
-                  <a 
-                    href="mailto:support@inevent.com" 
-                    className="text-xs text-[#81B441] hover:underline"
-                  >
-                    support@inevent.com
-                  </a>
-                </div>
+                <item.icon className={`h-5 w-5 ${isActive(item.href, item.exact) ? 'text-white' : 'text-[#81B441]'}`} />
+                {isExpanded && (
+                  <span className="ml-3">{item.name}</span>
+                )}
+              </Link>
+            ))}
+          </nav>
+          
+          {/* Lien d'aide en bas */}
+          {isExpanded && (
+            <div className="mt-auto px-3 pb-4">
+              <div className="bg-gray-700/50 rounded-lg p-3 text-xs text-gray-300">
+                <p className="font-medium mb-1">Besoin d&apos;aide?</p>
+                <a href="mailto:support@inevent.com" className="text-[#81B441] hover:underline">
+                  support@inevent.com
+                </a>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </aside>
       
       {/* Panneau de notifications */}
-      <NotificationPanel show={showNotifications} onClose={() => setShowNotifications(false)} />
+      <NotificationPanel 
+        show={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </>
   );
-}
+} 

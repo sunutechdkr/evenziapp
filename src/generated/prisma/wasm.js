@@ -127,7 +127,8 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   permissions: 'permissions',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  lastLogin: 'lastLogin'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
