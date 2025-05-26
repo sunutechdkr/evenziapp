@@ -16,7 +16,7 @@ import {
   Home
 } from "lucide-react";
 import Link from "next/link";
-import Sidebar from "@/components/dashboard/SidebarNew";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 // Composants Shadcn/UI
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 type User = {
   id: string;
@@ -230,7 +230,6 @@ export default function UsersManagementPage() {
         }`}
       >
         <div className="container mx-auto py-8 px-4">
-          <Toaster position="top-right" />
           
           {/* Breadcrumb navigation */}
           <nav className="flex mb-4 text-sm text-gray-500" aria-label="Breadcrumb">

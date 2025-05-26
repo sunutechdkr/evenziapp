@@ -176,6 +176,8 @@ exports.Prisma.EventScalarFieldEnum = {
   timezone: 'timezone',
   videoUrl: 'videoUrl',
   supportEmail: 'supportEmail',
+  archived: 'archived',
+  archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
@@ -241,6 +243,68 @@ exports.Prisma.SessionParticipantScalarFieldEnum = {
   attendanceTime: 'attendanceTime'
 };
 
+exports.Prisma.AppointmentScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  requesterId: 'requesterId',
+  recipientId: 'recipientId',
+  status: 'status',
+  message: 'message',
+  proposedTime: 'proposedTime',
+  confirmedTime: 'confirmedTime',
+  location: 'location',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OtpCodeScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  eventId: 'eventId',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.BadgeScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  canvasData: 'canvasData',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BadgeTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  canvasData: 'canvasData',
+  isGlobal: 'isGlobal',
+  eventId: 'eventId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ParticipantBadgeScalarFieldEnum = {
+  id: 'id',
+  registrationId: 'registrationId',
+  eventId: 'eventId',
+  templateId: 'templateId',
+  status: 'status',
+  generatedAt: 'generatedAt',
+  printedAt: 'printedAt',
+  deliveredAt: 'deliveredAt',
+  customData: 'customData',
+  qrCodeData: 'qrCodeData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -272,6 +336,19 @@ exports.SponsorLevel = exports.$Enums.SponsorLevel = {
   OTHER: 'OTHER'
 };
 
+exports.AppointmentStatus = exports.$Enums.AppointmentStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  COMPLETED: 'COMPLETED'
+};
+
+exports.BadgeStatus = exports.$Enums.BadgeStatus = {
+  GENERATED: 'GENERATED',
+  PRINTED: 'PRINTED',
+  DELIVERED: 'DELIVERED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
@@ -281,7 +358,12 @@ exports.Prisma.ModelName = {
   Registration: 'Registration',
   event_sessions: 'event_sessions',
   Sponsor: 'Sponsor',
-  SessionParticipant: 'SessionParticipant'
+  SessionParticipant: 'SessionParticipant',
+  Appointment: 'Appointment',
+  OtpCode: 'OtpCode',
+  Badge: 'Badge',
+  BadgeTemplate: 'BadgeTemplate',
+  ParticipantBadge: 'ParticipantBadge'
 };
 
 /**

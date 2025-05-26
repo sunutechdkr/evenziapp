@@ -9,9 +9,12 @@ export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'magic-link' | 'admin'>('magic-link');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [otpCode, setOtpCode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [magicLinkStep, setMagicLinkStep] = useState<'email' | 'otp'>('email'); // Étape pour Magic Link
+  const [eventName, setEventName] = useState("");
   const router = useRouter();
 
   // Fonction pour gérer la connexion admin avec identifiants
@@ -41,7 +44,7 @@ export default function LoginPage() {
     }
   };
 
-  // Fonction pour gérer la connexion par Magic Link
+  // Fonction pour envoyer le code OTP
   const handleMagicLinkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -55,28 +58,132 @@ export default function LoginPage() {
     }
 
     try {
-      // Stocker l'email dans sessionStorage
-      sessionStorage.setItem('verifyEmail', email);
-      
-      const result = await signIn('email', {
-        email,
-        redirect: false,
-        callbackUrl: '/dashboard',
+      // Essayer d'abord avec l'API participant OTP
+      const participantResponse = await fetch('/api/auth/participant-magic-link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
       });
 
-      if (result?.error) {
-        setError("Erreur lors de l'envoi du lien de connexion");
+      if (participantResponse.ok) {
+        const data = await participantResponse.json();
+        setEventName(data.eventName);
+        setSuccess(`Code envoyé ! Vérifiez votre boîte mail.`);
+        setMagicLinkStep('otp');
         setLoading(false);
         return;
       }
-      
-      // Si la requête est réussie, rediriger vers la page de vérification
-      router.push('/auth/verify-request');
+
+      // Si participant non trouvé, essayer avec NextAuth Email Provider pour les utilisateurs normaux
+      if (participantResponse.status === 404) {
+        // Stocker l'email dans sessionStorage
+        sessionStorage.setItem('verifyEmail', email);
+        
+        const result = await signIn('email', {
+          email,
+          redirect: false,
+          callbackUrl: '/dashboard',
+        });
+
+        if (result?.error) {
+          setError("Aucun compte trouvé avec cet email");
+          setLoading(false);
+          return;
+        }
+        
+        // Si la requête est réussie, rediriger vers la page de vérification
+        router.push('/auth/verify-request');
+        return;
+      }
+
+      // Autres erreurs
+      const errorData = await participantResponse.json();
+      setError(errorData.error || "Erreur lors de l'envoi du code");
+      setLoading(false);
+
     } catch (error) {
-      setError("Une erreur s'est produite lors de l'envoi du lien de connexion");
+      setError("Une erreur s'est produite lors de l'envoi du code");
       console.error(error);
       setLoading(false);
     }
+  };
+
+  // Fonction pour vérifier le code OTP
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    if (!otpCode || otpCode.length !== 6) {
+      setError("Veuillez saisir le code à 6 chiffres");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/auth/participant-verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, code: otpCode }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSuccess("Code validé ! Redirection en cours...");
+        
+        // Rediriger vers la page de connexion automatique
+        setTimeout(() => {
+          window.location.href = data.redirectUrl;
+        }, 1000);
+      } else {
+        setError(data.error || "Code invalide ou expiré");
+        setLoading(false);
+      }
+
+    } catch (error) {
+      setError("Une erreur s'est produite lors de la vérification du code");
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  // Fonction pour revenir à l'étape email
+  const handleBackToEmail = () => {
+    setMagicLinkStep('email');
+    setOtpCode("");
+    setError("");
+    setSuccess("");
+  };
+
+  // Fonction pour renvoyer le code
+  const handleResendCode = async () => {
+    setLoading(true);
+    setError("");
+    
+    try {
+      const response = await fetch('/api/auth/participant-magic-link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setSuccess("Nouveau code envoyé ! Vérifiez votre boîte mail.");
+      } else {
+        setError("Erreur lors du renvoi du code");
+      }
+    } catch {
+      setError("Erreur lors du renvoi du code");
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -143,7 +250,7 @@ export default function LoginPage() {
                 : 'text-gray-400 hover:text-gray-300'
             }`}
           >
-            Magic Link
+            Participant
           </button>
           <button
             onClick={() => setActiveTab('admin')}
@@ -171,42 +278,134 @@ export default function LoginPage() {
 
         {/* Magic Link Form */}
         {activeTab === 'magic-link' && (
-          <form onSubmit={handleMagicLinkSubmit} className="space-y-6">
-            <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
-              <label htmlFor="magic-email" className="block text-sm font-medium text-gray-300 mb-1">
-                Email
-              </label>
-              <input
-                id="magic-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
-                placeholder="votre@email.com"
-                required
-              />
-            </div>
+          <>
+            {/* Étape 1: Saisie de l'email */}
+            {magicLinkStep === 'email' && (
+              <form onSubmit={handleMagicLinkSubmit} className="space-y-6">
+                <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
+                  <label htmlFor="magic-email" className="block text-sm font-medium text-gray-300 mb-1">
+                    Email
+                  </label>
+                  <input
+                    id="magic-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
+                    placeholder="votre@email.com"
+                    required
+                  />
+                </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#81B441] to-[#6a9635] hover:from-[#9ccd5b] hover:to-[#81B441] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-[#81B441] transition-all duration-200 transform hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(129,180,65,0.4)]"
-              >
-                {loading ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Envoi en cours...
-                  </span>
-                ) : (
-                  "Envoyer le lien de connexion"
-                )}
-              </button>
-            </div>
-          </form>
+                <div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#81B441] to-[#6a9635] hover:from-[#9ccd5b] hover:to-[#81B441] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-[#81B441] transition-all duration-200 transform hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(129,180,65,0.4)]"
+                  >
+                    {loading ? (
+                      <span className="flex items-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Envoi en cours...
+                      </span>
+                    ) : (
+                      "Envoyer le code de connexion"
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* Étape 2: Saisie du code OTP */}
+            {magicLinkStep === 'otp' && (
+              <div className="space-y-6">
+                <div className="text-center">
+                  <div className="mb-4">
+                    <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-[#81B441]/20 rounded-full">
+                      <svg className="w-8 h-8 text-[#81B441]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">Code envoyé !</h3>
+                    <p className="text-sm text-gray-400 mb-1">
+                      Nous avons envoyé un code à 6 chiffres à
+                    </p>
+                    <p className="text-sm font-medium text-[#81B441]">{email}</p>
+                    {eventName && (
+                      <p className="text-xs text-gray-500 mt-2">
+                        Événement: {eventName}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <form onSubmit={handleOtpSubmit} className="space-y-6">
+                  <div className="transform transition-all duration-200 hover:translate-y-[-2px]">
+                    <label htmlFor="otp-code" className="block text-sm font-medium text-gray-300 mb-1">
+                      Code de vérification
+                    </label>
+                    <input
+                      id="otp-code"
+                      type="text"
+                      value={otpCode}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                        setOtpCode(value);
+                      }}
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-center text-2xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent transition-all duration-200 placeholder-gray-500"
+                      placeholder="000000"
+                      maxLength={6}
+                      pattern="[0-9]{6}"
+                      required
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Saisissez le code à 6 chiffres reçu par email
+                    </p>
+                  </div>
+
+                  <div>
+                    <button
+                      type="submit"
+                      disabled={loading || otpCode.length !== 6}
+                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#81B441] to-[#6a9635] hover:from-[#9ccd5b] hover:to-[#81B441] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-[#81B441] transition-all duration-200 transform hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(129,180,65,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {loading ? (
+                        <span className="flex items-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Vérification...
+                        </span>
+                      ) : (
+                        "Vérifier le code"
+                      )}
+                    </button>
+                  </div>
+                </form>
+
+                <div className="flex flex-col space-y-3 text-center">
+                  <button
+                    onClick={handleResendCode}
+                    disabled={loading}
+                    className="text-sm text-[#81B441] hover:text-[#9ccd5b] transition-colors duration-200 disabled:opacity-50"
+                  >
+                    Renvoyer le code
+                  </button>
+                  
+                  <button
+                    onClick={handleBackToEmail}
+                    className="text-sm text-gray-400 hover:text-gray-300 transition-colors duration-200"
+                  >
+                    ← Modifier l&apos;adresse email
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Admin Login Form */}

@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 // Récupère les détails d'un utilisateur par son ID (admin uniquement)
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { userId: string } }
 ) {
   try {
     // Vérifier l'authentification et les autorisations
@@ -21,7 +21,7 @@ export async function GET(
       );
     }
 
-    const userId = params.id;
+    const userId = params.userId;
 
     // Récupérer l'utilisateur
     const user = await prisma.user.findUnique({
@@ -59,7 +59,7 @@ export async function GET(
 // Met à jour un utilisateur existant (admin uniquement)
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { userId: string } }
 ) {
   try {
     // Vérifier l'authentification et les autorisations
@@ -71,7 +71,7 @@ export async function PUT(
       );
     }
 
-    const userId = params.id;
+    const userId = params.userId;
     const { name, email, role, permissions, password } = await request.json();
 
     // Vérifier si l'utilisateur existe
@@ -152,7 +152,7 @@ export async function PUT(
 // Supprime un utilisateur (admin uniquement)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { userId: string } }
 ) {
   try {
     // Vérifier l'authentification et les autorisations
@@ -164,7 +164,7 @@ export async function DELETE(
       );
     }
 
-    const userId = params.id;
+    const userId = params.userId;
 
     // Empêcher la suppression de son propre compte
     if (userId === session.user.id) {

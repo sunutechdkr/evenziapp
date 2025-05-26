@@ -1,25 +1,31 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { Toaster } from "sonner";
 
 // Configuration des polices Geist pour l'application
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 // Métadonnées générales de l'application pour le SEO
 export const metadata: Metadata = {
-  title: "Inevent - Event Management System",
-  description: "Gérez vos événements, inscriptions et check-ins avec QR codes de manière intuitive",
+  title: {
+    template: '%s | InEvent',
+    default: 'InEvent - Gestion d\'événements',
+  },
+  description: "Plateforme de gestion d'événements",
   keywords: "event management, qr code, check-in, event registration, event organization",
   authors: [{ name: "Inevent Team" }],
+  creator: "Inevent",
+  publisher: "Inevent",
 };
 
 /**
@@ -34,13 +40,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background antialiased`}
       >
         <AuthProvider>
           {children}
         </AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

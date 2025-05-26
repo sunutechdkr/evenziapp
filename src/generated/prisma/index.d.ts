@@ -58,6 +58,31 @@ export type Sponsor = $Result.DefaultSelection<Prisma.$SponsorPayload>
  * 
  */
 export type SessionParticipant = $Result.DefaultSelection<Prisma.$SessionParticipantPayload>
+/**
+ * Model Appointment
+ * 
+ */
+export type Appointment = $Result.DefaultSelection<Prisma.$AppointmentPayload>
+/**
+ * Model OtpCode
+ * 
+ */
+export type OtpCode = $Result.DefaultSelection<Prisma.$OtpCodePayload>
+/**
+ * Model Badge
+ * 
+ */
+export type Badge = $Result.DefaultSelection<Prisma.$BadgePayload>
+/**
+ * Model BadgeTemplate
+ * 
+ */
+export type BadgeTemplate = $Result.DefaultSelection<Prisma.$BadgeTemplatePayload>
+/**
+ * Model ParticipantBadge
+ * 
+ */
+export type ParticipantBadge = $Result.DefaultSelection<Prisma.$ParticipantBadgePayload>
 
 /**
  * Enums
@@ -85,6 +110,25 @@ export const SponsorLevel: {
 
 export type SponsorLevel = (typeof SponsorLevel)[keyof typeof SponsorLevel]
 
+
+export const AppointmentStatus: {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  COMPLETED: 'COMPLETED'
+};
+
+export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus]
+
+
+export const BadgeStatus: {
+  GENERATED: 'GENERATED',
+  PRINTED: 'PRINTED',
+  DELIVERED: 'DELIVERED'
+};
+
+export type BadgeStatus = (typeof BadgeStatus)[keyof typeof BadgeStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -94,6 +138,14 @@ export const UserRole: typeof $Enums.UserRole
 export type SponsorLevel = $Enums.SponsorLevel
 
 export const SponsorLevel: typeof $Enums.SponsorLevel
+
+export type AppointmentStatus = $Enums.AppointmentStatus
+
+export const AppointmentStatus: typeof $Enums.AppointmentStatus
+
+export type BadgeStatus = $Enums.BadgeStatus
+
+export const BadgeStatus: typeof $Enums.BadgeStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -309,6 +361,56 @@ export class PrismaClient<
     * ```
     */
   get sessionParticipant(): Prisma.SessionParticipantDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.appointment`: Exposes CRUD operations for the **Appointment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Appointments
+    * const appointments = await prisma.appointment.findMany()
+    * ```
+    */
+  get appointment(): Prisma.AppointmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.otpCode`: Exposes CRUD operations for the **OtpCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OtpCodes
+    * const otpCodes = await prisma.otpCode.findMany()
+    * ```
+    */
+  get otpCode(): Prisma.OtpCodeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.badge`: Exposes CRUD operations for the **Badge** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Badges
+    * const badges = await prisma.badge.findMany()
+    * ```
+    */
+  get badge(): Prisma.BadgeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.badgeTemplate`: Exposes CRUD operations for the **BadgeTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BadgeTemplates
+    * const badgeTemplates = await prisma.badgeTemplate.findMany()
+    * ```
+    */
+  get badgeTemplate(): Prisma.BadgeTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.participantBadge`: Exposes CRUD operations for the **ParticipantBadge** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ParticipantBadges
+    * const participantBadges = await prisma.participantBadge.findMany()
+    * ```
+    */
+  get participantBadge(): Prisma.ParticipantBadgeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -757,7 +859,12 @@ export namespace Prisma {
     Registration: 'Registration',
     event_sessions: 'event_sessions',
     Sponsor: 'Sponsor',
-    SessionParticipant: 'SessionParticipant'
+    SessionParticipant: 'SessionParticipant',
+    Appointment: 'Appointment',
+    OtpCode: 'OtpCode',
+    Badge: 'Badge',
+    BadgeTemplate: 'BadgeTemplate',
+    ParticipantBadge: 'ParticipantBadge'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -776,7 +883,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "event" | "registration" | "event_sessions" | "sponsor" | "sessionParticipant"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "event" | "registration" | "event_sessions" | "sponsor" | "sessionParticipant" | "appointment" | "otpCode" | "badge" | "badgeTemplate" | "participantBadge"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1446,6 +1553,376 @@ export namespace Prisma {
           }
         }
       }
+      Appointment: {
+        payload: Prisma.$AppointmentPayload<ExtArgs>
+        fields: Prisma.AppointmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AppointmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AppointmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>
+          }
+          findFirst: {
+            args: Prisma.AppointmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AppointmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>
+          }
+          findMany: {
+            args: Prisma.AppointmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>[]
+          }
+          create: {
+            args: Prisma.AppointmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>
+          }
+          createMany: {
+            args: Prisma.AppointmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AppointmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>[]
+          }
+          delete: {
+            args: Prisma.AppointmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>
+          }
+          update: {
+            args: Prisma.AppointmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.AppointmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AppointmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AppointmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.AppointmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentPayload>
+          }
+          aggregate: {
+            args: Prisma.AppointmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAppointment>
+          }
+          groupBy: {
+            args: Prisma.AppointmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AppointmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AppointmentCountArgs<ExtArgs>
+            result: $Utils.Optional<AppointmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      OtpCode: {
+        payload: Prisma.$OtpCodePayload<ExtArgs>
+        fields: Prisma.OtpCodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OtpCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OtpCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
+          }
+          findFirst: {
+            args: Prisma.OtpCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OtpCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
+          }
+          findMany: {
+            args: Prisma.OtpCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>[]
+          }
+          create: {
+            args: Prisma.OtpCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
+          }
+          createMany: {
+            args: Prisma.OtpCodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OtpCodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>[]
+          }
+          delete: {
+            args: Prisma.OtpCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
+          }
+          update: {
+            args: Prisma.OtpCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
+          }
+          deleteMany: {
+            args: Prisma.OtpCodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OtpCodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OtpCodeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>[]
+          }
+          upsert: {
+            args: Prisma.OtpCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
+          }
+          aggregate: {
+            args: Prisma.OtpCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOtpCode>
+          }
+          groupBy: {
+            args: Prisma.OtpCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OtpCodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OtpCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<OtpCodeCountAggregateOutputType> | number
+          }
+        }
+      }
+      Badge: {
+        payload: Prisma.$BadgePayload<ExtArgs>
+        fields: Prisma.BadgeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BadgeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BadgeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>
+          }
+          findFirst: {
+            args: Prisma.BadgeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BadgeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>
+          }
+          findMany: {
+            args: Prisma.BadgeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>[]
+          }
+          create: {
+            args: Prisma.BadgeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>
+          }
+          createMany: {
+            args: Prisma.BadgeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BadgeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>[]
+          }
+          delete: {
+            args: Prisma.BadgeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>
+          }
+          update: {
+            args: Prisma.BadgeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>
+          }
+          deleteMany: {
+            args: Prisma.BadgeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BadgeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BadgeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>[]
+          }
+          upsert: {
+            args: Prisma.BadgeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgePayload>
+          }
+          aggregate: {
+            args: Prisma.BadgeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBadge>
+          }
+          groupBy: {
+            args: Prisma.BadgeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BadgeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BadgeCountArgs<ExtArgs>
+            result: $Utils.Optional<BadgeCountAggregateOutputType> | number
+          }
+        }
+      }
+      BadgeTemplate: {
+        payload: Prisma.$BadgeTemplatePayload<ExtArgs>
+        fields: Prisma.BadgeTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BadgeTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BadgeTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.BadgeTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BadgeTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.BadgeTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.BadgeTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.BadgeTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BadgeTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.BadgeTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>
+          }
+          update: {
+            args: Prisma.BadgeTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.BadgeTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BadgeTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BadgeTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.BadgeTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.BadgeTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBadgeTemplate>
+          }
+          groupBy: {
+            args: Prisma.BadgeTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BadgeTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BadgeTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<BadgeTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      ParticipantBadge: {
+        payload: Prisma.$ParticipantBadgePayload<ExtArgs>
+        fields: Prisma.ParticipantBadgeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ParticipantBadgeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ParticipantBadgeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>
+          }
+          findFirst: {
+            args: Prisma.ParticipantBadgeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ParticipantBadgeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>
+          }
+          findMany: {
+            args: Prisma.ParticipantBadgeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>[]
+          }
+          create: {
+            args: Prisma.ParticipantBadgeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>
+          }
+          createMany: {
+            args: Prisma.ParticipantBadgeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ParticipantBadgeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>[]
+          }
+          delete: {
+            args: Prisma.ParticipantBadgeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>
+          }
+          update: {
+            args: Prisma.ParticipantBadgeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>
+          }
+          deleteMany: {
+            args: Prisma.ParticipantBadgeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ParticipantBadgeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ParticipantBadgeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>[]
+          }
+          upsert: {
+            args: Prisma.ParticipantBadgeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantBadgePayload>
+          }
+          aggregate: {
+            args: Prisma.ParticipantBadgeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateParticipantBadge>
+          }
+          groupBy: {
+            args: Prisma.ParticipantBadgeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ParticipantBadgeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ParticipantBadgeCountArgs<ExtArgs>
+            result: $Utils.Optional<ParticipantBadgeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1539,6 +2016,11 @@ export namespace Prisma {
     event_sessions?: event_sessionsOmit
     sponsor?: SponsorOmit
     sessionParticipant?: SessionParticipantOmit
+    appointment?: AppointmentOmit
+    otpCode?: OtpCodeOmit
+    badge?: BadgeOmit
+    badgeTemplate?: BadgeTemplateOmit
+    participantBadge?: ParticipantBadgeOmit
   }
 
   /* Types for Logging */
@@ -1685,12 +2167,20 @@ export namespace Prisma {
     event_sessions: number
     registrations: number
     sponsors: number
+    appointments: number
+    badges: number
+    badgeTemplates: number
+    participantBadges: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event_sessions?: boolean | EventCountOutputTypeCountEvent_sessionsArgs
     registrations?: boolean | EventCountOutputTypeCountRegistrationsArgs
     sponsors?: boolean | EventCountOutputTypeCountSponsorsArgs
+    appointments?: boolean | EventCountOutputTypeCountAppointmentsArgs
+    badges?: boolean | EventCountOutputTypeCountBadgesArgs
+    badgeTemplates?: boolean | EventCountOutputTypeCountBadgeTemplatesArgs
+    participantBadges?: boolean | EventCountOutputTypeCountParticipantBadgesArgs
   }
 
   // Custom InputTypes
@@ -1725,6 +2215,34 @@ export namespace Prisma {
     where?: SponsorWhereInput
   }
 
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountBadgeTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeTemplateWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountParticipantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantBadgeWhereInput
+  }
+
 
   /**
    * Count Type RegistrationCountOutputType
@@ -1732,10 +2250,16 @@ export namespace Prisma {
 
   export type RegistrationCountOutputType = {
     sessions: number
+    sentAppointments: number
+    receivedAppointments: number
+    participantBadges: number
   }
 
   export type RegistrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | RegistrationCountOutputTypeCountSessionsArgs
+    sentAppointments?: boolean | RegistrationCountOutputTypeCountSentAppointmentsArgs
+    receivedAppointments?: boolean | RegistrationCountOutputTypeCountReceivedAppointmentsArgs
+    participantBadges?: boolean | RegistrationCountOutputTypeCountParticipantBadgesArgs
   }
 
   // Custom InputTypes
@@ -1754,6 +2278,27 @@ export namespace Prisma {
    */
   export type RegistrationCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionParticipantWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountSentAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountReceivedAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountParticipantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantBadgeWhereInput
   }
 
 
@@ -1785,6 +2330,37 @@ export namespace Prisma {
    */
   export type Event_sessionsCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionParticipantWhereInput
+  }
+
+
+  /**
+   * Count Type BadgeTemplateCountOutputType
+   */
+
+  export type BadgeTemplateCountOutputType = {
+    participantBadges: number
+  }
+
+  export type BadgeTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participantBadges?: boolean | BadgeTemplateCountOutputTypeCountParticipantBadgesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BadgeTemplateCountOutputType without action
+   */
+  export type BadgeTemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplateCountOutputType
+     */
+    select?: BadgeTemplateCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BadgeTemplateCountOutputType without action
+   */
+  export type BadgeTemplateCountOutputTypeCountParticipantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantBadgeWhereInput
   }
 
 
@@ -6216,6 +6792,8 @@ export namespace Prisma {
     timezone: string | null
     videoUrl: string | null
     supportEmail: string | null
+    archived: boolean | null
+    archivedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -6239,6 +6817,8 @@ export namespace Prisma {
     timezone: string | null
     videoUrl: string | null
     supportEmail: string | null
+    archived: boolean | null
+    archivedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -6262,6 +6842,8 @@ export namespace Prisma {
     timezone: number
     videoUrl: number
     supportEmail: number
+    archived: number
+    archivedAt: number
     createdAt: number
     updatedAt: number
     userId: number
@@ -6287,6 +6869,8 @@ export namespace Prisma {
     timezone?: true
     videoUrl?: true
     supportEmail?: true
+    archived?: true
+    archivedAt?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -6310,6 +6894,8 @@ export namespace Prisma {
     timezone?: true
     videoUrl?: true
     supportEmail?: true
+    archived?: true
+    archivedAt?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -6333,6 +6919,8 @@ export namespace Prisma {
     timezone?: true
     videoUrl?: true
     supportEmail?: true
+    archived?: true
+    archivedAt?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -6429,6 +7017,8 @@ export namespace Prisma {
     timezone: string | null
     videoUrl: string | null
     supportEmail: string | null
+    archived: boolean
+    archivedAt: Date | null
     createdAt: Date
     updatedAt: Date
     userId: string
@@ -6469,6 +7059,8 @@ export namespace Prisma {
     timezone?: boolean
     videoUrl?: boolean
     supportEmail?: boolean
+    archived?: boolean
+    archivedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -6477,6 +7069,10 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
     sponsors?: boolean | Event$sponsorsArgs<ExtArgs>
+    appointments?: boolean | Event$appointmentsArgs<ExtArgs>
+    badges?: boolean | Event$badgesArgs<ExtArgs>
+    badgeTemplates?: boolean | Event$badgeTemplatesArgs<ExtArgs>
+    participantBadges?: boolean | Event$participantBadgesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -6497,6 +7093,8 @@ export namespace Prisma {
     timezone?: boolean
     videoUrl?: boolean
     supportEmail?: boolean
+    archived?: boolean
+    archivedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -6521,6 +7119,8 @@ export namespace Prisma {
     timezone?: boolean
     videoUrl?: boolean
     supportEmail?: boolean
+    archived?: boolean
+    archivedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -6545,18 +7145,24 @@ export namespace Prisma {
     timezone?: boolean
     videoUrl?: boolean
     supportEmail?: boolean
+    archived?: boolean
+    archivedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
     logo?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "slug" | "banner" | "startDate" | "endDate" | "startTime" | "endTime" | "sector" | "type" | "format" | "timezone" | "videoUrl" | "supportEmail" | "createdAt" | "updatedAt" | "userId" | "logo", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "slug" | "banner" | "startDate" | "endDate" | "startTime" | "endTime" | "sector" | "type" | "format" | "timezone" | "videoUrl" | "supportEmail" | "archived" | "archivedAt" | "createdAt" | "updatedAt" | "userId" | "logo", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event_sessions?: boolean | Event$event_sessionsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
     sponsors?: boolean | Event$sponsorsArgs<ExtArgs>
+    appointments?: boolean | Event$appointmentsArgs<ExtArgs>
+    badges?: boolean | Event$badgesArgs<ExtArgs>
+    badgeTemplates?: boolean | Event$badgeTemplatesArgs<ExtArgs>
+    participantBadges?: boolean | Event$participantBadgesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6573,6 +7179,10 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       registrations: Prisma.$RegistrationPayload<ExtArgs>[]
       sponsors: Prisma.$SponsorPayload<ExtArgs>[]
+      appointments: Prisma.$AppointmentPayload<ExtArgs>[]
+      badges: Prisma.$BadgePayload<ExtArgs>[]
+      badgeTemplates: Prisma.$BadgeTemplatePayload<ExtArgs>[]
+      participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6591,6 +7201,8 @@ export namespace Prisma {
       timezone: string | null
       videoUrl: string | null
       supportEmail: string | null
+      archived: boolean
+      archivedAt: Date | null
       createdAt: Date
       updatedAt: Date
       userId: string
@@ -6993,6 +7605,10 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     registrations<T extends Event$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, Event$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sponsors<T extends Event$sponsorsArgs<ExtArgs> = {}>(args?: Subset<T, Event$sponsorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    appointments<T extends Event$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Event$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    badges<T extends Event$badgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    badgeTemplates<T extends Event$badgeTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Event$badgeTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    participantBadges<T extends Event$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7038,6 +7654,8 @@ export namespace Prisma {
     readonly timezone: FieldRef<"Event", 'String'>
     readonly videoUrl: FieldRef<"Event", 'String'>
     readonly supportEmail: FieldRef<"Event", 'String'>
+    readonly archived: FieldRef<"Event", 'Boolean'>
+    readonly archivedAt: FieldRef<"Event", 'DateTime'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly updatedAt: FieldRef<"Event", 'DateTime'>
     readonly userId: FieldRef<"Event", 'String'>
@@ -7510,6 +8128,102 @@ export namespace Prisma {
   }
 
   /**
+   * Event.appointments
+   */
+  export type Event$appointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    where?: AppointmentWhereInput
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    cursor?: AppointmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * Event.badges
+   */
+  export type Event$badgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    where?: BadgeWhereInput
+    orderBy?: BadgeOrderByWithRelationInput | BadgeOrderByWithRelationInput[]
+    cursor?: BadgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BadgeScalarFieldEnum | BadgeScalarFieldEnum[]
+  }
+
+  /**
+   * Event.badgeTemplates
+   */
+  export type Event$badgeTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    where?: BadgeTemplateWhereInput
+    orderBy?: BadgeTemplateOrderByWithRelationInput | BadgeTemplateOrderByWithRelationInput[]
+    cursor?: BadgeTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BadgeTemplateScalarFieldEnum | BadgeTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Event.participantBadges
+   */
+  export type Event$participantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    where?: ParticipantBadgeWhereInput
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    cursor?: ParticipantBadgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
+  }
+
+  /**
    * Event without action
    */
   export type EventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7774,6 +8488,9 @@ export namespace Prisma {
     checkInTime?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     sessions?: boolean | Registration$sessionsArgs<ExtArgs>
+    sentAppointments?: boolean | Registration$sentAppointmentsArgs<ExtArgs>
+    receivedAppointments?: boolean | Registration$receivedAppointmentsArgs<ExtArgs>
+    participantBadges?: boolean | Registration$participantBadgesArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
@@ -7837,6 +8554,9 @@ export namespace Prisma {
   export type RegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     sessions?: boolean | Registration$sessionsArgs<ExtArgs>
+    sentAppointments?: boolean | Registration$sentAppointmentsArgs<ExtArgs>
+    receivedAppointments?: boolean | Registration$receivedAppointmentsArgs<ExtArgs>
+    participantBadges?: boolean | Registration$participantBadgesArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RegistrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7851,6 +8571,9 @@ export namespace Prisma {
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
       sessions: Prisma.$SessionParticipantPayload<ExtArgs>[]
+      sentAppointments: Prisma.$AppointmentPayload<ExtArgs>[]
+      receivedAppointments: Prisma.$AppointmentPayload<ExtArgs>[]
+      participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8264,6 +8987,9 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sessions<T extends Registration$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sentAppointments<T extends Registration$sentAppointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sentAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivedAppointments<T extends Registration$receivedAppointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$receivedAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    participantBadges<T extends Registration$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8725,6 +9451,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * Registration.sentAppointments
+   */
+  export type Registration$sentAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    where?: AppointmentWhereInput
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    cursor?: AppointmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * Registration.receivedAppointments
+   */
+  export type Registration$receivedAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    where?: AppointmentWhereInput
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    cursor?: AppointmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * Registration.participantBadges
+   */
+  export type Registration$participantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    where?: ParticipantBadgeWhereInput
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    cursor?: ParticipantBadgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
   }
 
   /**
@@ -12214,6 +13012,5600 @@ export namespace Prisma {
 
 
   /**
+   * Model Appointment
+   */
+
+  export type AggregateAppointment = {
+    _count: AppointmentCountAggregateOutputType | null
+    _min: AppointmentMinAggregateOutputType | null
+    _max: AppointmentMaxAggregateOutputType | null
+  }
+
+  export type AppointmentMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    requesterId: string | null
+    recipientId: string | null
+    status: $Enums.AppointmentStatus | null
+    message: string | null
+    proposedTime: Date | null
+    confirmedTime: Date | null
+    location: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AppointmentMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    requesterId: string | null
+    recipientId: string | null
+    status: $Enums.AppointmentStatus | null
+    message: string | null
+    proposedTime: Date | null
+    confirmedTime: Date | null
+    location: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AppointmentCountAggregateOutputType = {
+    id: number
+    eventId: number
+    requesterId: number
+    recipientId: number
+    status: number
+    message: number
+    proposedTime: number
+    confirmedTime: number
+    location: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AppointmentMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    requesterId?: true
+    recipientId?: true
+    status?: true
+    message?: true
+    proposedTime?: true
+    confirmedTime?: true
+    location?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AppointmentMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    requesterId?: true
+    recipientId?: true
+    status?: true
+    message?: true
+    proposedTime?: true
+    confirmedTime?: true
+    location?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AppointmentCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    requesterId?: true
+    recipientId?: true
+    status?: true
+    message?: true
+    proposedTime?: true
+    confirmedTime?: true
+    location?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AppointmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Appointment to aggregate.
+     */
+    where?: AppointmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appointments to fetch.
+     */
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AppointmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appointments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appointments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Appointments
+    **/
+    _count?: true | AppointmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AppointmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AppointmentMaxAggregateInputType
+  }
+
+  export type GetAppointmentAggregateType<T extends AppointmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateAppointment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAppointment[P]>
+      : GetScalarType<T[P], AggregateAppointment[P]>
+  }
+
+
+
+
+  export type AppointmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentWhereInput
+    orderBy?: AppointmentOrderByWithAggregationInput | AppointmentOrderByWithAggregationInput[]
+    by: AppointmentScalarFieldEnum[] | AppointmentScalarFieldEnum
+    having?: AppointmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AppointmentCountAggregateInputType | true
+    _min?: AppointmentMinAggregateInputType
+    _max?: AppointmentMaxAggregateInputType
+  }
+
+  export type AppointmentGroupByOutputType = {
+    id: string
+    eventId: string
+    requesterId: string
+    recipientId: string
+    status: $Enums.AppointmentStatus
+    message: string | null
+    proposedTime: Date | null
+    confirmedTime: Date | null
+    location: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AppointmentCountAggregateOutputType | null
+    _min: AppointmentMinAggregateOutputType | null
+    _max: AppointmentMaxAggregateOutputType | null
+  }
+
+  type GetAppointmentGroupByPayload<T extends AppointmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AppointmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AppointmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AppointmentGroupByOutputType[P]>
+            : GetScalarType<T[P], AppointmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AppointmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    requesterId?: boolean
+    recipientId?: boolean
+    status?: boolean
+    message?: boolean
+    proposedTime?: boolean
+    confirmedTime?: boolean
+    location?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    requester?: boolean | RegistrationDefaultArgs<ExtArgs>
+    recipient?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["appointment"]>
+
+  export type AppointmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    requesterId?: boolean
+    recipientId?: boolean
+    status?: boolean
+    message?: boolean
+    proposedTime?: boolean
+    confirmedTime?: boolean
+    location?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    requester?: boolean | RegistrationDefaultArgs<ExtArgs>
+    recipient?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["appointment"]>
+
+  export type AppointmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    requesterId?: boolean
+    recipientId?: boolean
+    status?: boolean
+    message?: boolean
+    proposedTime?: boolean
+    confirmedTime?: boolean
+    location?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    requester?: boolean | RegistrationDefaultArgs<ExtArgs>
+    recipient?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["appointment"]>
+
+  export type AppointmentSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    requesterId?: boolean
+    recipientId?: boolean
+    status?: boolean
+    message?: boolean
+    proposedTime?: boolean
+    confirmedTime?: boolean
+    location?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "requesterId" | "recipientId" | "status" | "message" | "proposedTime" | "confirmedTime" | "location" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    requester?: boolean | RegistrationDefaultArgs<ExtArgs>
+    recipient?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+  export type AppointmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    requester?: boolean | RegistrationDefaultArgs<ExtArgs>
+    recipient?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+  export type AppointmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    requester?: boolean | RegistrationDefaultArgs<ExtArgs>
+    recipient?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+
+  export type $AppointmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Appointment"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      requester: Prisma.$RegistrationPayload<ExtArgs>
+      recipient: Prisma.$RegistrationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      requesterId: string
+      recipientId: string
+      status: $Enums.AppointmentStatus
+      message: string | null
+      proposedTime: Date | null
+      confirmedTime: Date | null
+      location: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["appointment"]>
+    composites: {}
+  }
+
+  type AppointmentGetPayload<S extends boolean | null | undefined | AppointmentDefaultArgs> = $Result.GetResult<Prisma.$AppointmentPayload, S>
+
+  type AppointmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AppointmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AppointmentCountAggregateInputType | true
+    }
+
+  export interface AppointmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Appointment'], meta: { name: 'Appointment' } }
+    /**
+     * Find zero or one Appointment that matches the filter.
+     * @param {AppointmentFindUniqueArgs} args - Arguments to find a Appointment
+     * @example
+     * // Get one Appointment
+     * const appointment = await prisma.appointment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AppointmentFindUniqueArgs>(args: SelectSubset<T, AppointmentFindUniqueArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Appointment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AppointmentFindUniqueOrThrowArgs} args - Arguments to find a Appointment
+     * @example
+     * // Get one Appointment
+     * const appointment = await prisma.appointment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AppointmentFindUniqueOrThrowArgs>(args: SelectSubset<T, AppointmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Appointment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentFindFirstArgs} args - Arguments to find a Appointment
+     * @example
+     * // Get one Appointment
+     * const appointment = await prisma.appointment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AppointmentFindFirstArgs>(args?: SelectSubset<T, AppointmentFindFirstArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Appointment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentFindFirstOrThrowArgs} args - Arguments to find a Appointment
+     * @example
+     * // Get one Appointment
+     * const appointment = await prisma.appointment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AppointmentFindFirstOrThrowArgs>(args?: SelectSubset<T, AppointmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Appointments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Appointments
+     * const appointments = await prisma.appointment.findMany()
+     * 
+     * // Get first 10 Appointments
+     * const appointments = await prisma.appointment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const appointmentWithIdOnly = await prisma.appointment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AppointmentFindManyArgs>(args?: SelectSubset<T, AppointmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Appointment.
+     * @param {AppointmentCreateArgs} args - Arguments to create a Appointment.
+     * @example
+     * // Create one Appointment
+     * const Appointment = await prisma.appointment.create({
+     *   data: {
+     *     // ... data to create a Appointment
+     *   }
+     * })
+     * 
+     */
+    create<T extends AppointmentCreateArgs>(args: SelectSubset<T, AppointmentCreateArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Appointments.
+     * @param {AppointmentCreateManyArgs} args - Arguments to create many Appointments.
+     * @example
+     * // Create many Appointments
+     * const appointment = await prisma.appointment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AppointmentCreateManyArgs>(args?: SelectSubset<T, AppointmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Appointments and returns the data saved in the database.
+     * @param {AppointmentCreateManyAndReturnArgs} args - Arguments to create many Appointments.
+     * @example
+     * // Create many Appointments
+     * const appointment = await prisma.appointment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Appointments and only return the `id`
+     * const appointmentWithIdOnly = await prisma.appointment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AppointmentCreateManyAndReturnArgs>(args?: SelectSubset<T, AppointmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Appointment.
+     * @param {AppointmentDeleteArgs} args - Arguments to delete one Appointment.
+     * @example
+     * // Delete one Appointment
+     * const Appointment = await prisma.appointment.delete({
+     *   where: {
+     *     // ... filter to delete one Appointment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AppointmentDeleteArgs>(args: SelectSubset<T, AppointmentDeleteArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Appointment.
+     * @param {AppointmentUpdateArgs} args - Arguments to update one Appointment.
+     * @example
+     * // Update one Appointment
+     * const appointment = await prisma.appointment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AppointmentUpdateArgs>(args: SelectSubset<T, AppointmentUpdateArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Appointments.
+     * @param {AppointmentDeleteManyArgs} args - Arguments to filter Appointments to delete.
+     * @example
+     * // Delete a few Appointments
+     * const { count } = await prisma.appointment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AppointmentDeleteManyArgs>(args?: SelectSubset<T, AppointmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Appointments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Appointments
+     * const appointment = await prisma.appointment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AppointmentUpdateManyArgs>(args: SelectSubset<T, AppointmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Appointments and returns the data updated in the database.
+     * @param {AppointmentUpdateManyAndReturnArgs} args - Arguments to update many Appointments.
+     * @example
+     * // Update many Appointments
+     * const appointment = await prisma.appointment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Appointments and only return the `id`
+     * const appointmentWithIdOnly = await prisma.appointment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AppointmentUpdateManyAndReturnArgs>(args: SelectSubset<T, AppointmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Appointment.
+     * @param {AppointmentUpsertArgs} args - Arguments to update or create a Appointment.
+     * @example
+     * // Update or create a Appointment
+     * const appointment = await prisma.appointment.upsert({
+     *   create: {
+     *     // ... data to create a Appointment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Appointment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AppointmentUpsertArgs>(args: SelectSubset<T, AppointmentUpsertArgs<ExtArgs>>): Prisma__AppointmentClient<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Appointments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentCountArgs} args - Arguments to filter Appointments to count.
+     * @example
+     * // Count the number of Appointments
+     * const count = await prisma.appointment.count({
+     *   where: {
+     *     // ... the filter for the Appointments we want to count
+     *   }
+     * })
+    **/
+    count<T extends AppointmentCountArgs>(
+      args?: Subset<T, AppointmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AppointmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Appointment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AppointmentAggregateArgs>(args: Subset<T, AppointmentAggregateArgs>): Prisma.PrismaPromise<GetAppointmentAggregateType<T>>
+
+    /**
+     * Group by Appointment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AppointmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AppointmentGroupByArgs['orderBy'] }
+        : { orderBy?: AppointmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AppointmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAppointmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Appointment model
+   */
+  readonly fields: AppointmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Appointment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AppointmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    requester<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recipient<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Appointment model
+   */
+  interface AppointmentFieldRefs {
+    readonly id: FieldRef<"Appointment", 'String'>
+    readonly eventId: FieldRef<"Appointment", 'String'>
+    readonly requesterId: FieldRef<"Appointment", 'String'>
+    readonly recipientId: FieldRef<"Appointment", 'String'>
+    readonly status: FieldRef<"Appointment", 'AppointmentStatus'>
+    readonly message: FieldRef<"Appointment", 'String'>
+    readonly proposedTime: FieldRef<"Appointment", 'DateTime'>
+    readonly confirmedTime: FieldRef<"Appointment", 'DateTime'>
+    readonly location: FieldRef<"Appointment", 'String'>
+    readonly notes: FieldRef<"Appointment", 'String'>
+    readonly createdAt: FieldRef<"Appointment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Appointment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Appointment findUnique
+   */
+  export type AppointmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Appointment to fetch.
+     */
+    where: AppointmentWhereUniqueInput
+  }
+
+  /**
+   * Appointment findUniqueOrThrow
+   */
+  export type AppointmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Appointment to fetch.
+     */
+    where: AppointmentWhereUniqueInput
+  }
+
+  /**
+   * Appointment findFirst
+   */
+  export type AppointmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Appointment to fetch.
+     */
+    where?: AppointmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appointments to fetch.
+     */
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Appointments.
+     */
+    cursor?: AppointmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appointments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appointments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Appointments.
+     */
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * Appointment findFirstOrThrow
+   */
+  export type AppointmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Appointment to fetch.
+     */
+    where?: AppointmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appointments to fetch.
+     */
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Appointments.
+     */
+    cursor?: AppointmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appointments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appointments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Appointments.
+     */
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * Appointment findMany
+   */
+  export type AppointmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Appointments to fetch.
+     */
+    where?: AppointmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appointments to fetch.
+     */
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Appointments.
+     */
+    cursor?: AppointmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appointments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appointments.
+     */
+    skip?: number
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * Appointment create
+   */
+  export type AppointmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Appointment.
+     */
+    data: XOR<AppointmentCreateInput, AppointmentUncheckedCreateInput>
+  }
+
+  /**
+   * Appointment createMany
+   */
+  export type AppointmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Appointments.
+     */
+    data: AppointmentCreateManyInput | AppointmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Appointment createManyAndReturn
+   */
+  export type AppointmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Appointments.
+     */
+    data: AppointmentCreateManyInput | AppointmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Appointment update
+   */
+  export type AppointmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Appointment.
+     */
+    data: XOR<AppointmentUpdateInput, AppointmentUncheckedUpdateInput>
+    /**
+     * Choose, which Appointment to update.
+     */
+    where: AppointmentWhereUniqueInput
+  }
+
+  /**
+   * Appointment updateMany
+   */
+  export type AppointmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Appointments.
+     */
+    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Appointments to update
+     */
+    where?: AppointmentWhereInput
+    /**
+     * Limit how many Appointments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Appointment updateManyAndReturn
+   */
+  export type AppointmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * The data used to update Appointments.
+     */
+    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Appointments to update
+     */
+    where?: AppointmentWhereInput
+    /**
+     * Limit how many Appointments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Appointment upsert
+   */
+  export type AppointmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Appointment to update in case it exists.
+     */
+    where: AppointmentWhereUniqueInput
+    /**
+     * In case the Appointment found by the `where` argument doesn't exist, create a new Appointment with this data.
+     */
+    create: XOR<AppointmentCreateInput, AppointmentUncheckedCreateInput>
+    /**
+     * In case the Appointment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AppointmentUpdateInput, AppointmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Appointment delete
+   */
+  export type AppointmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    /**
+     * Filter which Appointment to delete.
+     */
+    where: AppointmentWhereUniqueInput
+  }
+
+  /**
+   * Appointment deleteMany
+   */
+  export type AppointmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Appointments to delete
+     */
+    where?: AppointmentWhereInput
+    /**
+     * Limit how many Appointments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Appointment without action
+   */
+  export type AppointmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OtpCode
+   */
+
+  export type AggregateOtpCode = {
+    _count: OtpCodeCountAggregateOutputType | null
+    _min: OtpCodeMinAggregateOutputType | null
+    _max: OtpCodeMaxAggregateOutputType | null
+  }
+
+  export type OtpCodeMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    code: string | null
+    eventId: string | null
+    expiresAt: Date | null
+    used: boolean | null
+    createdAt: Date | null
+  }
+
+  export type OtpCodeMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    code: string | null
+    eventId: string | null
+    expiresAt: Date | null
+    used: boolean | null
+    createdAt: Date | null
+  }
+
+  export type OtpCodeCountAggregateOutputType = {
+    id: number
+    email: number
+    code: number
+    eventId: number
+    expiresAt: number
+    used: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type OtpCodeMinAggregateInputType = {
+    id?: true
+    email?: true
+    code?: true
+    eventId?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+  }
+
+  export type OtpCodeMaxAggregateInputType = {
+    id?: true
+    email?: true
+    code?: true
+    eventId?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+  }
+
+  export type OtpCodeCountAggregateInputType = {
+    id?: true
+    email?: true
+    code?: true
+    eventId?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type OtpCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OtpCode to aggregate.
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtpCodes to fetch.
+     */
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OtpCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtpCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtpCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OtpCodes
+    **/
+    _count?: true | OtpCodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OtpCodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OtpCodeMaxAggregateInputType
+  }
+
+  export type GetOtpCodeAggregateType<T extends OtpCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateOtpCode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOtpCode[P]>
+      : GetScalarType<T[P], AggregateOtpCode[P]>
+  }
+
+
+
+
+  export type OtpCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OtpCodeWhereInput
+    orderBy?: OtpCodeOrderByWithAggregationInput | OtpCodeOrderByWithAggregationInput[]
+    by: OtpCodeScalarFieldEnum[] | OtpCodeScalarFieldEnum
+    having?: OtpCodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OtpCodeCountAggregateInputType | true
+    _min?: OtpCodeMinAggregateInputType
+    _max?: OtpCodeMaxAggregateInputType
+  }
+
+  export type OtpCodeGroupByOutputType = {
+    id: string
+    email: string
+    code: string
+    eventId: string | null
+    expiresAt: Date
+    used: boolean
+    createdAt: Date
+    _count: OtpCodeCountAggregateOutputType | null
+    _min: OtpCodeMinAggregateOutputType | null
+    _max: OtpCodeMaxAggregateOutputType | null
+  }
+
+  type GetOtpCodeGroupByPayload<T extends OtpCodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OtpCodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OtpCodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OtpCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], OtpCodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OtpCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    code?: boolean
+    eventId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["otpCode"]>
+
+  export type OtpCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    code?: boolean
+    eventId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["otpCode"]>
+
+  export type OtpCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    code?: boolean
+    eventId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["otpCode"]>
+
+  export type OtpCodeSelectScalar = {
+    id?: boolean
+    email?: boolean
+    code?: boolean
+    eventId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }
+
+  export type OtpCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "code" | "eventId" | "expiresAt" | "used" | "createdAt", ExtArgs["result"]["otpCode"]>
+
+  export type $OtpCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OtpCode"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      code: string
+      eventId: string | null
+      expiresAt: Date
+      used: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["otpCode"]>
+    composites: {}
+  }
+
+  type OtpCodeGetPayload<S extends boolean | null | undefined | OtpCodeDefaultArgs> = $Result.GetResult<Prisma.$OtpCodePayload, S>
+
+  type OtpCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OtpCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OtpCodeCountAggregateInputType | true
+    }
+
+  export interface OtpCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OtpCode'], meta: { name: 'OtpCode' } }
+    /**
+     * Find zero or one OtpCode that matches the filter.
+     * @param {OtpCodeFindUniqueArgs} args - Arguments to find a OtpCode
+     * @example
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OtpCodeFindUniqueArgs>(args: SelectSubset<T, OtpCodeFindUniqueArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OtpCode that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OtpCodeFindUniqueOrThrowArgs} args - Arguments to find a OtpCode
+     * @example
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OtpCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, OtpCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OtpCode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeFindFirstArgs} args - Arguments to find a OtpCode
+     * @example
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OtpCodeFindFirstArgs>(args?: SelectSubset<T, OtpCodeFindFirstArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OtpCode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeFindFirstOrThrowArgs} args - Arguments to find a OtpCode
+     * @example
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OtpCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, OtpCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OtpCodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OtpCodes
+     * const otpCodes = await prisma.otpCode.findMany()
+     * 
+     * // Get first 10 OtpCodes
+     * const otpCodes = await prisma.otpCode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const otpCodeWithIdOnly = await prisma.otpCode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OtpCodeFindManyArgs>(args?: SelectSubset<T, OtpCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OtpCode.
+     * @param {OtpCodeCreateArgs} args - Arguments to create a OtpCode.
+     * @example
+     * // Create one OtpCode
+     * const OtpCode = await prisma.otpCode.create({
+     *   data: {
+     *     // ... data to create a OtpCode
+     *   }
+     * })
+     * 
+     */
+    create<T extends OtpCodeCreateArgs>(args: SelectSubset<T, OtpCodeCreateArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OtpCodes.
+     * @param {OtpCodeCreateManyArgs} args - Arguments to create many OtpCodes.
+     * @example
+     * // Create many OtpCodes
+     * const otpCode = await prisma.otpCode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OtpCodeCreateManyArgs>(args?: SelectSubset<T, OtpCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OtpCodes and returns the data saved in the database.
+     * @param {OtpCodeCreateManyAndReturnArgs} args - Arguments to create many OtpCodes.
+     * @example
+     * // Create many OtpCodes
+     * const otpCode = await prisma.otpCode.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OtpCodes and only return the `id`
+     * const otpCodeWithIdOnly = await prisma.otpCode.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OtpCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, OtpCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a OtpCode.
+     * @param {OtpCodeDeleteArgs} args - Arguments to delete one OtpCode.
+     * @example
+     * // Delete one OtpCode
+     * const OtpCode = await prisma.otpCode.delete({
+     *   where: {
+     *     // ... filter to delete one OtpCode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OtpCodeDeleteArgs>(args: SelectSubset<T, OtpCodeDeleteArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OtpCode.
+     * @param {OtpCodeUpdateArgs} args - Arguments to update one OtpCode.
+     * @example
+     * // Update one OtpCode
+     * const otpCode = await prisma.otpCode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OtpCodeUpdateArgs>(args: SelectSubset<T, OtpCodeUpdateArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OtpCodes.
+     * @param {OtpCodeDeleteManyArgs} args - Arguments to filter OtpCodes to delete.
+     * @example
+     * // Delete a few OtpCodes
+     * const { count } = await prisma.otpCode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OtpCodeDeleteManyArgs>(args?: SelectSubset<T, OtpCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OtpCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OtpCodes
+     * const otpCode = await prisma.otpCode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OtpCodeUpdateManyArgs>(args: SelectSubset<T, OtpCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OtpCodes and returns the data updated in the database.
+     * @param {OtpCodeUpdateManyAndReturnArgs} args - Arguments to update many OtpCodes.
+     * @example
+     * // Update many OtpCodes
+     * const otpCode = await prisma.otpCode.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more OtpCodes and only return the `id`
+     * const otpCodeWithIdOnly = await prisma.otpCode.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OtpCodeUpdateManyAndReturnArgs>(args: SelectSubset<T, OtpCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one OtpCode.
+     * @param {OtpCodeUpsertArgs} args - Arguments to update or create a OtpCode.
+     * @example
+     * // Update or create a OtpCode
+     * const otpCode = await prisma.otpCode.upsert({
+     *   create: {
+     *     // ... data to create a OtpCode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OtpCode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OtpCodeUpsertArgs>(args: SelectSubset<T, OtpCodeUpsertArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of OtpCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeCountArgs} args - Arguments to filter OtpCodes to count.
+     * @example
+     * // Count the number of OtpCodes
+     * const count = await prisma.otpCode.count({
+     *   where: {
+     *     // ... the filter for the OtpCodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends OtpCodeCountArgs>(
+      args?: Subset<T, OtpCodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OtpCodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OtpCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OtpCodeAggregateArgs>(args: Subset<T, OtpCodeAggregateArgs>): Prisma.PrismaPromise<GetOtpCodeAggregateType<T>>
+
+    /**
+     * Group by OtpCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtpCodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OtpCodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OtpCodeGroupByArgs['orderBy'] }
+        : { orderBy?: OtpCodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OtpCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOtpCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OtpCode model
+   */
+  readonly fields: OtpCodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OtpCode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OtpCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OtpCode model
+   */
+  interface OtpCodeFieldRefs {
+    readonly id: FieldRef<"OtpCode", 'String'>
+    readonly email: FieldRef<"OtpCode", 'String'>
+    readonly code: FieldRef<"OtpCode", 'String'>
+    readonly eventId: FieldRef<"OtpCode", 'String'>
+    readonly expiresAt: FieldRef<"OtpCode", 'DateTime'>
+    readonly used: FieldRef<"OtpCode", 'Boolean'>
+    readonly createdAt: FieldRef<"OtpCode", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OtpCode findUnique
+   */
+  export type OtpCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which OtpCode to fetch.
+     */
+    where: OtpCodeWhereUniqueInput
+  }
+
+  /**
+   * OtpCode findUniqueOrThrow
+   */
+  export type OtpCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which OtpCode to fetch.
+     */
+    where: OtpCodeWhereUniqueInput
+  }
+
+  /**
+   * OtpCode findFirst
+   */
+  export type OtpCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which OtpCode to fetch.
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtpCodes to fetch.
+     */
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OtpCodes.
+     */
+    cursor?: OtpCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtpCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtpCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OtpCodes.
+     */
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
+  }
+
+  /**
+   * OtpCode findFirstOrThrow
+   */
+  export type OtpCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which OtpCode to fetch.
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtpCodes to fetch.
+     */
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OtpCodes.
+     */
+    cursor?: OtpCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtpCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtpCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OtpCodes.
+     */
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
+  }
+
+  /**
+   * OtpCode findMany
+   */
+  export type OtpCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which OtpCodes to fetch.
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtpCodes to fetch.
+     */
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OtpCodes.
+     */
+    cursor?: OtpCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtpCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtpCodes.
+     */
+    skip?: number
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
+  }
+
+  /**
+   * OtpCode create
+   */
+  export type OtpCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * The data needed to create a OtpCode.
+     */
+    data: XOR<OtpCodeCreateInput, OtpCodeUncheckedCreateInput>
+  }
+
+  /**
+   * OtpCode createMany
+   */
+  export type OtpCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OtpCodes.
+     */
+    data: OtpCodeCreateManyInput | OtpCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OtpCode createManyAndReturn
+   */
+  export type OtpCodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * The data used to create many OtpCodes.
+     */
+    data: OtpCodeCreateManyInput | OtpCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OtpCode update
+   */
+  export type OtpCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * The data needed to update a OtpCode.
+     */
+    data: XOR<OtpCodeUpdateInput, OtpCodeUncheckedUpdateInput>
+    /**
+     * Choose, which OtpCode to update.
+     */
+    where: OtpCodeWhereUniqueInput
+  }
+
+  /**
+   * OtpCode updateMany
+   */
+  export type OtpCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OtpCodes.
+     */
+    data: XOR<OtpCodeUpdateManyMutationInput, OtpCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which OtpCodes to update
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * Limit how many OtpCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OtpCode updateManyAndReturn
+   */
+  export type OtpCodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * The data used to update OtpCodes.
+     */
+    data: XOR<OtpCodeUpdateManyMutationInput, OtpCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which OtpCodes to update
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * Limit how many OtpCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OtpCode upsert
+   */
+  export type OtpCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * The filter to search for the OtpCode to update in case it exists.
+     */
+    where: OtpCodeWhereUniqueInput
+    /**
+     * In case the OtpCode found by the `where` argument doesn't exist, create a new OtpCode with this data.
+     */
+    create: XOR<OtpCodeCreateInput, OtpCodeUncheckedCreateInput>
+    /**
+     * In case the OtpCode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OtpCodeUpdateInput, OtpCodeUncheckedUpdateInput>
+  }
+
+  /**
+   * OtpCode delete
+   */
+  export type OtpCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+    /**
+     * Filter which OtpCode to delete.
+     */
+    where: OtpCodeWhereUniqueInput
+  }
+
+  /**
+   * OtpCode deleteMany
+   */
+  export type OtpCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OtpCodes to delete
+     */
+    where?: OtpCodeWhereInput
+    /**
+     * Limit how many OtpCodes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OtpCode without action
+   */
+  export type OtpCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtpCode
+     */
+    omit?: OtpCodeOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Badge
+   */
+
+  export type AggregateBadge = {
+    _count: BadgeCountAggregateOutputType | null
+    _min: BadgeMinAggregateOutputType | null
+    _max: BadgeMaxAggregateOutputType | null
+  }
+
+  export type BadgeMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    canvasData: string | null
+    isDefault: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BadgeMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    canvasData: string | null
+    isDefault: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BadgeCountAggregateOutputType = {
+    id: number
+    eventId: number
+    name: number
+    canvasData: number
+    isDefault: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BadgeMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    canvasData?: true
+    isDefault?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BadgeMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    canvasData?: true
+    isDefault?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BadgeCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    canvasData?: true
+    isDefault?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BadgeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Badge to aggregate.
+     */
+    where?: BadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Badges to fetch.
+     */
+    orderBy?: BadgeOrderByWithRelationInput | BadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Badges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Badges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Badges
+    **/
+    _count?: true | BadgeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BadgeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BadgeMaxAggregateInputType
+  }
+
+  export type GetBadgeAggregateType<T extends BadgeAggregateArgs> = {
+        [P in keyof T & keyof AggregateBadge]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBadge[P]>
+      : GetScalarType<T[P], AggregateBadge[P]>
+  }
+
+
+
+
+  export type BadgeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeWhereInput
+    orderBy?: BadgeOrderByWithAggregationInput | BadgeOrderByWithAggregationInput[]
+    by: BadgeScalarFieldEnum[] | BadgeScalarFieldEnum
+    having?: BadgeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BadgeCountAggregateInputType | true
+    _min?: BadgeMinAggregateInputType
+    _max?: BadgeMaxAggregateInputType
+  }
+
+  export type BadgeGroupByOutputType = {
+    id: string
+    eventId: string
+    name: string | null
+    canvasData: string | null
+    isDefault: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: BadgeCountAggregateOutputType | null
+    _min: BadgeMinAggregateOutputType | null
+    _max: BadgeMaxAggregateOutputType | null
+  }
+
+  type GetBadgeGroupByPayload<T extends BadgeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BadgeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BadgeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BadgeGroupByOutputType[P]>
+            : GetScalarType<T[P], BadgeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BadgeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    canvasData?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["badge"]>
+
+  export type BadgeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    canvasData?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["badge"]>
+
+  export type BadgeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    canvasData?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["badge"]>
+
+  export type BadgeSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    canvasData?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BadgeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "canvasData" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["badge"]>
+  export type BadgeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type BadgeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type BadgeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $BadgePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Badge"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      name: string | null
+      canvasData: string | null
+      isDefault: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["badge"]>
+    composites: {}
+  }
+
+  type BadgeGetPayload<S extends boolean | null | undefined | BadgeDefaultArgs> = $Result.GetResult<Prisma.$BadgePayload, S>
+
+  type BadgeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BadgeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BadgeCountAggregateInputType | true
+    }
+
+  export interface BadgeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Badge'], meta: { name: 'Badge' } }
+    /**
+     * Find zero or one Badge that matches the filter.
+     * @param {BadgeFindUniqueArgs} args - Arguments to find a Badge
+     * @example
+     * // Get one Badge
+     * const badge = await prisma.badge.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BadgeFindUniqueArgs>(args: SelectSubset<T, BadgeFindUniqueArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Badge that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BadgeFindUniqueOrThrowArgs} args - Arguments to find a Badge
+     * @example
+     * // Get one Badge
+     * const badge = await prisma.badge.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BadgeFindUniqueOrThrowArgs>(args: SelectSubset<T, BadgeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Badge that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeFindFirstArgs} args - Arguments to find a Badge
+     * @example
+     * // Get one Badge
+     * const badge = await prisma.badge.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BadgeFindFirstArgs>(args?: SelectSubset<T, BadgeFindFirstArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Badge that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeFindFirstOrThrowArgs} args - Arguments to find a Badge
+     * @example
+     * // Get one Badge
+     * const badge = await prisma.badge.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BadgeFindFirstOrThrowArgs>(args?: SelectSubset<T, BadgeFindFirstOrThrowArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Badges that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Badges
+     * const badges = await prisma.badge.findMany()
+     * 
+     * // Get first 10 Badges
+     * const badges = await prisma.badge.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const badgeWithIdOnly = await prisma.badge.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BadgeFindManyArgs>(args?: SelectSubset<T, BadgeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Badge.
+     * @param {BadgeCreateArgs} args - Arguments to create a Badge.
+     * @example
+     * // Create one Badge
+     * const Badge = await prisma.badge.create({
+     *   data: {
+     *     // ... data to create a Badge
+     *   }
+     * })
+     * 
+     */
+    create<T extends BadgeCreateArgs>(args: SelectSubset<T, BadgeCreateArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Badges.
+     * @param {BadgeCreateManyArgs} args - Arguments to create many Badges.
+     * @example
+     * // Create many Badges
+     * const badge = await prisma.badge.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BadgeCreateManyArgs>(args?: SelectSubset<T, BadgeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Badges and returns the data saved in the database.
+     * @param {BadgeCreateManyAndReturnArgs} args - Arguments to create many Badges.
+     * @example
+     * // Create many Badges
+     * const badge = await prisma.badge.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Badges and only return the `id`
+     * const badgeWithIdOnly = await prisma.badge.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BadgeCreateManyAndReturnArgs>(args?: SelectSubset<T, BadgeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Badge.
+     * @param {BadgeDeleteArgs} args - Arguments to delete one Badge.
+     * @example
+     * // Delete one Badge
+     * const Badge = await prisma.badge.delete({
+     *   where: {
+     *     // ... filter to delete one Badge
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BadgeDeleteArgs>(args: SelectSubset<T, BadgeDeleteArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Badge.
+     * @param {BadgeUpdateArgs} args - Arguments to update one Badge.
+     * @example
+     * // Update one Badge
+     * const badge = await prisma.badge.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BadgeUpdateArgs>(args: SelectSubset<T, BadgeUpdateArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Badges.
+     * @param {BadgeDeleteManyArgs} args - Arguments to filter Badges to delete.
+     * @example
+     * // Delete a few Badges
+     * const { count } = await prisma.badge.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BadgeDeleteManyArgs>(args?: SelectSubset<T, BadgeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Badges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Badges
+     * const badge = await prisma.badge.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BadgeUpdateManyArgs>(args: SelectSubset<T, BadgeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Badges and returns the data updated in the database.
+     * @param {BadgeUpdateManyAndReturnArgs} args - Arguments to update many Badges.
+     * @example
+     * // Update many Badges
+     * const badge = await prisma.badge.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Badges and only return the `id`
+     * const badgeWithIdOnly = await prisma.badge.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BadgeUpdateManyAndReturnArgs>(args: SelectSubset<T, BadgeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Badge.
+     * @param {BadgeUpsertArgs} args - Arguments to update or create a Badge.
+     * @example
+     * // Update or create a Badge
+     * const badge = await prisma.badge.upsert({
+     *   create: {
+     *     // ... data to create a Badge
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Badge we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BadgeUpsertArgs>(args: SelectSubset<T, BadgeUpsertArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Badges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeCountArgs} args - Arguments to filter Badges to count.
+     * @example
+     * // Count the number of Badges
+     * const count = await prisma.badge.count({
+     *   where: {
+     *     // ... the filter for the Badges we want to count
+     *   }
+     * })
+    **/
+    count<T extends BadgeCountArgs>(
+      args?: Subset<T, BadgeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BadgeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Badge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BadgeAggregateArgs>(args: Subset<T, BadgeAggregateArgs>): Prisma.PrismaPromise<GetBadgeAggregateType<T>>
+
+    /**
+     * Group by Badge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BadgeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BadgeGroupByArgs['orderBy'] }
+        : { orderBy?: BadgeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BadgeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBadgeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Badge model
+   */
+  readonly fields: BadgeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Badge.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BadgeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Badge model
+   */
+  interface BadgeFieldRefs {
+    readonly id: FieldRef<"Badge", 'String'>
+    readonly eventId: FieldRef<"Badge", 'String'>
+    readonly name: FieldRef<"Badge", 'String'>
+    readonly canvasData: FieldRef<"Badge", 'String'>
+    readonly isDefault: FieldRef<"Badge", 'Boolean'>
+    readonly createdAt: FieldRef<"Badge", 'DateTime'>
+    readonly updatedAt: FieldRef<"Badge", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Badge findUnique
+   */
+  export type BadgeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which Badge to fetch.
+     */
+    where: BadgeWhereUniqueInput
+  }
+
+  /**
+   * Badge findUniqueOrThrow
+   */
+  export type BadgeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which Badge to fetch.
+     */
+    where: BadgeWhereUniqueInput
+  }
+
+  /**
+   * Badge findFirst
+   */
+  export type BadgeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which Badge to fetch.
+     */
+    where?: BadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Badges to fetch.
+     */
+    orderBy?: BadgeOrderByWithRelationInput | BadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Badges.
+     */
+    cursor?: BadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Badges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Badges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Badges.
+     */
+    distinct?: BadgeScalarFieldEnum | BadgeScalarFieldEnum[]
+  }
+
+  /**
+   * Badge findFirstOrThrow
+   */
+  export type BadgeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which Badge to fetch.
+     */
+    where?: BadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Badges to fetch.
+     */
+    orderBy?: BadgeOrderByWithRelationInput | BadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Badges.
+     */
+    cursor?: BadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Badges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Badges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Badges.
+     */
+    distinct?: BadgeScalarFieldEnum | BadgeScalarFieldEnum[]
+  }
+
+  /**
+   * Badge findMany
+   */
+  export type BadgeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which Badges to fetch.
+     */
+    where?: BadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Badges to fetch.
+     */
+    orderBy?: BadgeOrderByWithRelationInput | BadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Badges.
+     */
+    cursor?: BadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Badges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Badges.
+     */
+    skip?: number
+    distinct?: BadgeScalarFieldEnum | BadgeScalarFieldEnum[]
+  }
+
+  /**
+   * Badge create
+   */
+  export type BadgeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Badge.
+     */
+    data: XOR<BadgeCreateInput, BadgeUncheckedCreateInput>
+  }
+
+  /**
+   * Badge createMany
+   */
+  export type BadgeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Badges.
+     */
+    data: BadgeCreateManyInput | BadgeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Badge createManyAndReturn
+   */
+  export type BadgeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * The data used to create many Badges.
+     */
+    data: BadgeCreateManyInput | BadgeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Badge update
+   */
+  export type BadgeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Badge.
+     */
+    data: XOR<BadgeUpdateInput, BadgeUncheckedUpdateInput>
+    /**
+     * Choose, which Badge to update.
+     */
+    where: BadgeWhereUniqueInput
+  }
+
+  /**
+   * Badge updateMany
+   */
+  export type BadgeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Badges.
+     */
+    data: XOR<BadgeUpdateManyMutationInput, BadgeUncheckedUpdateManyInput>
+    /**
+     * Filter which Badges to update
+     */
+    where?: BadgeWhereInput
+    /**
+     * Limit how many Badges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Badge updateManyAndReturn
+   */
+  export type BadgeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * The data used to update Badges.
+     */
+    data: XOR<BadgeUpdateManyMutationInput, BadgeUncheckedUpdateManyInput>
+    /**
+     * Filter which Badges to update
+     */
+    where?: BadgeWhereInput
+    /**
+     * Limit how many Badges to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Badge upsert
+   */
+  export type BadgeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Badge to update in case it exists.
+     */
+    where: BadgeWhereUniqueInput
+    /**
+     * In case the Badge found by the `where` argument doesn't exist, create a new Badge with this data.
+     */
+    create: XOR<BadgeCreateInput, BadgeUncheckedCreateInput>
+    /**
+     * In case the Badge was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BadgeUpdateInput, BadgeUncheckedUpdateInput>
+  }
+
+  /**
+   * Badge delete
+   */
+  export type BadgeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+    /**
+     * Filter which Badge to delete.
+     */
+    where: BadgeWhereUniqueInput
+  }
+
+  /**
+   * Badge deleteMany
+   */
+  export type BadgeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Badges to delete
+     */
+    where?: BadgeWhereInput
+    /**
+     * Limit how many Badges to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Badge without action
+   */
+  export type BadgeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Badge
+     */
+    select?: BadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Badge
+     */
+    omit?: BadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BadgeTemplate
+   */
+
+  export type AggregateBadgeTemplate = {
+    _count: BadgeTemplateCountAggregateOutputType | null
+    _min: BadgeTemplateMinAggregateOutputType | null
+    _max: BadgeTemplateMaxAggregateOutputType | null
+  }
+
+  export type BadgeTemplateMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    canvasData: string | null
+    isGlobal: boolean | null
+    eventId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BadgeTemplateMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    canvasData: string | null
+    isGlobal: boolean | null
+    eventId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BadgeTemplateCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    canvasData: number
+    isGlobal: number
+    eventId: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BadgeTemplateMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    canvasData?: true
+    isGlobal?: true
+    eventId?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BadgeTemplateMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    canvasData?: true
+    isGlobal?: true
+    eventId?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BadgeTemplateCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    canvasData?: true
+    isGlobal?: true
+    eventId?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BadgeTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BadgeTemplate to aggregate.
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeTemplates to fetch.
+     */
+    orderBy?: BadgeTemplateOrderByWithRelationInput | BadgeTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BadgeTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BadgeTemplates
+    **/
+    _count?: true | BadgeTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BadgeTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BadgeTemplateMaxAggregateInputType
+  }
+
+  export type GetBadgeTemplateAggregateType<T extends BadgeTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateBadgeTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBadgeTemplate[P]>
+      : GetScalarType<T[P], AggregateBadgeTemplate[P]>
+  }
+
+
+
+
+  export type BadgeTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeTemplateWhereInput
+    orderBy?: BadgeTemplateOrderByWithAggregationInput | BadgeTemplateOrderByWithAggregationInput[]
+    by: BadgeTemplateScalarFieldEnum[] | BadgeTemplateScalarFieldEnum
+    having?: BadgeTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BadgeTemplateCountAggregateInputType | true
+    _min?: BadgeTemplateMinAggregateInputType
+    _max?: BadgeTemplateMaxAggregateInputType
+  }
+
+  export type BadgeTemplateGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    canvasData: string
+    isGlobal: boolean
+    eventId: string | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: BadgeTemplateCountAggregateOutputType | null
+    _min: BadgeTemplateMinAggregateOutputType | null
+    _max: BadgeTemplateMaxAggregateOutputType | null
+  }
+
+  type GetBadgeTemplateGroupByPayload<T extends BadgeTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BadgeTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BadgeTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BadgeTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], BadgeTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BadgeTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    canvasData?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | BadgeTemplate$eventArgs<ExtArgs>
+    participantBadges?: boolean | BadgeTemplate$participantBadgesArgs<ExtArgs>
+    _count?: boolean | BadgeTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["badgeTemplate"]>
+
+  export type BadgeTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    canvasData?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | BadgeTemplate$eventArgs<ExtArgs>
+  }, ExtArgs["result"]["badgeTemplate"]>
+
+  export type BadgeTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    canvasData?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | BadgeTemplate$eventArgs<ExtArgs>
+  }, ExtArgs["result"]["badgeTemplate"]>
+
+  export type BadgeTemplateSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    canvasData?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BadgeTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "canvasData" | "isGlobal" | "eventId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["badgeTemplate"]>
+  export type BadgeTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | BadgeTemplate$eventArgs<ExtArgs>
+    participantBadges?: boolean | BadgeTemplate$participantBadgesArgs<ExtArgs>
+    _count?: boolean | BadgeTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type BadgeTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | BadgeTemplate$eventArgs<ExtArgs>
+  }
+  export type BadgeTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | BadgeTemplate$eventArgs<ExtArgs>
+  }
+
+  export type $BadgeTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BadgeTemplate"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs> | null
+      participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      canvasData: string
+      isGlobal: boolean
+      eventId: string | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["badgeTemplate"]>
+    composites: {}
+  }
+
+  type BadgeTemplateGetPayload<S extends boolean | null | undefined | BadgeTemplateDefaultArgs> = $Result.GetResult<Prisma.$BadgeTemplatePayload, S>
+
+  type BadgeTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BadgeTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BadgeTemplateCountAggregateInputType | true
+    }
+
+  export interface BadgeTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BadgeTemplate'], meta: { name: 'BadgeTemplate' } }
+    /**
+     * Find zero or one BadgeTemplate that matches the filter.
+     * @param {BadgeTemplateFindUniqueArgs} args - Arguments to find a BadgeTemplate
+     * @example
+     * // Get one BadgeTemplate
+     * const badgeTemplate = await prisma.badgeTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BadgeTemplateFindUniqueArgs>(args: SelectSubset<T, BadgeTemplateFindUniqueArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BadgeTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BadgeTemplateFindUniqueOrThrowArgs} args - Arguments to find a BadgeTemplate
+     * @example
+     * // Get one BadgeTemplate
+     * const badgeTemplate = await prisma.badgeTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BadgeTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, BadgeTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BadgeTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateFindFirstArgs} args - Arguments to find a BadgeTemplate
+     * @example
+     * // Get one BadgeTemplate
+     * const badgeTemplate = await prisma.badgeTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BadgeTemplateFindFirstArgs>(args?: SelectSubset<T, BadgeTemplateFindFirstArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BadgeTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateFindFirstOrThrowArgs} args - Arguments to find a BadgeTemplate
+     * @example
+     * // Get one BadgeTemplate
+     * const badgeTemplate = await prisma.badgeTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BadgeTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, BadgeTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BadgeTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BadgeTemplates
+     * const badgeTemplates = await prisma.badgeTemplate.findMany()
+     * 
+     * // Get first 10 BadgeTemplates
+     * const badgeTemplates = await prisma.badgeTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const badgeTemplateWithIdOnly = await prisma.badgeTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BadgeTemplateFindManyArgs>(args?: SelectSubset<T, BadgeTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BadgeTemplate.
+     * @param {BadgeTemplateCreateArgs} args - Arguments to create a BadgeTemplate.
+     * @example
+     * // Create one BadgeTemplate
+     * const BadgeTemplate = await prisma.badgeTemplate.create({
+     *   data: {
+     *     // ... data to create a BadgeTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends BadgeTemplateCreateArgs>(args: SelectSubset<T, BadgeTemplateCreateArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BadgeTemplates.
+     * @param {BadgeTemplateCreateManyArgs} args - Arguments to create many BadgeTemplates.
+     * @example
+     * // Create many BadgeTemplates
+     * const badgeTemplate = await prisma.badgeTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BadgeTemplateCreateManyArgs>(args?: SelectSubset<T, BadgeTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BadgeTemplates and returns the data saved in the database.
+     * @param {BadgeTemplateCreateManyAndReturnArgs} args - Arguments to create many BadgeTemplates.
+     * @example
+     * // Create many BadgeTemplates
+     * const badgeTemplate = await prisma.badgeTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BadgeTemplates and only return the `id`
+     * const badgeTemplateWithIdOnly = await prisma.badgeTemplate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BadgeTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, BadgeTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BadgeTemplate.
+     * @param {BadgeTemplateDeleteArgs} args - Arguments to delete one BadgeTemplate.
+     * @example
+     * // Delete one BadgeTemplate
+     * const BadgeTemplate = await prisma.badgeTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one BadgeTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BadgeTemplateDeleteArgs>(args: SelectSubset<T, BadgeTemplateDeleteArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BadgeTemplate.
+     * @param {BadgeTemplateUpdateArgs} args - Arguments to update one BadgeTemplate.
+     * @example
+     * // Update one BadgeTemplate
+     * const badgeTemplate = await prisma.badgeTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BadgeTemplateUpdateArgs>(args: SelectSubset<T, BadgeTemplateUpdateArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BadgeTemplates.
+     * @param {BadgeTemplateDeleteManyArgs} args - Arguments to filter BadgeTemplates to delete.
+     * @example
+     * // Delete a few BadgeTemplates
+     * const { count } = await prisma.badgeTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BadgeTemplateDeleteManyArgs>(args?: SelectSubset<T, BadgeTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BadgeTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BadgeTemplates
+     * const badgeTemplate = await prisma.badgeTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BadgeTemplateUpdateManyArgs>(args: SelectSubset<T, BadgeTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BadgeTemplates and returns the data updated in the database.
+     * @param {BadgeTemplateUpdateManyAndReturnArgs} args - Arguments to update many BadgeTemplates.
+     * @example
+     * // Update many BadgeTemplates
+     * const badgeTemplate = await prisma.badgeTemplate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BadgeTemplates and only return the `id`
+     * const badgeTemplateWithIdOnly = await prisma.badgeTemplate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BadgeTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, BadgeTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BadgeTemplate.
+     * @param {BadgeTemplateUpsertArgs} args - Arguments to update or create a BadgeTemplate.
+     * @example
+     * // Update or create a BadgeTemplate
+     * const badgeTemplate = await prisma.badgeTemplate.upsert({
+     *   create: {
+     *     // ... data to create a BadgeTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BadgeTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BadgeTemplateUpsertArgs>(args: SelectSubset<T, BadgeTemplateUpsertArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BadgeTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateCountArgs} args - Arguments to filter BadgeTemplates to count.
+     * @example
+     * // Count the number of BadgeTemplates
+     * const count = await prisma.badgeTemplate.count({
+     *   where: {
+     *     // ... the filter for the BadgeTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends BadgeTemplateCountArgs>(
+      args?: Subset<T, BadgeTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BadgeTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BadgeTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BadgeTemplateAggregateArgs>(args: Subset<T, BadgeTemplateAggregateArgs>): Prisma.PrismaPromise<GetBadgeTemplateAggregateType<T>>
+
+    /**
+     * Group by BadgeTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BadgeTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BadgeTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: BadgeTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BadgeTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBadgeTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BadgeTemplate model
+   */
+  readonly fields: BadgeTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BadgeTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BadgeTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends BadgeTemplate$eventArgs<ExtArgs> = {}>(args?: Subset<T, BadgeTemplate$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    participantBadges<T extends BadgeTemplate$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, BadgeTemplate$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BadgeTemplate model
+   */
+  interface BadgeTemplateFieldRefs {
+    readonly id: FieldRef<"BadgeTemplate", 'String'>
+    readonly name: FieldRef<"BadgeTemplate", 'String'>
+    readonly description: FieldRef<"BadgeTemplate", 'String'>
+    readonly canvasData: FieldRef<"BadgeTemplate", 'String'>
+    readonly isGlobal: FieldRef<"BadgeTemplate", 'Boolean'>
+    readonly eventId: FieldRef<"BadgeTemplate", 'String'>
+    readonly isActive: FieldRef<"BadgeTemplate", 'Boolean'>
+    readonly createdAt: FieldRef<"BadgeTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"BadgeTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BadgeTemplate findUnique
+   */
+  export type BadgeTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeTemplate to fetch.
+     */
+    where: BadgeTemplateWhereUniqueInput
+  }
+
+  /**
+   * BadgeTemplate findUniqueOrThrow
+   */
+  export type BadgeTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeTemplate to fetch.
+     */
+    where: BadgeTemplateWhereUniqueInput
+  }
+
+  /**
+   * BadgeTemplate findFirst
+   */
+  export type BadgeTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeTemplate to fetch.
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeTemplates to fetch.
+     */
+    orderBy?: BadgeTemplateOrderByWithRelationInput | BadgeTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BadgeTemplates.
+     */
+    cursor?: BadgeTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BadgeTemplates.
+     */
+    distinct?: BadgeTemplateScalarFieldEnum | BadgeTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeTemplate findFirstOrThrow
+   */
+  export type BadgeTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeTemplate to fetch.
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeTemplates to fetch.
+     */
+    orderBy?: BadgeTemplateOrderByWithRelationInput | BadgeTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BadgeTemplates.
+     */
+    cursor?: BadgeTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BadgeTemplates.
+     */
+    distinct?: BadgeTemplateScalarFieldEnum | BadgeTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeTemplate findMany
+   */
+  export type BadgeTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeTemplates to fetch.
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeTemplates to fetch.
+     */
+    orderBy?: BadgeTemplateOrderByWithRelationInput | BadgeTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BadgeTemplates.
+     */
+    cursor?: BadgeTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeTemplates.
+     */
+    skip?: number
+    distinct?: BadgeTemplateScalarFieldEnum | BadgeTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeTemplate create
+   */
+  export type BadgeTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BadgeTemplate.
+     */
+    data: XOR<BadgeTemplateCreateInput, BadgeTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * BadgeTemplate createMany
+   */
+  export type BadgeTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BadgeTemplates.
+     */
+    data: BadgeTemplateCreateManyInput | BadgeTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BadgeTemplate createManyAndReturn
+   */
+  export type BadgeTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many BadgeTemplates.
+     */
+    data: BadgeTemplateCreateManyInput | BadgeTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BadgeTemplate update
+   */
+  export type BadgeTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BadgeTemplate.
+     */
+    data: XOR<BadgeTemplateUpdateInput, BadgeTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which BadgeTemplate to update.
+     */
+    where: BadgeTemplateWhereUniqueInput
+  }
+
+  /**
+   * BadgeTemplate updateMany
+   */
+  export type BadgeTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BadgeTemplates.
+     */
+    data: XOR<BadgeTemplateUpdateManyMutationInput, BadgeTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which BadgeTemplates to update
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * Limit how many BadgeTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BadgeTemplate updateManyAndReturn
+   */
+  export type BadgeTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update BadgeTemplates.
+     */
+    data: XOR<BadgeTemplateUpdateManyMutationInput, BadgeTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which BadgeTemplates to update
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * Limit how many BadgeTemplates to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BadgeTemplate upsert
+   */
+  export type BadgeTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BadgeTemplate to update in case it exists.
+     */
+    where: BadgeTemplateWhereUniqueInput
+    /**
+     * In case the BadgeTemplate found by the `where` argument doesn't exist, create a new BadgeTemplate with this data.
+     */
+    create: XOR<BadgeTemplateCreateInput, BadgeTemplateUncheckedCreateInput>
+    /**
+     * In case the BadgeTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BadgeTemplateUpdateInput, BadgeTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * BadgeTemplate delete
+   */
+  export type BadgeTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which BadgeTemplate to delete.
+     */
+    where: BadgeTemplateWhereUniqueInput
+  }
+
+  /**
+   * BadgeTemplate deleteMany
+   */
+  export type BadgeTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BadgeTemplates to delete
+     */
+    where?: BadgeTemplateWhereInput
+    /**
+     * Limit how many BadgeTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BadgeTemplate.event
+   */
+  export type BadgeTemplate$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+  }
+
+  /**
+   * BadgeTemplate.participantBadges
+   */
+  export type BadgeTemplate$participantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    where?: ParticipantBadgeWhereInput
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    cursor?: ParticipantBadgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeTemplate without action
+   */
+  export type BadgeTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeTemplate
+     */
+    select?: BadgeTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeTemplate
+     */
+    omit?: BadgeTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ParticipantBadge
+   */
+
+  export type AggregateParticipantBadge = {
+    _count: ParticipantBadgeCountAggregateOutputType | null
+    _min: ParticipantBadgeMinAggregateOutputType | null
+    _max: ParticipantBadgeMaxAggregateOutputType | null
+  }
+
+  export type ParticipantBadgeMinAggregateOutputType = {
+    id: string | null
+    registrationId: string | null
+    eventId: string | null
+    templateId: string | null
+    status: $Enums.BadgeStatus | null
+    generatedAt: Date | null
+    printedAt: Date | null
+    deliveredAt: Date | null
+    customData: string | null
+    qrCodeData: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ParticipantBadgeMaxAggregateOutputType = {
+    id: string | null
+    registrationId: string | null
+    eventId: string | null
+    templateId: string | null
+    status: $Enums.BadgeStatus | null
+    generatedAt: Date | null
+    printedAt: Date | null
+    deliveredAt: Date | null
+    customData: string | null
+    qrCodeData: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ParticipantBadgeCountAggregateOutputType = {
+    id: number
+    registrationId: number
+    eventId: number
+    templateId: number
+    status: number
+    generatedAt: number
+    printedAt: number
+    deliveredAt: number
+    customData: number
+    qrCodeData: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ParticipantBadgeMinAggregateInputType = {
+    id?: true
+    registrationId?: true
+    eventId?: true
+    templateId?: true
+    status?: true
+    generatedAt?: true
+    printedAt?: true
+    deliveredAt?: true
+    customData?: true
+    qrCodeData?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ParticipantBadgeMaxAggregateInputType = {
+    id?: true
+    registrationId?: true
+    eventId?: true
+    templateId?: true
+    status?: true
+    generatedAt?: true
+    printedAt?: true
+    deliveredAt?: true
+    customData?: true
+    qrCodeData?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ParticipantBadgeCountAggregateInputType = {
+    id?: true
+    registrationId?: true
+    eventId?: true
+    templateId?: true
+    status?: true
+    generatedAt?: true
+    printedAt?: true
+    deliveredAt?: true
+    customData?: true
+    qrCodeData?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ParticipantBadgeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ParticipantBadge to aggregate.
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantBadges to fetch.
+     */
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ParticipantBadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantBadges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantBadges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ParticipantBadges
+    **/
+    _count?: true | ParticipantBadgeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ParticipantBadgeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ParticipantBadgeMaxAggregateInputType
+  }
+
+  export type GetParticipantBadgeAggregateType<T extends ParticipantBadgeAggregateArgs> = {
+        [P in keyof T & keyof AggregateParticipantBadge]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateParticipantBadge[P]>
+      : GetScalarType<T[P], AggregateParticipantBadge[P]>
+  }
+
+
+
+
+  export type ParticipantBadgeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantBadgeWhereInput
+    orderBy?: ParticipantBadgeOrderByWithAggregationInput | ParticipantBadgeOrderByWithAggregationInput[]
+    by: ParticipantBadgeScalarFieldEnum[] | ParticipantBadgeScalarFieldEnum
+    having?: ParticipantBadgeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ParticipantBadgeCountAggregateInputType | true
+    _min?: ParticipantBadgeMinAggregateInputType
+    _max?: ParticipantBadgeMaxAggregateInputType
+  }
+
+  export type ParticipantBadgeGroupByOutputType = {
+    id: string
+    registrationId: string
+    eventId: string
+    templateId: string
+    status: $Enums.BadgeStatus
+    generatedAt: Date
+    printedAt: Date | null
+    deliveredAt: Date | null
+    customData: string | null
+    qrCodeData: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ParticipantBadgeCountAggregateOutputType | null
+    _min: ParticipantBadgeMinAggregateOutputType | null
+    _max: ParticipantBadgeMaxAggregateOutputType | null
+  }
+
+  type GetParticipantBadgeGroupByPayload<T extends ParticipantBadgeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ParticipantBadgeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ParticipantBadgeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ParticipantBadgeGroupByOutputType[P]>
+            : GetScalarType<T[P], ParticipantBadgeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ParticipantBadgeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    registrationId?: boolean
+    eventId?: boolean
+    templateId?: boolean
+    status?: boolean
+    generatedAt?: boolean
+    printedAt?: boolean
+    deliveredAt?: boolean
+    customData?: boolean
+    qrCodeData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    template?: boolean | BadgeTemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["participantBadge"]>
+
+  export type ParticipantBadgeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    registrationId?: boolean
+    eventId?: boolean
+    templateId?: boolean
+    status?: boolean
+    generatedAt?: boolean
+    printedAt?: boolean
+    deliveredAt?: boolean
+    customData?: boolean
+    qrCodeData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    template?: boolean | BadgeTemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["participantBadge"]>
+
+  export type ParticipantBadgeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    registrationId?: boolean
+    eventId?: boolean
+    templateId?: boolean
+    status?: boolean
+    generatedAt?: boolean
+    printedAt?: boolean
+    deliveredAt?: boolean
+    customData?: boolean
+    qrCodeData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    template?: boolean | BadgeTemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["participantBadge"]>
+
+  export type ParticipantBadgeSelectScalar = {
+    id?: boolean
+    registrationId?: boolean
+    eventId?: boolean
+    templateId?: boolean
+    status?: boolean
+    generatedAt?: boolean
+    printedAt?: boolean
+    deliveredAt?: boolean
+    customData?: boolean
+    qrCodeData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ParticipantBadgeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "registrationId" | "eventId" | "templateId" | "status" | "generatedAt" | "printedAt" | "deliveredAt" | "customData" | "qrCodeData" | "createdAt" | "updatedAt", ExtArgs["result"]["participantBadge"]>
+  export type ParticipantBadgeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    template?: boolean | BadgeTemplateDefaultArgs<ExtArgs>
+  }
+  export type ParticipantBadgeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    template?: boolean | BadgeTemplateDefaultArgs<ExtArgs>
+  }
+  export type ParticipantBadgeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    template?: boolean | BadgeTemplateDefaultArgs<ExtArgs>
+  }
+
+  export type $ParticipantBadgePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ParticipantBadge"
+    objects: {
+      registration: Prisma.$RegistrationPayload<ExtArgs>
+      event: Prisma.$EventPayload<ExtArgs>
+      template: Prisma.$BadgeTemplatePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      registrationId: string
+      eventId: string
+      templateId: string
+      status: $Enums.BadgeStatus
+      generatedAt: Date
+      printedAt: Date | null
+      deliveredAt: Date | null
+      customData: string | null
+      qrCodeData: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["participantBadge"]>
+    composites: {}
+  }
+
+  type ParticipantBadgeGetPayload<S extends boolean | null | undefined | ParticipantBadgeDefaultArgs> = $Result.GetResult<Prisma.$ParticipantBadgePayload, S>
+
+  type ParticipantBadgeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ParticipantBadgeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ParticipantBadgeCountAggregateInputType | true
+    }
+
+  export interface ParticipantBadgeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ParticipantBadge'], meta: { name: 'ParticipantBadge' } }
+    /**
+     * Find zero or one ParticipantBadge that matches the filter.
+     * @param {ParticipantBadgeFindUniqueArgs} args - Arguments to find a ParticipantBadge
+     * @example
+     * // Get one ParticipantBadge
+     * const participantBadge = await prisma.participantBadge.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ParticipantBadgeFindUniqueArgs>(args: SelectSubset<T, ParticipantBadgeFindUniqueArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ParticipantBadge that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ParticipantBadgeFindUniqueOrThrowArgs} args - Arguments to find a ParticipantBadge
+     * @example
+     * // Get one ParticipantBadge
+     * const participantBadge = await prisma.participantBadge.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ParticipantBadgeFindUniqueOrThrowArgs>(args: SelectSubset<T, ParticipantBadgeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ParticipantBadge that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeFindFirstArgs} args - Arguments to find a ParticipantBadge
+     * @example
+     * // Get one ParticipantBadge
+     * const participantBadge = await prisma.participantBadge.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ParticipantBadgeFindFirstArgs>(args?: SelectSubset<T, ParticipantBadgeFindFirstArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ParticipantBadge that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeFindFirstOrThrowArgs} args - Arguments to find a ParticipantBadge
+     * @example
+     * // Get one ParticipantBadge
+     * const participantBadge = await prisma.participantBadge.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ParticipantBadgeFindFirstOrThrowArgs>(args?: SelectSubset<T, ParticipantBadgeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ParticipantBadges that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ParticipantBadges
+     * const participantBadges = await prisma.participantBadge.findMany()
+     * 
+     * // Get first 10 ParticipantBadges
+     * const participantBadges = await prisma.participantBadge.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const participantBadgeWithIdOnly = await prisma.participantBadge.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ParticipantBadgeFindManyArgs>(args?: SelectSubset<T, ParticipantBadgeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ParticipantBadge.
+     * @param {ParticipantBadgeCreateArgs} args - Arguments to create a ParticipantBadge.
+     * @example
+     * // Create one ParticipantBadge
+     * const ParticipantBadge = await prisma.participantBadge.create({
+     *   data: {
+     *     // ... data to create a ParticipantBadge
+     *   }
+     * })
+     * 
+     */
+    create<T extends ParticipantBadgeCreateArgs>(args: SelectSubset<T, ParticipantBadgeCreateArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ParticipantBadges.
+     * @param {ParticipantBadgeCreateManyArgs} args - Arguments to create many ParticipantBadges.
+     * @example
+     * // Create many ParticipantBadges
+     * const participantBadge = await prisma.participantBadge.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ParticipantBadgeCreateManyArgs>(args?: SelectSubset<T, ParticipantBadgeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ParticipantBadges and returns the data saved in the database.
+     * @param {ParticipantBadgeCreateManyAndReturnArgs} args - Arguments to create many ParticipantBadges.
+     * @example
+     * // Create many ParticipantBadges
+     * const participantBadge = await prisma.participantBadge.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ParticipantBadges and only return the `id`
+     * const participantBadgeWithIdOnly = await prisma.participantBadge.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ParticipantBadgeCreateManyAndReturnArgs>(args?: SelectSubset<T, ParticipantBadgeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ParticipantBadge.
+     * @param {ParticipantBadgeDeleteArgs} args - Arguments to delete one ParticipantBadge.
+     * @example
+     * // Delete one ParticipantBadge
+     * const ParticipantBadge = await prisma.participantBadge.delete({
+     *   where: {
+     *     // ... filter to delete one ParticipantBadge
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ParticipantBadgeDeleteArgs>(args: SelectSubset<T, ParticipantBadgeDeleteArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ParticipantBadge.
+     * @param {ParticipantBadgeUpdateArgs} args - Arguments to update one ParticipantBadge.
+     * @example
+     * // Update one ParticipantBadge
+     * const participantBadge = await prisma.participantBadge.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ParticipantBadgeUpdateArgs>(args: SelectSubset<T, ParticipantBadgeUpdateArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ParticipantBadges.
+     * @param {ParticipantBadgeDeleteManyArgs} args - Arguments to filter ParticipantBadges to delete.
+     * @example
+     * // Delete a few ParticipantBadges
+     * const { count } = await prisma.participantBadge.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ParticipantBadgeDeleteManyArgs>(args?: SelectSubset<T, ParticipantBadgeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ParticipantBadges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ParticipantBadges
+     * const participantBadge = await prisma.participantBadge.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ParticipantBadgeUpdateManyArgs>(args: SelectSubset<T, ParticipantBadgeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ParticipantBadges and returns the data updated in the database.
+     * @param {ParticipantBadgeUpdateManyAndReturnArgs} args - Arguments to update many ParticipantBadges.
+     * @example
+     * // Update many ParticipantBadges
+     * const participantBadge = await prisma.participantBadge.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ParticipantBadges and only return the `id`
+     * const participantBadgeWithIdOnly = await prisma.participantBadge.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ParticipantBadgeUpdateManyAndReturnArgs>(args: SelectSubset<T, ParticipantBadgeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ParticipantBadge.
+     * @param {ParticipantBadgeUpsertArgs} args - Arguments to update or create a ParticipantBadge.
+     * @example
+     * // Update or create a ParticipantBadge
+     * const participantBadge = await prisma.participantBadge.upsert({
+     *   create: {
+     *     // ... data to create a ParticipantBadge
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ParticipantBadge we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ParticipantBadgeUpsertArgs>(args: SelectSubset<T, ParticipantBadgeUpsertArgs<ExtArgs>>): Prisma__ParticipantBadgeClient<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ParticipantBadges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeCountArgs} args - Arguments to filter ParticipantBadges to count.
+     * @example
+     * // Count the number of ParticipantBadges
+     * const count = await prisma.participantBadge.count({
+     *   where: {
+     *     // ... the filter for the ParticipantBadges we want to count
+     *   }
+     * })
+    **/
+    count<T extends ParticipantBadgeCountArgs>(
+      args?: Subset<T, ParticipantBadgeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ParticipantBadgeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ParticipantBadge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ParticipantBadgeAggregateArgs>(args: Subset<T, ParticipantBadgeAggregateArgs>): Prisma.PrismaPromise<GetParticipantBadgeAggregateType<T>>
+
+    /**
+     * Group by ParticipantBadge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantBadgeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ParticipantBadgeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ParticipantBadgeGroupByArgs['orderBy'] }
+        : { orderBy?: ParticipantBadgeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ParticipantBadgeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetParticipantBadgeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ParticipantBadge model
+   */
+  readonly fields: ParticipantBadgeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ParticipantBadge.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ParticipantBadgeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    registration<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    template<T extends BadgeTemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BadgeTemplateDefaultArgs<ExtArgs>>): Prisma__BadgeTemplateClient<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ParticipantBadge model
+   */
+  interface ParticipantBadgeFieldRefs {
+    readonly id: FieldRef<"ParticipantBadge", 'String'>
+    readonly registrationId: FieldRef<"ParticipantBadge", 'String'>
+    readonly eventId: FieldRef<"ParticipantBadge", 'String'>
+    readonly templateId: FieldRef<"ParticipantBadge", 'String'>
+    readonly status: FieldRef<"ParticipantBadge", 'BadgeStatus'>
+    readonly generatedAt: FieldRef<"ParticipantBadge", 'DateTime'>
+    readonly printedAt: FieldRef<"ParticipantBadge", 'DateTime'>
+    readonly deliveredAt: FieldRef<"ParticipantBadge", 'DateTime'>
+    readonly customData: FieldRef<"ParticipantBadge", 'String'>
+    readonly qrCodeData: FieldRef<"ParticipantBadge", 'String'>
+    readonly createdAt: FieldRef<"ParticipantBadge", 'DateTime'>
+    readonly updatedAt: FieldRef<"ParticipantBadge", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ParticipantBadge findUnique
+   */
+  export type ParticipantBadgeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantBadge to fetch.
+     */
+    where: ParticipantBadgeWhereUniqueInput
+  }
+
+  /**
+   * ParticipantBadge findUniqueOrThrow
+   */
+  export type ParticipantBadgeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantBadge to fetch.
+     */
+    where: ParticipantBadgeWhereUniqueInput
+  }
+
+  /**
+   * ParticipantBadge findFirst
+   */
+  export type ParticipantBadgeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantBadge to fetch.
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantBadges to fetch.
+     */
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ParticipantBadges.
+     */
+    cursor?: ParticipantBadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantBadges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantBadges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ParticipantBadges.
+     */
+    distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * ParticipantBadge findFirstOrThrow
+   */
+  export type ParticipantBadgeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantBadge to fetch.
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantBadges to fetch.
+     */
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ParticipantBadges.
+     */
+    cursor?: ParticipantBadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantBadges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantBadges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ParticipantBadges.
+     */
+    distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * ParticipantBadge findMany
+   */
+  export type ParticipantBadgeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantBadges to fetch.
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantBadges to fetch.
+     */
+    orderBy?: ParticipantBadgeOrderByWithRelationInput | ParticipantBadgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ParticipantBadges.
+     */
+    cursor?: ParticipantBadgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantBadges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantBadges.
+     */
+    skip?: number
+    distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * ParticipantBadge create
+   */
+  export type ParticipantBadgeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ParticipantBadge.
+     */
+    data: XOR<ParticipantBadgeCreateInput, ParticipantBadgeUncheckedCreateInput>
+  }
+
+  /**
+   * ParticipantBadge createMany
+   */
+  export type ParticipantBadgeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ParticipantBadges.
+     */
+    data: ParticipantBadgeCreateManyInput | ParticipantBadgeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ParticipantBadge createManyAndReturn
+   */
+  export type ParticipantBadgeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * The data used to create many ParticipantBadges.
+     */
+    data: ParticipantBadgeCreateManyInput | ParticipantBadgeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ParticipantBadge update
+   */
+  export type ParticipantBadgeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ParticipantBadge.
+     */
+    data: XOR<ParticipantBadgeUpdateInput, ParticipantBadgeUncheckedUpdateInput>
+    /**
+     * Choose, which ParticipantBadge to update.
+     */
+    where: ParticipantBadgeWhereUniqueInput
+  }
+
+  /**
+   * ParticipantBadge updateMany
+   */
+  export type ParticipantBadgeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ParticipantBadges.
+     */
+    data: XOR<ParticipantBadgeUpdateManyMutationInput, ParticipantBadgeUncheckedUpdateManyInput>
+    /**
+     * Filter which ParticipantBadges to update
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * Limit how many ParticipantBadges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ParticipantBadge updateManyAndReturn
+   */
+  export type ParticipantBadgeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * The data used to update ParticipantBadges.
+     */
+    data: XOR<ParticipantBadgeUpdateManyMutationInput, ParticipantBadgeUncheckedUpdateManyInput>
+    /**
+     * Filter which ParticipantBadges to update
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * Limit how many ParticipantBadges to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ParticipantBadge upsert
+   */
+  export type ParticipantBadgeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ParticipantBadge to update in case it exists.
+     */
+    where: ParticipantBadgeWhereUniqueInput
+    /**
+     * In case the ParticipantBadge found by the `where` argument doesn't exist, create a new ParticipantBadge with this data.
+     */
+    create: XOR<ParticipantBadgeCreateInput, ParticipantBadgeUncheckedCreateInput>
+    /**
+     * In case the ParticipantBadge was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ParticipantBadgeUpdateInput, ParticipantBadgeUncheckedUpdateInput>
+  }
+
+  /**
+   * ParticipantBadge delete
+   */
+  export type ParticipantBadgeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+    /**
+     * Filter which ParticipantBadge to delete.
+     */
+    where: ParticipantBadgeWhereUniqueInput
+  }
+
+  /**
+   * ParticipantBadge deleteMany
+   */
+  export type ParticipantBadgeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ParticipantBadges to delete
+     */
+    where?: ParticipantBadgeWhereInput
+    /**
+     * Limit how many ParticipantBadges to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ParticipantBadge without action
+   */
+  export type ParticipantBadgeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantBadge
+     */
+    select?: ParticipantBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantBadge
+     */
+    omit?: ParticipantBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantBadgeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12298,6 +18690,8 @@ export namespace Prisma {
     timezone: 'timezone',
     videoUrl: 'videoUrl',
     supportEmail: 'supportEmail',
+    archived: 'archived',
+    archivedAt: 'archivedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
@@ -12376,6 +18770,83 @@ export namespace Prisma {
   };
 
   export type SessionParticipantScalarFieldEnum = (typeof SessionParticipantScalarFieldEnum)[keyof typeof SessionParticipantScalarFieldEnum]
+
+
+  export const AppointmentScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    requesterId: 'requesterId',
+    recipientId: 'recipientId',
+    status: 'status',
+    message: 'message',
+    proposedTime: 'proposedTime',
+    confirmedTime: 'confirmedTime',
+    location: 'location',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
+
+
+  export const OtpCodeScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    code: 'code',
+    eventId: 'eventId',
+    expiresAt: 'expiresAt',
+    used: 'used',
+    createdAt: 'createdAt'
+  };
+
+  export type OtpCodeScalarFieldEnum = (typeof OtpCodeScalarFieldEnum)[keyof typeof OtpCodeScalarFieldEnum]
+
+
+  export const BadgeScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    name: 'name',
+    canvasData: 'canvasData',
+    isDefault: 'isDefault',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BadgeScalarFieldEnum = (typeof BadgeScalarFieldEnum)[keyof typeof BadgeScalarFieldEnum]
+
+
+  export const BadgeTemplateScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    canvasData: 'canvasData',
+    isGlobal: 'isGlobal',
+    eventId: 'eventId',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BadgeTemplateScalarFieldEnum = (typeof BadgeTemplateScalarFieldEnum)[keyof typeof BadgeTemplateScalarFieldEnum]
+
+
+  export const ParticipantBadgeScalarFieldEnum: {
+    id: 'id',
+    registrationId: 'registrationId',
+    eventId: 'eventId',
+    templateId: 'templateId',
+    status: 'status',
+    generatedAt: 'generatedAt',
+    printedAt: 'printedAt',
+    deliveredAt: 'deliveredAt',
+    customData: 'customData',
+    qrCodeData: 'qrCodeData',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ParticipantBadgeScalarFieldEnum = (typeof ParticipantBadgeScalarFieldEnum)[keyof typeof ParticipantBadgeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12481,6 +18952,34 @@ export namespace Prisma {
    * Reference to a field of type 'SponsorLevel[]'
    */
   export type ListEnumSponsorLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SponsorLevel[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AppointmentStatus'
+   */
+  export type EnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AppointmentStatus[]'
+   */
+  export type ListEnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BadgeStatus'
+   */
+  export type EnumBadgeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BadgeStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BadgeStatus[]'
+   */
+  export type ListEnumBadgeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BadgeStatus[]'>
     
 
 
@@ -12798,6 +19297,8 @@ export namespace Prisma {
     timezone?: StringNullableFilter<"Event"> | string | null
     videoUrl?: StringNullableFilter<"Event"> | string | null
     supportEmail?: StringNullableFilter<"Event"> | string | null
+    archived?: BoolFilter<"Event"> | boolean
+    archivedAt?: DateTimeNullableFilter<"Event"> | Date | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     userId?: StringFilter<"Event"> | string
@@ -12806,6 +19307,10 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     registrations?: RegistrationListRelationFilter
     sponsors?: SponsorListRelationFilter
+    appointments?: AppointmentListRelationFilter
+    badges?: BadgeListRelationFilter
+    badgeTemplates?: BadgeTemplateListRelationFilter
+    participantBadges?: ParticipantBadgeListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -12825,6 +19330,8 @@ export namespace Prisma {
     timezone?: SortOrderInput | SortOrder
     videoUrl?: SortOrderInput | SortOrder
     supportEmail?: SortOrderInput | SortOrder
+    archived?: SortOrder
+    archivedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -12833,6 +19340,10 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     registrations?: RegistrationOrderByRelationAggregateInput
     sponsors?: SponsorOrderByRelationAggregateInput
+    appointments?: AppointmentOrderByRelationAggregateInput
+    badges?: BadgeOrderByRelationAggregateInput
+    badgeTemplates?: BadgeTemplateOrderByRelationAggregateInput
+    participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -12855,6 +19366,8 @@ export namespace Prisma {
     timezone?: StringNullableFilter<"Event"> | string | null
     videoUrl?: StringNullableFilter<"Event"> | string | null
     supportEmail?: StringNullableFilter<"Event"> | string | null
+    archived?: BoolFilter<"Event"> | boolean
+    archivedAt?: DateTimeNullableFilter<"Event"> | Date | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     userId?: StringFilter<"Event"> | string
@@ -12863,6 +19376,10 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     registrations?: RegistrationListRelationFilter
     sponsors?: SponsorListRelationFilter
+    appointments?: AppointmentListRelationFilter
+    badges?: BadgeListRelationFilter
+    badgeTemplates?: BadgeTemplateListRelationFilter
+    participantBadges?: ParticipantBadgeListRelationFilter
   }, "id" | "slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -12882,6 +19399,8 @@ export namespace Prisma {
     timezone?: SortOrderInput | SortOrder
     videoUrl?: SortOrderInput | SortOrder
     supportEmail?: SortOrderInput | SortOrder
+    archived?: SortOrder
+    archivedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -12911,6 +19430,8 @@ export namespace Prisma {
     timezone?: StringNullableWithAggregatesFilter<"Event"> | string | null
     videoUrl?: StringNullableWithAggregatesFilter<"Event"> | string | null
     supportEmail?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    archived?: BoolWithAggregatesFilter<"Event"> | boolean
+    archivedAt?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     userId?: StringWithAggregatesFilter<"Event"> | string
@@ -12938,6 +19459,9 @@ export namespace Prisma {
     checkInTime?: DateTimeNullableFilter<"Registration"> | Date | string | null
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     sessions?: SessionParticipantListRelationFilter
+    sentAppointments?: AppointmentListRelationFilter
+    receivedAppointments?: AppointmentListRelationFilter
+    participantBadges?: ParticipantBadgeListRelationFilter
   }
 
   export type RegistrationOrderByWithRelationInput = {
@@ -12958,6 +19482,9 @@ export namespace Prisma {
     checkInTime?: SortOrderInput | SortOrder
     event?: EventOrderByWithRelationInput
     sessions?: SessionParticipantOrderByRelationAggregateInput
+    sentAppointments?: AppointmentOrderByRelationAggregateInput
+    receivedAppointments?: AppointmentOrderByRelationAggregateInput
+    participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
   }
 
   export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -12981,6 +19508,9 @@ export namespace Prisma {
     checkInTime?: DateTimeNullableFilter<"Registration"> | Date | string | null
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     sessions?: SessionParticipantListRelationFilter
+    sentAppointments?: AppointmentListRelationFilter
+    receivedAppointments?: AppointmentListRelationFilter
+    participantBadges?: ParticipantBadgeListRelationFilter
   }, "id" | "qrCode" | "shortCode">
 
   export type RegistrationOrderByWithAggregationInput = {
@@ -13282,6 +19812,404 @@ export namespace Prisma {
     registeredAt?: DateTimeWithAggregatesFilter<"SessionParticipant"> | Date | string
     attendedSession?: BoolWithAggregatesFilter<"SessionParticipant"> | boolean
     attendanceTime?: DateTimeNullableWithAggregatesFilter<"SessionParticipant"> | Date | string | null
+  }
+
+  export type AppointmentWhereInput = {
+    AND?: AppointmentWhereInput | AppointmentWhereInput[]
+    OR?: AppointmentWhereInput[]
+    NOT?: AppointmentWhereInput | AppointmentWhereInput[]
+    id?: StringFilter<"Appointment"> | string
+    eventId?: StringFilter<"Appointment"> | string
+    requesterId?: StringFilter<"Appointment"> | string
+    recipientId?: StringFilter<"Appointment"> | string
+    status?: EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
+    message?: StringNullableFilter<"Appointment"> | string | null
+    proposedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
+    confirmedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
+    location?: StringNullableFilter<"Appointment"> | string | null
+    notes?: StringNullableFilter<"Appointment"> | string | null
+    createdAt?: DateTimeFilter<"Appointment"> | Date | string
+    updatedAt?: DateTimeFilter<"Appointment"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    requester?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+    recipient?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }
+
+  export type AppointmentOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    requesterId?: SortOrder
+    recipientId?: SortOrder
+    status?: SortOrder
+    message?: SortOrderInput | SortOrder
+    proposedTime?: SortOrderInput | SortOrder
+    confirmedTime?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    requester?: RegistrationOrderByWithRelationInput
+    recipient?: RegistrationOrderByWithRelationInput
+  }
+
+  export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AppointmentWhereInput | AppointmentWhereInput[]
+    OR?: AppointmentWhereInput[]
+    NOT?: AppointmentWhereInput | AppointmentWhereInput[]
+    eventId?: StringFilter<"Appointment"> | string
+    requesterId?: StringFilter<"Appointment"> | string
+    recipientId?: StringFilter<"Appointment"> | string
+    status?: EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
+    message?: StringNullableFilter<"Appointment"> | string | null
+    proposedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
+    confirmedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
+    location?: StringNullableFilter<"Appointment"> | string | null
+    notes?: StringNullableFilter<"Appointment"> | string | null
+    createdAt?: DateTimeFilter<"Appointment"> | Date | string
+    updatedAt?: DateTimeFilter<"Appointment"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    requester?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+    recipient?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }, "id">
+
+  export type AppointmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    requesterId?: SortOrder
+    recipientId?: SortOrder
+    status?: SortOrder
+    message?: SortOrderInput | SortOrder
+    proposedTime?: SortOrderInput | SortOrder
+    confirmedTime?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AppointmentCountOrderByAggregateInput
+    _max?: AppointmentMaxOrderByAggregateInput
+    _min?: AppointmentMinOrderByAggregateInput
+  }
+
+  export type AppointmentScalarWhereWithAggregatesInput = {
+    AND?: AppointmentScalarWhereWithAggregatesInput | AppointmentScalarWhereWithAggregatesInput[]
+    OR?: AppointmentScalarWhereWithAggregatesInput[]
+    NOT?: AppointmentScalarWhereWithAggregatesInput | AppointmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Appointment"> | string
+    eventId?: StringWithAggregatesFilter<"Appointment"> | string
+    requesterId?: StringWithAggregatesFilter<"Appointment"> | string
+    recipientId?: StringWithAggregatesFilter<"Appointment"> | string
+    status?: EnumAppointmentStatusWithAggregatesFilter<"Appointment"> | $Enums.AppointmentStatus
+    message?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    proposedTime?: DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
+    confirmedTime?: DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
+    location?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
+  }
+
+  export type OtpCodeWhereInput = {
+    AND?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    OR?: OtpCodeWhereInput[]
+    NOT?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    id?: StringFilter<"OtpCode"> | string
+    email?: StringFilter<"OtpCode"> | string
+    code?: StringFilter<"OtpCode"> | string
+    eventId?: StringNullableFilter<"OtpCode"> | string | null
+    expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
+    used?: BoolFilter<"OtpCode"> | boolean
+    createdAt?: DateTimeFilter<"OtpCode"> | Date | string
+  }
+
+  export type OtpCodeOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OtpCodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    OR?: OtpCodeWhereInput[]
+    NOT?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    email?: StringFilter<"OtpCode"> | string
+    code?: StringFilter<"OtpCode"> | string
+    eventId?: StringNullableFilter<"OtpCode"> | string | null
+    expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
+    used?: BoolFilter<"OtpCode"> | boolean
+    createdAt?: DateTimeFilter<"OtpCode"> | Date | string
+  }, "id">
+
+  export type OtpCodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+    _count?: OtpCodeCountOrderByAggregateInput
+    _max?: OtpCodeMaxOrderByAggregateInput
+    _min?: OtpCodeMinOrderByAggregateInput
+  }
+
+  export type OtpCodeScalarWhereWithAggregatesInput = {
+    AND?: OtpCodeScalarWhereWithAggregatesInput | OtpCodeScalarWhereWithAggregatesInput[]
+    OR?: OtpCodeScalarWhereWithAggregatesInput[]
+    NOT?: OtpCodeScalarWhereWithAggregatesInput | OtpCodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OtpCode"> | string
+    email?: StringWithAggregatesFilter<"OtpCode"> | string
+    code?: StringWithAggregatesFilter<"OtpCode"> | string
+    eventId?: StringNullableWithAggregatesFilter<"OtpCode"> | string | null
+    expiresAt?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
+    used?: BoolWithAggregatesFilter<"OtpCode"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
+  }
+
+  export type BadgeWhereInput = {
+    AND?: BadgeWhereInput | BadgeWhereInput[]
+    OR?: BadgeWhereInput[]
+    NOT?: BadgeWhereInput | BadgeWhereInput[]
+    id?: StringFilter<"Badge"> | string
+    eventId?: StringFilter<"Badge"> | string
+    name?: StringNullableFilter<"Badge"> | string | null
+    canvasData?: StringNullableFilter<"Badge"> | string | null
+    isDefault?: BoolFilter<"Badge"> | boolean
+    createdAt?: DateTimeFilter<"Badge"> | Date | string
+    updatedAt?: DateTimeFilter<"Badge"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }
+
+  export type BadgeOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    canvasData?: SortOrderInput | SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type BadgeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BadgeWhereInput | BadgeWhereInput[]
+    OR?: BadgeWhereInput[]
+    NOT?: BadgeWhereInput | BadgeWhereInput[]
+    eventId?: StringFilter<"Badge"> | string
+    name?: StringNullableFilter<"Badge"> | string | null
+    canvasData?: StringNullableFilter<"Badge"> | string | null
+    isDefault?: BoolFilter<"Badge"> | boolean
+    createdAt?: DateTimeFilter<"Badge"> | Date | string
+    updatedAt?: DateTimeFilter<"Badge"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }, "id">
+
+  export type BadgeOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    canvasData?: SortOrderInput | SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BadgeCountOrderByAggregateInput
+    _max?: BadgeMaxOrderByAggregateInput
+    _min?: BadgeMinOrderByAggregateInput
+  }
+
+  export type BadgeScalarWhereWithAggregatesInput = {
+    AND?: BadgeScalarWhereWithAggregatesInput | BadgeScalarWhereWithAggregatesInput[]
+    OR?: BadgeScalarWhereWithAggregatesInput[]
+    NOT?: BadgeScalarWhereWithAggregatesInput | BadgeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Badge"> | string
+    eventId?: StringWithAggregatesFilter<"Badge"> | string
+    name?: StringNullableWithAggregatesFilter<"Badge"> | string | null
+    canvasData?: StringNullableWithAggregatesFilter<"Badge"> | string | null
+    isDefault?: BoolWithAggregatesFilter<"Badge"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Badge"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Badge"> | Date | string
+  }
+
+  export type BadgeTemplateWhereInput = {
+    AND?: BadgeTemplateWhereInput | BadgeTemplateWhereInput[]
+    OR?: BadgeTemplateWhereInput[]
+    NOT?: BadgeTemplateWhereInput | BadgeTemplateWhereInput[]
+    id?: StringFilter<"BadgeTemplate"> | string
+    name?: StringFilter<"BadgeTemplate"> | string
+    description?: StringNullableFilter<"BadgeTemplate"> | string | null
+    canvasData?: StringFilter<"BadgeTemplate"> | string
+    isGlobal?: BoolFilter<"BadgeTemplate"> | boolean
+    eventId?: StringNullableFilter<"BadgeTemplate"> | string | null
+    isActive?: BoolFilter<"BadgeTemplate"> | boolean
+    createdAt?: DateTimeFilter<"BadgeTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"BadgeTemplate"> | Date | string
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+    participantBadges?: ParticipantBadgeListRelationFilter
+  }
+
+  export type BadgeTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    canvasData?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
+  }
+
+  export type BadgeTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BadgeTemplateWhereInput | BadgeTemplateWhereInput[]
+    OR?: BadgeTemplateWhereInput[]
+    NOT?: BadgeTemplateWhereInput | BadgeTemplateWhereInput[]
+    name?: StringFilter<"BadgeTemplate"> | string
+    description?: StringNullableFilter<"BadgeTemplate"> | string | null
+    canvasData?: StringFilter<"BadgeTemplate"> | string
+    isGlobal?: BoolFilter<"BadgeTemplate"> | boolean
+    eventId?: StringNullableFilter<"BadgeTemplate"> | string | null
+    isActive?: BoolFilter<"BadgeTemplate"> | boolean
+    createdAt?: DateTimeFilter<"BadgeTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"BadgeTemplate"> | Date | string
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+    participantBadges?: ParticipantBadgeListRelationFilter
+  }, "id">
+
+  export type BadgeTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    canvasData?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BadgeTemplateCountOrderByAggregateInput
+    _max?: BadgeTemplateMaxOrderByAggregateInput
+    _min?: BadgeTemplateMinOrderByAggregateInput
+  }
+
+  export type BadgeTemplateScalarWhereWithAggregatesInput = {
+    AND?: BadgeTemplateScalarWhereWithAggregatesInput | BadgeTemplateScalarWhereWithAggregatesInput[]
+    OR?: BadgeTemplateScalarWhereWithAggregatesInput[]
+    NOT?: BadgeTemplateScalarWhereWithAggregatesInput | BadgeTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BadgeTemplate"> | string
+    name?: StringWithAggregatesFilter<"BadgeTemplate"> | string
+    description?: StringNullableWithAggregatesFilter<"BadgeTemplate"> | string | null
+    canvasData?: StringWithAggregatesFilter<"BadgeTemplate"> | string
+    isGlobal?: BoolWithAggregatesFilter<"BadgeTemplate"> | boolean
+    eventId?: StringNullableWithAggregatesFilter<"BadgeTemplate"> | string | null
+    isActive?: BoolWithAggregatesFilter<"BadgeTemplate"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"BadgeTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BadgeTemplate"> | Date | string
+  }
+
+  export type ParticipantBadgeWhereInput = {
+    AND?: ParticipantBadgeWhereInput | ParticipantBadgeWhereInput[]
+    OR?: ParticipantBadgeWhereInput[]
+    NOT?: ParticipantBadgeWhereInput | ParticipantBadgeWhereInput[]
+    id?: StringFilter<"ParticipantBadge"> | string
+    registrationId?: StringFilter<"ParticipantBadge"> | string
+    eventId?: StringFilter<"ParticipantBadge"> | string
+    templateId?: StringFilter<"ParticipantBadge"> | string
+    status?: EnumBadgeStatusFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    generatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    printedAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
+    customData?: StringNullableFilter<"ParticipantBadge"> | string | null
+    qrCodeData?: StringNullableFilter<"ParticipantBadge"> | string | null
+    createdAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    updatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    template?: XOR<BadgeTemplateScalarRelationFilter, BadgeTemplateWhereInput>
+  }
+
+  export type ParticipantBadgeOrderByWithRelationInput = {
+    id?: SortOrder
+    registrationId?: SortOrder
+    eventId?: SortOrder
+    templateId?: SortOrder
+    status?: SortOrder
+    generatedAt?: SortOrder
+    printedAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    customData?: SortOrderInput | SortOrder
+    qrCodeData?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    registration?: RegistrationOrderByWithRelationInput
+    event?: EventOrderByWithRelationInput
+    template?: BadgeTemplateOrderByWithRelationInput
+  }
+
+  export type ParticipantBadgeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    registrationId_eventId?: ParticipantBadgeRegistrationIdEventIdCompoundUniqueInput
+    AND?: ParticipantBadgeWhereInput | ParticipantBadgeWhereInput[]
+    OR?: ParticipantBadgeWhereInput[]
+    NOT?: ParticipantBadgeWhereInput | ParticipantBadgeWhereInput[]
+    registrationId?: StringFilter<"ParticipantBadge"> | string
+    eventId?: StringFilter<"ParticipantBadge"> | string
+    templateId?: StringFilter<"ParticipantBadge"> | string
+    status?: EnumBadgeStatusFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    generatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    printedAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
+    customData?: StringNullableFilter<"ParticipantBadge"> | string | null
+    qrCodeData?: StringNullableFilter<"ParticipantBadge"> | string | null
+    createdAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    updatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    template?: XOR<BadgeTemplateScalarRelationFilter, BadgeTemplateWhereInput>
+  }, "id" | "registrationId_eventId">
+
+  export type ParticipantBadgeOrderByWithAggregationInput = {
+    id?: SortOrder
+    registrationId?: SortOrder
+    eventId?: SortOrder
+    templateId?: SortOrder
+    status?: SortOrder
+    generatedAt?: SortOrder
+    printedAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    customData?: SortOrderInput | SortOrder
+    qrCodeData?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ParticipantBadgeCountOrderByAggregateInput
+    _max?: ParticipantBadgeMaxOrderByAggregateInput
+    _min?: ParticipantBadgeMinOrderByAggregateInput
+  }
+
+  export type ParticipantBadgeScalarWhereWithAggregatesInput = {
+    AND?: ParticipantBadgeScalarWhereWithAggregatesInput | ParticipantBadgeScalarWhereWithAggregatesInput[]
+    OR?: ParticipantBadgeScalarWhereWithAggregatesInput[]
+    NOT?: ParticipantBadgeScalarWhereWithAggregatesInput | ParticipantBadgeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ParticipantBadge"> | string
+    registrationId?: StringWithAggregatesFilter<"ParticipantBadge"> | string
+    eventId?: StringWithAggregatesFilter<"ParticipantBadge"> | string
+    templateId?: StringWithAggregatesFilter<"ParticipantBadge"> | string
+    status?: EnumBadgeStatusWithAggregatesFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    generatedAt?: DateTimeWithAggregatesFilter<"ParticipantBadge"> | Date | string
+    printedAt?: DateTimeNullableWithAggregatesFilter<"ParticipantBadge"> | Date | string | null
+    deliveredAt?: DateTimeNullableWithAggregatesFilter<"ParticipantBadge"> | Date | string | null
+    customData?: StringNullableWithAggregatesFilter<"ParticipantBadge"> | string | null
+    qrCodeData?: StringNullableWithAggregatesFilter<"ParticipantBadge"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ParticipantBadge"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ParticipantBadge"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -13605,6 +20533,8 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
@@ -13612,6 +20542,10 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutEventsInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -13631,6 +20565,8 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -13638,6 +20574,10 @@ export namespace Prisma {
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -13657,6 +20597,8 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13664,6 +20606,10 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -13683,6 +20629,8 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -13690,6 +20638,10 @@ export namespace Prisma {
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -13709,6 +20661,8 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -13732,6 +20686,8 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13754,6 +20710,8 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -13777,6 +20735,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     event: EventCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateInput = {
@@ -13796,6 +20757,9 @@ export namespace Prisma {
     checkedIn?: boolean
     checkInTime?: Date | string | null
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUpdateInput = {
@@ -13815,6 +20779,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateInput = {
@@ -13834,6 +20801,9 @@ export namespace Prisma {
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateManyInput = {
@@ -14174,6 +21144,436 @@ export namespace Prisma {
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendedSession?: BoolFieldUpdateOperationsInput | boolean
     attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AppointmentCreateInput = {
+    id?: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutAppointmentsInput
+    requester: RegistrationCreateNestedOneWithoutSentAppointmentsInput
+    recipient: RegistrationCreateNestedOneWithoutReceivedAppointmentsInput
+  }
+
+  export type AppointmentUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    requesterId: string
+    recipientId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutAppointmentsNestedInput
+    requester?: RegistrationUpdateOneRequiredWithoutSentAppointmentsNestedInput
+    recipient?: RegistrationUpdateOneRequiredWithoutReceivedAppointmentsNestedInput
+  }
+
+  export type AppointmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    recipientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentCreateManyInput = {
+    id?: string
+    eventId: string
+    requesterId: string
+    recipientId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    recipientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeCreateInput = {
+    id?: string
+    email: string
+    code: string
+    eventId?: string | null
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type OtpCodeUncheckedCreateInput = {
+    id?: string
+    email: string
+    code: string
+    eventId?: string | null
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type OtpCodeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeCreateManyInput = {
+    id?: string
+    email: string
+    code: string
+    eventId?: string | null
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type OtpCodeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeCreateInput = {
+    id?: string
+    name?: string | null
+    canvasData?: string | null
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutBadgesInput
+  }
+
+  export type BadgeUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    name?: string | null
+    canvasData?: string | null
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutBadgesNestedInput
+  }
+
+  export type BadgeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeCreateManyInput = {
+    id?: string
+    eventId: string
+    name?: string | null
+    canvasData?: string | null
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeTemplateCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event?: EventCreateNestedOneWithoutBadgeTemplatesInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutTemplateInput
+  }
+
+  export type BadgeTemplateUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    eventId?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type BadgeTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneWithoutBadgeTemplatesNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type BadgeTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type BadgeTemplateCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    eventId?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeCreateInput = {
+    id?: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    registration: RegistrationCreateNestedOneWithoutParticipantBadgesInput
+    event: EventCreateNestedOneWithoutParticipantBadgesInput
+    template: BadgeTemplateCreateNestedOneWithoutParticipantBadgesInput
+  }
+
+  export type ParticipantBadgeUncheckedCreateInput = {
+    id?: string
+    registrationId: string
+    eventId: string
+    templateId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registration?: RegistrationUpdateOneRequiredWithoutParticipantBadgesNestedInput
+    event?: EventUpdateOneRequiredWithoutParticipantBadgesNestedInput
+    template?: BadgeTemplateUpdateOneRequiredWithoutParticipantBadgesNestedInput
+  }
+
+  export type ParticipantBadgeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeCreateManyInput = {
+    id?: string
+    registrationId: string
+    eventId: string
+    templateId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -14526,6 +21926,11 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type Event_sessionsListRelationFilter = {
     every?: event_sessionsWhereInput
     some?: event_sessionsWhereInput
@@ -14544,6 +21949,30 @@ export namespace Prisma {
     none?: SponsorWhereInput
   }
 
+  export type AppointmentListRelationFilter = {
+    every?: AppointmentWhereInput
+    some?: AppointmentWhereInput
+    none?: AppointmentWhereInput
+  }
+
+  export type BadgeListRelationFilter = {
+    every?: BadgeWhereInput
+    some?: BadgeWhereInput
+    none?: BadgeWhereInput
+  }
+
+  export type BadgeTemplateListRelationFilter = {
+    every?: BadgeTemplateWhereInput
+    some?: BadgeTemplateWhereInput
+    none?: BadgeTemplateWhereInput
+  }
+
+  export type ParticipantBadgeListRelationFilter = {
+    every?: ParticipantBadgeWhereInput
+    some?: ParticipantBadgeWhereInput
+    none?: ParticipantBadgeWhereInput
+  }
+
   export type event_sessionsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -14553,6 +21982,22 @@ export namespace Prisma {
   }
 
   export type SponsorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AppointmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BadgeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BadgeTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ParticipantBadgeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14573,6 +22018,8 @@ export namespace Prisma {
     timezone?: SortOrder
     videoUrl?: SortOrder
     supportEmail?: SortOrder
+    archived?: SortOrder
+    archivedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -14596,6 +22043,8 @@ export namespace Prisma {
     timezone?: SortOrder
     videoUrl?: SortOrder
     supportEmail?: SortOrder
+    archived?: SortOrder
+    archivedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -14619,15 +22068,20 @@ export namespace Prisma {
     timezone?: SortOrder
     videoUrl?: SortOrder
     supportEmail?: SortOrder
+    archived?: SortOrder
+    archivedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
     logo?: SortOrder
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EventScalarRelationFilter = {
@@ -14697,14 +22151,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     checkedIn?: SortOrder
     checkInTime?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type event_sessionsCountOrderByAggregateInput = {
@@ -14868,6 +22314,241 @@ export namespace Prisma {
     registeredAt?: SortOrder
     attendedSession?: SortOrder
     attendanceTime?: SortOrder
+  }
+
+  export type EnumAppointmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAppointmentStatusFilter<$PrismaModel> | $Enums.AppointmentStatus
+  }
+
+  export type AppointmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    requesterId?: SortOrder
+    recipientId?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    proposedTime?: SortOrder
+    confirmedTime?: SortOrder
+    location?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AppointmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    requesterId?: SortOrder
+    recipientId?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    proposedTime?: SortOrder
+    confirmedTime?: SortOrder
+    location?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AppointmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    requesterId?: SortOrder
+    recipientId?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    proposedTime?: SortOrder
+    confirmedTime?: SortOrder
+    location?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAppointmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAppointmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.AppointmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAppointmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumAppointmentStatusFilter<$PrismaModel>
+  }
+
+  export type OtpCodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    eventId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OtpCodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    eventId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OtpCodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    eventId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BadgeCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    canvasData?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BadgeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    canvasData?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BadgeMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    canvasData?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EventNullableScalarRelationFilter = {
+    is?: EventWhereInput | null
+    isNot?: EventWhereInput | null
+  }
+
+  export type BadgeTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    canvasData?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BadgeTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    canvasData?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BadgeTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    canvasData?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumBadgeStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBadgeStatusFilter<$PrismaModel> | $Enums.BadgeStatus
+  }
+
+  export type BadgeTemplateScalarRelationFilter = {
+    is?: BadgeTemplateWhereInput
+    isNot?: BadgeTemplateWhereInput
+  }
+
+  export type ParticipantBadgeRegistrationIdEventIdCompoundUniqueInput = {
+    registrationId: string
+    eventId: string
+  }
+
+  export type ParticipantBadgeCountOrderByAggregateInput = {
+    id?: SortOrder
+    registrationId?: SortOrder
+    eventId?: SortOrder
+    templateId?: SortOrder
+    status?: SortOrder
+    generatedAt?: SortOrder
+    printedAt?: SortOrder
+    deliveredAt?: SortOrder
+    customData?: SortOrder
+    qrCodeData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ParticipantBadgeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    registrationId?: SortOrder
+    eventId?: SortOrder
+    templateId?: SortOrder
+    status?: SortOrder
+    generatedAt?: SortOrder
+    printedAt?: SortOrder
+    deliveredAt?: SortOrder
+    customData?: SortOrder
+    qrCodeData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ParticipantBadgeMinOrderByAggregateInput = {
+    id?: SortOrder
+    registrationId?: SortOrder
+    eventId?: SortOrder
+    templateId?: SortOrder
+    status?: SortOrder
+    generatedAt?: SortOrder
+    printedAt?: SortOrder
+    deliveredAt?: SortOrder
+    customData?: SortOrder
+    qrCodeData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumBadgeStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBadgeStatusWithAggregatesFilter<$PrismaModel> | $Enums.BadgeStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBadgeStatusFilter<$PrismaModel>
+    _max?: NestedEnumBadgeStatusFilter<$PrismaModel>
   }
 
   export type UserCreatepermissionsInput = {
@@ -15088,6 +22769,34 @@ export namespace Prisma {
     connect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
   }
 
+  export type AppointmentCreateNestedManyWithoutEventInput = {
+    create?: XOR<AppointmentCreateWithoutEventInput, AppointmentUncheckedCreateWithoutEventInput> | AppointmentCreateWithoutEventInput[] | AppointmentUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutEventInput | AppointmentCreateOrConnectWithoutEventInput[]
+    createMany?: AppointmentCreateManyEventInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type BadgeCreateNestedManyWithoutEventInput = {
+    create?: XOR<BadgeCreateWithoutEventInput, BadgeUncheckedCreateWithoutEventInput> | BadgeCreateWithoutEventInput[] | BadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeCreateOrConnectWithoutEventInput | BadgeCreateOrConnectWithoutEventInput[]
+    createMany?: BadgeCreateManyEventInputEnvelope
+    connect?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+  }
+
+  export type BadgeTemplateCreateNestedManyWithoutEventInput = {
+    create?: XOR<BadgeTemplateCreateWithoutEventInput, BadgeTemplateUncheckedCreateWithoutEventInput> | BadgeTemplateCreateWithoutEventInput[] | BadgeTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeTemplateCreateOrConnectWithoutEventInput | BadgeTemplateCreateOrConnectWithoutEventInput[]
+    createMany?: BadgeTemplateCreateManyEventInputEnvelope
+    connect?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+  }
+
+  export type ParticipantBadgeCreateNestedManyWithoutEventInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
+    createMany?: ParticipantBadgeCreateManyEventInputEnvelope
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+  }
+
   export type event_sessionsUncheckedCreateNestedManyWithoutEventsInput = {
     create?: XOR<event_sessionsCreateWithoutEventsInput, event_sessionsUncheckedCreateWithoutEventsInput> | event_sessionsCreateWithoutEventsInput[] | event_sessionsUncheckedCreateWithoutEventsInput[]
     connectOrCreate?: event_sessionsCreateOrConnectWithoutEventsInput | event_sessionsCreateOrConnectWithoutEventsInput[]
@@ -15107,6 +22816,38 @@ export namespace Prisma {
     connectOrCreate?: SponsorCreateOrConnectWithoutEventInput | SponsorCreateOrConnectWithoutEventInput[]
     createMany?: SponsorCreateManyEventInputEnvelope
     connect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+  }
+
+  export type AppointmentUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<AppointmentCreateWithoutEventInput, AppointmentUncheckedCreateWithoutEventInput> | AppointmentCreateWithoutEventInput[] | AppointmentUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutEventInput | AppointmentCreateOrConnectWithoutEventInput[]
+    createMany?: AppointmentCreateManyEventInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type BadgeUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<BadgeCreateWithoutEventInput, BadgeUncheckedCreateWithoutEventInput> | BadgeCreateWithoutEventInput[] | BadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeCreateOrConnectWithoutEventInput | BadgeCreateOrConnectWithoutEventInput[]
+    createMany?: BadgeCreateManyEventInputEnvelope
+    connect?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+  }
+
+  export type BadgeTemplateUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<BadgeTemplateCreateWithoutEventInput, BadgeTemplateUncheckedCreateWithoutEventInput> | BadgeTemplateCreateWithoutEventInput[] | BadgeTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeTemplateCreateOrConnectWithoutEventInput | BadgeTemplateCreateOrConnectWithoutEventInput[]
+    createMany?: BadgeTemplateCreateManyEventInputEnvelope
+    connect?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+  }
+
+  export type ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
+    createMany?: ParticipantBadgeCreateManyEventInputEnvelope
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type event_sessionsUpdateManyWithoutEventsNestedInput = {
@@ -15159,6 +22900,62 @@ export namespace Prisma {
     deleteMany?: SponsorScalarWhereInput | SponsorScalarWhereInput[]
   }
 
+  export type AppointmentUpdateManyWithoutEventNestedInput = {
+    create?: XOR<AppointmentCreateWithoutEventInput, AppointmentUncheckedCreateWithoutEventInput> | AppointmentCreateWithoutEventInput[] | AppointmentUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutEventInput | AppointmentCreateOrConnectWithoutEventInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutEventInput | AppointmentUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: AppointmentCreateManyEventInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutEventInput | AppointmentUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutEventInput | AppointmentUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type BadgeUpdateManyWithoutEventNestedInput = {
+    create?: XOR<BadgeCreateWithoutEventInput, BadgeUncheckedCreateWithoutEventInput> | BadgeCreateWithoutEventInput[] | BadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeCreateOrConnectWithoutEventInput | BadgeCreateOrConnectWithoutEventInput[]
+    upsert?: BadgeUpsertWithWhereUniqueWithoutEventInput | BadgeUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: BadgeCreateManyEventInputEnvelope
+    set?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    disconnect?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    delete?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    connect?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    update?: BadgeUpdateWithWhereUniqueWithoutEventInput | BadgeUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: BadgeUpdateManyWithWhereWithoutEventInput | BadgeUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: BadgeScalarWhereInput | BadgeScalarWhereInput[]
+  }
+
+  export type BadgeTemplateUpdateManyWithoutEventNestedInput = {
+    create?: XOR<BadgeTemplateCreateWithoutEventInput, BadgeTemplateUncheckedCreateWithoutEventInput> | BadgeTemplateCreateWithoutEventInput[] | BadgeTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeTemplateCreateOrConnectWithoutEventInput | BadgeTemplateCreateOrConnectWithoutEventInput[]
+    upsert?: BadgeTemplateUpsertWithWhereUniqueWithoutEventInput | BadgeTemplateUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: BadgeTemplateCreateManyEventInputEnvelope
+    set?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    disconnect?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    delete?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    connect?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    update?: BadgeTemplateUpdateWithWhereUniqueWithoutEventInput | BadgeTemplateUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: BadgeTemplateUpdateManyWithWhereWithoutEventInput | BadgeTemplateUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: BadgeTemplateScalarWhereInput | BadgeTemplateScalarWhereInput[]
+  }
+
+  export type ParticipantBadgeUpdateManyWithoutEventNestedInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
+    upsert?: ParticipantBadgeUpsertWithWhereUniqueWithoutEventInput | ParticipantBadgeUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: ParticipantBadgeCreateManyEventInputEnvelope
+    set?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    disconnect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    delete?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    update?: ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput | ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutEventInput | ParticipantBadgeUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+  }
+
   export type event_sessionsUncheckedUpdateManyWithoutEventsNestedInput = {
     create?: XOR<event_sessionsCreateWithoutEventsInput, event_sessionsUncheckedCreateWithoutEventsInput> | event_sessionsCreateWithoutEventsInput[] | event_sessionsUncheckedCreateWithoutEventsInput[]
     connectOrCreate?: event_sessionsCreateOrConnectWithoutEventsInput | event_sessionsCreateOrConnectWithoutEventsInput[]
@@ -15201,6 +22998,62 @@ export namespace Prisma {
     deleteMany?: SponsorScalarWhereInput | SponsorScalarWhereInput[]
   }
 
+  export type AppointmentUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<AppointmentCreateWithoutEventInput, AppointmentUncheckedCreateWithoutEventInput> | AppointmentCreateWithoutEventInput[] | AppointmentUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutEventInput | AppointmentCreateOrConnectWithoutEventInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutEventInput | AppointmentUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: AppointmentCreateManyEventInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutEventInput | AppointmentUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutEventInput | AppointmentUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type BadgeUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<BadgeCreateWithoutEventInput, BadgeUncheckedCreateWithoutEventInput> | BadgeCreateWithoutEventInput[] | BadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeCreateOrConnectWithoutEventInput | BadgeCreateOrConnectWithoutEventInput[]
+    upsert?: BadgeUpsertWithWhereUniqueWithoutEventInput | BadgeUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: BadgeCreateManyEventInputEnvelope
+    set?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    disconnect?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    delete?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    connect?: BadgeWhereUniqueInput | BadgeWhereUniqueInput[]
+    update?: BadgeUpdateWithWhereUniqueWithoutEventInput | BadgeUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: BadgeUpdateManyWithWhereWithoutEventInput | BadgeUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: BadgeScalarWhereInput | BadgeScalarWhereInput[]
+  }
+
+  export type BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<BadgeTemplateCreateWithoutEventInput, BadgeTemplateUncheckedCreateWithoutEventInput> | BadgeTemplateCreateWithoutEventInput[] | BadgeTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: BadgeTemplateCreateOrConnectWithoutEventInput | BadgeTemplateCreateOrConnectWithoutEventInput[]
+    upsert?: BadgeTemplateUpsertWithWhereUniqueWithoutEventInput | BadgeTemplateUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: BadgeTemplateCreateManyEventInputEnvelope
+    set?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    disconnect?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    delete?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    connect?: BadgeTemplateWhereUniqueInput | BadgeTemplateWhereUniqueInput[]
+    update?: BadgeTemplateUpdateWithWhereUniqueWithoutEventInput | BadgeTemplateUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: BadgeTemplateUpdateManyWithWhereWithoutEventInput | BadgeTemplateUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: BadgeTemplateScalarWhereInput | BadgeTemplateScalarWhereInput[]
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
+    upsert?: ParticipantBadgeUpsertWithWhereUniqueWithoutEventInput | ParticipantBadgeUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: ParticipantBadgeCreateManyEventInputEnvelope
+    set?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    disconnect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    delete?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    update?: ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput | ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutEventInput | ParticipantBadgeUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+  }
+
   export type EventCreateNestedOneWithoutRegistrationsInput = {
     create?: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
     connectOrCreate?: EventCreateOrConnectWithoutRegistrationsInput
@@ -15214,6 +23067,27 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
+  export type AppointmentCreateNestedManyWithoutRequesterInput = {
+    create?: XOR<AppointmentCreateWithoutRequesterInput, AppointmentUncheckedCreateWithoutRequesterInput> | AppointmentCreateWithoutRequesterInput[] | AppointmentUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRequesterInput | AppointmentCreateOrConnectWithoutRequesterInput[]
+    createMany?: AppointmentCreateManyRequesterInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type AppointmentCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput> | AppointmentCreateWithoutRecipientInput[] | AppointmentUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRecipientInput | AppointmentCreateOrConnectWithoutRecipientInput[]
+    createMany?: AppointmentCreateManyRecipientInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type ParticipantBadgeCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput> | ParticipantBadgeCreateWithoutRegistrationInput[] | ParticipantBadgeUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutRegistrationInput | ParticipantBadgeCreateOrConnectWithoutRegistrationInput[]
+    createMany?: ParticipantBadgeCreateManyRegistrationInputEnvelope
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+  }
+
   export type SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput = {
     create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
@@ -15221,8 +23095,25 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type AppointmentUncheckedCreateNestedManyWithoutRequesterInput = {
+    create?: XOR<AppointmentCreateWithoutRequesterInput, AppointmentUncheckedCreateWithoutRequesterInput> | AppointmentCreateWithoutRequesterInput[] | AppointmentUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRequesterInput | AppointmentCreateOrConnectWithoutRequesterInput[]
+    createMany?: AppointmentCreateManyRequesterInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type AppointmentUncheckedCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput> | AppointmentCreateWithoutRecipientInput[] | AppointmentUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRecipientInput | AppointmentCreateOrConnectWithoutRecipientInput[]
+    createMany?: AppointmentCreateManyRecipientInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput> | ParticipantBadgeCreateWithoutRegistrationInput[] | ParticipantBadgeUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutRegistrationInput | ParticipantBadgeCreateOrConnectWithoutRegistrationInput[]
+    createMany?: ParticipantBadgeCreateManyRegistrationInputEnvelope
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
   }
 
   export type EventUpdateOneRequiredWithoutRegistrationsNestedInput = {
@@ -15247,6 +23138,48 @@ export namespace Prisma {
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
+  export type AppointmentUpdateManyWithoutRequesterNestedInput = {
+    create?: XOR<AppointmentCreateWithoutRequesterInput, AppointmentUncheckedCreateWithoutRequesterInput> | AppointmentCreateWithoutRequesterInput[] | AppointmentUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRequesterInput | AppointmentCreateOrConnectWithoutRequesterInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutRequesterInput | AppointmentUpsertWithWhereUniqueWithoutRequesterInput[]
+    createMany?: AppointmentCreateManyRequesterInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutRequesterInput | AppointmentUpdateWithWhereUniqueWithoutRequesterInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutRequesterInput | AppointmentUpdateManyWithWhereWithoutRequesterInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type AppointmentUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput> | AppointmentCreateWithoutRecipientInput[] | AppointmentUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRecipientInput | AppointmentCreateOrConnectWithoutRecipientInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutRecipientInput | AppointmentUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: AppointmentCreateManyRecipientInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutRecipientInput | AppointmentUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutRecipientInput | AppointmentUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type ParticipantBadgeUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput> | ParticipantBadgeCreateWithoutRegistrationInput[] | ParticipantBadgeUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutRegistrationInput | ParticipantBadgeCreateOrConnectWithoutRegistrationInput[]
+    upsert?: ParticipantBadgeUpsertWithWhereUniqueWithoutRegistrationInput | ParticipantBadgeUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: ParticipantBadgeCreateManyRegistrationInputEnvelope
+    set?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    disconnect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    delete?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    update?: ParticipantBadgeUpdateWithWhereUniqueWithoutRegistrationInput | ParticipantBadgeUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutRegistrationInput | ParticipantBadgeUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+  }
+
   export type SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput = {
     create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
@@ -15259,6 +23192,48 @@ export namespace Prisma {
     update?: SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput | SessionParticipantUpdateWithWhereUniqueWithoutParticipantInput[]
     updateMany?: SessionParticipantUpdateManyWithWhereWithoutParticipantInput | SessionParticipantUpdateManyWithWhereWithoutParticipantInput[]
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutRequesterNestedInput = {
+    create?: XOR<AppointmentCreateWithoutRequesterInput, AppointmentUncheckedCreateWithoutRequesterInput> | AppointmentCreateWithoutRequesterInput[] | AppointmentUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRequesterInput | AppointmentCreateOrConnectWithoutRequesterInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutRequesterInput | AppointmentUpsertWithWhereUniqueWithoutRequesterInput[]
+    createMany?: AppointmentCreateManyRequesterInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutRequesterInput | AppointmentUpdateWithWhereUniqueWithoutRequesterInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutRequesterInput | AppointmentUpdateManyWithWhereWithoutRequesterInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput> | AppointmentCreateWithoutRecipientInput[] | AppointmentUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutRecipientInput | AppointmentCreateOrConnectWithoutRecipientInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutRecipientInput | AppointmentUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: AppointmentCreateManyRecipientInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutRecipientInput | AppointmentUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutRecipientInput | AppointmentUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput> | ParticipantBadgeCreateWithoutRegistrationInput[] | ParticipantBadgeUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutRegistrationInput | ParticipantBadgeCreateOrConnectWithoutRegistrationInput[]
+    upsert?: ParticipantBadgeUpsertWithWhereUniqueWithoutRegistrationInput | ParticipantBadgeUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: ParticipantBadgeCreateManyRegistrationInputEnvelope
+    set?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    disconnect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    delete?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    update?: ParticipantBadgeUpdateWithWhereUniqueWithoutRegistrationInput | ParticipantBadgeUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutRegistrationInput | ParticipantBadgeUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
   }
 
   export type EventCreateNestedOneWithoutEvent_sessionsInput = {
@@ -15361,6 +23336,170 @@ export namespace Prisma {
     upsert?: RegistrationUpsertWithoutSessionsInput
     connect?: RegistrationWhereUniqueInput
     update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutSessionsInput, RegistrationUpdateWithoutSessionsInput>, RegistrationUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type EventCreateNestedOneWithoutAppointmentsInput = {
+    create?: XOR<EventCreateWithoutAppointmentsInput, EventUncheckedCreateWithoutAppointmentsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutAppointmentsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type RegistrationCreateNestedOneWithoutSentAppointmentsInput = {
+    create?: XOR<RegistrationCreateWithoutSentAppointmentsInput, RegistrationUncheckedCreateWithoutSentAppointmentsInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutSentAppointmentsInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
+  export type RegistrationCreateNestedOneWithoutReceivedAppointmentsInput = {
+    create?: XOR<RegistrationCreateWithoutReceivedAppointmentsInput, RegistrationUncheckedCreateWithoutReceivedAppointmentsInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutReceivedAppointmentsInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
+  export type EnumAppointmentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AppointmentStatus
+  }
+
+  export type EventUpdateOneRequiredWithoutAppointmentsNestedInput = {
+    create?: XOR<EventCreateWithoutAppointmentsInput, EventUncheckedCreateWithoutAppointmentsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutAppointmentsInput
+    upsert?: EventUpsertWithoutAppointmentsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutAppointmentsInput, EventUpdateWithoutAppointmentsInput>, EventUncheckedUpdateWithoutAppointmentsInput>
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutSentAppointmentsNestedInput = {
+    create?: XOR<RegistrationCreateWithoutSentAppointmentsInput, RegistrationUncheckedCreateWithoutSentAppointmentsInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutSentAppointmentsInput
+    upsert?: RegistrationUpsertWithoutSentAppointmentsInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutSentAppointmentsInput, RegistrationUpdateWithoutSentAppointmentsInput>, RegistrationUncheckedUpdateWithoutSentAppointmentsInput>
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutReceivedAppointmentsNestedInput = {
+    create?: XOR<RegistrationCreateWithoutReceivedAppointmentsInput, RegistrationUncheckedCreateWithoutReceivedAppointmentsInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutReceivedAppointmentsInput
+    upsert?: RegistrationUpsertWithoutReceivedAppointmentsInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutReceivedAppointmentsInput, RegistrationUpdateWithoutReceivedAppointmentsInput>, RegistrationUncheckedUpdateWithoutReceivedAppointmentsInput>
+  }
+
+  export type EventCreateNestedOneWithoutBadgesInput = {
+    create?: XOR<EventCreateWithoutBadgesInput, EventUncheckedCreateWithoutBadgesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutBadgesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutBadgesNestedInput = {
+    create?: XOR<EventCreateWithoutBadgesInput, EventUncheckedCreateWithoutBadgesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutBadgesInput
+    upsert?: EventUpsertWithoutBadgesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutBadgesInput, EventUpdateWithoutBadgesInput>, EventUncheckedUpdateWithoutBadgesInput>
+  }
+
+  export type EventCreateNestedOneWithoutBadgeTemplatesInput = {
+    create?: XOR<EventCreateWithoutBadgeTemplatesInput, EventUncheckedCreateWithoutBadgeTemplatesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutBadgeTemplatesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type ParticipantBadgeCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutTemplateInput, ParticipantBadgeUncheckedCreateWithoutTemplateInput> | ParticipantBadgeCreateWithoutTemplateInput[] | ParticipantBadgeUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutTemplateInput | ParticipantBadgeCreateOrConnectWithoutTemplateInput[]
+    createMany?: ParticipantBadgeCreateManyTemplateInputEnvelope
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+  }
+
+  export type ParticipantBadgeUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutTemplateInput, ParticipantBadgeUncheckedCreateWithoutTemplateInput> | ParticipantBadgeCreateWithoutTemplateInput[] | ParticipantBadgeUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutTemplateInput | ParticipantBadgeCreateOrConnectWithoutTemplateInput[]
+    createMany?: ParticipantBadgeCreateManyTemplateInputEnvelope
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+  }
+
+  export type EventUpdateOneWithoutBadgeTemplatesNestedInput = {
+    create?: XOR<EventCreateWithoutBadgeTemplatesInput, EventUncheckedCreateWithoutBadgeTemplatesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutBadgeTemplatesInput
+    upsert?: EventUpsertWithoutBadgeTemplatesInput
+    disconnect?: EventWhereInput | boolean
+    delete?: EventWhereInput | boolean
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutBadgeTemplatesInput, EventUpdateWithoutBadgeTemplatesInput>, EventUncheckedUpdateWithoutBadgeTemplatesInput>
+  }
+
+  export type ParticipantBadgeUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutTemplateInput, ParticipantBadgeUncheckedCreateWithoutTemplateInput> | ParticipantBadgeCreateWithoutTemplateInput[] | ParticipantBadgeUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutTemplateInput | ParticipantBadgeCreateOrConnectWithoutTemplateInput[]
+    upsert?: ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput | ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: ParticipantBadgeCreateManyTemplateInputEnvelope
+    set?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    disconnect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    delete?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    update?: ParticipantBadgeUpdateWithWhereUniqueWithoutTemplateInput | ParticipantBadgeUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutTemplateInput | ParticipantBadgeUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<ParticipantBadgeCreateWithoutTemplateInput, ParticipantBadgeUncheckedCreateWithoutTemplateInput> | ParticipantBadgeCreateWithoutTemplateInput[] | ParticipantBadgeUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutTemplateInput | ParticipantBadgeCreateOrConnectWithoutTemplateInput[]
+    upsert?: ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput | ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: ParticipantBadgeCreateManyTemplateInputEnvelope
+    set?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    disconnect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    delete?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+    update?: ParticipantBadgeUpdateWithWhereUniqueWithoutTemplateInput | ParticipantBadgeUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutTemplateInput | ParticipantBadgeUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+  }
+
+  export type RegistrationCreateNestedOneWithoutParticipantBadgesInput = {
+    create?: XOR<RegistrationCreateWithoutParticipantBadgesInput, RegistrationUncheckedCreateWithoutParticipantBadgesInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutParticipantBadgesInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
+  export type EventCreateNestedOneWithoutParticipantBadgesInput = {
+    create?: XOR<EventCreateWithoutParticipantBadgesInput, EventUncheckedCreateWithoutParticipantBadgesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutParticipantBadgesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type BadgeTemplateCreateNestedOneWithoutParticipantBadgesInput = {
+    create?: XOR<BadgeTemplateCreateWithoutParticipantBadgesInput, BadgeTemplateUncheckedCreateWithoutParticipantBadgesInput>
+    connectOrCreate?: BadgeTemplateCreateOrConnectWithoutParticipantBadgesInput
+    connect?: BadgeTemplateWhereUniqueInput
+  }
+
+  export type EnumBadgeStatusFieldUpdateOperationsInput = {
+    set?: $Enums.BadgeStatus
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutParticipantBadgesNestedInput = {
+    create?: XOR<RegistrationCreateWithoutParticipantBadgesInput, RegistrationUncheckedCreateWithoutParticipantBadgesInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutParticipantBadgesInput
+    upsert?: RegistrationUpsertWithoutParticipantBadgesInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutParticipantBadgesInput, RegistrationUpdateWithoutParticipantBadgesInput>, RegistrationUncheckedUpdateWithoutParticipantBadgesInput>
+  }
+
+  export type EventUpdateOneRequiredWithoutParticipantBadgesNestedInput = {
+    create?: XOR<EventCreateWithoutParticipantBadgesInput, EventUncheckedCreateWithoutParticipantBadgesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutParticipantBadgesInput
+    upsert?: EventUpsertWithoutParticipantBadgesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutParticipantBadgesInput, EventUpdateWithoutParticipantBadgesInput>, EventUncheckedUpdateWithoutParticipantBadgesInput>
+  }
+
+  export type BadgeTemplateUpdateOneRequiredWithoutParticipantBadgesNestedInput = {
+    create?: XOR<BadgeTemplateCreateWithoutParticipantBadgesInput, BadgeTemplateUncheckedCreateWithoutParticipantBadgesInput>
+    connectOrCreate?: BadgeTemplateCreateOrConnectWithoutParticipantBadgesInput
+    upsert?: BadgeTemplateUpsertWithoutParticipantBadgesInput
+    connect?: BadgeTemplateWhereUniqueInput
+    update?: XOR<XOR<BadgeTemplateUpdateToOneWithWhereWithoutParticipantBadgesInput, BadgeTemplateUpdateWithoutParticipantBadgesInput>, BadgeTemplateUncheckedUpdateWithoutParticipantBadgesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -15571,6 +23710,40 @@ export namespace Prisma {
     _max?: NestedEnumSponsorLevelFilter<$PrismaModel>
   }
 
+  export type NestedEnumAppointmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAppointmentStatusFilter<$PrismaModel> | $Enums.AppointmentStatus
+  }
+
+  export type NestedEnumAppointmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAppointmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.AppointmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAppointmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumAppointmentStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumBadgeStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBadgeStatusFilter<$PrismaModel> | $Enums.BadgeStatus
+  }
+
+  export type NestedEnumBadgeStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBadgeStatusWithAggregatesFilter<$PrismaModel> | $Enums.BadgeStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBadgeStatusFilter<$PrismaModel>
+    _max?: NestedEnumBadgeStatusFilter<$PrismaModel>
+  }
+
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -15626,12 +23799,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserInput = {
@@ -15651,12 +23830,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserInput = {
@@ -15761,6 +23946,8 @@ export namespace Prisma {
     timezone?: StringNullableFilter<"Event"> | string | null
     videoUrl?: StringNullableFilter<"Event"> | string | null
     supportEmail?: StringNullableFilter<"Event"> | string | null
+    archived?: BoolFilter<"Event"> | boolean
+    archivedAt?: DateTimeNullableFilter<"Event"> | Date | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     userId?: StringFilter<"Event"> | string
@@ -16054,6 +24241,9 @@ export namespace Prisma {
     checkedIn?: boolean
     checkInTime?: Date | string | null
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutEventInput = {
@@ -16072,6 +24262,9 @@ export namespace Prisma {
     checkedIn?: boolean
     checkInTime?: Date | string | null
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutEventInput = {
@@ -16115,6 +24308,144 @@ export namespace Prisma {
 
   export type SponsorCreateManyEventInputEnvelope = {
     data: SponsorCreateManyEventInput | SponsorCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AppointmentCreateWithoutEventInput = {
+    id?: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requester: RegistrationCreateNestedOneWithoutSentAppointmentsInput
+    recipient: RegistrationCreateNestedOneWithoutReceivedAppointmentsInput
+  }
+
+  export type AppointmentUncheckedCreateWithoutEventInput = {
+    id?: string
+    requesterId: string
+    recipientId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentCreateOrConnectWithoutEventInput = {
+    where: AppointmentWhereUniqueInput
+    create: XOR<AppointmentCreateWithoutEventInput, AppointmentUncheckedCreateWithoutEventInput>
+  }
+
+  export type AppointmentCreateManyEventInputEnvelope = {
+    data: AppointmentCreateManyEventInput | AppointmentCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BadgeCreateWithoutEventInput = {
+    id?: string
+    name?: string | null
+    canvasData?: string | null
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeUncheckedCreateWithoutEventInput = {
+    id?: string
+    name?: string | null
+    canvasData?: string | null
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeCreateOrConnectWithoutEventInput = {
+    where: BadgeWhereUniqueInput
+    create: XOR<BadgeCreateWithoutEventInput, BadgeUncheckedCreateWithoutEventInput>
+  }
+
+  export type BadgeCreateManyEventInputEnvelope = {
+    data: BadgeCreateManyEventInput | BadgeCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BadgeTemplateCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutTemplateInput
+  }
+
+  export type BadgeTemplateUncheckedCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type BadgeTemplateCreateOrConnectWithoutEventInput = {
+    where: BadgeTemplateWhereUniqueInput
+    create: XOR<BadgeTemplateCreateWithoutEventInput, BadgeTemplateUncheckedCreateWithoutEventInput>
+  }
+
+  export type BadgeTemplateCreateManyEventInputEnvelope = {
+    data: BadgeTemplateCreateManyEventInput | BadgeTemplateCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ParticipantBadgeCreateWithoutEventInput = {
+    id?: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    registration: RegistrationCreateNestedOneWithoutParticipantBadgesInput
+    template: BadgeTemplateCreateNestedOneWithoutParticipantBadgesInput
+  }
+
+  export type ParticipantBadgeUncheckedCreateWithoutEventInput = {
+    id?: string
+    registrationId: string
+    templateId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeCreateOrConnectWithoutEventInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    create: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput>
+  }
+
+  export type ParticipantBadgeCreateManyEventInputEnvelope = {
+    data: ParticipantBadgeCreateManyEventInput | ParticipantBadgeCreateManyEventInput[]
     skipDuplicates?: boolean
   }
 
@@ -16268,6 +24599,134 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
   }
 
+  export type AppointmentUpsertWithWhereUniqueWithoutEventInput = {
+    where: AppointmentWhereUniqueInput
+    update: XOR<AppointmentUpdateWithoutEventInput, AppointmentUncheckedUpdateWithoutEventInput>
+    create: XOR<AppointmentCreateWithoutEventInput, AppointmentUncheckedCreateWithoutEventInput>
+  }
+
+  export type AppointmentUpdateWithWhereUniqueWithoutEventInput = {
+    where: AppointmentWhereUniqueInput
+    data: XOR<AppointmentUpdateWithoutEventInput, AppointmentUncheckedUpdateWithoutEventInput>
+  }
+
+  export type AppointmentUpdateManyWithWhereWithoutEventInput = {
+    where: AppointmentScalarWhereInput
+    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type AppointmentScalarWhereInput = {
+    AND?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+    OR?: AppointmentScalarWhereInput[]
+    NOT?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+    id?: StringFilter<"Appointment"> | string
+    eventId?: StringFilter<"Appointment"> | string
+    requesterId?: StringFilter<"Appointment"> | string
+    recipientId?: StringFilter<"Appointment"> | string
+    status?: EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
+    message?: StringNullableFilter<"Appointment"> | string | null
+    proposedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
+    confirmedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
+    location?: StringNullableFilter<"Appointment"> | string | null
+    notes?: StringNullableFilter<"Appointment"> | string | null
+    createdAt?: DateTimeFilter<"Appointment"> | Date | string
+    updatedAt?: DateTimeFilter<"Appointment"> | Date | string
+  }
+
+  export type BadgeUpsertWithWhereUniqueWithoutEventInput = {
+    where: BadgeWhereUniqueInput
+    update: XOR<BadgeUpdateWithoutEventInput, BadgeUncheckedUpdateWithoutEventInput>
+    create: XOR<BadgeCreateWithoutEventInput, BadgeUncheckedCreateWithoutEventInput>
+  }
+
+  export type BadgeUpdateWithWhereUniqueWithoutEventInput = {
+    where: BadgeWhereUniqueInput
+    data: XOR<BadgeUpdateWithoutEventInput, BadgeUncheckedUpdateWithoutEventInput>
+  }
+
+  export type BadgeUpdateManyWithWhereWithoutEventInput = {
+    where: BadgeScalarWhereInput
+    data: XOR<BadgeUpdateManyMutationInput, BadgeUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type BadgeScalarWhereInput = {
+    AND?: BadgeScalarWhereInput | BadgeScalarWhereInput[]
+    OR?: BadgeScalarWhereInput[]
+    NOT?: BadgeScalarWhereInput | BadgeScalarWhereInput[]
+    id?: StringFilter<"Badge"> | string
+    eventId?: StringFilter<"Badge"> | string
+    name?: StringNullableFilter<"Badge"> | string | null
+    canvasData?: StringNullableFilter<"Badge"> | string | null
+    isDefault?: BoolFilter<"Badge"> | boolean
+    createdAt?: DateTimeFilter<"Badge"> | Date | string
+    updatedAt?: DateTimeFilter<"Badge"> | Date | string
+  }
+
+  export type BadgeTemplateUpsertWithWhereUniqueWithoutEventInput = {
+    where: BadgeTemplateWhereUniqueInput
+    update: XOR<BadgeTemplateUpdateWithoutEventInput, BadgeTemplateUncheckedUpdateWithoutEventInput>
+    create: XOR<BadgeTemplateCreateWithoutEventInput, BadgeTemplateUncheckedCreateWithoutEventInput>
+  }
+
+  export type BadgeTemplateUpdateWithWhereUniqueWithoutEventInput = {
+    where: BadgeTemplateWhereUniqueInput
+    data: XOR<BadgeTemplateUpdateWithoutEventInput, BadgeTemplateUncheckedUpdateWithoutEventInput>
+  }
+
+  export type BadgeTemplateUpdateManyWithWhereWithoutEventInput = {
+    where: BadgeTemplateScalarWhereInput
+    data: XOR<BadgeTemplateUpdateManyMutationInput, BadgeTemplateUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type BadgeTemplateScalarWhereInput = {
+    AND?: BadgeTemplateScalarWhereInput | BadgeTemplateScalarWhereInput[]
+    OR?: BadgeTemplateScalarWhereInput[]
+    NOT?: BadgeTemplateScalarWhereInput | BadgeTemplateScalarWhereInput[]
+    id?: StringFilter<"BadgeTemplate"> | string
+    name?: StringFilter<"BadgeTemplate"> | string
+    description?: StringNullableFilter<"BadgeTemplate"> | string | null
+    canvasData?: StringFilter<"BadgeTemplate"> | string
+    isGlobal?: BoolFilter<"BadgeTemplate"> | boolean
+    eventId?: StringNullableFilter<"BadgeTemplate"> | string | null
+    isActive?: BoolFilter<"BadgeTemplate"> | boolean
+    createdAt?: DateTimeFilter<"BadgeTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"BadgeTemplate"> | Date | string
+  }
+
+  export type ParticipantBadgeUpsertWithWhereUniqueWithoutEventInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    update: XOR<ParticipantBadgeUpdateWithoutEventInput, ParticipantBadgeUncheckedUpdateWithoutEventInput>
+    create: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput>
+  }
+
+  export type ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    data: XOR<ParticipantBadgeUpdateWithoutEventInput, ParticipantBadgeUncheckedUpdateWithoutEventInput>
+  }
+
+  export type ParticipantBadgeUpdateManyWithWhereWithoutEventInput = {
+    where: ParticipantBadgeScalarWhereInput
+    data: XOR<ParticipantBadgeUpdateManyMutationInput, ParticipantBadgeUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type ParticipantBadgeScalarWhereInput = {
+    AND?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+    OR?: ParticipantBadgeScalarWhereInput[]
+    NOT?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+    id?: StringFilter<"ParticipantBadge"> | string
+    registrationId?: StringFilter<"ParticipantBadge"> | string
+    eventId?: StringFilter<"ParticipantBadge"> | string
+    templateId?: StringFilter<"ParticipantBadge"> | string
+    status?: EnumBadgeStatusFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    generatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    printedAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
+    customData?: StringNullableFilter<"ParticipantBadge"> | string | null
+    qrCodeData?: StringNullableFilter<"ParticipantBadge"> | string | null
+    createdAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+    updatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
+  }
+
   export type EventCreateWithoutRegistrationsInput = {
     id?: string
     name: string
@@ -16285,12 +24744,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -16310,12 +24775,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
     logo?: string | null
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -16349,6 +24820,120 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AppointmentCreateWithoutRequesterInput = {
+    id?: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutAppointmentsInput
+    recipient: RegistrationCreateNestedOneWithoutReceivedAppointmentsInput
+  }
+
+  export type AppointmentUncheckedCreateWithoutRequesterInput = {
+    id?: string
+    eventId: string
+    recipientId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentCreateOrConnectWithoutRequesterInput = {
+    where: AppointmentWhereUniqueInput
+    create: XOR<AppointmentCreateWithoutRequesterInput, AppointmentUncheckedCreateWithoutRequesterInput>
+  }
+
+  export type AppointmentCreateManyRequesterInputEnvelope = {
+    data: AppointmentCreateManyRequesterInput | AppointmentCreateManyRequesterInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AppointmentCreateWithoutRecipientInput = {
+    id?: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutAppointmentsInput
+    requester: RegistrationCreateNestedOneWithoutSentAppointmentsInput
+  }
+
+  export type AppointmentUncheckedCreateWithoutRecipientInput = {
+    id?: string
+    eventId: string
+    requesterId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentCreateOrConnectWithoutRecipientInput = {
+    where: AppointmentWhereUniqueInput
+    create: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type AppointmentCreateManyRecipientInputEnvelope = {
+    data: AppointmentCreateManyRecipientInput | AppointmentCreateManyRecipientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ParticipantBadgeCreateWithoutRegistrationInput = {
+    id?: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutParticipantBadgesInput
+    template: BadgeTemplateCreateNestedOneWithoutParticipantBadgesInput
+  }
+
+  export type ParticipantBadgeUncheckedCreateWithoutRegistrationInput = {
+    id?: string
+    eventId: string
+    templateId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeCreateOrConnectWithoutRegistrationInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    create: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type ParticipantBadgeCreateManyRegistrationInputEnvelope = {
+    data: ParticipantBadgeCreateManyRegistrationInput | ParticipantBadgeCreateManyRegistrationInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EventUpsertWithoutRegistrationsInput = {
     update: XOR<EventUpdateWithoutRegistrationsInput, EventUncheckedUpdateWithoutRegistrationsInput>
     create: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
@@ -16377,12 +24962,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -16402,12 +24993,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput = {
@@ -16438,6 +25035,54 @@ export namespace Prisma {
     attendanceTime?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
   }
 
+  export type AppointmentUpsertWithWhereUniqueWithoutRequesterInput = {
+    where: AppointmentWhereUniqueInput
+    update: XOR<AppointmentUpdateWithoutRequesterInput, AppointmentUncheckedUpdateWithoutRequesterInput>
+    create: XOR<AppointmentCreateWithoutRequesterInput, AppointmentUncheckedCreateWithoutRequesterInput>
+  }
+
+  export type AppointmentUpdateWithWhereUniqueWithoutRequesterInput = {
+    where: AppointmentWhereUniqueInput
+    data: XOR<AppointmentUpdateWithoutRequesterInput, AppointmentUncheckedUpdateWithoutRequesterInput>
+  }
+
+  export type AppointmentUpdateManyWithWhereWithoutRequesterInput = {
+    where: AppointmentScalarWhereInput
+    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutRequesterInput>
+  }
+
+  export type AppointmentUpsertWithWhereUniqueWithoutRecipientInput = {
+    where: AppointmentWhereUniqueInput
+    update: XOR<AppointmentUpdateWithoutRecipientInput, AppointmentUncheckedUpdateWithoutRecipientInput>
+    create: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type AppointmentUpdateWithWhereUniqueWithoutRecipientInput = {
+    where: AppointmentWhereUniqueInput
+    data: XOR<AppointmentUpdateWithoutRecipientInput, AppointmentUncheckedUpdateWithoutRecipientInput>
+  }
+
+  export type AppointmentUpdateManyWithWhereWithoutRecipientInput = {
+    where: AppointmentScalarWhereInput
+    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutRecipientInput>
+  }
+
+  export type ParticipantBadgeUpsertWithWhereUniqueWithoutRegistrationInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    update: XOR<ParticipantBadgeUpdateWithoutRegistrationInput, ParticipantBadgeUncheckedUpdateWithoutRegistrationInput>
+    create: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type ParticipantBadgeUpdateWithWhereUniqueWithoutRegistrationInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    data: XOR<ParticipantBadgeUpdateWithoutRegistrationInput, ParticipantBadgeUncheckedUpdateWithoutRegistrationInput>
+  }
+
+  export type ParticipantBadgeUpdateManyWithWhereWithoutRegistrationInput = {
+    where: ParticipantBadgeScalarWhereInput
+    data: XOR<ParticipantBadgeUpdateManyMutationInput, ParticipantBadgeUncheckedUpdateManyWithoutRegistrationInput>
+  }
+
   export type EventCreateWithoutEvent_sessionsInput = {
     id?: string
     name: string
@@ -16455,12 +25100,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
     user: UserCreateNestedOneWithoutEventsInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutEvent_sessionsInput = {
@@ -16480,12 +25131,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
     logo?: string | null
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutEvent_sessionsInput = {
@@ -16547,12 +25204,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutEvent_sessionsInput = {
@@ -16572,12 +25235,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SessionParticipantUpsertWithWhereUniqueWithoutSessionInput = {
@@ -16613,12 +25282,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorsInput = {
@@ -16638,12 +25313,18 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
     logo?: string | null
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorsInput = {
@@ -16679,12 +25360,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorsInput = {
@@ -16704,12 +25391,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type event_sessionsCreateWithoutParticipantsInput = {
@@ -16771,6 +25464,9 @@ export namespace Prisma {
     checkedIn?: boolean
     checkInTime?: Date | string | null
     event: EventCreateNestedOneWithoutRegistrationsInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutSessionsInput = {
@@ -16789,6 +25485,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     checkedIn?: boolean
     checkInTime?: Date | string | null
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutSessionsInput = {
@@ -16872,6 +25571,9 @@ export namespace Prisma {
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutSessionsInput = {
@@ -16890,6 +25592,987 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type EventCreateWithoutAppointmentsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logo?: string | null
+    event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    user: UserCreateNestedOneWithoutEventsInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    sponsors?: SponsorCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutAppointmentsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    logo?: string | null
+    event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutAppointmentsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutAppointmentsInput, EventUncheckedCreateWithoutAppointmentsInput>
+  }
+
+  export type RegistrationCreateWithoutSentAppointmentsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    event: EventCreateNestedOneWithoutRegistrationsInput
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutSentAppointmentsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    eventId: string
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutSentAppointmentsInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutSentAppointmentsInput, RegistrationUncheckedCreateWithoutSentAppointmentsInput>
+  }
+
+  export type RegistrationCreateWithoutReceivedAppointmentsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    event: EventCreateNestedOneWithoutRegistrationsInput
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutReceivedAppointmentsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    eventId: string
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutReceivedAppointmentsInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutReceivedAppointmentsInput, RegistrationUncheckedCreateWithoutReceivedAppointmentsInput>
+  }
+
+  export type EventUpsertWithoutAppointmentsInput = {
+    update: XOR<EventUpdateWithoutAppointmentsInput, EventUncheckedUpdateWithoutAppointmentsInput>
+    create: XOR<EventCreateWithoutAppointmentsInput, EventUncheckedCreateWithoutAppointmentsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutAppointmentsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutAppointmentsInput, EventUncheckedUpdateWithoutAppointmentsInput>
+  }
+
+  export type EventUpdateWithoutAppointmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutAppointmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type RegistrationUpsertWithoutSentAppointmentsInput = {
+    update: XOR<RegistrationUpdateWithoutSentAppointmentsInput, RegistrationUncheckedUpdateWithoutSentAppointmentsInput>
+    create: XOR<RegistrationCreateWithoutSentAppointmentsInput, RegistrationUncheckedCreateWithoutSentAppointmentsInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutSentAppointmentsInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutSentAppointmentsInput, RegistrationUncheckedUpdateWithoutSentAppointmentsInput>
+  }
+
+  export type RegistrationUpdateWithoutSentAppointmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
+    receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutSentAppointmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
+    receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type RegistrationUpsertWithoutReceivedAppointmentsInput = {
+    update: XOR<RegistrationUpdateWithoutReceivedAppointmentsInput, RegistrationUncheckedUpdateWithoutReceivedAppointmentsInput>
+    create: XOR<RegistrationCreateWithoutReceivedAppointmentsInput, RegistrationUncheckedCreateWithoutReceivedAppointmentsInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutReceivedAppointmentsInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutReceivedAppointmentsInput, RegistrationUncheckedUpdateWithoutReceivedAppointmentsInput>
+  }
+
+  export type RegistrationUpdateWithoutReceivedAppointmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutReceivedAppointmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type EventCreateWithoutBadgesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logo?: string | null
+    event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    user: UserCreateNestedOneWithoutEventsInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutBadgesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    logo?: string | null
+    event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutBadgesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutBadgesInput, EventUncheckedCreateWithoutBadgesInput>
+  }
+
+  export type EventUpsertWithoutBadgesInput = {
+    update: XOR<EventUpdateWithoutBadgesInput, EventUncheckedUpdateWithoutBadgesInput>
+    create: XOR<EventCreateWithoutBadgesInput, EventUncheckedCreateWithoutBadgesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutBadgesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutBadgesInput, EventUncheckedUpdateWithoutBadgesInput>
+  }
+
+  export type EventUpdateWithoutBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventCreateWithoutBadgeTemplatesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logo?: string | null
+    event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    user: UserCreateNestedOneWithoutEventsInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutBadgeTemplatesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    logo?: string | null
+    event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutBadgeTemplatesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutBadgeTemplatesInput, EventUncheckedCreateWithoutBadgeTemplatesInput>
+  }
+
+  export type ParticipantBadgeCreateWithoutTemplateInput = {
+    id?: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    registration: RegistrationCreateNestedOneWithoutParticipantBadgesInput
+    event: EventCreateNestedOneWithoutParticipantBadgesInput
+  }
+
+  export type ParticipantBadgeUncheckedCreateWithoutTemplateInput = {
+    id?: string
+    registrationId: string
+    eventId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeCreateOrConnectWithoutTemplateInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    create: XOR<ParticipantBadgeCreateWithoutTemplateInput, ParticipantBadgeUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type ParticipantBadgeCreateManyTemplateInputEnvelope = {
+    data: ParticipantBadgeCreateManyTemplateInput | ParticipantBadgeCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithoutBadgeTemplatesInput = {
+    update: XOR<EventUpdateWithoutBadgeTemplatesInput, EventUncheckedUpdateWithoutBadgeTemplatesInput>
+    create: XOR<EventCreateWithoutBadgeTemplatesInput, EventUncheckedCreateWithoutBadgeTemplatesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutBadgeTemplatesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutBadgeTemplatesInput, EventUncheckedUpdateWithoutBadgeTemplatesInput>
+  }
+
+  export type EventUpdateWithoutBadgeTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutBadgeTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    update: XOR<ParticipantBadgeUpdateWithoutTemplateInput, ParticipantBadgeUncheckedUpdateWithoutTemplateInput>
+    create: XOR<ParticipantBadgeCreateWithoutTemplateInput, ParticipantBadgeUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type ParticipantBadgeUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: ParticipantBadgeWhereUniqueInput
+    data: XOR<ParticipantBadgeUpdateWithoutTemplateInput, ParticipantBadgeUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type ParticipantBadgeUpdateManyWithWhereWithoutTemplateInput = {
+    where: ParticipantBadgeScalarWhereInput
+    data: XOR<ParticipantBadgeUpdateManyMutationInput, ParticipantBadgeUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type RegistrationCreateWithoutParticipantBadgesInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    event: EventCreateNestedOneWithoutRegistrationsInput
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutParticipantBadgesInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    jobTitle?: string | null
+    company?: string | null
+    eventId: string
+    qrCode: string
+    shortCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutParticipantBadgesInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutParticipantBadgesInput, RegistrationUncheckedCreateWithoutParticipantBadgesInput>
+  }
+
+  export type EventCreateWithoutParticipantBadgesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logo?: string | null
+    event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    user: UserCreateNestedOneWithoutEventsInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutParticipantBadgesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    logo?: string | null
+    event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutParticipantBadgesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutParticipantBadgesInput, EventUncheckedCreateWithoutParticipantBadgesInput>
+  }
+
+  export type BadgeTemplateCreateWithoutParticipantBadgesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event?: EventCreateNestedOneWithoutBadgeTemplatesInput
+  }
+
+  export type BadgeTemplateUncheckedCreateWithoutParticipantBadgesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    eventId?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeTemplateCreateOrConnectWithoutParticipantBadgesInput = {
+    where: BadgeTemplateWhereUniqueInput
+    create: XOR<BadgeTemplateCreateWithoutParticipantBadgesInput, BadgeTemplateUncheckedCreateWithoutParticipantBadgesInput>
+  }
+
+  export type RegistrationUpsertWithoutParticipantBadgesInput = {
+    update: XOR<RegistrationUpdateWithoutParticipantBadgesInput, RegistrationUncheckedUpdateWithoutParticipantBadgesInput>
+    create: XOR<RegistrationCreateWithoutParticipantBadgesInput, RegistrationUncheckedCreateWithoutParticipantBadgesInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutParticipantBadgesInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutParticipantBadgesInput, RegistrationUncheckedUpdateWithoutParticipantBadgesInput>
+  }
+
+  export type RegistrationUpdateWithoutParticipantBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutParticipantBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type EventUpsertWithoutParticipantBadgesInput = {
+    update: XOR<EventUpdateWithoutParticipantBadgesInput, EventUncheckedUpdateWithoutParticipantBadgesInput>
+    create: XOR<EventCreateWithoutParticipantBadgesInput, EventUncheckedCreateWithoutParticipantBadgesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutParticipantBadgesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutParticipantBadgesInput, EventUncheckedUpdateWithoutParticipantBadgesInput>
+  }
+
+  export type EventUpdateWithoutParticipantBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutParticipantBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type BadgeTemplateUpsertWithoutParticipantBadgesInput = {
+    update: XOR<BadgeTemplateUpdateWithoutParticipantBadgesInput, BadgeTemplateUncheckedUpdateWithoutParticipantBadgesInput>
+    create: XOR<BadgeTemplateCreateWithoutParticipantBadgesInput, BadgeTemplateUncheckedCreateWithoutParticipantBadgesInput>
+    where?: BadgeTemplateWhereInput
+  }
+
+  export type BadgeTemplateUpdateToOneWithWhereWithoutParticipantBadgesInput = {
+    where?: BadgeTemplateWhereInput
+    data: XOR<BadgeTemplateUpdateWithoutParticipantBadgesInput, BadgeTemplateUncheckedUpdateWithoutParticipantBadgesInput>
+  }
+
+  export type BadgeTemplateUpdateWithoutParticipantBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneWithoutBadgeTemplatesNestedInput
+  }
+
+  export type BadgeTemplateUncheckedUpdateWithoutParticipantBadgesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AccountCreateManyUserInput = {
@@ -16923,6 +26606,8 @@ export namespace Prisma {
     timezone?: string | null
     videoUrl?: string | null
     supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logo?: string | null
@@ -16993,12 +26678,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserInput = {
@@ -17018,12 +26709,18 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutUserInput = {
@@ -17043,6 +26740,8 @@ export namespace Prisma {
     timezone?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17109,6 +26808,54 @@ export namespace Prisma {
     website?: string | null
     level?: $Enums.SponsorLevel
     visible?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentCreateManyEventInput = {
+    id?: string
+    requesterId: string
+    recipientId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeCreateManyEventInput = {
+    id?: string
+    name?: string | null
+    canvasData?: string | null
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BadgeTemplateCreateManyEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    canvasData: string
+    isGlobal?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeCreateManyEventInput = {
+    id?: string
+    registrationId: string
+    templateId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17185,6 +26932,9 @@ export namespace Prisma {
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutEventInput = {
@@ -17203,6 +26953,9 @@ export namespace Prisma {
     checkedIn?: BoolFieldUpdateOperationsInput | boolean
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
+    sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateManyWithoutEventInput = {
@@ -17258,12 +27011,200 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AppointmentUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requester?: RegistrationUpdateOneRequiredWithoutSentAppointmentsNestedInput
+    recipient?: RegistrationUpdateOneRequiredWithoutReceivedAppointmentsNestedInput
+  }
+
+  export type AppointmentUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    recipientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    recipientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: NullableStringFieldUpdateOperationsInput | string | null
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeTemplateUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantBadges?: ParticipantBadgeUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type BadgeTemplateUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type BadgeTemplateUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    canvasData?: StringFieldUpdateOperationsInput | string
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registration?: RegistrationUpdateOneRequiredWithoutParticipantBadgesNestedInput
+    template?: BadgeTemplateUpdateOneRequiredWithoutParticipantBadgesNestedInput
+  }
+
+  export type ParticipantBadgeUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SessionParticipantCreateManyParticipantInput = {
     id?: string
     sessionId: string
     registeredAt?: Date | string
     attendedSession?: boolean
     attendanceTime?: Date | string | null
+  }
+
+  export type AppointmentCreateManyRequesterInput = {
+    id?: string
+    eventId: string
+    recipientId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentCreateManyRecipientInput = {
+    id?: string
+    eventId: string
+    requesterId: string
+    status?: $Enums.AppointmentStatus
+    message?: string | null
+    proposedTime?: Date | string | null
+    confirmedTime?: Date | string | null
+    location?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeCreateManyRegistrationInput = {
+    id?: string
+    eventId: string
+    templateId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SessionParticipantUpdateWithoutParticipantInput = {
@@ -17288,6 +27229,132 @@ export namespace Prisma {
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendedSession?: BoolFieldUpdateOperationsInput | boolean
     attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AppointmentUpdateWithoutRequesterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutAppointmentsNestedInput
+    recipient?: RegistrationUpdateOneRequiredWithoutReceivedAppointmentsNestedInput
+  }
+
+  export type AppointmentUncheckedUpdateWithoutRequesterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    recipientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutRequesterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    recipientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutAppointmentsNestedInput
+    requester?: RegistrationUpdateOneRequiredWithoutSentAppointmentsNestedInput
+  }
+
+  export type AppointmentUncheckedUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeUpdateWithoutRegistrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutParticipantBadgesNestedInput
+    template?: BadgeTemplateUpdateOneRequiredWithoutParticipantBadgesNestedInput
+  }
+
+  export type ParticipantBadgeUncheckedUpdateWithoutRegistrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyWithoutRegistrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionParticipantCreateManySessionInput = {
@@ -17320,6 +27387,62 @@ export namespace Prisma {
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendedSession?: BoolFieldUpdateOperationsInput | boolean
     attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ParticipantBadgeCreateManyTemplateInput = {
+    id?: string
+    registrationId: string
+    eventId: string
+    status?: $Enums.BadgeStatus
+    generatedAt?: Date | string
+    printedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    customData?: string | null
+    qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantBadgeUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registration?: RegistrationUpdateOneRequiredWithoutParticipantBadgesNestedInput
+    event?: EventUpdateOneRequiredWithoutParticipantBadgesNestedInput
+  }
+
+  export type ParticipantBadgeUncheckedUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantBadgeUncheckedUpdateManyWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    customData?: NullableStringFieldUpdateOperationsInput | string | null
+    qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

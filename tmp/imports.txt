@@ -1,0 +1,22 @@
+import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { useParams } from "next/navigation";
+import { 
+  ArrowLeftIcon, 
+  UserPlusIcon, 
+  DocumentTextIcon, 
+  ShareIcon, 
+  PencilIcon, 
+  PhotoIcon,
+  QrCodeIcon,
+  CalendarIcon,
+  EyeIcon,
+  ClockIcon,
+  IdentificationIcon,
+  EnvelopeIcon,
+  MapPinIcon,
+  ArrowRightIcon
+} from "@heroicons/react/24/outline";
+import { EventSidebar } from "@/components/dashboard/EventSidebar";

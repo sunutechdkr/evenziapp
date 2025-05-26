@@ -14,7 +14,11 @@ import {
   PhotoIcon,
   QrCodeIcon,
   CalendarIcon,
-  EyeIcon
+  EyeIcon,
+  MapPinIcon,
+  EnvelopeIcon,
+  GlobeAltIcon,
+  CogIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 
@@ -214,178 +218,201 @@ export default function EventDetailsPage() {
               </div>
             ) : (
               <div className="space-y-6">
-                {/* Cartes de statistiques */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {/* Carte 1: Participants */}
-                  <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">Participants</p>
-                        <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                          {eventStats.totalRegistrations}
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {eventStats.totalRegistrations > 0 
-                            ? `${eventStats.checkedInCount} enregistrés (${eventStats.checkInRate}%)`
-                            : "Aucun participant"
-                          }
+                {/* Informations de l'événement */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  {/* Titre simple de la section */}
+                  <div className="p-6 border-b border-gray-100">
+                    <h2 className="text-2xl font-bold text-gray-900">Détails de l&apos;événement</h2>
+                    <p className="text-gray-600 mt-1">Gérez et consultez toutes les informations de votre événement</p>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+                      {/* Section principale avec image et description */}
+                      <div className="xl:col-span-2 space-y-8">
+                        {/* Image de bannière modernisée */}
+                        <div className="relative h-72 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 rounded-2xl overflow-hidden group shadow-inner">
+                          {event?.banner ? (
+                <img 
+                  src={event.banner} 
+                  alt={event.name}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              ) : (
+                            <div className="flex items-center justify-center h-full">
+                              <div className="text-center">
+                                <div className="p-6 bg-white rounded-2xl shadow-sm mb-4 inline-block">
+                                  <PhotoIcon className="w-12 h-12 text-gray-400" />
+                </div>
+                                <p className="text-gray-500 font-medium">Aucune bannière</p>
+                                <p className="text-gray-400 text-sm mt-1">Ajoutez une image pour votre événement</p>
+              </div>
+            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          <div className="absolute bottom-6 left-6 text-white">
+                            <h3 className="text-2xl font-bold drop-shadow-2xl">{event?.name}</h3>
+                            <p className="text-white/90 mt-1 drop-shadow-lg">
+                              {event?.type && event?.sector && `${event.type} • ${event.sector}`}
                   </p>
                 </div>
-                      <div className="p-3 bg-blue-50 rounded-lg">
-                        <UserPlusIcon className="w-6 h-6 text-blue-500" />
               </div>
+              
+                        {/* Description et tags */}
+                        <div className="space-y-6">
+                          <div>
+                            <h4 className="text-xl font-bold text-gray-900 mb-4">Description</h4>
+                            <p className="text-gray-700 leading-relaxed text-lg">
+                              {event?.description || "Aucune description disponible pour cet événement."}
+                            </p>
+              </div>
+              
+                          {/* Tags modernes avec animations */}
+                          {(event?.sector || event?.type || event?.format) && (
+                            <div>
+                              <h5 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                                Catégories
+                              </h5>
+                              <div className="flex flex-wrap gap-3">
+                                {event?.sector && (
+                                  <div className="group flex items-center px-5 py-3 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-full hover:shadow-md transition-all duration-200">
+                                    <div className="w-2 h-2 bg-gray-500 rounded-full mr-3 group-hover:scale-125 transition-transform duration-200"></div>
+                                    <span className="text-sm font-semibold text-gray-800">{event.sector}</span>
                     </div>
+                                )}
+                                {event?.type && (
+                                  <div className="group flex items-center px-5 py-3 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-full hover:shadow-md transition-all duration-200">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 group-hover:scale-125 transition-transform duration-200"></div>
+                                    <span className="text-sm font-semibold text-blue-800">{event.type}</span>
                     </div>
-                  
-                  {/* Carte 2: Check-in */}
-                  <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">Taux de Check-in</p>
-                        <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                          {`${eventStats.checkInRate}%`}
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {eventStats.checkedInCount} sur {eventStats.totalRegistrations}
-                        </p>
+                                )}
+                                {event?.format && (
+                                  <div className="group flex items-center px-5 py-3 bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200 rounded-full hover:shadow-md transition-all duration-200">
+                                    <div className="w-2 h-2 bg-amber-500 rounded-full mr-3 group-hover:scale-125 transition-transform duration-200"></div>
+                                    <span className="text-sm font-semibold text-amber-800">{event.format}</span>
                     </div>
-                      <div className="p-3 bg-green-50 rounded-lg">
-                        <QrCodeIcon className="w-6 h-6 text-green-500" />
-                    </div>
-                    </div>
-                    </div>
-                  
-                  {/* Carte 3: Jours restants */}
-                  <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">
-                          {getEventStartDate(event) && getEventStartDate(event)! > new Date() 
-                            ? 'Jours restants' 
-                            : getEventEndDate(event) && getEventEndDate(event)! < new Date()
-                              ? 'Événement terminé'
-                              : 'En cours'
-                          }
-                        </p>
-                        <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                          {getEventStartDate(event) && getEventStartDate(event)! > new Date() 
-                            ? Math.ceil((new Date(getEventStartDate(event) as Date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-                            : getEventEndDate(event) && getEventEndDate(event)! < new Date()
-                              ? 'Terminé'
-                              : 'En cours'
-                          }
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {getEventStartDate(event) && formatEventDate(getEventStartDate(event))}
-                        </p>
-                      </div>
-                      <div className="p-3 bg-amber-50 rounded-lg">
-                        <CalendarIcon className="w-6 h-6 text-amber-500" />
-                      </div>
+                                )}
+                </div>
+              </div>
+                          )}
                         </div>
                       </div>
                       
-                  {/* Carte 4: Revenus estimés */}
-                  <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">Revenus estimés</p>
-                        <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                          {`${(eventStats.totalRegistrations * 50).toLocaleString()} €`}
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          Basé sur 50€ par participant
-                        </p>
+                      {/* Sidebar avec informations importantes */}
+                      <div className="space-y-6">
+                        {/* Informations essentielles */}
+                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100">
+                          <h4 className="text-xl font-bold text-gray-900 mb-6">Informations essentielles</h4>
+                          <div className="space-y-5">
+                            {/* Date et heure */}
+                            <div className="flex items-start space-x-4">
+                              <div className="p-3 bg-gradient-to-br from-[#81B441]/10 to-[#81B441]/20 rounded-xl">
+                                <CalendarIcon className="w-6 h-6 text-[#81B441]" />
+                              </div>
+                              <div className="flex-1">
+                                <h5 className="text-sm font-bold text-gray-900 mb-2">Date et heure</h5>
+                                <p className="text-gray-700 leading-relaxed">
+                                  {getEventStartDate(event) && format(new Date(getEventStartDate(event) as Date), 'd MMMM yyyy', { locale: fr })}
+                                  {event?.startTime && ` à ${event.startTime}`}
+                                  {getEventEndDate(event) && getEventStartDate(event) !== getEventEndDate(event) && 
+                                    ` - ${format(new Date(getEventEndDate(event) as Date), 'd MMMM yyyy', { locale: fr })}`}
+                                  {event?.endTime && ` à ${event.endTime}`}
+                                </p>
                         </div>
-                      <div className="p-3 bg-purple-50 rounded-lg">
-                        <DocumentTextIcon className="w-6 h-6 text-purple-500" />
-                      </div>
-                    </div>
-                  </div>
                       </div>
                       
-                {/* Informations de l'événement */}
-                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                  <div className="flex justify-between items-start mb-6">
-                    <h2 className="text-xl font-bold text-gray-900">Détails de l'événement</h2>
-                    <button
-                      onClick={() => {
-                        if (event?.slug) {
-                          const url = window.location.origin + `/events/${event.slug}`;
-                          navigator.clipboard.writeText(url);
-                          alert("Lien copié dans le presse-papier!");
-                        }
-                      }}
-                      className="inline-flex items-center text-gray-700 hover:text-gray-900"
-                    >
-                      <ShareIcon className="w-5 h-5 mr-2" />
-                      Partager l'événement
-                    </button>
-                      </div>
-                      
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <div className="h-40 bg-gray-100 rounded-lg mb-4 overflow-hidden">
-                        {event?.banner ? (
-                          <img 
-                            src={event.banner} 
-                            alt={event.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full">
-                            <PhotoIcon className="w-16 h-16 text-gray-400" />
+                            {/* Lieu */}
+                            <div className="flex items-start space-x-4">
+                              <div className="p-3 bg-gradient-to-br from-[#81B441]/10 to-[#81B441]/20 rounded-xl">
+                                <MapPinIcon className="w-6 h-6 text-[#81B441]" />
                         </div>
-                        )}
-                      </div>
-                      
-                      <h3 className="font-medium text-gray-900 mb-2">{event?.name}</h3>
-                      <p className="text-gray-700 mb-4">{event?.description || "Aucune description disponible."}</p>
-                      
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {event?.sector && (
-                          <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
-                            {event.sector}
-                          </span>
-                        )}
-                        {event?.type && (
-                          <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                            {event.type}
-                          </span>
-                        )}
-                        {event?.format && (
-                          <span className="px-3 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded-full">
-                            {event.format}
-                          </span>
-                        )}
+                              <div className="flex-1">
+                                <h5 className="text-sm font-bold text-gray-900 mb-2">Lieu</h5>
+                                <p className="text-gray-700">{event?.location || "Non spécifié"}</p>
                       </div>
                     </div>
                     
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 mb-1">Date et heure</h3>
-                        <p className="text-gray-900">
-                          {getEventStartDate(event) && format(new Date(getEventStartDate(event) as Date), 'd MMMM yyyy', { locale: fr })}
-                          {event?.startTime && ` à ${event.startTime}`}
-                          {getEventEndDate(event) && getEventStartDate(event) !== getEventEndDate(event) && 
-                            ` - ${format(new Date(getEventEndDate(event) as Date), 'd MMMM yyyy', { locale: fr })}`}
-                          {event?.endTime && ` à ${event.endTime}`}
-                        </p>
+                            {/* Contact */}
+                            {event?.supportEmail && (
+                              <div className="flex items-start space-x-4">
+                                <div className="p-3 bg-gradient-to-br from-[#81B441]/10 to-[#81B441]/20 rounded-xl">
+                                  <EnvelopeIcon className="w-6 h-6 text-[#81B441]" />
+                                </div>
+                                <div className="flex-1">
+                                  <h5 className="text-sm font-bold text-gray-900 mb-2">Contact</h5>
+                                  <p className="text-gray-700">{event.supportEmail}</p>
+                                </div>
                       </div>
-                      
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 mb-1">Lieu</h3>
-                        <p className="text-gray-900">{event?.location || "Non spécifié"}</p>
+                            )}
+
+                            {/* Fuseau horaire */}
+                            {event?.timezone && (
+                              <div className="flex items-start space-x-4">
+                                <div className="p-3 bg-gradient-to-br from-[#81B441]/10 to-[#81B441]/20 rounded-xl">
+                                  <GlobeAltIcon className="w-6 h-6 text-[#81B441]" />
                       </div>
-                      
-                      <div className="pt-4">
-                        <Link
-                          href={`/dashboard/events/${eventId}/participants`}
-                          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
-                        >
-                          <UserPlusIcon className="w-5 h-5 mr-2" />
-                          Gérer les participants
-                        </Link>
+                                <div className="flex-1">
+                                  <h5 className="text-sm font-bold text-gray-900 mb-2">Fuseau horaire</h5>
+                                  <p className="text-gray-700">{event.timezone}</p>
+                        </div>
+                      </div>
+                            )}
+                      </div>
+                    </div>
+                    
+                        {/* Actions rapides */}
+                        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                          <h4 className="text-xl font-bold text-gray-900 mb-6">Actions rapides</h4>
+                          <div className="space-y-4">
+                            <Link
+                              href={`/dashboard/events/${eventId}/participants`}
+                              className="group inline-flex items-center justify-center w-full px-6 py-4 bg-gradient-to-r from-[#81B441] to-[#6a9636] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
+                            >
+                              <UserPlusIcon className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-200" />
+                              Gérer les participants
+                            </Link>
+                            
+                            <Link
+                              href={`/dashboard/events/${eventId}/sessions`}
+                              className="group inline-flex items-center justify-center w-full px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-[#81B441] hover:text-[#81B441] transition-all duration-200 transform hover:-translate-y-0.5"
+                            >
+                              <CalendarIcon className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-200" />
+                              Sessions & Programme
+                            </Link>
+
+                            <Link
+                              href={`/dashboard/events/${eventId}/settings`}
+                              className="group inline-flex items-center justify-center w-full px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 transform hover:-translate-y-0.5"
+                            >
+                              <CogIcon className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-200" />
+                              Paramètres
+                            </Link>
+                          </div>
+                        </div>
+
+                        {/* Statistiques rapides */}
+                        <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-100 rounded-2xl p-6">
+                          <h4 className="text-xl font-bold text-gray-900 mb-6">Aperçu rapide</h4>
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Participants inscrits</span>
+                              <span className="text-2xl font-bold text-[#81B441]">{eventStats.totalRegistrations}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Taux de check-in</span>
+                              <span className="text-2xl font-bold text-blue-600">{eventStats.checkInRate}%</span>
+                      </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3 mt-4 overflow-hidden">
+                              <div 
+                                className="bg-gradient-to-r from-[#81B441] via-blue-500 to-purple-500 h-3 rounded-full transition-all duration-1000 ease-out" 
+                                style={{ width: `${eventStats.checkInRate}%` }}
+                              ></div>
+                            </div>
+                            <p className="text-xs text-gray-500 text-center mt-2">
+                              {eventStats.checkedInCount} participants ont effectué leur check-in
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

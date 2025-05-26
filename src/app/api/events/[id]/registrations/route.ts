@@ -45,10 +45,24 @@ export async function GET(
       );
     }
     
-    // Autoriser l'accès aux administrateurs et aux propriétaires de l'événement
-    if (session.user.role !== "ADMIN" && event[0].userId !== session.user.id) {
+    // Autoriser l'accès aux administrateurs, aux propriétaires de l'événement ET aux participants inscrits
+    const isAdmin = session.user.role === "ADMIN";
+    const isEventOwner = event[0].userId === session.user.id;
+    
+    // Vérifier si l'utilisateur est inscrit à l'événement
+    let isParticipant = false;
+    if (!isAdmin && !isEventOwner) {
+      const userRegistration = await prisma.$queryRaw`
+        SELECT id FROM registrations 
+        WHERE event_id = ${id} AND email = ${session.user.email}
+      `;
+      isParticipant = Array.isArray(userRegistration) && userRegistration.length > 0;
+    }
+    
+    // Autoriser l'accès si l'utilisateur est admin, propriétaire ou participant
+    if (!isAdmin && !isEventOwner && !isParticipant) {
       return NextResponse.json(
-        { message: "Unauthorized" },
+        { message: "Unauthorized - You must be registered for this event to view participants" },
         { status: 401 }
       );
     }

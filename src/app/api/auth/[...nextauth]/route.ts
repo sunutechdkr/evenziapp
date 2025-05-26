@@ -96,14 +96,51 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Mot de passe", type: "password" }
+        password: { label: "Mot de passe", type: "password" },
+        autoLogin: { label: "Auto Login", type: "text" },
+        token: { label: "Token", type: "text" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        if (!credentials?.email) {
           return null;
         }
 
         try {
+          // Cas d'auto-login après OTP
+          if (credentials.autoLogin === 'true' && credentials.token) {
+            console.log("Auto-login détecté pour:", credentials.email);
+            
+            // Rechercher l'utilisateur par email
+            const user = await prisma.user.findUnique({
+              where: { email: credentials.email }
+            });
+
+            if (!user) {
+              console.log("Utilisateur non trouvé pour auto-login:", credentials.email);
+              return null;
+            }
+
+            // Mettre à jour la dernière connexion
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { lastLogin: new Date() }
+            });
+
+            console.log("Auto-login réussi pour:", user.email);
+            return {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              image: user.image,
+              role: user.role,
+            };
+          }
+
+          // Cas de connexion normale avec mot de passe
+          if (!credentials?.password) {
+            return null;
+          }
+
           // Rechercher l'utilisateur par email
           const user = await prisma.user.findUnique({
             where: { email: credentials.email }
@@ -128,6 +165,12 @@ export const authOptions: NextAuthOptions = {
             console.log("Mot de passe incorrect");
             return null;
           }
+
+          // Mettre à jour la dernière connexion
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { lastLogin: new Date() }
+          });
 
           // Authentification réussie
           console.log("Authentification réussie pour:", user.email);
@@ -170,6 +213,23 @@ export const authOptions: NextAuthOptions = {
         session.user.permissions = token.permissions as string[] || [];
       }
       return session;
+    },
+    async signIn({ user }) {
+      // Mettre à jour la date de dernière connexion
+      if (user.id) {
+        try {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { 
+              last_login: new Date()
+            },
+          });
+        } catch (error) {
+          console.error("Erreur lors de la mise à jour de la date de dernière connexion:", error);
+          // Ne pas bloquer la connexion en cas d'erreur
+        }
+      }
+      return true;
     }
   },
   debug: process.env.NODE_ENV === 'development',

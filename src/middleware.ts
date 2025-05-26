@@ -10,6 +10,7 @@ const publicRoutes = [
   '/api/auth', 
   '/register', 
   '/auth/verify-request',
+  '/auth/auto-login',
   '/event',
   '/api/register',
   '/privacy-policy'
@@ -26,6 +27,11 @@ const adminRoutes = [
 const organizerRoutes = [
   '/dashboard/events/create',
   '/dashboard/analytics'
+];
+
+// Routes accessibles uniquement aux utilisateurs USER
+const userRoutes = [
+  '/dashboard/user'
 ];
 
 export async function middleware(request: NextRequest) {
@@ -51,6 +57,7 @@ export async function middleware(request: NextRequest) {
   if (!token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('callbackUrl', request.url);
+    console.log(`Authentification requise pour accéder à: ${pathname}`);
     return NextResponse.redirect(loginUrl);
   }
 
@@ -69,6 +76,26 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
+  // Routes utilisateur - réservées aux utilisateurs USER (empêcher les autres d'y accéder)
+  if (userRoutes.some(route => pathname.startsWith(route)) && userRole !== UserRole.USER) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  // Empêcher les utilisateurs USER d'accéder aux routes administratives/organisateur
+  if (userRole === UserRole.USER) {
+    const restrictedRoutes = [
+      '/dashboard/events/create',
+      '/dashboard/analytics',
+      '/dashboard/admin',
+      '/dashboard/users',
+      '/dashboard/settings'
+    ];
+    
+    if (restrictedRoutes.some(route => pathname.startsWith(route))) {
+      return NextResponse.redirect(new URL('/dashboard/user', request.url));
+    }
+  }
+
   // Redirection après connexion si l'utilisateur accède à la racine du dashboard
   if (pathname === '/dashboard' || pathname === '/dashboard/') {
     switch (userRole) {
@@ -80,7 +107,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard/events', request.url));
       case UserRole.USER:
       default:
-        return NextResponse.redirect(new URL('/my-events', request.url));
+        return NextResponse.redirect(new URL('/dashboard/user', request.url));
     }
   }
 

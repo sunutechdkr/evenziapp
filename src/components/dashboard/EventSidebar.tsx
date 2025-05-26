@@ -18,6 +18,8 @@ import {
   ChevronLeftIcon,
   PresentationChartLineIcon,
   Bars3Icon,
+  ClockIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import { UserProfile } from "./UserProfile";
 
@@ -221,6 +223,11 @@ export function EventSidebar({
       icon: UserGroupIcon,
     },
     { 
+      name: "Rendez-vous", 
+      href: `${baseUrl}/rendez-vous`, 
+      icon: ClockIcon,
+    },
+    { 
       name: "Exposants", 
       href: `${baseUrl}/exposants`, 
       icon: BuildingOfficeIcon,
@@ -234,6 +241,11 @@ export function EventSidebar({
       name: "Réglages", 
       href: `${baseUrl}/settings`, 
       icon: Cog6ToothIcon,
+    },
+    { 
+      name: "Aide", 
+      href: `${baseUrl}/aide`, 
+      icon: QuestionMarkCircleIcon,
     },
   ];
 
