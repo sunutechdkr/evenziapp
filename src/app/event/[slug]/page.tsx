@@ -16,7 +16,7 @@ interface Event {
   banner?: string | null;
 }
 
-export default async function EventPage({ params }: { params: { slug: string } }) {
+export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   // Fetch event data from server
   const event = await prisma.event.findUnique({
     where: {

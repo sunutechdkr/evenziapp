@@ -43,7 +43,7 @@ type Event = {
   slug?: string;
 };
 
-export default function EventSponsorsPage({ params }: { params: { id: string } }) {
+export default function EventSponsorsPage({ params }: { params: Promise<{ id: string }> }) {
   const [event, setEvent] = useState<Event | null>(null);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [loading, setLoading] = useState(true);

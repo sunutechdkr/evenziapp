@@ -15,7 +15,7 @@ interface FieldErrors {
   [key: string]: string;
 }
 
-export default function AddParticipantPage({ params }: { params: { id: string } }) {
+export default function AddParticipantPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});

@@ -13,6 +13,7 @@ import {
   CheckIcon
 } from "@heroicons/react/24/outline";
 import UserEventSidebar from "@/components/dashboard/UserEventSidebar";
+import AppointmentRequestForm from "@/components/appointments/AppointmentRequestForm";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 
@@ -63,7 +64,7 @@ type Event = {
   slug?: string;
 };
 
-export default function UserEventParticipantsPage({ params }: { params: { id: string } }) {
+export default function UserEventParticipantsPage({ params }: { params: Promise<{ id: string }> }) {
   const [event, setEvent] = useState<Event | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,6 +73,8 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedParticipant, setSelectedParticipant] = useState<Participant | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [appointmentFormOpen, setAppointmentFormOpen] = useState(false);
+  const [currentUserRegistrationId, setCurrentUserRegistrationId] = useState<string | null>(null);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isContactAdded, setIsContactAdded] = useState(false);
@@ -119,6 +122,36 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
       cache: 'no-store' as RequestCache,
     };
   };
+
+  // Nouvelle fonction pour récupérer l'ID de registration de l'utilisateur courant
+  const fetchCurrentUserRegistration = async () => {
+    if (!eventId) return;
+    
+    try {
+      const response = await fetch('/api/auth/session');
+      const sessionData = await response.json();
+      
+      if (!sessionData?.user?.email) {
+        console.error('Aucune session utilisateur trouvée');
+        return;
+      }
+
+      // Récupérer l'enregistrement de l'utilisateur pour cet événement
+      const registrationResponse = await fetch(
+        `/api/events/${eventId}/registrations?userEmail=${sessionData.user.email}`,
+        createFetchOptions()
+      );
+
+      if (registrationResponse.ok) {
+        const data = await registrationResponse.json();
+        if (data.registration) {
+          setCurrentUserRegistrationId(data.registration.id);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l\'ID de registration:', error);
+    }
+  };
   
   // Fonction de récupération des participants
   const fetchParticipants = async () => {
@@ -140,7 +173,20 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
         return;
       }
       
-      const formattedParticipants = data.registrations.map((reg: any) => ({
+      const formattedParticipants = data.registrations.map((reg: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        jobTitle?: string;
+        company?: string;
+        type: string;
+        createdAt: string;
+        checkedIn: boolean;
+        checkinTime?: string;
+        checkedInAt?: string;
+      }) => ({
         id: reg.id,
         firstName: reg.firstName || '',
         lastName: reg.lastName || '',
@@ -149,7 +195,7 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
         jobTitle: reg.jobTitle || '',
         company: reg.company || '',
         type: reg.type || 'PARTICIPANT',
-        registrationDate: new Date(reg.registrationDate || reg.createdAt),
+        registrationDate: new Date(reg.createdAt),
         checkedIn: reg.checkedIn || false,
         checkinTime: reg.checkinTime ? new Date(reg.checkinTime) : null,
         checkedInAt: reg.checkedInAt || null,
@@ -187,8 +233,11 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
   useEffect(() => {
     if (eventId) {
       setLoading(true);
-      Promise.all([fetchEventDetails(), fetchParticipants()])
-        .finally(() => setLoading(false));
+      Promise.all([
+        fetchEventDetails(), 
+        fetchParticipants(),
+        fetchCurrentUserRegistration()
+      ]).finally(() => setLoading(false));
     }
   }, [eventId]);
 
@@ -198,7 +247,8 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
       participant.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       participant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       participant.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (participant.company && participant.company.toLowerCase().includes(searchTerm.toLowerCase()));
+      (participant.company && participant.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (participant.jobTitle && participant.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()));
     
     return matchesSearch;
   });
@@ -217,38 +267,42 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
     setModalOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setSelectedParticipant(null);
-  };
-
-  // Fonction pour obtenir les initiales d'un participant
   const getParticipantInitials = (participant: Participant) => {
-    return `${participant.firstName.charAt(0)}${participant.lastName.charAt(0)}`.toUpperCase();
+    return `${participant.firstName.charAt(0)}${participant.lastName.charAt(0)}`;
   };
 
-  // Fonction pour obtenir la couleur du badge selon le type
   const getTypeBadgeColor = (type: string) => {
     switch (type) {
       case 'SPEAKER':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-purple-100 text-purple-800 border-purple-200';
       case 'EXHIBITOR':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'PARTICIPANT':
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
-  // Fonction pour obtenir le label du type
   const getTypeLabel = (type: string) => {
     switch (type) {
       case 'SPEAKER':
         return 'Intervenant';
       case 'EXHIBITOR':
         return 'Exposant';
+      case 'PARTICIPANT':
       default:
         return 'Participant';
     }
+  };
+
+  // Fonction de gestion du bouton "Prendre RV"
+  const handleAppointmentRequest = () => {
+    if (!currentUserRegistrationId) {
+      toast.error('Impossible de créer une demande de rendez-vous. Veuillez vous reconnecter.');
+      return;
+    }
+    setModalOpen(false);
+    setAppointmentFormOpen(true);
   };
 
   return (
@@ -509,10 +563,7 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
                 <Button
                   variant="outline"
                   className="flex-1 border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
-                  onClick={() => {
-                    toast.success(`Rendez-vous programmé avec ${selectedParticipant.firstName} ${selectedParticipant.lastName}`);
-                    setModalOpen(false);
-                  }}
+                  onClick={handleAppointmentRequest}
                 >
                   <CalendarDaysIcon className="h-4 w-4 mr-2" />
                   Prendre RV
@@ -549,6 +600,20 @@ export default function UserEventParticipantsPage({ params }: { params: { id: st
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Formulaire de demande de rendez-vous */}
+      {selectedParticipant && event && currentUserRegistrationId && (
+        <AppointmentRequestForm
+          isOpen={appointmentFormOpen}
+          onClose={() => setAppointmentFormOpen(false)}
+          recipient={selectedParticipant}
+          event={event}
+          currentUserRegistrationId={currentUserRegistrationId}
+          onSuccess={() => {
+            toast.success('Votre demande a été envoyée ! Consultez vos rendez-vous pour suivre le statut.');
+          }}
+        />
+      )}
     </div>
   );
 } 

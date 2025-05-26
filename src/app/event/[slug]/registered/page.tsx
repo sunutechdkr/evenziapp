@@ -23,7 +23,7 @@ interface RegistrationData {
   };
 }
 
-export default function RegisteredPage({ params }: { params: { slug: string } }) {
+export default function RegisteredPage({ params }: { params: Promise<{ slug: string }> }) {
   const searchParams = useSearchParams();
   const registrationId = searchParams.get('id');
   const [registration, setRegistration] = useState<RegistrationData | null>(null);

@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET: Récupère tous les rendez-vous pour un événement spécifique
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -17,7 +17,7 @@ export async function GET(
       );
     }
 
-    const eventId = params.id;
+    const { id: eventId } = await params;
 
     // Récupérer les paramètres de filtre depuis l'URL
     const url = new URL(request.url);
@@ -25,7 +25,11 @@ export async function GET(
     const participantId = url.searchParams.get("participantId");
     
     // Construire la requête avec les conditions de filtre
-    let whereClause: any = { eventId };
+    const whereClause: {
+      eventId: string;
+      status?: string;
+      OR?: Array<{ requesterId: string } | { recipientId: string }>;
+    } = { eventId };
     
     if (status) {
       whereClause.status = status;
@@ -81,7 +85,7 @@ export async function GET(
 // POST: Crée un nouveau rendez-vous
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -92,7 +96,7 @@ export async function POST(
       );
     }
 
-    const eventId = params.id;
+    const { id: eventId } = await params;
     const body = await request.json();
     
     // Validation des données d'entrée

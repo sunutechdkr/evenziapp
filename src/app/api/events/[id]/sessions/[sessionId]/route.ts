@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 // PUT /api/events/[id]/sessions/[sessionId]
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -17,7 +17,7 @@ export async function PUT(
       );
     }
 
-    const { id, sessionId } = params;
+    const { id, sessionId } = await params;
     const body = await request.json();
     const {
       title,
@@ -108,7 +108,7 @@ export async function PUT(
 // DELETE /api/events/[id]/sessions/[sessionId]
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -119,7 +119,7 @@ export async function DELETE(
       );
     }
 
-    const { id, sessionId } = params;
+    const { id, sessionId } = await params;
     
     // Utiliser $executeRaw pour supprimer la session
     await prisma.$executeRaw`
@@ -140,7 +140,7 @@ export async function DELETE(
 // GET /api/events/[id]/sessions/[sessionId] - Récupérer une session spécifique
 export async function GET(
   request: Request,
-  { params }: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -151,7 +151,7 @@ export async function GET(
       );
     }
 
-    const { id, sessionId } = params;
+    const { id, sessionId } = await params;
     console.log("Récupération de la session:", { id, sessionId });
 
     // Vérifier que l'événement existe

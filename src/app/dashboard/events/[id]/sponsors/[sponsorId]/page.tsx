@@ -30,7 +30,7 @@ type Sponsor = {
   updatedAt: Date;
 };
 
-export default function SponsorDetailsPage({ params }: { params: { id: string, sponsorId: string } }) {
+export default function SponsorDetailsPage({ params }: { params: Promise<{ id: string, sponsorId: string }> }) {
   const [sponsor, setSponsor] = useState<Sponsor | null>(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);

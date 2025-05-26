@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 // PATCH /api/events/[id]/sessions/[sessionId]/participants/attendance
 // Marquer la présence d'un participant à une session
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,7 +18,7 @@ export async function PATCH(
       );
     }
 
-    const { id, sessionId } = params;
+    const { id, sessionId } = await params;
     const { participantId, attended } = await request.json();
 
     if (!participantId) {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { UserRole } from '@/types/models';
 
@@ -16,7 +16,7 @@ type EventRecord = {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Vérifier l'authentification et les autorisations
@@ -28,7 +28,7 @@ export async function GET(
 
     // Vérifier que l'utilisateur est autorisé (admin ou l'utilisateur lui-même)
     const isAdmin = session.user?.role === UserRole.ADMIN;
-    const isSelf = session.user?.id === params.userId;
+    const isSelf = session.user?.id === (await params).userId;
 
     if (!isAdmin && !isSelf) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 403 });
@@ -37,7 +37,7 @@ export async function GET(
     // Récupérer les événements de l'utilisateur
     const events = await prisma.events.findMany({
       where: {
-        user_id: params.userId
+        user_id: (await params).userId
       },
       select: {
         id: true,

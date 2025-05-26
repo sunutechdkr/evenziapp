@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { v4 as uuidv4 } from 'uuid';
 import { generateShortCode } from "@/lib/shortcodes";
 
 // GET /api/events/[id]/registrations - Get registrations for an event
 export async function GET(
   request: Request, 
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Check for authentication
   const session = await getServerSession(authOptions);
@@ -21,6 +21,8 @@ export async function GET(
   }
   
   const { id } = await params;
+  const url = new URL(request.url);
+  const userEmail = url.searchParams.get('userEmail');
   
   try {
     // Check if the event exists using raw SQL query to avoid schema mismatches
@@ -67,6 +69,42 @@ export async function GET(
       );
     }
     
+    // Si un userEmail est spécifié, retourner seulement l'enregistrement de cet utilisateur
+    if (userEmail) {
+      const userRegistration = await prisma.$queryRaw`
+        SELECT 
+          id, 
+          first_name as "firstName", 
+          last_name as "lastName", 
+          email, 
+          phone, 
+          type, 
+          job_title as "jobTitle",
+          company,
+          event_id as "eventId", 
+          qr_code as "qrCode", 
+          short_code as "shortCode",
+          created_at as "createdAt",
+          updated_at as "updatedAt",
+          checked_in as "checkedIn", 
+          check_in_time as "checkInTime"
+        FROM registrations
+        WHERE event_id = ${id} AND email = ${userEmail}
+        LIMIT 1
+      `;
+      
+      if (Array.isArray(userRegistration) && userRegistration.length > 0) {
+        return NextResponse.json({
+          registration: userRegistration[0],
+        });
+      } else {
+        return NextResponse.json(
+          { message: "Registration not found for this user" },
+          { status: 404 }
+        );
+      }
+    }
+    
     // Get registrations for the event with SQL query to ensure all fields are included
     const registrations = await prisma.$queryRaw`
       SELECT 
@@ -106,7 +144,7 @@ export async function GET(
 // POST /api/events/[id]/registrations - Create a new registration
 export async function POST(
   request: Request, 
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Check for authentication
   const session = await getServerSession(authOptions);

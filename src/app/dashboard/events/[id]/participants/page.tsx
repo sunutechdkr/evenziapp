@@ -90,7 +90,7 @@ type Event = {
   slug?: string; // Ajouter le slug à l'interface Event
 };
 
-export default function EventParticipantsPage({ params }: { params: { id: string } }) {
+export default function EventParticipantsPage({ params }: { params: Promise<{ id: string }> }) {
   // Nous utilisons directement params.id au lieu de créer une variable eventId
   const [event, setEvent] = useState<Event | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);

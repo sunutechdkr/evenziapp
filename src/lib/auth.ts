@@ -1,6 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import { prisma } from '@/lib/prisma';
@@ -38,7 +37,7 @@ declare module "next-auth/jwt" {
   }
 }
 
-const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
@@ -217,9 +216,4 @@ const options: NextAuthOptions = {
   },
   debug: process.env.NODE_ENV === 'development',
   secret: process.env.NEXTAUTH_SECRET || "DEFAULT_SECRET_FOR_DEV",
-};
-
-const handler = NextAuth(options);
-
-// Export named handlers for NextJS 13+
-export { handler as GET, handler as POST };
+}; 

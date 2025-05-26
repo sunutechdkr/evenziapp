@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import ParticipantQRCode from "@/components/ParticipantQRCode";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-export default async function ParticipantQRPage({ params }: { params: { id: string } }) {
+export default async function ParticipantQRPage({ params }: { params: Promise<{ id: string }> }) {
   // Vérifier l'authentification côté serveur
   const session = await getServerSession(authOptions);
   

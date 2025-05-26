@@ -7,7 +7,7 @@ import Link from "next/link";
 import { HomeIcon, ArrowLeftIcon, ArrowUpTrayIcon, DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 
-export default function ImportParticipantsPage({ params }: { params: { id: string } }) {
+export default function ImportParticipantsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);

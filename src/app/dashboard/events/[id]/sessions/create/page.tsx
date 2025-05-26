@@ -38,7 +38,7 @@ const formatOptions = [
   { value: "lien-video", label: "Lien vidéo", description: "Session avec vidéo externe" },
 ];
 
-export default function CreateSessionPage({ params }: { params: { id: string } }) {
+export default function CreateSessionPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [eventId, setEventId] = useState<string>("");
 

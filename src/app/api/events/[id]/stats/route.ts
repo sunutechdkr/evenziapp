@@ -4,12 +4,11 @@ import { format, isToday, isPast, isFuture } from "date-fns";
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Accéder à l'ID de l'événement de manière sûre en attendant les paramètres
-    const params = await context.params;
-    const id = params.id;
+    const { id } = await params;
     
     // Si l'ID est manquant, retourner une erreur
     if (!id) {

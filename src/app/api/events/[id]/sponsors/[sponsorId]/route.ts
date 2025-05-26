@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { writeFile, unlink } from "fs/promises";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
@@ -11,7 +11,7 @@ import { existsSync } from "fs";
 // GET /api/events/[id]/sponsors/[sponsorId] - Récupérer un sponsor spécifique
 export async function GET(
   request: Request,
-  { params }: { params: { id: string; sponsorId: string } }
+  { params }: { params: Promise<{ id: string; sponsorId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -23,7 +23,7 @@ export async function GET(
       );
     }
     
-    const { id, sponsorId } = params;
+    const { id, sponsorId } = await params;
     
     // Récupérer le sponsor spécifique
     const sponsor = await prisma.sponsor.findFirst({
@@ -53,7 +53,7 @@ export async function GET(
 // PUT /api/events/[id]/sponsors/[sponsorId] - Mettre à jour un sponsor
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string; sponsorId: string } }
+  { params }: { params: Promise<{ id: string; sponsorId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -65,7 +65,7 @@ export async function PUT(
       );
     }
     
-    const { id, sponsorId } = params;
+    const { id, sponsorId } = await params;
     console.log("PUT sponsor - ID événement:", id, "ID sponsor:", sponsorId);
     
     // Vérifier que le sponsor existe
@@ -177,7 +177,7 @@ export async function PUT(
 // DELETE /api/events/[id]/sponsors/[sponsorId] - Supprimer un sponsor
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; sponsorId: string } }
+  { params }: { params: Promise<{ id: string; sponsorId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -189,7 +189,7 @@ export async function DELETE(
       );
     }
     
-    const { id, sponsorId } = params;
+    const { id, sponsorId } = await params;
     
     // Vérifier que le sponsor existe
     const existingSponsor = await prisma.sponsor.findFirst({

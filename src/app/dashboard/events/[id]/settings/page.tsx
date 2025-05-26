@@ -30,7 +30,7 @@ import {
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 
-export default function EventSettingsPage({ params }: { params: { id: string } }) {
+export default function EventSettingsPage({ params }: { params: Promise<{ id: string }> }) {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [settings, setSettings] = useState({
     // Informations générales

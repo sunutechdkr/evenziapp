@@ -56,7 +56,7 @@ const registrationSchema = z.object({
 
 type RegistrationFormData = z.infer<typeof registrationSchema>;
 
-export default function RegistrationFormPage({ params }: { params: { id: string } }) {
+export default function RegistrationFormPage({ params }: { params: Promise<{ id: string }> }) {
   const [event, setEvent] = useState<any>(null);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [shareUrl, setShareUrl] = useState('');

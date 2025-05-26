@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { v4 as uuidv4 } from 'uuid';
 
 // Définir des types pour les intervenants
@@ -15,7 +15,7 @@ type Speaker = {
 // GET /api/events/[id]/sessions - Récupérer toutes les sessions d'un événement
 export async function GET(
   request: Request,
-  { params }: { params: { id: string | string[] } }
+  { params }: { params: Promise<{ id: string | string[] }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -159,7 +159,7 @@ export async function GET(
 // POST /api/events/[id]/sessions - Créer une nouvelle session
 export async function POST(
   request: Request,
-  { params }: { params: { id: string | string[] } }
+  { params }: { params: Promise<{ id: string | string[] }> }
 ) {
   try {
     const session = await getServerSession(authOptions);

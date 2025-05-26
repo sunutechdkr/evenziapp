@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import * as XLSX from 'xlsx';
 import { format } from 'date-fns';
 
@@ -25,7 +25,7 @@ interface ParticipantData {
 // GET /api/events/[id]/export/participants - Exporter les participants au format Excel
 export async function GET(
   request: Request, 
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);

@@ -47,7 +47,7 @@ type Speaker = {
   lastName?: string;
 };
 
-export default function EventSessionsPage({ params }: { params: { id: string } }) {
+export default function EventSessionsPage({ params }: { params: Promise<{ id: string }> }) {
   const [eventId, setEventId] = useState<string>("");
   const [event, setEvent] = useState<Event | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);

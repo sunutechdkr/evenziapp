@@ -82,7 +82,7 @@ const getYoutubeVideoId = (url: string): string | null => {
   return null;
 };
 
-export default function SessionDetailPage({ params }: { params: { id: string, sessionId: string } }) {
+export default function SessionDetailPage({ params }: { params: Promise<{ id: string, sessionId: string }> }) {
   // Initialiser les params comme variables régulières pour éviter les erreurs
   const router = useRouter();
   const [eventId, setEventId] = useState<string>("");

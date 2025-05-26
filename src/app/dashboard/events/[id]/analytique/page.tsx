@@ -72,7 +72,7 @@ type EventAnalytics = {
 // Types pour les filtres de période
 type DateRange = '7j' | '30j' | 'all';
 
-export default function EventAnalyticsPage({ params }: { params: { id: string } }) {
+export default function EventAnalyticsPage({ params }: { params: Promise<{ id: string }> }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<EventAnalytics | null>(null);

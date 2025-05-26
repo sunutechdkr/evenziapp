@@ -15,7 +15,7 @@ import { toast } from "react-hot-toast";
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
 
-export default function EditSponsorPage({ params }: { params: { id: string } }) {
+export default function EditSponsorPage({ params }: { params: Promise<{ id: string }> }) {
   const searchParams = useSearchParams();
   const sponsorId = searchParams.get('id');
   const router = useRouter();

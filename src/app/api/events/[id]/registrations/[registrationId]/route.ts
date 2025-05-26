@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
-interface RouteContext {
-  params: {
-    id: string;
-    registrationId: string;
-  };
-}
+import { authOptions } from "@/lib/auth";
 
 // GET /api/events/[id]/registrations/[registrationId] - Get a specific registration
-export async function GET(request: Request, context: RouteContext) {
-  const { id, registrationId } = context.params;
+export async function GET(
+  request: Request, 
+  { params }: { params: Promise<{ id: string; registrationId: string }> }
+) {
+  const { id, registrationId } = await params;
   
   try {
     // Get the registration
@@ -56,7 +52,7 @@ export async function GET(request: Request, context: RouteContext) {
 }
 
 // PUT /api/events/[id]/registrations/[registrationId] - Update a registration
-export async function PUT(request: Request, context: RouteContext) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string; registrationId: string }> }) {
   // Check for authentication
   const session = await getServerSession(authOptions);
   
@@ -67,7 +63,7 @@ export async function PUT(request: Request, context: RouteContext) {
     );
   }
   
-  const { id, registrationId } = context.params;
+  const { id, registrationId } = await params;
   
   try {
     // Check if the registration exists
@@ -132,7 +128,7 @@ export async function PUT(request: Request, context: RouteContext) {
 }
 
 // DELETE /api/events/[id]/registrations/[registrationId] - Delete a registration
-export async function DELETE(request: Request, context: RouteContext) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string; registrationId: string }> }) {
   // Check for authentication
   const session = await getServerSession(authOptions);
   
@@ -143,7 +139,7 @@ export async function DELETE(request: Request, context: RouteContext) {
     );
   }
   
-  const { id, registrationId } = context.params;
+  const { id, registrationId } = await params;
   
   try {
     // Check if the registration exists

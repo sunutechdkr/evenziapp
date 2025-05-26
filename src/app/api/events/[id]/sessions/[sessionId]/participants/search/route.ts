@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 // GET /api/events/[id]/sessions/[sessionId]/participants/search
 // Rechercher des participants d'un événement qui ne sont pas déjà inscrits à cette session
 export async function GET(
   request: Request,
-  { params }: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,7 +18,7 @@ export async function GET(
       );
     }
 
-    const { id, sessionId } = params;
+    const { id, sessionId } = await params;
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query") || "";
     

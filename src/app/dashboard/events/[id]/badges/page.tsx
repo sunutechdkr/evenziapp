@@ -34,7 +34,7 @@ type Badge = {
   updatedAt: Date;
 };
 
-export default function EventBadgesPage({ params }: { params: { id: string } }) {
+export default function EventBadgesPage({ params }: { params: Promise<{ id: string }> }) {
   const [event, setEvent] = useState<Event | null>(null);
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(true);

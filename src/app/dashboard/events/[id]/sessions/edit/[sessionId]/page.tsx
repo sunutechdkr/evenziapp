@@ -40,7 +40,7 @@ const formatOptions = [
   { value: "lien-video", label: "Lien vidéo", description: "Session avec vidéo externe" },
 ];
 
-export default function EditSessionPage({ params }: { params: { id: string, sessionId: string } }) {
+export default function EditSessionPage({ params }: { params: Promise<{ id: string, sessionId: string }> }) {
   const router = useRouter();
   const [eventId, setEventId] = useState<string>("");
   const [sessionId, setSessionId] = useState<string>("");

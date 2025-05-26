@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET: Récupère les détails d'un rendez-vous spécifique
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string; appointmentId: string } }
+  { params }: { params: Promise<{ id: string; appointmentId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -17,7 +17,7 @@ export async function GET(
       );
     }
 
-    const { id: eventId, appointmentId } = params;
+    const { id: eventId, appointmentId } = await params;
 
     const appointment = await prisma.appointment.findUnique({
       where: {
@@ -68,7 +68,7 @@ export async function GET(
 // PUT: Mise à jour d'un rendez-vous (accepter, refuser, terminer)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string; appointmentId: string } }
+  { params }: { params: Promise<{ id: string; appointmentId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -79,7 +79,7 @@ export async function PUT(
       );
     }
 
-    const { id: eventId, appointmentId } = params;
+    const { id: eventId, appointmentId } = await params;
     const body = await request.json();
     
     // Récupérer les données à mettre à jour
@@ -101,7 +101,11 @@ export async function PUT(
     }
     
     // Préparer les données de mise à jour
-    const updateData: any = {};
+    const updateData: {
+      status?: string;
+      confirmedTime?: Date;
+      notes?: string;
+    } = {};
     
     if (status) {
       updateData.status = status;
@@ -162,7 +166,7 @@ export async function PUT(
 // DELETE: Supprime un rendez-vous
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string; appointmentId: string } }
+  { params }: { params: Promise<{ id: string; appointmentId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -173,7 +177,7 @@ export async function DELETE(
       );
     }
 
-    const { id: eventId, appointmentId } = params;
+    const { id: eventId, appointmentId } = await params;
 
     // Vérifier que le rendez-vous existe
     const existingAppointment = await prisma.appointment.findUnique({

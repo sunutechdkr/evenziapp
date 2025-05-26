@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import PDFDocument from 'pdfkit';
 
 // GET /api/events/[id]/export/badges - Exporter les badges au format PDF
 export async function GET(
   request: Request, 
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
