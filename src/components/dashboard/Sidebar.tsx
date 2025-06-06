@@ -13,7 +13,6 @@ import {
   Cog6ToothIcon,
   ChartBarIcon,
   BellIcon,
-  UserCircleIcon,
   ChevronRightIcon,
   XMarkIcon,
   ChevronLeftIcon,
@@ -21,8 +20,9 @@ import {
   UsersIcon
 } from "@heroicons/react/24/outline";
 import { UserRole } from "@/types/models";
-import { UserProfile } from "./UserProfile";
+import Logo from "@/components/ui/Logo";
 
+import { UserProfile } from "@/components/dashboard/UserProfile";
 // Configuration des liens de navigation
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, exact: true },
@@ -257,13 +257,10 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
         <div className="sidebar-content h-full flex flex-col">
           {/* En-tête avec logo */}
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               {/* Logo */}
-              <div className="h-8 w-8 bg-[#81B441] rounded-md flex items-center justify-center shadow-inner">
-                <span className="font-bold text-white">iN</span>
-              </div>
               <div className="flex flex-col">
-                <span className="text-white font-bold text-sm">InEvent</span>
+                <Logo width={120} height={30} color="white" />
                 <span className="text-gray-400 text-xs">Dashboard</span>
               </div>
             </div>
@@ -280,7 +277,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
             </button>
           </div>
           
-          {/* Profil utilisateur */}
+          {/* Profil admin */}
           <UserProfile isExpanded={isExpanded} />
           
           {/* Centre de notifications */}
@@ -316,8 +313,8 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
                       {item.highlight && (
                         <span className="ml-2 inline-flex items-center rounded-full bg-purple-500 px-2 py-0.5 text-xs font-medium text-white">
                           Nouveau
-                        </span>
-                      )}
+                </span>
+              )}
                     </div>
                   )}
                 </div>
@@ -351,4 +348,4 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
       <NotificationPanel show={showNotifications} onClose={() => setShowNotifications(false)} />
     </>
   );
-}
+} 

@@ -136,7 +136,7 @@ export async function POST(request: Request) {
         });
 
         const eventsWithActiveRegistrations = eventsWithRegistrations.filter(
-          event => event._count.registrations > 0
+          (event: any) => event._count.registrations > 0
         );
         const eventsToDelete = eventsWithRegistrations.filter(
           event => event._count.registrations === 0
@@ -223,7 +223,7 @@ export async function POST(request: Request) {
           }
         });
 
-        const skippedEvents = eventsToDeleteSafely.filter(event => event._count.registrations > 0);
+        const skippedEvents = eventsToDeleteSafely.filter((event: any) => event._count.registrations > 0);
         
         console.log(`✅ Suppression sécurisée: ${result.count} événement(s) supprimé(s), ${skippedEvents.length} ignoré(s) par ${session.user.email}`);
 

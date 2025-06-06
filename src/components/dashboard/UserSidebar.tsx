@@ -2,103 +2,34 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import { 
-  HomeIcon,
-  CalendarIcon, 
-  UserCircleIcon,
-  Cog6ToothIcon,
-  BellIcon,
+  EyeIcon,
+  UserGroupIcon, 
+  BuildingOfficeIcon,
+  CalendarIcon,
+  IdentificationIcon,
   ChevronRightIcon,
+  BellIcon,
   XMarkIcon,
   ChevronLeftIcon,
-  Bars3Icon
+  Bars3Icon,
+  MicrophoneIcon,
+  QuestionMarkCircleIcon,
+  ClockIcon,
 } from "@heroicons/react/24/outline";
-import { UserProfile } from "./UserProfile";
+import Logo from "@/components/ui/Logo";
 
-// Configuration des liens de navigation pour les utilisateurs USER
-const userNavigation = [
-  { name: "Mon espace", href: "/dashboard/user", icon: HomeIcon, exact: true },
-  { name: "Mon profil", href: "/dashboard/user/profile", icon: UserCircleIcon },
-  { name: "Réglages", href: "/dashboard/user/settings", icon: Cog6ToothIcon },
-];
-
-/**
- * Composant UserNotificationPanel - Panneau de notifications pour les utilisateurs USER
- */
-export function UserNotificationPanel({ 
-  show, 
-  onClose 
-}: { 
-  show: boolean, 
-  onClose: () => void 
-}) {
-  return (
-    <>
-      {/* Overlay */}
-      {show && (
-        <div 
-          className="fixed inset-0 bg-black/30 z-30" 
-          onClick={onClose}
-        ></div>
-      )}
-      
-      {/* Panneau latéral */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-80 bg-gray-800 shadow-xl z-40 transform transition-transform duration-300 ease-in-out ${
-          show ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-white flex items-center">
-              <BellIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-              Notifications
-              <span className="ml-2 bg-[#81B441] text-white text-xs font-bold px-2 py-1 rounded-full">2</span>
-            </h2>
-            <button 
-              onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-700"
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-          
-          <div className="flex-1 overflow-y-auto p-4">
-            <div className="space-y-3">
-              <div className="notification-item bg-gray-700 hover:bg-gray-600 rounded-md p-3 cursor-pointer transition-colors duration-200 transform hover:translate-x-1 border-l-2 border-[#81B441]">
-                <div className="flex justify-between items-start">
-                  <p className="text-sm text-white font-medium">Événement rappel</p>
-                  <span className="text-xs text-gray-400">1h</span>
-                </div>
-                <p className="text-sm text-[#81B441] font-semibold mt-1">TIF-AFRICA</p>
-                <p className="text-xs text-gray-400 mt-1">Votre événement commence dans 2 heures.</p>
-              </div>
-              
-              <div className="notification-item bg-gray-700 hover:bg-gray-600 rounded-md p-3 cursor-pointer transition-colors duration-200 transform hover:translate-x-1 border-l-2 border-[#81B441]">
-                <div className="flex justify-between items-start">
-                  <p className="text-sm text-white font-medium">Check-in confirmé</p>
-                  <span className="text-xs text-gray-400">Hier</span>
-                </div>
-                <p className="text-xs text-gray-400 mt-1">Votre check-in a été confirmé pour l&apos;événement TIF-AFRICA.</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 border-t border-gray-700">
-            <button className="w-full bg-[#81B441]/20 hover:bg-[#81B441]/30 text-[#81B441] font-medium py-2 rounded transition-colors flex justify-center items-center">
-              <span>Voir toutes les notifications</span>
-              <ChevronRightIcon className="h-4 w-4 ml-1" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+import { UserProfile } from "@/components/dashboard/UserProfile";
+// Define types for menu items
+type MenuItem = {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+  exact?: boolean;
+};
 
 /**
- * Composant UserNotificationCenter - Centre de notifications réutilisable pour utilisateurs USER
+ * Composant UserNotificationCenter - Centre de notifications réutilisable pour les utilisateurs USER
  */
 export function UserNotificationCenter({ 
   isExpanded = true, 
@@ -139,16 +70,97 @@ export function UserNotificationCenter({
 }
 
 /**
- * Composant UserSidebar - Barre latérale de navigation pour les utilisateurs USER
- * 
- * Utilise exactement la même structure que le Sidebar principal mais avec les liens spécifiques aux utilisateurs
+ * Composant NotificationPanel - Panneau de notifications pour les utilisateurs USER
  */
-export default function UserSidebar({ onExpandChange }: { onExpandChange?: (expanded: boolean) => void }) {
-  // États pour contrôler l'expansion et les notifications
+export function UserNotificationPanel({ 
+  show, 
+  onClose 
+}: { 
+  show: boolean, 
+  onClose: () => void 
+}) {
+  return (
+    <>
+      {/* Overlay */}
+      {show && (
+        <div 
+          className="fixed inset-0 bg-black/30 z-30" 
+          onClick={onClose}
+        ></div>
+      )}
+      
+      {/* Panneau latéral */}
+      <div 
+        className={`fixed top-0 right-0 h-full w-80 bg-gray-800 shadow-xl z-40 transform transition-transform duration-300 ease-in-out ${
+          show ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-white flex items-center">
+              <BellIcon className="h-5 w-5 mr-2 text-[#81B441]" />
+              Notifications
+              <span className="ml-2 bg-[#81B441] text-white text-xs font-bold px-2 py-1 rounded-full">2</span>
+            </h2>
+            <button 
+              onClick={onClose}
+              className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-700"
+            >
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+          </div>
+          
+          <div className="flex flex-col overflow-y-auto p-4">
+            <div className="space-y-3">
+              <div className="notification-item bg-gray-700 hover:bg-gray-600 rounded-md p-3 cursor-pointer transition-colors duration-200 transform hover:translate-x-1 border-l-2 border-[#81B441]">
+                <div className="flex justify-between items-start">
+                  <p className="text-sm text-white font-medium">Nouvelle session disponible</p>
+                  <span className="text-xs text-gray-400">1h</span>
+                </div>
+                <p className="text-sm text-[#81B441] font-semibold mt-1">Conférence IA</p>
+                <p className="text-xs text-gray-400 mt-1">Une nouvelle session a été ajoutée à l&apos;agenda.</p>
+              </div>
+              
+              <div className="notification-item bg-gray-700 hover:bg-gray-600 rounded-md p-3 cursor-pointer transition-colors duration-200 transform hover:translate-x-1 border-l-2 border-[#81B441]">
+                <div className="flex justify-between items-start">
+                  <p className="text-sm text-white font-medium">Rappel d&apos;événement</p>
+                  <span className="text-xs text-gray-400">3h</span>
+                </div>
+                <p className="text-xs text-gray-400 mt-1">L&apos;événement commence dans 2 jours. N&apos;oubliez pas de télécharger votre badge.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-4 border-t border-gray-700">
+            <button className="w-full bg-[#81B441]/20 hover:bg-[#81B441]/30 text-[#81B441] font-medium py-2 rounded transition-colors flex justify-center items-center">
+              <span>Voir toutes les notifications</span>
+              <ChevronRightIcon className="h-4 w-4 ml-1" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/**
+ * Composant UserEventSidebar - Barre latérale spécifique à un événement pour les utilisateurs USER
+ * 
+ * Affiche les options de navigation propres à la consultation d'un événement par un utilisateur USER
+ */
+export function UserEventSidebar({ 
+  eventId, 
+  onExpandChange, 
+  activeTab 
+}: { 
+  eventId: string,
+  onExpandChange?: (expanded: boolean) => void,
+  activeTab?: string 
+}) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
-  const pathname = usePathname();
-
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  
   // Notifier le parent du changement d'état de la sidebar
   const toggleExpand = (expanded: boolean) => {
     setIsExpanded(expanded);
@@ -156,13 +168,60 @@ export default function UserSidebar({ onExpandChange }: { onExpandChange?: (expa
       onExpandChange(expanded);
     }
   };
+  
+  const baseUrl = `/dashboard/user/events/${eventId}`;
 
-  // Fonction pour vérifier si un lien est actif
+  // Configuration des liens de navigation pour un événement (USER)
+  const navigation: MenuItem[] = [
+    { 
+      name: "Aperçu", 
+      href: `${baseUrl}`, 
+      icon: EyeIcon,
+      exact: true,
+    },
+    { 
+      name: "Participants", 
+      href: `${baseUrl}/participants`, 
+      icon: UserGroupIcon,
+    },
+    { 
+      name: "Rendez-Vous", 
+      href: `${baseUrl}/rendez-vous`, 
+      icon: ClockIcon,
+    },
+    { 
+      name: "Exposants", 
+      href: `${baseUrl}/exposants`, 
+      icon: BuildingOfficeIcon,
+    },
+    { 
+      name: "Sessions", 
+      href: `${baseUrl}/sessions`, 
+      icon: CalendarIcon,
+    },
+    { 
+      name: "Speakers", 
+      href: `${baseUrl}/speakers`, 
+      icon: MicrophoneIcon,
+    },
+    { 
+      name: "Mon Badge", 
+      href: `${baseUrl}/badge`, 
+      icon: IdentificationIcon,
+    },
+    { 
+      name: "Aide", 
+      href: `${baseUrl}/aide`, 
+      icon: QuestionMarkCircleIcon,
+    },
+  ];
+
+  // Use activeTab to determine the active link
   const isActive = (href: string, exact: boolean = false) => {
     if (exact) {
       return pathname === href;
     }
-    return pathname.startsWith(href);
+    return pathname.startsWith(href) || activeTab === href;
   };
 
   return (
@@ -220,14 +279,11 @@ export default function UserSidebar({ onExpandChange }: { onExpandChange?: (expa
         <div className="sidebar-content h-full flex flex-col">
           {/* En-tête avec logo */}
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
-            <div className="flex items-center space-x-2">
-              {/* Logo */}
-              <div className="h-8 w-8 bg-[#81B441] rounded-md flex items-center justify-center shadow-inner">
-                <span className="font-bold text-white">iN</span>
-              </div>
+            <div className="flex items-center space-x-3">
+              {/* Logo complet blanc occupant toute la largeur */}
               <div className="flex flex-col">
-                <span className="text-white font-bold text-sm">InEvent</span>
-                <span className="text-gray-400 text-xs">Mon espace</span>
+                <Logo width={120} height={30} color="white" />
+                <span className="text-gray-400 text-xs ">Mon espace</span>
               </div>
             </div>
             {/* Bouton pour réduire la sidebar (version desktop) */}
@@ -245,6 +301,21 @@ export default function UserSidebar({ onExpandChange }: { onExpandChange?: (expa
           
           {/* Profil utilisateur */}
           <UserProfile isExpanded={isExpanded} />
+
+          {/* Navigation du retour au dashboard principal */}
+          <div className="px-3 pb-2">
+            <Link 
+              href="/dashboard/user" 
+              className="block py-2 px-3 rounded-md transition-colors duration-200 text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              <div className="flex items-center">
+                <ChevronLeftIcon className="mr-3 h-5 w-5 flex-shrink-0 text-[#81B441]" />
+                {isExpanded && (
+                  <span className="text-sm">Retour au dashboard</span>
+                )}
+              </div>
+            </Link>
+          </div>
           
           {/* Centre de notifications */}
           <UserNotificationCenter 
@@ -254,7 +325,7 @@ export default function UserSidebar({ onExpandChange }: { onExpandChange?: (expa
           
           {/* Navigation principale */}
           <nav className="flex-1 px-3 pb-4 mt-2 space-y-2">
-            {userNavigation.map((item) => (
+            {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -305,4 +376,6 @@ export default function UserSidebar({ onExpandChange }: { onExpandChange?: (expa
       <UserNotificationPanel show={showNotifications} onClose={() => setShowNotifications(false)} />
     </>
   );
-} 
+}
+
+export default UserEventSidebar; 

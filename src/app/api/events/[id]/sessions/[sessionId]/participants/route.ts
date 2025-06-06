@@ -226,7 +226,7 @@ export async function DELETE(
       );
     }
 
-    const { sessionId } = params;
+    const { sessionId } = await params;
     const url = new URL(request.url);
     const participantId = url.searchParams.get('participantId');
 

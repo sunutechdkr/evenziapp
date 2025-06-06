@@ -23,8 +23,7 @@ enum CheckInStep {
   TermsConditions,
   Confirmation,
   Success,
-  Error,
-  AlreadyCheckedIn
+  Error
 }
 
 type Participant = {
@@ -334,14 +333,8 @@ export default function CheckInPage() {
       console.log("Participant trouvé:", participant);
       setSelectedParticipant(participant);
       
-      // Si le participant est déjà enregistré, aller directement à l'étape AlreadyCheckedIn
-      if (participant.checkedIn) {
-        console.log("Participant déjà enregistré, affichage des informations");
-        setCurrentStep(CheckInStep.AlreadyCheckedIn);
-      } else {
-        // Sinon, passer par les conditions d'utilisation
-        setCurrentStep(CheckInStep.TermsConditions);
-      }
+      // Si le participant est déjà enregistré, aller directement au succès
+      setCurrentStep(CheckInStep.TermsConditions);
       
     } catch (error) {
       console.error('Error processing check-in:', error);
@@ -371,14 +364,7 @@ export default function CheckInPage() {
   // Fonction pour gérer la sélection d'un participant
   const handleParticipantSelect = async (participant: Participant) => {
     setSelectedParticipant(participant);
-    
-    // Si le participant est déjà enregistré, aller directement à l'étape AlreadyCheckedIn
-    if (participant.checkedIn) {
-      setCurrentStep(CheckInStep.AlreadyCheckedIn);
-    } else {
-      // Sinon, passer par les conditions d'utilisation
-      setCurrentStep(CheckInStep.TermsConditions);
-    }
+    setCurrentStep(CheckInStep.TermsConditions);
   };
 
   // Fonction pour accepter les CGU et passer à l'étape suivante
@@ -860,7 +846,7 @@ export default function CheckInPage() {
           </div>
 
           <div className="checkin-buttons-container">
-                  <button 
+                <button
               type="button"
               onClick={resetCheckInProcess}
               className="checkin-button checkin-button-secondary"
@@ -874,10 +860,10 @@ export default function CheckInPage() {
               disabled={!termsAccepted}
                 >
               Continuer
-                  </button>
-                </div>
+                </button>
               </div>
-            )}
+          </div>
+      )}
 
       {/* ÉTAPE 3: CONFIRMATION DES INFORMATIONS */}
       {currentStep === CheckInStep.Confirmation && selectedParticipant && (
@@ -888,8 +874,8 @@ export default function CheckInPage() {
             <div className="participant-avatar">
               <div className="avatar-circle">
                 <span>{selectedParticipant.firstName.charAt(0)}{selectedParticipant.lastName.charAt(0)}</span>
-          </div>
               </div>
+            </div>
             
             <h3 className="participant-name">{selectedParticipant.firstName} {selectedParticipant.lastName}</h3>
             
@@ -903,16 +889,8 @@ export default function CheckInPage() {
             
             <div className="participant-email">{selectedParticipant.email}</div>
             
-            <div className="participant-badges-container">
-              <div className="participant-type-badge">
-                {selectedParticipant.type}
-              </div>
-              
-              {selectedParticipant.checkedIn && (
-                <div className="already-checked-in-badge">
-                  ✓ Déjà enregistré
-                </div>
-              )}
+            <div className="participant-type-badge">
+              {selectedParticipant.type}
             </div>
             
             {selectedParticipant.checkedIn && (
@@ -924,15 +902,9 @@ export default function CheckInPage() {
           </div>
           
           <div className="checkin-buttons-container">
-                <button
+            <button
               type="button"
-              onClick={() => {
-                if (selectedParticipant.checkedIn) {
-                  setCurrentStep(CheckInStep.AlreadyCheckedIn);
-                } else {
-                  setCurrentStep(CheckInStep.TermsConditions);
-                }
-              }}
+              onClick={() => setCurrentStep(CheckInStep.TermsConditions)}
               className="checkin-button checkin-button-secondary"
             >
               Retour
@@ -941,7 +913,7 @@ export default function CheckInPage() {
               type="button"
               onClick={handleConfirmCheckIn}
               className="checkin-button"
-                  disabled={loading}
+              disabled={loading}
             >
               {loading ? (
                 <>
@@ -953,7 +925,7 @@ export default function CheckInPage() {
               ) : (
                 "Confirmer l'enregistrement"
               )}
-                </button>
+            </button>
           </div>
         </div>
       )}
@@ -987,35 +959,18 @@ export default function CheckInPage() {
             
             <div className="participant-email">{selectedParticipant.email}</div>
             
-            <div className="participant-badges-container">
-              <div className="participant-type-badge">
-                {selectedParticipant.type}
-              </div>
-              
-              {selectedParticipant.checkedIn && (
-                <div className="already-checked-in-badge">
-                  ✓ Déjà enregistré
-                </div>
-              )}
+            <div className="participant-type-badge">
+              {selectedParticipant.type}
             </div>
             
-            {selectedParticipant.checkInTime && (
             <div className="checkin-timestamp">
-              Enregistré le {new Date(selectedParticipant.checkInTime).toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit', 
-                year: 'numeric'
-              })} à {new Date(selectedParticipant.checkInTime).toLocaleTimeString('fr-FR', {
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
+              Enregistré à {new Date().toLocaleTimeString()}
             </div>
-            )}
           </div>
 
           <div className="checkin-buttons-container">
-                <button
-                  type="button"
+              <button
+              type="button"
               onClick={resetCheckInProcess}
               className="checkin-button checkin-button-secondary"
               >
@@ -1027,8 +982,8 @@ export default function CheckInPage() {
               className="checkin-button"
               >
               Imprimer le badge
-                </button>
-              </div>
+              </button>
+            </div>
           </div>
         )}
 
@@ -1055,75 +1010,16 @@ export default function CheckInPage() {
             </div>
           </div>
           <div className="checkin-buttons-container">
-              <button
+            <button 
               type="button"
               onClick={resetCheckInProcess}
               className="checkin-button"
-              >
+            >
               Retour aux options
-              </button>
+            </button>
           </div>
         </div>
       )}
-
-      {currentStep === CheckInStep.AlreadyCheckedIn && selectedParticipant && (
-        <div className="checkin-result already-checked-in-result">
-          <div className="participant-details-card">
-            <div className="participant-avatar">
-              <div className="avatar-circle">
-                <span>{selectedParticipant.firstName.charAt(0)}{selectedParticipant.lastName.charAt(0)}</span>
-              </div>
-            </div>
-            
-            <h3 className="participant-name">{selectedParticipant.firstName} {selectedParticipant.lastName}</h3>
-            
-            {selectedParticipant.company && (
-              <div className="participant-company">{selectedParticipant.company}</div>
-            )}
-            
-            {selectedParticipant.jobTitle && (
-              <div className="participant-job">{selectedParticipant.jobTitle}</div>
-            )}
-            
-            <div className="participant-email">{selectedParticipant.email}</div>
-            
-            <div className="participant-badges-container">
-              <div className="participant-type-badge">
-                {selectedParticipant.type}
-              </div>
-              
-              {selectedParticipant.checkedIn && (
-                <div className="already-checked-in-badge">
-                  ✓ Déjà enregistré
-                </div>
-              )}
-            </div>
-            
-            {selectedParticipant.checkInTime && (
-            <div className="checkin-timestamp">
-              Enregistré le {new Date(selectedParticipant.checkInTime).toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit', 
-                year: 'numeric'
-              })} à {new Date(selectedParticipant.checkInTime).toLocaleTimeString('fr-FR', {
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
-            </div>
-            )}
-          </div>
-
-          <div className="checkin-buttons-container">
-              <button
-              type="button"
-              onClick={resetCheckInProcess}
-              className="checkin-button"
-              >
-              Retour
-              </button>
-            </div>
-          </div>
-        )}
       
       <div className="checkin-footer">
         <div className="checkin-powered-by">
@@ -1512,14 +1408,6 @@ export default function CheckInPage() {
           margin-bottom: 1rem;
         }
         
-        .participant-badges-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
-          margin-bottom: 1rem;
-        }
-        
         .participant-type-badge {
           display: inline-block;
           background-color: rgba(129, 180, 65, 0.2);
@@ -1528,19 +1416,8 @@ export default function CheckInPage() {
           font-weight: 600;
           padding: 0.3rem 0.8rem;
           border-radius: 20px;
+          margin-bottom: 1rem;
           border: 1px solid rgba(129, 180, 65, 0.3);
-        }
-        
-        .already-checked-in-badge {
-          display: inline-block;
-          background-color: rgba(255, 165, 0, 0.2);
-          color: #ffa500;
-          font-size: 0.9rem;
-          font-weight: 600;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          margin-left: 0.5rem;
-          border: 1px solid rgba(255, 165, 0, 0.3);
         }
         
         .checkin-warning {
@@ -1738,63 +1615,6 @@ export default function CheckInPage() {
           border-radius: 8px;
           color: #ffc107;
           font-size: 0.9rem;
-        }
-
-        .checkin-info-icon {
-          margin-bottom: 1.5rem;
-          animation: infoPulse 2s ease infinite;
-        }
-        
-        @keyframes infoPulse {
-          0% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.05);
-            opacity: 0.9;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-        
-        .checkin-info-title {
-          font-size: 1.8rem;
-          font-weight: 600;
-          color: #ffa500;
-          margin-bottom: 1rem;
-        }
-        
-        .already-checked-in-badge {
-          display: inline-block;
-          background-color: rgba(255, 165, 0, 0.2);
-          color: #ffa500;
-          font-size: 0.9rem;
-          font-weight: 600;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          margin-bottom: 1rem;
-          border: 1px solid rgba(255, 165, 0, 0.3);
-        }
-        
-        .already-checked-in-result {
-          text-align: center;
-          max-width: 500px;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .participant-badges-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
-          margin-bottom: 1rem;
         }
       `}</style>
     </div>

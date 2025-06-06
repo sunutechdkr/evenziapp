@@ -20,8 +20,9 @@ import {
   UsersIcon
 } from "@heroicons/react/24/outline";
 import { UserRole } from "@/types/models";
-import { UserProfile } from "./UserProfile";
+import Logo from "@/components/ui/Logo";
 
+import { UserProfile } from "@/components/dashboard/UserProfile";
 // Type pour les éléments de navigation
 interface NavigationItem {
   name: string;
@@ -291,6 +292,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
           
           {/* Profil utilisateur */}
           <UserProfile isExpanded={isExpanded} />
+          <div className="logo-section px-3 mb-6"><div className="flex items-center justify-center"><Logo color="white" width={isExpanded ? 140 : 40} height={isExpanded ? 30 : 30} className="transition-all duration-300" /></div></div>
           
           {/* Centre de notifications */}
           <NotificationCenter 

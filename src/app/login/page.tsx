@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import ThemeToggle from "@/components/ThemeToggle";
+import Logo from '@/components/ui/Logo';
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'magic-link' | 'admin'>('magic-link');
@@ -217,25 +218,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md px-8 py-10 bg-gray-800 rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.3)] backdrop-blur-sm relative z-10 transform transition-all duration-300 hover:shadow-[0_15px_25px_rgba(0,0,0,0.4)] border border-gray-700">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-6 animate-fadeIn">
-            <h1 className="text-3xl font-bold flex items-center text-white">
-              <span className="text-[#81B441] font-extrabold">In</span>
-              <span>event</span>
-              <svg
-                className="w-10 h-10 ml-2 animate-pulse"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="20" cy="20" r="18" fill="#81B441" />
-                <path
-                  d="M14 19.5L18 23.5L26 15.5"
-                  stroke="white"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </h1>
+            <Logo width={150} height={40} color="white" />
           </div>
           <p className="text-gray-400">Connectez-vous à votre compte</p>
         </div>

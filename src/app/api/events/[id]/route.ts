@@ -104,7 +104,7 @@ export async function PUT(
     }
 
     // 2. Récupérer l'ID de l'événement
-    const { id } = params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(
@@ -223,7 +223,7 @@ export async function PUT(
       
       return NextResponse.json(formattedEvent);
       
-    } catch (dbError: { code?: string; meta?: { target?: string[] } } & Error) {
+    } catch (dbError: any) {
       console.error("Erreur lors de la mise à jour dans la base de données:", dbError);
       
       // Gérer les erreurs spécifiques
@@ -264,7 +264,7 @@ export async function DELETE(
       );
     }
 
-    const { id } = params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(

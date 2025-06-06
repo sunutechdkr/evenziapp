@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { 
   UserCircleIcon,
   ChevronRightIcon,
@@ -24,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
  */
 export function UserProfile({ isExpanded = true }: { isExpanded: boolean }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [showProfileModal, setShowProfileModal] = useState(false);
   
   // Récupérer les initiales de l'utilisateur pour l'avatar
@@ -43,6 +45,11 @@ export function UserProfile({ isExpanded = true }: { isExpanded: boolean }) {
   // Fonction pour déconnexion
   const handleSignOut = () => {
     signOut({ redirect: true, callbackUrl: '/' });
+  };
+
+  // Fonction pour aller au profil
+  const handleGoToProfile = () => {
+    router.push('/dashboard/profile');
   };
   
   // Si aucune session, ne pas afficher
@@ -68,10 +75,18 @@ export function UserProfile({ isExpanded = true }: { isExpanded: boolean }) {
                 <p className="text-xs text-gray-400 truncate">
                   {session.user?.email}
                 </p>
+                {session.user?.role && (
+                  <Badge 
+                    variant="outline" 
+                    className="mt-1 text-xs bg-[#81B441]/20 text-[#81B441] border-[#81B441]/50"
+                  >
+                    {session.user.role}
+                  </Badge>
+                )}
               </div>
               <div>
                 <button 
-                  onClick={() => setShowProfileModal(true)}
+                  onClick={handleGoToProfile}
                   className="text-gray-400 hover:text-white"
                 >
                   <ChevronRightIcon className="h-5 w-5" />
@@ -80,7 +95,7 @@ export function UserProfile({ isExpanded = true }: { isExpanded: boolean }) {
             </div>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <button 
-                onClick={() => setShowProfileModal(true)}
+                onClick={handleGoToProfile}
                 className="text-xs bg-[#81B441]/20 hover:bg-[#81B441]/30 text-white py-1 px-2 rounded transition-colors hover:shadow-md"
               >
                 Profil
@@ -96,7 +111,7 @@ export function UserProfile({ isExpanded = true }: { isExpanded: boolean }) {
         ) : (
           <div className="flex justify-center">
             <button 
-              onClick={() => setShowProfileModal(true)}
+              onClick={handleGoToProfile}
               className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-gray-700 transition-colors"
             >
               <UserCircleIcon className="h-6 w-6" />

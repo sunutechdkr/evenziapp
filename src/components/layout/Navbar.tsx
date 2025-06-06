@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
+import Logo from '@/components/ui/Logo';
 
 export function Navbar() {
   const { data: session, status } = useSession();
@@ -18,7 +19,9 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-xl font-bold text-gray-900">Inevent</Link>
+              <Link href="/" className="flex items-center">
+                <Logo width={120} height={30} />
+              </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <Link href="/" className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${isActive('/')}`}>

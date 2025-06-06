@@ -19,10 +19,10 @@ import {
   PresentationChartLineIcon,
   Bars3Icon,
   ClockIcon,
-  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
-import { UserProfile } from "./UserProfile";
+import Logo from "@/components/ui/Logo";
 
+import { UserProfile } from "@/components/dashboard/UserProfile";
 // Define types for menu items
 type SubMenuItem = {
   name: string;
@@ -123,7 +123,7 @@ export function NotificationPanel({
             </button>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex flex-col overflow-y-auto p-4">
             <div className="space-y-3">
               <div className="notification-item bg-gray-800 hover:bg-gray-700 rounded-md p-3 cursor-pointer transition-colors duration-200 transform hover:translate-x-1 border-l-2 border-[#81B441]">
                 <div className="flex justify-between items-start">
@@ -242,11 +242,6 @@ export function EventSidebar({
       href: `${baseUrl}/settings`, 
       icon: Cog6ToothIcon,
     },
-    { 
-      name: "Aide", 
-      href: `${baseUrl}/aide`, 
-      icon: QuestionMarkCircleIcon,
-    },
   ];
 
   // Use activeTab to determine the active link
@@ -316,28 +311,25 @@ export function EventSidebar({
         <div className="sidebar-content h-full flex flex-col">
           {/* En-tête avec logo */}
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
-            <div className="flex items-center space-x-2">
-              {/* Logo */}
-              <div className="h-8 w-8 bg-[#81B441] rounded-md flex items-center justify-center shadow-inner">
-                <span className="font-bold text-white">iN</span>
-              </div>
+            <div className="flex items-center space-x-3">
+              {/* Logo complet blanc occupant toute la largeur */}
               <div className="flex flex-col">
-                <span className="text-white font-bold text-sm">InEvent</span>
-                <span className="text-gray-400 text-xs">Dashboard</span>
-            </div>
+                <Logo width={120} height={30} color="white" />
+                <span className="text-gray-400 text-xs ">Événement</span>
+              </div>
             </div>
             {/* Bouton pour réduire la sidebar (version desktop) */}
-          <button
-              className="hidden md:block text-gray-400 hover:text-white p-1 rounded-md transition-colors"
+            <button
+              className="hidden md:block text-gray-400 hover:text-white p-1 rounded-md transition-colors "
               onClick={() => toggleExpand(!isExpanded)}
-          >
-            {isExpanded ? (
+            >
+              {isExpanded ? (
                 <ChevronLeftIcon className="h-5 w-5" />
-            ) : (
+              ) : (
                 <ChevronRightIcon className="h-5 w-5" />
-            )}
-          </button>
-        </div>
+              )}
+            </button>
+          </div>
 
           {/* Profil utilisateur */}
           <UserProfile isExpanded={isExpanded} />

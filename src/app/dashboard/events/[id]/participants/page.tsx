@@ -37,6 +37,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import html2canvas from "html2canvas";
 import { QRCodeSVG } from "qrcode.react";
+import ParticipantBadge from "@/components/events/ParticipantBadge";
 
 // Importer les composants Shadcn UI
 import { 
@@ -2092,71 +2093,18 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
           </DialogHeader>
           
           {currentBadgeParticipant && (
-            <div className="p-4 border rounded-lg bg-white shadow-sm">
-              <div id="participant-badge" className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border border-gray-200">
-                <div className="text-center mb-4">
-                  {event && event.banner ? (
-                        <img 
-                          src={event.banner} 
-                      alt={event.name}
-                      className="w-full h-auto mb-2 object-cover"
-                      onLoad={() => setImageLoading(false)}
-                        />
-                      ) : (
-                    <h3 className="text-xl font-bold text-[#81B441] mb-2">{event?.name}</h3>
-                  )}
-                    </div>
-                    
-                <div className="w-full text-center mb-5">
-                  <h2 className="text-xl font-bold text-gray-900">
-                    {currentBadgeParticipant.firstName} {currentBadgeParticipant.lastName}
-                      </h2>
-                      
-                  {(currentBadgeParticipant.jobTitle || currentBadgeParticipant.company) && (
-                    <p className="text-sm text-gray-600 mt-1">
-                            {currentBadgeParticipant.jobTitle}
-                      {currentBadgeParticipant.jobTitle && currentBadgeParticipant.company && " • "}
-                      {currentBadgeParticipant.company}
-                          </p>
-                        )}
-                </div>
-
-                <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
-                  {currentBadgeParticipant.qrCode && (
-                    <QRCodeSVG 
-                      value={currentBadgeParticipant.qrCode}
-                      size={120}
-                      level="M"
-                      className="mx-auto"
-                    />
-                        )}
-                      </div>
-                    </div>
-                  </div>
+            <ParticipantBadge
+              firstName={currentBadgeParticipant.firstName}
+              lastName={currentBadgeParticipant.lastName}
+              jobTitle={currentBadgeParticipant.jobTitle}
+              company={currentBadgeParticipant.company}
+              qrCode={currentBadgeParticipant.qrCode}
+              eventName={event?.name || 'Événement'}
+              eventBanner={event?.banner}
+            />
           )}
           
           <DialogFooter className="flex-col sm:flex-row gap-2">
-            <div className="flex justify-between w-full">
-              <Button 
-                variant="outline" 
-                    onClick={handlePrintBadge}
-                className="flex-1 mr-2"
-                  >
-                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                    Imprimer
-              </Button>
-              <Button 
-                variant="outline"
-                onClick={() => currentBadgeParticipant && handleDownloadBadge()}
-                className="flex-1 ml-2"
-              >
-                <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-                Télécharger
-              </Button>
-            </div>
-            
             {currentBadgeParticipant && !currentBadgeParticipant.checkedIn && (
               <Button 
                 onClick={() => currentBadgeParticipant && handleCheckInFromBadge(currentBadgeParticipant.id)}
@@ -2169,7 +2117,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+                    </div>
   );
 } 
 

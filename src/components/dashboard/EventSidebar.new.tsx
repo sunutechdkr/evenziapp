@@ -20,8 +20,9 @@ import {
   Bars3Icon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
-import { UserProfile } from "./UserProfile";
+import Logo from "@/components/ui/Logo";
 
+import { UserProfile } from "@/components/dashboard/UserProfile";
 // Define types for menu items
 type SubMenuItem = {
   name: string;
@@ -312,13 +313,10 @@ export function EventSidebar({
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
             <div className="flex items-center space-x-2">
               {/* Logo */}
-              <div className="h-8 w-8 bg-[#81B441] rounded-md flex items-center justify-center shadow-inner">
-                <span className="font-bold text-white">iN</span>
-              </div>
               <div className="flex flex-col">
-                <span className="text-white font-bold text-sm">InEvent</span>
-                <span className="text-gray-400 text-xs">Dashboard</span>
-            </div>
+                <Logo width={120} height={30} color="white" />
+                <span className="text-gray-400 text-xs">Événement</span>
+              </div>
             </div>
             {/* Bouton pour réduire la sidebar (version desktop) */}
           <button

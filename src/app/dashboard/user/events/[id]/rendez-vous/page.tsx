@@ -18,7 +18,6 @@ import {
   ClockIcon,
   XCircleIcon,
   EyeIcon,
-  ClipboardDocumentCheckIcon,
   ChevronLeftIcon,
 } from "@heroicons/react/24/outline";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -90,14 +89,14 @@ export default function UserRendezVousPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("pending"); // Par défaut sur "À traiter"
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentUserRegistrationId, setCurrentUserRegistrationId] = useState<string | null>(null);
 
   // Récupérer les rendez-vous depuis l'API
   const fetchAppointments = async () => {
@@ -121,22 +120,28 @@ export default function UserRendezVousPage() {
     }
   };
 
-  // Obtenir l'ID de l'utilisateur courant
-  const fetchCurrentUser = async () => {
+  // Obtenir l'ID de registration de l'utilisateur courant
+  const fetchCurrentUserRegistration = async () => {
     try {
-      const response = await fetch("/api/auth/session");
-      const data = await response.json();
+      const sessionResponse = await fetch("/api/auth/session");
+      const sessionData = await sessionResponse.json();
       
-      if (data && data.user) {
-        setCurrentUserId(data.user.id);
+      if (sessionData && sessionData.user && sessionData.user.email) {
+        // Récupérer l'ID de registration de l'utilisateur pour cet événement
+        const registrationResponse = await fetch(`/api/events/${id}/registrations?userEmail=${sessionData.user.email}`);
+        const registrationData = await registrationResponse.json();
+        
+        if (registrationData && registrationData.registration) {
+          setCurrentUserRegistrationId(registrationData.registration.id);
+        }
       }
     } catch (err) {
-      console.error("Erreur lors de la récupération de l'utilisateur:", err);
+      console.error("Erreur lors de la récupération de l'enregistrement utilisateur:", err);
     }
   };
 
   useEffect(() => {
-    fetchCurrentUser();
+    fetchCurrentUserRegistration();
     fetchAppointments();
 
     // Vérifier si l'écran est mobile
@@ -182,6 +187,9 @@ export default function UserRendezVousPage() {
       } avec succès`);
 
       setDialogOpen(false);
+      
+      // Actualiser la liste après la mise à jour
+      fetchAppointments();
     } catch (err) {
       console.error("Erreur:", err);
       toast.error("Impossible de mettre à jour le rendez-vous");
@@ -204,9 +212,10 @@ export default function UserRendezVousPage() {
       appointment.status === statusFilter;
     
     const matchesDirection = 
-      activeTab === "all" || 
-      (activeTab === "received" && appointment.recipientId === currentUserId) ||
-      (activeTab === "sent" && appointment.requesterId === currentUserId);
+      activeTab === "pending" && appointment.recipientId === currentUserRegistrationId && appointment.status === "PENDING" ||
+      activeTab === "received" && appointment.recipientId === currentUserRegistrationId ||
+      activeTab === "sent" && appointment.requesterId === currentUserRegistrationId ||
+      activeTab === "accepted" && appointment.status === "ACCEPTED" && (appointment.recipientId === currentUserRegistrationId || appointment.requesterId === currentUserRegistrationId);
     
     return matchesSearch && matchesStatus && matchesDirection;
   });
@@ -242,9 +251,21 @@ export default function UserRendezVousPage() {
 
   // Obtenir les informations de l'autre participant
   const getOtherPerson = (appointment: Appointment) => {
-    const isIncoming = appointment.recipientId === currentUserId;
+    const isIncoming = appointment.recipientId === currentUserRegistrationId;
     return isIncoming ? appointment.requester : appointment.recipient;
   };
+
+  // Calculer les statistiques basées sur l'utilisateur courant
+  const getReceivedAppointments = () => appointments.filter(a => a.recipientId === currentUserRegistrationId);
+  const getSentAppointments = () => appointments.filter(a => a.requesterId === currentUserRegistrationId);
+  const getPendingReceived = () => getReceivedAppointments().filter(a => a.status === "PENDING");
+  const getAcceptedAppointments = () => appointments.filter(a => a.status === "ACCEPTED" && (a.recipientId === currentUserRegistrationId || a.requesterId === currentUserRegistrationId));
+
+  // Calculer les nombres pour les onglets
+  const pendingCount = getPendingReceived().length;
+  const receivedCount = getReceivedAppointments().length;
+  const sentCount = getSentAppointments().length;
+  const acceptedCount = getAcceptedAppointments().length;
 
   return (
     <div className="dashboard-container min-h-screen overflow-hidden">
@@ -287,9 +308,9 @@ export default function UserRendezVousPage() {
               <div className="bg-white rounded-xl shadow-sm p-4">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">En attente</h3>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase">À traiter</h3>
                     <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {appointments.filter(a => a.status === "PENDING").length}
+                      {pendingCount}
                     </p>
                   </div>
                   <div className="bg-amber-100 p-2 rounded-lg">
@@ -299,7 +320,47 @@ export default function UserRendezVousPage() {
                 <div className="mt-3 text-sm text-gray-600">
                   <span className="flex items-center gap-1">
                     <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-                    Demandes à traiter
+                    Demandes reçues en attente
+                  </span>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase">Reçus</h3>
+                    <p className="text-2xl font-bold text-gray-800 mt-1">
+                      {receivedCount}
+                    </p>
+                  </div>
+                  <div className="bg-blue-100 p-2 rounded-lg">
+                    <CheckCircleIcon className="h-5 w-5 text-blue-500" />
+                  </div>
+                </div>
+                <div className="mt-3 text-sm text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                    Total demandes reçues
+                  </span>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase">Envoyés</h3>
+                    <p className="text-2xl font-bold text-gray-800 mt-1">
+                      {sentCount}
+                    </p>
+                  </div>
+                  <div className="bg-emerald-100 p-2 rounded-lg">
+                    <EyeIcon className="h-5 w-5 text-emerald-500" />
+                  </div>
+                </div>
+                <div className="mt-3 text-sm text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    Mes demandes envoyées
                   </span>
                 </div>
               </div>
@@ -309,57 +370,17 @@ export default function UserRendezVousPage() {
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 uppercase">Acceptés</h3>
                     <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {appointments.filter(a => a.status === "ACCEPTED").length}
+                      {acceptedCount}
                     </p>
                   </div>
-                  <div className="bg-emerald-100 p-2 rounded-lg">
-                    <CheckCircleIcon className="h-5 w-5 text-emerald-500" />
+                  <div className="bg-green-100 p-2 rounded-lg">
+                    <CheckCircleIcon className="h-5 w-5 text-green-500" />
                   </div>
                 </div>
                 <div className="mt-3 text-sm text-gray-600">
                   <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    <span className="h-2 w-2 rounded-full bg-green-500"></span>
                     Rendez-vous confirmés
-                  </span>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">Refusés</h3>
-                    <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {appointments.filter(a => a.status === "DECLINED").length}
-                    </p>
-                  </div>
-                  <div className="bg-rose-100 p-2 rounded-lg">
-                    <XCircleIcon className="h-5 w-5 text-rose-500" />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-rose-500"></span>
-                    Demandes refusées
-                  </span>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">Terminés</h3>
-                    <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {appointments.filter(a => a.status === "COMPLETED").length}
-                    </p>
-                  </div>
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    <ClipboardDocumentCheckIcon className="h-5 w-5 text-blue-500" />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                    Rendez-vous passés
                   </span>
                 </div>
               </div>
@@ -399,11 +420,40 @@ export default function UserRendezVousPage() {
                   </div>
                 </div>
 
-                <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+                <Tabs defaultValue="pending" value={activeTab} onValueChange={setActiveTab}>
                   <TabsList className="mb-4">
-                    <TabsTrigger value="all">Tous</TabsTrigger>
-                    <TabsTrigger value="received">Reçus</TabsTrigger>
-                    <TabsTrigger value="sent">Envoyés</TabsTrigger>
+                    <TabsTrigger value="pending" className="flex items-center gap-2">
+                      À traiter
+                      {pendingCount > 0 && (
+                        <Badge variant="outline" className="bg-amber-100 text-amber-700 border-amber-300 text-xs px-2 py-0.5 min-w-[20px] h-5">
+                          {pendingCount}
+                        </Badge>
+                      )}
+                    </TabsTrigger>
+                    <TabsTrigger value="received" className="flex items-center gap-2">
+                      Reçus
+                      {receivedCount > 0 && (
+                        <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300 text-xs px-2 py-0.5 min-w-[20px] h-5">
+                          {receivedCount}
+                        </Badge>
+                      )}
+                    </TabsTrigger>
+                    <TabsTrigger value="sent" className="flex items-center gap-2">
+                      Envoyées
+                      {sentCount > 0 && (
+                        <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-emerald-300 text-xs px-2 py-0.5 min-w-[20px] h-5">
+                          {sentCount}
+                        </Badge>
+                      )}
+                    </TabsTrigger>
+                    <TabsTrigger value="accepted" className="flex items-center gap-2">
+                      Acceptées
+                      {acceptedCount > 0 && (
+                        <Badge variant="outline" className="bg-[#81B441]/20 text-[#81B441] border-[#81B441]/30 text-xs px-2 py-0.5 min-w-[20px] h-5">
+                          {acceptedCount}
+                        </Badge>
+                      )}
+                    </TabsTrigger>
                   </TabsList>
 
                   {loading ? (
@@ -430,7 +480,7 @@ export default function UserRendezVousPage() {
                           {filteredAppointments.length > 0 ? (
                             filteredAppointments.map((appointment) => {
                               const otherPerson = getOtherPerson(appointment);
-                              const isIncoming = appointment.recipientId === currentUserId;
+                              const isIncoming = appointment.recipientId === currentUserRegistrationId;
                               const fullName = `${otherPerson.firstName} ${otherPerson.lastName}`;
                               
                               return (
@@ -467,17 +517,46 @@ export default function UserRendezVousPage() {
                                     </Badge>
                                   </TableCell>
                                   <TableCell className="text-right">
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedAppointment(appointment);
-                                        setDialogOpen(true);
-                                      }}
-                                    >
-                                      <EyeIcon className="h-4 w-4" />
-                                    </Button>
+                                    {/* Bouton Accepter directement dans le tableau pour les demandes reçues en attente */}
+                                    {appointment.status === "PENDING" && isIncoming && (activeTab === "pending" || activeTab === "received") ? (
+                                      <div className="flex gap-2">
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          className="bg-[#81B441] hover:bg-[#6a9636] text-white border-[#81B441]"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            updateAppointmentStatus(appointment.id, "ACCEPTED");
+                                          }}
+                                        >
+                                          <CheckCircleIcon className="h-4 w-4 mr-1" />
+                                          Accepter
+                                        </Button>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedAppointment(appointment);
+                                            setDialogOpen(true);
+                                          }}
+                                        >
+                                          <EyeIcon className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    ) : (
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setSelectedAppointment(appointment);
+                                          setDialogOpen(true);
+                                        }}
+                                      >
+                                        <EyeIcon className="h-4 w-4" />
+                                      </Button>
+                                    )}
                                   </TableCell>
                                 </TableRow>
                               );
@@ -485,7 +564,11 @@ export default function UserRendezVousPage() {
                           ) : (
                             <TableRow>
                               <TableCell colSpan={5} className="h-24 text-center">
-                                Aucun rendez-vous trouvé
+                                {activeTab === "pending" && "Aucune demande à traiter" || 
+                                 activeTab === "received" && "Aucune demande reçue" || 
+                                 activeTab === "sent" && "Aucune demande envoyée" ||
+                                 activeTab === "accepted" && "Aucun rendez-vous accepté" ||
+                                 "Aucun rendez-vous trouvé"}
                               </TableCell>
                             </TableRow>
                           )}
@@ -508,7 +591,7 @@ export default function UserRendezVousPage() {
               <DialogHeader>
                 <DialogTitle>Détails du rendez-vous</DialogTitle>
                 <DialogDescription>
-                  {selectedAppointment.recipientId === currentUserId 
+                  {selectedAppointment.recipientId === currentUserRegistrationId 
                     ? "Demande reçue" 
                     : "Demande envoyée"} le {formatDate(selectedAppointment.createdAt)}
                 </DialogDescription>
@@ -572,7 +655,7 @@ export default function UserRendezVousPage() {
                     <Button variant="outline">Fermer</Button>
                   </DialogClose>
 
-                  {selectedAppointment.status === "PENDING" && selectedAppointment.recipientId === currentUserId && (
+                  {selectedAppointment.status === "PENDING" && selectedAppointment.recipientId === currentUserRegistrationId && (
                     <>
                       <Button 
                         variant="outline" 

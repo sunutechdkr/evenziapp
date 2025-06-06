@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { prisma } from '@/lib/prisma';
 import { format } from "date-fns";
 
@@ -10,6 +10,24 @@ interface EventRegistrationsPageProps {
     id: string;
   }>;
 }
+
+type Registration = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  type: string;
+  createdAt: Date;
+  checkedIn: boolean;
+  checkInTime?: Date | null;
+  eventId: string;
+  qrCode: string;
+  shortCode: string;
+  updatedAt: Date;
+  jobTitle?: string | null;
+  company?: string | null;
+};
 
 export default async function EventRegistrationsPage({ params }: EventRegistrationsPageProps) {
   const { id } = await params;
@@ -77,7 +95,7 @@ export default async function EventRegistrationsPage({ params }: EventRegistrati
             onClick={() => {
               // Create CSV content
               const headers = ['First Name', 'Last Name', 'Email', 'Phone', 'Type', 'Registration Date', 'Checked In'];
-              const rows = registrations.map(reg => [
+              const rows = registrations.map((reg: Registration) => [
                 reg.firstName,
                 reg.lastName,
                 reg.email,
@@ -89,7 +107,7 @@ export default async function EventRegistrationsPage({ params }: EventRegistrati
               
               const csvContent = [
                 headers.join(','),
-                ...rows.map(row => row.join(','))
+                ...rows.map((row: string[]) => row.join(','))
               ].join('\n');
               
               // Create download link
@@ -136,7 +154,7 @@ export default async function EventRegistrationsPage({ params }: EventRegistrati
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {registrations.map((registration) => (
+                {registrations.map((registration: Registration) => (
                   <tr key={registration.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{registration.firstName} {registration.lastName}</div>

@@ -23,9 +23,14 @@ export const metadata: Metadata = {
   },
   description: "Plateforme de gestion d'événements",
   keywords: "event management, qr code, check-in, event registration, event organization",
-  authors: [{ name: "Inevent Team" }],
-  creator: "Inevent",
-  publisher: "Inevent",
+  authors: [{ name: "InEvent Team" }],
+  creator: "InEvent",
+  publisher: "InEvent",
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 /**
@@ -41,6 +46,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background antialiased`}
       >
