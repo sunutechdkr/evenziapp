@@ -124,6 +124,8 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   password: 'password',
+  phone: 'phone',
+  plan: 'plan',
   role: 'role',
   permissions: 'permissions',
   createdAt: 'createdAt',
@@ -305,6 +307,58 @@ exports.Prisma.ParticipantBadgeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EmailCampaignScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  recipientType: 'recipientType',
+  subject: 'subject',
+  htmlContent: 'htmlContent',
+  textContent: 'textContent',
+  status: 'status',
+  scheduledAt: 'scheduledAt',
+  sentAt: 'sentAt',
+  totalRecipients: 'totalRecipients',
+  successCount: 'successCount',
+  failureCount: 'failureCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  subject: 'subject',
+  htmlContent: 'htmlContent',
+  textContent: 'textContent',
+  type: 'type',
+  category: 'category',
+  isGlobal: 'isGlobal',
+  eventId: 'eventId',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailLogScalarFieldEnum = {
+  id: 'id',
+  campaignId: 'campaignId',
+  recipientEmail: 'recipientEmail',
+  recipientName: 'recipientName',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  openedAt: 'openedAt',
+  clickedAt: 'clickedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -319,6 +373,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.UserPlan = exports.$Enums.UserPlan = {
+  STARTER: 'STARTER',
+  PRO: 'PRO',
+  PREMIUM: 'PREMIUM'
+};
+
 exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER',
   STAFF: 'STAFF',
@@ -349,6 +409,57 @@ exports.BadgeStatus = exports.$Enums.BadgeStatus = {
   DELIVERED: 'DELIVERED'
 };
 
+exports.CampaignType = exports.$Enums.CampaignType = {
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  REMINDER: 'REMINDER',
+  INVITATION: 'INVITATION',
+  FOLLOW_UP: 'FOLLOW_UP',
+  CUSTOM: 'CUSTOM'
+};
+
+exports.RecipientType = exports.$Enums.RecipientType = {
+  ALL_PARTICIPANTS: 'ALL_PARTICIPANTS',
+  PARTICIPANTS: 'PARTICIPANTS',
+  SPEAKERS: 'SPEAKERS',
+  EXHIBITORS: 'EXHIBITORS',
+  SPONSORS: 'SPONSORS',
+  CUSTOM_LIST: 'CUSTOM_LIST'
+};
+
+exports.CampaignStatus = exports.$Enums.CampaignStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+};
+
+exports.TemplateCategory = exports.$Enums.TemplateCategory = {
+  CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
+  BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
+  RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
+  INFOS_PRATIQUES: 'INFOS_PRATIQUES',
+  SUIVI_POST_EVENEMENT: 'SUIVI_POST_EVENEMENT',
+  GUIDE_EXPOSANT: 'GUIDE_EXPOSANT',
+  RAPPEL_INSTALLATION: 'RAPPEL_INSTALLATION',
+  INFOS_TECHNIQUES_STAND: 'INFOS_TECHNIQUES_STAND',
+  BILAN_PARTICIPATION: 'BILAN_PARTICIPATION',
+  CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
+  INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
+  RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
+  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER'
+};
+
+exports.EmailStatus = exports.$Enums.EmailStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED',
+  OPENED: 'OPENED',
+  CLICKED: 'CLICKED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
@@ -363,7 +474,10 @@ exports.Prisma.ModelName = {
   OtpCode: 'OtpCode',
   Badge: 'Badge',
   BadgeTemplate: 'BadgeTemplate',
-  ParticipantBadge: 'ParticipantBadge'
+  ParticipantBadge: 'ParticipantBadge',
+  EmailCampaign: 'EmailCampaign',
+  EmailTemplate: 'EmailTemplate',
+  EmailLog: 'EmailLog'
 };
 
 /**

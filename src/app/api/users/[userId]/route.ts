@@ -31,6 +31,7 @@ export async function GET(
         name: true,
         email: true,
         role: true,
+        plan: true,
         permissions: true,
         createdAt: true,
         updatedAt: true,
@@ -72,7 +73,7 @@ export async function PUT(
     }
 
     const userId = (await params).userId;
-    const { name, email, role, permissions, password } = await request.json();
+    const { name, email, role, plan, permissions, password } = await request.json();
 
     // Vérifier si l'utilisateur existe
     const existingUser = await prisma.user.findUnique({
@@ -94,6 +95,14 @@ export async function PUT(
       );
     }
 
+    // Vérifier que le plan est valide
+    if (plan && !['STARTER', 'PRO', 'PREMIUM'].includes(plan)) {
+      return NextResponse.json(
+        { error: 'Plan invalide' },
+        { status: 400 }
+      );
+    }
+
     // Empêcher la modification du propre compte admin
     if (userId === session.user.id && role && role !== UserRole.ADMIN) {
       return NextResponse.json(
@@ -108,6 +117,11 @@ export async function PUT(
       email,
       role,
     };
+
+    // Si le plan est fourni, l'ajouter aux données de mise à jour
+    if (plan) {
+      updateData.plan = plan;
+    }
 
     // Si les permissions sont fournies, les mettre à jour
     if (permissions) {
@@ -128,6 +142,7 @@ export async function PUT(
         name: true,
         email: true,
         role: true,
+        plan: true,
         permissions: true,
         createdAt: true,
         updatedAt: true,

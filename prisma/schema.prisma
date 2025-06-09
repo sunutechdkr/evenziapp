@@ -15,6 +15,12 @@ enum UserRole {
   ADMIN
 }
 
+enum UserPlan {
+  STARTER
+  PRO
+  PREMIUM
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -22,6 +28,8 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   password      String?
+  phone         String?
+  plan          UserPlan  @default(STARTER)
   role          UserRole  @default(USER)
   permissions   String[]  @default([])
   createdAt     DateTime  @default(now()) @map("created_at")
@@ -103,6 +111,8 @@ model Event {
   badges         Badge[]
   badgeTemplates BadgeTemplate[]
   participantBadges ParticipantBadge[]
+  emailCampaigns    EmailCampaign[]
+  emailTemplates    EmailTemplate[]
 
   @@map("events")
 }
@@ -295,4 +305,129 @@ model ParticipantBadge {
 
   @@unique([registrationId, eventId]) // Un badge par participant par événement
   @@map("participant_badges")
+}
+
+// Modèles pour les campagnes emails
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  FAILED
+}
+
+enum CampaignType {
+  ANNOUNCEMENT
+  REMINDER
+  INVITATION
+  FOLLOW_UP
+  CUSTOM
+}
+
+enum RecipientType {
+  ALL_PARTICIPANTS
+  PARTICIPANTS
+  SPEAKERS
+  EXHIBITORS
+  SPONSORS
+  CUSTOM_LIST
+}
+
+// Catégories de templates prédéfinis
+enum TemplateCategory {
+  // Inscription (1 template)
+  CONFIRMATION_INSCRIPTION
+  
+  // Participants (4 templates)
+  BIENVENUE_PARTICIPANT
+  RAPPEL_EVENEMENT
+  INFOS_PRATIQUES
+  SUIVI_POST_EVENEMENT
+  
+  // Exposants (4 templates)
+  GUIDE_EXPOSANT
+  RAPPEL_INSTALLATION
+  INFOS_TECHNIQUES_STAND
+  BILAN_PARTICIPATION
+  
+  // Speakers (4 templates)
+  CONFIRMATION_SPEAKER
+  INFOS_TECHNIQUES_PRESENTATION
+  RAPPEL_PRESENTATION
+  REMERCIEMENT_SPEAKER
+}
+
+model EmailCampaign {
+  id              String          @id @default(cuid())
+  eventId         String          @map("event_id")
+  name            String
+  description     String?
+  type            CampaignType    @default(CUSTOM)
+  recipientType   RecipientType   @default(ALL_PARTICIPANTS) @map("recipient_type")
+  subject         String
+  htmlContent     String          @map("html_content")
+  textContent     String?         @map("text_content")
+  status          CampaignStatus  @default(DRAFT)
+  scheduledAt     DateTime?       @map("scheduled_at")
+  sentAt          DateTime?       @map("sent_at")
+  totalRecipients Int?            @map("total_recipients")
+  successCount    Int?            @map("success_count")
+  failureCount    Int?            @map("failure_count")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  
+  event           Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  emailLogs       EmailLog[]
+  
+  @@map("email_campaigns")
+}
+
+model EmailTemplate {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  subject     String
+  htmlContent String            @map("html_content")
+  textContent String?           @map("text_content")
+  type        CampaignType      @default(CUSTOM)
+  category    TemplateCategory? // Catégorie pour les templates prédéfinis
+  isGlobal    Boolean           @default(false) @map("is_global")
+  eventId     String?           @map("event_id")
+  isActive    Boolean           @default(true) @map("is_active")
+  isDefault   Boolean           @default(false) @map("is_default") // Template par défaut du système
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  
+  event       Event?            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  @@map("email_templates")
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  BOUNCED
+  OPENED
+  CLICKED
+}
+
+model EmailLog {
+  id              String        @id @default(cuid())
+  campaignId      String        @map("campaign_id")
+  recipientEmail  String        @map("recipient_email")
+  recipientName   String?       @map("recipient_name")
+  status          EmailStatus   @default(PENDING)
+  errorMessage    String?       @map("error_message")
+  sentAt          DateTime?     @map("sent_at")
+  deliveredAt     DateTime?     @map("delivered_at")
+  openedAt        DateTime?     @map("opened_at")
+  clickedAt       DateTime?     @map("clicked_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  
+  campaign        EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  @@map("email_logs")
 }

@@ -71,6 +71,7 @@ type User = {
   name: string | null;
   email: string | null;
   role: UserRole;
+  plan?: 'STARTER' | 'PRO' | 'PREMIUM';
   permissions: string[];
   image: string | null;
   createdAt: string;
@@ -213,6 +214,19 @@ export default function UsersManagementPage() {
     }
   };
 
+  const getPlanBadgeColor = (plan: 'STARTER' | 'PRO' | 'PREMIUM'): string => {
+    switch (plan) {
+      case 'STARTER':
+        return 'border-gray-500 text-gray-500';
+      case 'PRO':
+        return 'border-[#81B441] text-[#81B441]';
+      case 'PREMIUM':
+        return 'border-yellow-500 text-yellow-500';
+      default:
+        return 'border-slate-500 text-slate-500';
+    }
+  };
+
   if (status === 'loading' || (status === 'authenticated' && !session)) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -309,6 +323,7 @@ export default function UsersManagementPage() {
                       <TableHead>Utilisateur</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Rôle</TableHead>
+                      <TableHead>Plan</TableHead>
                       <TableHead>Créé le</TableHead>
                       <TableHead>Dernière connexion</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
@@ -317,7 +332,7 @@ export default function UsersManagementPage() {
                   <TableBody>
                     {loading ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center">
+                        <TableCell colSpan={7} className="h-24 text-center">
                           <div className="flex justify-center">
                             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
                           </div>
@@ -325,13 +340,13 @@ export default function UsersManagementPage() {
                       </TableRow>
                     ) : error ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center text-destructive">
+                        <TableCell colSpan={7} className="h-24 text-center text-destructive">
                           {error}
                         </TableCell>
                       </TableRow>
                     ) : users.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                        <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                           Aucun utilisateur trouvé
                         </TableCell>
                       </TableRow>
@@ -360,6 +375,15 @@ export default function UsersManagementPage() {
                             <Badge variant="outline" className={getRoleBadgeColor(user.role as UserRole)}>
                               {user.role}
                             </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {user.plan ? (
+                              <Badge variant="outline" className={getPlanBadgeColor(user.plan as 'STARTER' | 'PRO' | 'PREMIUM')}>
+                                {user.plan}
+                              </Badge>
+                            ) : (
+                              <span className="text-muted-foreground text-sm">-</span>
+                            )}
                           </TableCell>
                           <TableCell>
                             {new Date(user.createdAt).toLocaleDateString()}
@@ -755,6 +779,7 @@ function EditUserModal({ user, onClose, onSuccess }: { user: User; onClose: () =
   const [name, setName] = useState(user.name || '');
   const [email, setEmail] = useState(user.email || '');
   const [role, setRole] = useState<UserRole>(user.role as UserRole);
+  const [plan, setPlan] = useState<'STARTER' | 'PRO' | 'PREMIUM'>(user.plan || 'STARTER');
   const [password, setPassword] = useState('');
   const [changePassword, setChangePassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -789,6 +814,7 @@ function EditUserModal({ user, onClose, onSuccess }: { user: User; onClose: () =
         name,
         email,
         role,
+        plan,
         ...(changePassword && password ? { password } : {})
       };
 
@@ -889,6 +915,38 @@ function EditUserModal({ user, onClose, onSuccess }: { user: User; onClose: () =
                   <SelectItem value={UserRole.STAFF}>Staff</SelectItem>
                   <SelectItem value={UserRole.ORGANIZER}>Organisateur</SelectItem>
                   <SelectItem value={UserRole.ADMIN}>Administrateur</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="plan">Plan d&apos;abonnement</Label>
+              <Select 
+                value={plan} 
+                onValueChange={(value) => setPlan(value as 'STARTER' | 'PRO' | 'PREMIUM')}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un plan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="STARTER">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+                      <span>Starter - Gratuit</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="PRO">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-[#81B441] rounded-full"></div>
+                      <span>Pro - 29€/mois</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="PREMIUM">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <span>Premium - 99€/mois</span>
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -83,6 +83,21 @@ export type BadgeTemplate = $Result.DefaultSelection<Prisma.$BadgeTemplatePayloa
  * 
  */
 export type ParticipantBadge = $Result.DefaultSelection<Prisma.$ParticipantBadgePayload>
+/**
+ * Model EmailCampaign
+ * 
+ */
+export type EmailCampaign = $Result.DefaultSelection<Prisma.$EmailCampaignPayload>
+/**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = $Result.DefaultSelection<Prisma.$EmailTemplatePayload>
+/**
+ * Model EmailLog
+ * 
+ */
+export type EmailLog = $Result.DefaultSelection<Prisma.$EmailLogPayload>
 
 /**
  * Enums
@@ -96,6 +111,15 @@ export namespace $Enums {
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const UserPlan: {
+  STARTER: 'STARTER',
+  PRO: 'PRO',
+  PREMIUM: 'PREMIUM'
+};
+
+export type UserPlan = (typeof UserPlan)[keyof typeof UserPlan]
 
 
 export const SponsorLevel: {
@@ -129,11 +153,81 @@ export const BadgeStatus: {
 
 export type BadgeStatus = (typeof BadgeStatus)[keyof typeof BadgeStatus]
 
+
+export const CampaignStatus: {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+};
+
+export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]
+
+
+export const CampaignType: {
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  REMINDER: 'REMINDER',
+  INVITATION: 'INVITATION',
+  FOLLOW_UP: 'FOLLOW_UP',
+  CUSTOM: 'CUSTOM'
+};
+
+export type CampaignType = (typeof CampaignType)[keyof typeof CampaignType]
+
+
+export const RecipientType: {
+  ALL_PARTICIPANTS: 'ALL_PARTICIPANTS',
+  PARTICIPANTS: 'PARTICIPANTS',
+  SPEAKERS: 'SPEAKERS',
+  EXHIBITORS: 'EXHIBITORS',
+  SPONSORS: 'SPONSORS',
+  CUSTOM_LIST: 'CUSTOM_LIST'
+};
+
+export type RecipientType = (typeof RecipientType)[keyof typeof RecipientType]
+
+
+export const TemplateCategory: {
+  CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
+  BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
+  RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
+  INFOS_PRATIQUES: 'INFOS_PRATIQUES',
+  SUIVI_POST_EVENEMENT: 'SUIVI_POST_EVENEMENT',
+  GUIDE_EXPOSANT: 'GUIDE_EXPOSANT',
+  RAPPEL_INSTALLATION: 'RAPPEL_INSTALLATION',
+  INFOS_TECHNIQUES_STAND: 'INFOS_TECHNIQUES_STAND',
+  BILAN_PARTICIPATION: 'BILAN_PARTICIPATION',
+  CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
+  INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
+  RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
+  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER'
+};
+
+export type TemplateCategory = (typeof TemplateCategory)[keyof typeof TemplateCategory]
+
+
+export const EmailStatus: {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED',
+  OPENED: 'OPENED',
+  CLICKED: 'CLICKED'
+};
+
+export type EmailStatus = (typeof EmailStatus)[keyof typeof EmailStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
+
+export type UserPlan = $Enums.UserPlan
+
+export const UserPlan: typeof $Enums.UserPlan
 
 export type SponsorLevel = $Enums.SponsorLevel
 
@@ -146,6 +240,26 @@ export const AppointmentStatus: typeof $Enums.AppointmentStatus
 export type BadgeStatus = $Enums.BadgeStatus
 
 export const BadgeStatus: typeof $Enums.BadgeStatus
+
+export type CampaignStatus = $Enums.CampaignStatus
+
+export const CampaignStatus: typeof $Enums.CampaignStatus
+
+export type CampaignType = $Enums.CampaignType
+
+export const CampaignType: typeof $Enums.CampaignType
+
+export type RecipientType = $Enums.RecipientType
+
+export const RecipientType: typeof $Enums.RecipientType
+
+export type TemplateCategory = $Enums.TemplateCategory
+
+export const TemplateCategory: typeof $Enums.TemplateCategory
+
+export type EmailStatus = $Enums.EmailStatus
+
+export const EmailStatus: typeof $Enums.EmailStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -411,6 +525,36 @@ export class PrismaClient<
     * ```
     */
   get participantBadge(): Prisma.ParticipantBadgeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailCampaign`: Exposes CRUD operations for the **EmailCampaign** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailCampaigns
+    * const emailCampaigns = await prisma.emailCampaign.findMany()
+    * ```
+    */
+  get emailCampaign(): Prisma.EmailCampaignDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailTemplate`: Exposes CRUD operations for the **EmailTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailTemplates
+    * const emailTemplates = await prisma.emailTemplate.findMany()
+    * ```
+    */
+  get emailTemplate(): Prisma.EmailTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailLog`: Exposes CRUD operations for the **EmailLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailLogs
+    * const emailLogs = await prisma.emailLog.findMany()
+    * ```
+    */
+  get emailLog(): Prisma.EmailLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -864,7 +1008,10 @@ export namespace Prisma {
     OtpCode: 'OtpCode',
     Badge: 'Badge',
     BadgeTemplate: 'BadgeTemplate',
-    ParticipantBadge: 'ParticipantBadge'
+    ParticipantBadge: 'ParticipantBadge',
+    EmailCampaign: 'EmailCampaign',
+    EmailTemplate: 'EmailTemplate',
+    EmailLog: 'EmailLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -883,7 +1030,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "event" | "registration" | "event_sessions" | "sponsor" | "sessionParticipant" | "appointment" | "otpCode" | "badge" | "badgeTemplate" | "participantBadge"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "event" | "registration" | "event_sessions" | "sponsor" | "sessionParticipant" | "appointment" | "otpCode" | "badge" | "badgeTemplate" | "participantBadge" | "emailCampaign" | "emailTemplate" | "emailLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1923,6 +2070,228 @@ export namespace Prisma {
           }
         }
       }
+      EmailCampaign: {
+        payload: Prisma.$EmailCampaignPayload<ExtArgs>
+        fields: Prisma.EmailCampaignFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailCampaignFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailCampaignFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>
+          }
+          findFirst: {
+            args: Prisma.EmailCampaignFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailCampaignFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>
+          }
+          findMany: {
+            args: Prisma.EmailCampaignFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>[]
+          }
+          create: {
+            args: Prisma.EmailCampaignCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>
+          }
+          createMany: {
+            args: Prisma.EmailCampaignCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailCampaignCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>[]
+          }
+          delete: {
+            args: Prisma.EmailCampaignDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>
+          }
+          update: {
+            args: Prisma.EmailCampaignUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailCampaignDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailCampaignUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailCampaignUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailCampaignUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailCampaignPayload>
+          }
+          aggregate: {
+            args: Prisma.EmailCampaignAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailCampaign>
+          }
+          groupBy: {
+            args: Prisma.EmailCampaignGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailCampaignGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailCampaignCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailCampaignCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailTemplate: {
+        payload: Prisma.$EmailTemplatePayload<ExtArgs>
+        fields: Prisma.EmailTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.EmailTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.EmailTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.EmailTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.EmailTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.EmailTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          update: {
+            args: Prisma.EmailTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.EmailTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailTemplate>
+          }
+          groupBy: {
+            args: Prisma.EmailTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailLog: {
+        payload: Prisma.$EmailLogPayload<ExtArgs>
+        fields: Prisma.EmailLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          findFirst: {
+            args: Prisma.EmailLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          findMany: {
+            args: Prisma.EmailLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+          }
+          create: {
+            args: Prisma.EmailLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          createMany: {
+            args: Prisma.EmailLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+          }
+          delete: {
+            args: Prisma.EmailLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          update: {
+            args: Prisma.EmailLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          aggregate: {
+            args: Prisma.EmailLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailLog>
+          }
+          groupBy: {
+            args: Prisma.EmailLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailLogCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2021,6 +2390,9 @@ export namespace Prisma {
     badge?: BadgeOmit
     badgeTemplate?: BadgeTemplateOmit
     participantBadge?: ParticipantBadgeOmit
+    emailCampaign?: EmailCampaignOmit
+    emailTemplate?: EmailTemplateOmit
+    emailLog?: EmailLogOmit
   }
 
   /* Types for Logging */
@@ -2171,6 +2543,8 @@ export namespace Prisma {
     badges: number
     badgeTemplates: number
     participantBadges: number
+    emailCampaigns: number
+    emailTemplates: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2181,6 +2555,8 @@ export namespace Prisma {
     badges?: boolean | EventCountOutputTypeCountBadgesArgs
     badgeTemplates?: boolean | EventCountOutputTypeCountBadgeTemplatesArgs
     participantBadges?: boolean | EventCountOutputTypeCountParticipantBadgesArgs
+    emailCampaigns?: boolean | EventCountOutputTypeCountEmailCampaignsArgs
+    emailTemplates?: boolean | EventCountOutputTypeCountEmailTemplatesArgs
   }
 
   // Custom InputTypes
@@ -2241,6 +2617,20 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountParticipantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ParticipantBadgeWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountEmailCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailCampaignWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountEmailTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailTemplateWhereInput
   }
 
 
@@ -2365,6 +2755,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type EmailCampaignCountOutputType
+   */
+
+  export type EmailCampaignCountOutputType = {
+    emailLogs: number
+  }
+
+  export type EmailCampaignCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    emailLogs?: boolean | EmailCampaignCountOutputTypeCountEmailLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EmailCampaignCountOutputType without action
+   */
+  export type EmailCampaignCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaignCountOutputType
+     */
+    select?: EmailCampaignCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EmailCampaignCountOutputType without action
+   */
+  export type EmailCampaignCountOutputTypeCountEmailLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailLogWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -2385,6 +2806,8 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     password: string | null
+    phone: string | null
+    plan: $Enums.UserPlan | null
     role: $Enums.UserRole | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2398,6 +2821,8 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     password: string | null
+    phone: string | null
+    plan: $Enums.UserPlan | null
     role: $Enums.UserRole | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2411,6 +2836,8 @@ export namespace Prisma {
     emailVerified: number
     image: number
     password: number
+    phone: number
+    plan: number
     role: number
     permissions: number
     createdAt: number
@@ -2427,6 +2854,8 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     password?: true
+    phone?: true
+    plan?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -2440,6 +2869,8 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     password?: true
+    phone?: true
+    plan?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -2453,6 +2884,8 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     password?: true
+    phone?: true
+    plan?: true
     role?: true
     permissions?: true
     createdAt?: true
@@ -2540,6 +2973,8 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     password: string | null
+    phone: string | null
+    plan: $Enums.UserPlan
     role: $Enums.UserRole
     permissions: string[]
     createdAt: Date
@@ -2571,6 +3006,8 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
+    phone?: boolean
+    plan?: boolean
     role?: boolean
     permissions?: boolean
     createdAt?: boolean
@@ -2589,6 +3026,8 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
+    phone?: boolean
+    plan?: boolean
     role?: boolean
     permissions?: boolean
     createdAt?: boolean
@@ -2603,6 +3042,8 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
+    phone?: boolean
+    plan?: boolean
     role?: boolean
     permissions?: boolean
     createdAt?: boolean
@@ -2617,6 +3058,8 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     password?: boolean
+    phone?: boolean
+    plan?: boolean
     role?: boolean
     permissions?: boolean
     createdAt?: boolean
@@ -2624,7 +3067,7 @@ export namespace Prisma {
     lastLogin?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "role" | "permissions" | "createdAt" | "updatedAt" | "lastLogin", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "phone" | "plan" | "role" | "permissions" | "createdAt" | "updatedAt" | "lastLogin", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     events?: boolean | User$eventsArgs<ExtArgs>
@@ -2648,6 +3091,8 @@ export namespace Prisma {
       emailVerified: Date | null
       image: string | null
       password: string | null
+      phone: string | null
+      plan: $Enums.UserPlan
       role: $Enums.UserRole
       permissions: string[]
       createdAt: Date
@@ -3085,6 +3530,8 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly phone: FieldRef<"User", 'String'>
+    readonly plan: FieldRef<"User", 'UserPlan'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly permissions: FieldRef<"User", 'String[]'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -7073,6 +7520,8 @@ export namespace Prisma {
     badges?: boolean | Event$badgesArgs<ExtArgs>
     badgeTemplates?: boolean | Event$badgeTemplatesArgs<ExtArgs>
     participantBadges?: boolean | Event$participantBadgesArgs<ExtArgs>
+    emailCampaigns?: boolean | Event$emailCampaignsArgs<ExtArgs>
+    emailTemplates?: boolean | Event$emailTemplatesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -7163,6 +7612,8 @@ export namespace Prisma {
     badges?: boolean | Event$badgesArgs<ExtArgs>
     badgeTemplates?: boolean | Event$badgeTemplatesArgs<ExtArgs>
     participantBadges?: boolean | Event$participantBadgesArgs<ExtArgs>
+    emailCampaigns?: boolean | Event$emailCampaignsArgs<ExtArgs>
+    emailTemplates?: boolean | Event$emailTemplatesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7183,6 +7634,8 @@ export namespace Prisma {
       badges: Prisma.$BadgePayload<ExtArgs>[]
       badgeTemplates: Prisma.$BadgeTemplatePayload<ExtArgs>[]
       participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
+      emailCampaigns: Prisma.$EmailCampaignPayload<ExtArgs>[]
+      emailTemplates: Prisma.$EmailTemplatePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7609,6 +8062,8 @@ export namespace Prisma {
     badges<T extends Event$badgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     badgeTemplates<T extends Event$badgeTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Event$badgeTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     participantBadges<T extends Event$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    emailCampaigns<T extends Event$emailCampaignsArgs<ExtArgs> = {}>(args?: Subset<T, Event$emailCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    emailTemplates<T extends Event$emailTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Event$emailTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8221,6 +8676,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ParticipantBadgeScalarFieldEnum | ParticipantBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * Event.emailCampaigns
+   */
+  export type Event$emailCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    where?: EmailCampaignWhereInput
+    orderBy?: EmailCampaignOrderByWithRelationInput | EmailCampaignOrderByWithRelationInput[]
+    cursor?: EmailCampaignWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmailCampaignScalarFieldEnum | EmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * Event.emailTemplates
+   */
+  export type Event$emailTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    where?: EmailTemplateWhereInput
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    cursor?: EmailTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
   }
 
   /**
@@ -18606,6 +19109,3635 @@ export namespace Prisma {
 
 
   /**
+   * Model EmailCampaign
+   */
+
+  export type AggregateEmailCampaign = {
+    _count: EmailCampaignCountAggregateOutputType | null
+    _avg: EmailCampaignAvgAggregateOutputType | null
+    _sum: EmailCampaignSumAggregateOutputType | null
+    _min: EmailCampaignMinAggregateOutputType | null
+    _max: EmailCampaignMaxAggregateOutputType | null
+  }
+
+  export type EmailCampaignAvgAggregateOutputType = {
+    totalRecipients: number | null
+    successCount: number | null
+    failureCount: number | null
+  }
+
+  export type EmailCampaignSumAggregateOutputType = {
+    totalRecipients: number | null
+    successCount: number | null
+    failureCount: number | null
+  }
+
+  export type EmailCampaignMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    description: string | null
+    type: $Enums.CampaignType | null
+    recipientType: $Enums.RecipientType | null
+    subject: string | null
+    htmlContent: string | null
+    textContent: string | null
+    status: $Enums.CampaignStatus | null
+    scheduledAt: Date | null
+    sentAt: Date | null
+    totalRecipients: number | null
+    successCount: number | null
+    failureCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailCampaignMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    description: string | null
+    type: $Enums.CampaignType | null
+    recipientType: $Enums.RecipientType | null
+    subject: string | null
+    htmlContent: string | null
+    textContent: string | null
+    status: $Enums.CampaignStatus | null
+    scheduledAt: Date | null
+    sentAt: Date | null
+    totalRecipients: number | null
+    successCount: number | null
+    failureCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailCampaignCountAggregateOutputType = {
+    id: number
+    eventId: number
+    name: number
+    description: number
+    type: number
+    recipientType: number
+    subject: number
+    htmlContent: number
+    textContent: number
+    status: number
+    scheduledAt: number
+    sentAt: number
+    totalRecipients: number
+    successCount: number
+    failureCount: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailCampaignAvgAggregateInputType = {
+    totalRecipients?: true
+    successCount?: true
+    failureCount?: true
+  }
+
+  export type EmailCampaignSumAggregateInputType = {
+    totalRecipients?: true
+    successCount?: true
+    failureCount?: true
+  }
+
+  export type EmailCampaignMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    description?: true
+    type?: true
+    recipientType?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    status?: true
+    scheduledAt?: true
+    sentAt?: true
+    totalRecipients?: true
+    successCount?: true
+    failureCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailCampaignMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    description?: true
+    type?: true
+    recipientType?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    status?: true
+    scheduledAt?: true
+    sentAt?: true
+    totalRecipients?: true
+    successCount?: true
+    failureCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailCampaignCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    description?: true
+    type?: true
+    recipientType?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    status?: true
+    scheduledAt?: true
+    sentAt?: true
+    totalRecipients?: true
+    successCount?: true
+    failureCount?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailCampaignAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailCampaign to aggregate.
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailCampaigns to fetch.
+     */
+    orderBy?: EmailCampaignOrderByWithRelationInput | EmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailCampaigns
+    **/
+    _count?: true | EmailCampaignCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmailCampaignAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmailCampaignSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailCampaignMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailCampaignMaxAggregateInputType
+  }
+
+  export type GetEmailCampaignAggregateType<T extends EmailCampaignAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailCampaign]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailCampaign[P]>
+      : GetScalarType<T[P], AggregateEmailCampaign[P]>
+  }
+
+
+
+
+  export type EmailCampaignGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailCampaignWhereInput
+    orderBy?: EmailCampaignOrderByWithAggregationInput | EmailCampaignOrderByWithAggregationInput[]
+    by: EmailCampaignScalarFieldEnum[] | EmailCampaignScalarFieldEnum
+    having?: EmailCampaignScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailCampaignCountAggregateInputType | true
+    _avg?: EmailCampaignAvgAggregateInputType
+    _sum?: EmailCampaignSumAggregateInputType
+    _min?: EmailCampaignMinAggregateInputType
+    _max?: EmailCampaignMaxAggregateInputType
+  }
+
+  export type EmailCampaignGroupByOutputType = {
+    id: string
+    eventId: string
+    name: string
+    description: string | null
+    type: $Enums.CampaignType
+    recipientType: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent: string | null
+    status: $Enums.CampaignStatus
+    scheduledAt: Date | null
+    sentAt: Date | null
+    totalRecipients: number | null
+    successCount: number | null
+    failureCount: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailCampaignCountAggregateOutputType | null
+    _avg: EmailCampaignAvgAggregateOutputType | null
+    _sum: EmailCampaignSumAggregateOutputType | null
+    _min: EmailCampaignMinAggregateOutputType | null
+    _max: EmailCampaignMaxAggregateOutputType | null
+  }
+
+  type GetEmailCampaignGroupByPayload<T extends EmailCampaignGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailCampaignGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailCampaignGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailCampaignGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailCampaignGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailCampaignSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    recipientType?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    status?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    totalRecipients?: boolean
+    successCount?: boolean
+    failureCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    emailLogs?: boolean | EmailCampaign$emailLogsArgs<ExtArgs>
+    _count?: boolean | EmailCampaignCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailCampaign"]>
+
+  export type EmailCampaignSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    recipientType?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    status?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    totalRecipients?: boolean
+    successCount?: boolean
+    failureCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailCampaign"]>
+
+  export type EmailCampaignSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    recipientType?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    status?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    totalRecipients?: boolean
+    successCount?: boolean
+    failureCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailCampaign"]>
+
+  export type EmailCampaignSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    recipientType?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    status?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    totalRecipients?: boolean
+    successCount?: boolean
+    failureCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmailCampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "description" | "type" | "recipientType" | "subject" | "htmlContent" | "textContent" | "status" | "scheduledAt" | "sentAt" | "totalRecipients" | "successCount" | "failureCount" | "createdAt" | "updatedAt", ExtArgs["result"]["emailCampaign"]>
+  export type EmailCampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    emailLogs?: boolean | EmailCampaign$emailLogsArgs<ExtArgs>
+    _count?: boolean | EmailCampaignCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type EmailCampaignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EmailCampaignIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $EmailCampaignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailCampaign"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      emailLogs: Prisma.$EmailLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      name: string
+      description: string | null
+      type: $Enums.CampaignType
+      recipientType: $Enums.RecipientType
+      subject: string
+      htmlContent: string
+      textContent: string | null
+      status: $Enums.CampaignStatus
+      scheduledAt: Date | null
+      sentAt: Date | null
+      totalRecipients: number | null
+      successCount: number | null
+      failureCount: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailCampaign"]>
+    composites: {}
+  }
+
+  type EmailCampaignGetPayload<S extends boolean | null | undefined | EmailCampaignDefaultArgs> = $Result.GetResult<Prisma.$EmailCampaignPayload, S>
+
+  type EmailCampaignCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailCampaignFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailCampaignCountAggregateInputType | true
+    }
+
+  export interface EmailCampaignDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailCampaign'], meta: { name: 'EmailCampaign' } }
+    /**
+     * Find zero or one EmailCampaign that matches the filter.
+     * @param {EmailCampaignFindUniqueArgs} args - Arguments to find a EmailCampaign
+     * @example
+     * // Get one EmailCampaign
+     * const emailCampaign = await prisma.emailCampaign.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailCampaignFindUniqueArgs>(args: SelectSubset<T, EmailCampaignFindUniqueArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailCampaign that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailCampaignFindUniqueOrThrowArgs} args - Arguments to find a EmailCampaign
+     * @example
+     * // Get one EmailCampaign
+     * const emailCampaign = await prisma.emailCampaign.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailCampaignFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailCampaignFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailCampaign that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignFindFirstArgs} args - Arguments to find a EmailCampaign
+     * @example
+     * // Get one EmailCampaign
+     * const emailCampaign = await prisma.emailCampaign.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailCampaignFindFirstArgs>(args?: SelectSubset<T, EmailCampaignFindFirstArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailCampaign that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignFindFirstOrThrowArgs} args - Arguments to find a EmailCampaign
+     * @example
+     * // Get one EmailCampaign
+     * const emailCampaign = await prisma.emailCampaign.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailCampaignFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailCampaignFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailCampaigns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailCampaigns
+     * const emailCampaigns = await prisma.emailCampaign.findMany()
+     * 
+     * // Get first 10 EmailCampaigns
+     * const emailCampaigns = await prisma.emailCampaign.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailCampaignWithIdOnly = await prisma.emailCampaign.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailCampaignFindManyArgs>(args?: SelectSubset<T, EmailCampaignFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailCampaign.
+     * @param {EmailCampaignCreateArgs} args - Arguments to create a EmailCampaign.
+     * @example
+     * // Create one EmailCampaign
+     * const EmailCampaign = await prisma.emailCampaign.create({
+     *   data: {
+     *     // ... data to create a EmailCampaign
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailCampaignCreateArgs>(args: SelectSubset<T, EmailCampaignCreateArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailCampaigns.
+     * @param {EmailCampaignCreateManyArgs} args - Arguments to create many EmailCampaigns.
+     * @example
+     * // Create many EmailCampaigns
+     * const emailCampaign = await prisma.emailCampaign.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailCampaignCreateManyArgs>(args?: SelectSubset<T, EmailCampaignCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailCampaigns and returns the data saved in the database.
+     * @param {EmailCampaignCreateManyAndReturnArgs} args - Arguments to create many EmailCampaigns.
+     * @example
+     * // Create many EmailCampaigns
+     * const emailCampaign = await prisma.emailCampaign.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailCampaigns and only return the `id`
+     * const emailCampaignWithIdOnly = await prisma.emailCampaign.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailCampaignCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailCampaignCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailCampaign.
+     * @param {EmailCampaignDeleteArgs} args - Arguments to delete one EmailCampaign.
+     * @example
+     * // Delete one EmailCampaign
+     * const EmailCampaign = await prisma.emailCampaign.delete({
+     *   where: {
+     *     // ... filter to delete one EmailCampaign
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailCampaignDeleteArgs>(args: SelectSubset<T, EmailCampaignDeleteArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailCampaign.
+     * @param {EmailCampaignUpdateArgs} args - Arguments to update one EmailCampaign.
+     * @example
+     * // Update one EmailCampaign
+     * const emailCampaign = await prisma.emailCampaign.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailCampaignUpdateArgs>(args: SelectSubset<T, EmailCampaignUpdateArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailCampaigns.
+     * @param {EmailCampaignDeleteManyArgs} args - Arguments to filter EmailCampaigns to delete.
+     * @example
+     * // Delete a few EmailCampaigns
+     * const { count } = await prisma.emailCampaign.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailCampaignDeleteManyArgs>(args?: SelectSubset<T, EmailCampaignDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailCampaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailCampaigns
+     * const emailCampaign = await prisma.emailCampaign.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailCampaignUpdateManyArgs>(args: SelectSubset<T, EmailCampaignUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailCampaigns and returns the data updated in the database.
+     * @param {EmailCampaignUpdateManyAndReturnArgs} args - Arguments to update many EmailCampaigns.
+     * @example
+     * // Update many EmailCampaigns
+     * const emailCampaign = await prisma.emailCampaign.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailCampaigns and only return the `id`
+     * const emailCampaignWithIdOnly = await prisma.emailCampaign.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailCampaignUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailCampaignUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailCampaign.
+     * @param {EmailCampaignUpsertArgs} args - Arguments to update or create a EmailCampaign.
+     * @example
+     * // Update or create a EmailCampaign
+     * const emailCampaign = await prisma.emailCampaign.upsert({
+     *   create: {
+     *     // ... data to create a EmailCampaign
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailCampaign we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailCampaignUpsertArgs>(args: SelectSubset<T, EmailCampaignUpsertArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailCampaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignCountArgs} args - Arguments to filter EmailCampaigns to count.
+     * @example
+     * // Count the number of EmailCampaigns
+     * const count = await prisma.emailCampaign.count({
+     *   where: {
+     *     // ... the filter for the EmailCampaigns we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailCampaignCountArgs>(
+      args?: Subset<T, EmailCampaignCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailCampaignCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailCampaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailCampaignAggregateArgs>(args: Subset<T, EmailCampaignAggregateArgs>): Prisma.PrismaPromise<GetEmailCampaignAggregateType<T>>
+
+    /**
+     * Group by EmailCampaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCampaignGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailCampaignGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailCampaignGroupByArgs['orderBy'] }
+        : { orderBy?: EmailCampaignGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailCampaignGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailCampaignGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailCampaign model
+   */
+  readonly fields: EmailCampaignFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailCampaign.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailCampaignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    emailLogs<T extends EmailCampaign$emailLogsArgs<ExtArgs> = {}>(args?: Subset<T, EmailCampaign$emailLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailCampaign model
+   */
+  interface EmailCampaignFieldRefs {
+    readonly id: FieldRef<"EmailCampaign", 'String'>
+    readonly eventId: FieldRef<"EmailCampaign", 'String'>
+    readonly name: FieldRef<"EmailCampaign", 'String'>
+    readonly description: FieldRef<"EmailCampaign", 'String'>
+    readonly type: FieldRef<"EmailCampaign", 'CampaignType'>
+    readonly recipientType: FieldRef<"EmailCampaign", 'RecipientType'>
+    readonly subject: FieldRef<"EmailCampaign", 'String'>
+    readonly htmlContent: FieldRef<"EmailCampaign", 'String'>
+    readonly textContent: FieldRef<"EmailCampaign", 'String'>
+    readonly status: FieldRef<"EmailCampaign", 'CampaignStatus'>
+    readonly scheduledAt: FieldRef<"EmailCampaign", 'DateTime'>
+    readonly sentAt: FieldRef<"EmailCampaign", 'DateTime'>
+    readonly totalRecipients: FieldRef<"EmailCampaign", 'Int'>
+    readonly successCount: FieldRef<"EmailCampaign", 'Int'>
+    readonly failureCount: FieldRef<"EmailCampaign", 'Int'>
+    readonly createdAt: FieldRef<"EmailCampaign", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailCampaign", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailCampaign findUnique
+   */
+  export type EmailCampaignFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailCampaign to fetch.
+     */
+    where: EmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * EmailCampaign findUniqueOrThrow
+   */
+  export type EmailCampaignFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailCampaign to fetch.
+     */
+    where: EmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * EmailCampaign findFirst
+   */
+  export type EmailCampaignFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailCampaign to fetch.
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailCampaigns to fetch.
+     */
+    orderBy?: EmailCampaignOrderByWithRelationInput | EmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailCampaigns.
+     */
+    cursor?: EmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailCampaigns.
+     */
+    distinct?: EmailCampaignScalarFieldEnum | EmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * EmailCampaign findFirstOrThrow
+   */
+  export type EmailCampaignFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailCampaign to fetch.
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailCampaigns to fetch.
+     */
+    orderBy?: EmailCampaignOrderByWithRelationInput | EmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailCampaigns.
+     */
+    cursor?: EmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailCampaigns.
+     */
+    distinct?: EmailCampaignScalarFieldEnum | EmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * EmailCampaign findMany
+   */
+  export type EmailCampaignFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailCampaigns to fetch.
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailCampaigns to fetch.
+     */
+    orderBy?: EmailCampaignOrderByWithRelationInput | EmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailCampaigns.
+     */
+    cursor?: EmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailCampaigns.
+     */
+    skip?: number
+    distinct?: EmailCampaignScalarFieldEnum | EmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * EmailCampaign create
+   */
+  export type EmailCampaignCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmailCampaign.
+     */
+    data: XOR<EmailCampaignCreateInput, EmailCampaignUncheckedCreateInput>
+  }
+
+  /**
+   * EmailCampaign createMany
+   */
+  export type EmailCampaignCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailCampaigns.
+     */
+    data: EmailCampaignCreateManyInput | EmailCampaignCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailCampaign createManyAndReturn
+   */
+  export type EmailCampaignCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailCampaigns.
+     */
+    data: EmailCampaignCreateManyInput | EmailCampaignCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailCampaign update
+   */
+  export type EmailCampaignUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmailCampaign.
+     */
+    data: XOR<EmailCampaignUpdateInput, EmailCampaignUncheckedUpdateInput>
+    /**
+     * Choose, which EmailCampaign to update.
+     */
+    where: EmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * EmailCampaign updateMany
+   */
+  export type EmailCampaignUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailCampaigns.
+     */
+    data: XOR<EmailCampaignUpdateManyMutationInput, EmailCampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailCampaigns to update
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * Limit how many EmailCampaigns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailCampaign updateManyAndReturn
+   */
+  export type EmailCampaignUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailCampaigns.
+     */
+    data: XOR<EmailCampaignUpdateManyMutationInput, EmailCampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailCampaigns to update
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * Limit how many EmailCampaigns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailCampaign upsert
+   */
+  export type EmailCampaignUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmailCampaign to update in case it exists.
+     */
+    where: EmailCampaignWhereUniqueInput
+    /**
+     * In case the EmailCampaign found by the `where` argument doesn't exist, create a new EmailCampaign with this data.
+     */
+    create: XOR<EmailCampaignCreateInput, EmailCampaignUncheckedCreateInput>
+    /**
+     * In case the EmailCampaign was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailCampaignUpdateInput, EmailCampaignUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailCampaign delete
+   */
+  export type EmailCampaignDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter which EmailCampaign to delete.
+     */
+    where: EmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * EmailCampaign deleteMany
+   */
+  export type EmailCampaignDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailCampaigns to delete
+     */
+    where?: EmailCampaignWhereInput
+    /**
+     * Limit how many EmailCampaigns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailCampaign.emailLogs
+   */
+  export type EmailCampaign$emailLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    where?: EmailLogWhereInput
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    cursor?: EmailLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailCampaign without action
+   */
+  export type EmailCampaignDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCampaign
+     */
+    select?: EmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailCampaign
+     */
+    omit?: EmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailCampaignInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailTemplate
+   */
+
+  export type AggregateEmailTemplate = {
+    _count: EmailTemplateCountAggregateOutputType | null
+    _min: EmailTemplateMinAggregateOutputType | null
+    _max: EmailTemplateMaxAggregateOutputType | null
+  }
+
+  export type EmailTemplateMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    subject: string | null
+    htmlContent: string | null
+    textContent: string | null
+    type: $Enums.CampaignType | null
+    category: $Enums.TemplateCategory | null
+    isGlobal: boolean | null
+    eventId: string | null
+    isActive: boolean | null
+    isDefault: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailTemplateMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    subject: string | null
+    htmlContent: string | null
+    textContent: string | null
+    type: $Enums.CampaignType | null
+    category: $Enums.TemplateCategory | null
+    isGlobal: boolean | null
+    eventId: string | null
+    isActive: boolean | null
+    isDefault: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailTemplateCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    subject: number
+    htmlContent: number
+    textContent: number
+    type: number
+    category: number
+    isGlobal: number
+    eventId: number
+    isActive: number
+    isDefault: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailTemplateMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    type?: true
+    category?: true
+    isGlobal?: true
+    eventId?: true
+    isActive?: true
+    isDefault?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailTemplateMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    type?: true
+    category?: true
+    isGlobal?: true
+    eventId?: true
+    isActive?: true
+    isDefault?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailTemplateCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    type?: true
+    category?: true
+    isGlobal?: true
+    eventId?: true
+    isActive?: true
+    isDefault?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailTemplate to aggregate.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailTemplates
+    **/
+    _count?: true | EmailTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailTemplateMaxAggregateInputType
+  }
+
+  export type GetEmailTemplateAggregateType<T extends EmailTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailTemplate[P]>
+      : GetScalarType<T[P], AggregateEmailTemplate[P]>
+  }
+
+
+
+
+  export type EmailTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailTemplateWhereInput
+    orderBy?: EmailTemplateOrderByWithAggregationInput | EmailTemplateOrderByWithAggregationInput[]
+    by: EmailTemplateScalarFieldEnum[] | EmailTemplateScalarFieldEnum
+    having?: EmailTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailTemplateCountAggregateInputType | true
+    _min?: EmailTemplateMinAggregateInputType
+    _max?: EmailTemplateMaxAggregateInputType
+  }
+
+  export type EmailTemplateGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    subject: string
+    htmlContent: string
+    textContent: string | null
+    type: $Enums.CampaignType
+    category: $Enums.TemplateCategory | null
+    isGlobal: boolean
+    eventId: string | null
+    isActive: boolean
+    isDefault: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailTemplateCountAggregateOutputType | null
+    _min: EmailTemplateMinAggregateOutputType | null
+    _max: EmailTemplateMaxAggregateOutputType | null
+  }
+
+  type GetEmailTemplateGroupByPayload<T extends EmailTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    type?: boolean
+    category?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EmailTemplate$eventArgs<ExtArgs>
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    type?: boolean
+    category?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EmailTemplate$eventArgs<ExtArgs>
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    type?: boolean
+    category?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EmailTemplate$eventArgs<ExtArgs>
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    type?: boolean
+    category?: boolean
+    isGlobal?: boolean
+    eventId?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmailTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "subject" | "htmlContent" | "textContent" | "type" | "category" | "isGlobal" | "eventId" | "isActive" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["emailTemplate"]>
+  export type EmailTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EmailTemplate$eventArgs<ExtArgs>
+  }
+  export type EmailTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EmailTemplate$eventArgs<ExtArgs>
+  }
+  export type EmailTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EmailTemplate$eventArgs<ExtArgs>
+  }
+
+  export type $EmailTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailTemplate"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      subject: string
+      htmlContent: string
+      textContent: string | null
+      type: $Enums.CampaignType
+      category: $Enums.TemplateCategory | null
+      isGlobal: boolean
+      eventId: string | null
+      isActive: boolean
+      isDefault: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailTemplate"]>
+    composites: {}
+  }
+
+  type EmailTemplateGetPayload<S extends boolean | null | undefined | EmailTemplateDefaultArgs> = $Result.GetResult<Prisma.$EmailTemplatePayload, S>
+
+  type EmailTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailTemplateCountAggregateInputType | true
+    }
+
+  export interface EmailTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailTemplate'], meta: { name: 'EmailTemplate' } }
+    /**
+     * Find zero or one EmailTemplate that matches the filter.
+     * @param {EmailTemplateFindUniqueArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailTemplateFindUniqueArgs>(args: SelectSubset<T, EmailTemplateFindUniqueArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailTemplateFindUniqueOrThrowArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindFirstArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailTemplateFindFirstArgs>(args?: SelectSubset<T, EmailTemplateFindFirstArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindFirstOrThrowArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailTemplates
+     * const emailTemplates = await prisma.emailTemplate.findMany()
+     * 
+     * // Get first 10 EmailTemplates
+     * const emailTemplates = await prisma.emailTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailTemplateFindManyArgs>(args?: SelectSubset<T, EmailTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailTemplate.
+     * @param {EmailTemplateCreateArgs} args - Arguments to create a EmailTemplate.
+     * @example
+     * // Create one EmailTemplate
+     * const EmailTemplate = await prisma.emailTemplate.create({
+     *   data: {
+     *     // ... data to create a EmailTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailTemplateCreateArgs>(args: SelectSubset<T, EmailTemplateCreateArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailTemplates.
+     * @param {EmailTemplateCreateManyArgs} args - Arguments to create many EmailTemplates.
+     * @example
+     * // Create many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailTemplateCreateManyArgs>(args?: SelectSubset<T, EmailTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailTemplates and returns the data saved in the database.
+     * @param {EmailTemplateCreateManyAndReturnArgs} args - Arguments to create many EmailTemplates.
+     * @example
+     * // Create many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailTemplates and only return the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailTemplate.
+     * @param {EmailTemplateDeleteArgs} args - Arguments to delete one EmailTemplate.
+     * @example
+     * // Delete one EmailTemplate
+     * const EmailTemplate = await prisma.emailTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one EmailTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailTemplateDeleteArgs>(args: SelectSubset<T, EmailTemplateDeleteArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailTemplate.
+     * @param {EmailTemplateUpdateArgs} args - Arguments to update one EmailTemplate.
+     * @example
+     * // Update one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailTemplateUpdateArgs>(args: SelectSubset<T, EmailTemplateUpdateArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailTemplates.
+     * @param {EmailTemplateDeleteManyArgs} args - Arguments to filter EmailTemplates to delete.
+     * @example
+     * // Delete a few EmailTemplates
+     * const { count } = await prisma.emailTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailTemplateDeleteManyArgs>(args?: SelectSubset<T, EmailTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailTemplateUpdateManyArgs>(args: SelectSubset<T, EmailTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailTemplates and returns the data updated in the database.
+     * @param {EmailTemplateUpdateManyAndReturnArgs} args - Arguments to update many EmailTemplates.
+     * @example
+     * // Update many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailTemplates and only return the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailTemplate.
+     * @param {EmailTemplateUpsertArgs} args - Arguments to update or create a EmailTemplate.
+     * @example
+     * // Update or create a EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.upsert({
+     *   create: {
+     *     // ... data to create a EmailTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailTemplateUpsertArgs>(args: SelectSubset<T, EmailTemplateUpsertArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateCountArgs} args - Arguments to filter EmailTemplates to count.
+     * @example
+     * // Count the number of EmailTemplates
+     * const count = await prisma.emailTemplate.count({
+     *   where: {
+     *     // ... the filter for the EmailTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailTemplateCountArgs>(
+      args?: Subset<T, EmailTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailTemplateAggregateArgs>(args: Subset<T, EmailTemplateAggregateArgs>): Prisma.PrismaPromise<GetEmailTemplateAggregateType<T>>
+
+    /**
+     * Group by EmailTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: EmailTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailTemplate model
+   */
+  readonly fields: EmailTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EmailTemplate$eventArgs<ExtArgs> = {}>(args?: Subset<T, EmailTemplate$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailTemplate model
+   */
+  interface EmailTemplateFieldRefs {
+    readonly id: FieldRef<"EmailTemplate", 'String'>
+    readonly name: FieldRef<"EmailTemplate", 'String'>
+    readonly description: FieldRef<"EmailTemplate", 'String'>
+    readonly subject: FieldRef<"EmailTemplate", 'String'>
+    readonly htmlContent: FieldRef<"EmailTemplate", 'String'>
+    readonly textContent: FieldRef<"EmailTemplate", 'String'>
+    readonly type: FieldRef<"EmailTemplate", 'CampaignType'>
+    readonly category: FieldRef<"EmailTemplate", 'TemplateCategory'>
+    readonly isGlobal: FieldRef<"EmailTemplate", 'Boolean'>
+    readonly eventId: FieldRef<"EmailTemplate", 'String'>
+    readonly isActive: FieldRef<"EmailTemplate", 'Boolean'>
+    readonly isDefault: FieldRef<"EmailTemplate", 'Boolean'>
+    readonly createdAt: FieldRef<"EmailTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailTemplate findUnique
+   */
+  export type EmailTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate findUniqueOrThrow
+   */
+  export type EmailTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate findFirst
+   */
+  export type EmailTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailTemplates.
+     */
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate findFirstOrThrow
+   */
+  export type EmailTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailTemplates.
+     */
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate findMany
+   */
+  export type EmailTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplates to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate create
+   */
+  export type EmailTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmailTemplate.
+     */
+    data: XOR<EmailTemplateCreateInput, EmailTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * EmailTemplate createMany
+   */
+  export type EmailTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailTemplates.
+     */
+    data: EmailTemplateCreateManyInput | EmailTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailTemplate createManyAndReturn
+   */
+  export type EmailTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailTemplates.
+     */
+    data: EmailTemplateCreateManyInput | EmailTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailTemplate update
+   */
+  export type EmailTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmailTemplate.
+     */
+    data: XOR<EmailTemplateUpdateInput, EmailTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which EmailTemplate to update.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate updateMany
+   */
+  export type EmailTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailTemplates.
+     */
+    data: XOR<EmailTemplateUpdateManyMutationInput, EmailTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailTemplates to update
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * Limit how many EmailTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailTemplate updateManyAndReturn
+   */
+  export type EmailTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailTemplates.
+     */
+    data: XOR<EmailTemplateUpdateManyMutationInput, EmailTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailTemplates to update
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * Limit how many EmailTemplates to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailTemplate upsert
+   */
+  export type EmailTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmailTemplate to update in case it exists.
+     */
+    where: EmailTemplateWhereUniqueInput
+    /**
+     * In case the EmailTemplate found by the `where` argument doesn't exist, create a new EmailTemplate with this data.
+     */
+    create: XOR<EmailTemplateCreateInput, EmailTemplateUncheckedCreateInput>
+    /**
+     * In case the EmailTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailTemplateUpdateInput, EmailTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailTemplate delete
+   */
+  export type EmailTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which EmailTemplate to delete.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate deleteMany
+   */
+  export type EmailTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailTemplates to delete
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * Limit how many EmailTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailTemplate.event
+   */
+  export type EmailTemplate$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+  }
+
+  /**
+   * EmailTemplate without action
+   */
+  export type EmailTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailLog
+   */
+
+  export type AggregateEmailLog = {
+    _count: EmailLogCountAggregateOutputType | null
+    _min: EmailLogMinAggregateOutputType | null
+    _max: EmailLogMaxAggregateOutputType | null
+  }
+
+  export type EmailLogMinAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    recipientEmail: string | null
+    recipientName: string | null
+    status: $Enums.EmailStatus | null
+    errorMessage: string | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    openedAt: Date | null
+    clickedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailLogMaxAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    recipientEmail: string | null
+    recipientName: string | null
+    status: $Enums.EmailStatus | null
+    errorMessage: string | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    openedAt: Date | null
+    clickedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailLogCountAggregateOutputType = {
+    id: number
+    campaignId: number
+    recipientEmail: number
+    recipientName: number
+    status: number
+    errorMessage: number
+    sentAt: number
+    deliveredAt: number
+    openedAt: number
+    clickedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailLogMinAggregateInputType = {
+    id?: true
+    campaignId?: true
+    recipientEmail?: true
+    recipientName?: true
+    status?: true
+    errorMessage?: true
+    sentAt?: true
+    deliveredAt?: true
+    openedAt?: true
+    clickedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailLogMaxAggregateInputType = {
+    id?: true
+    campaignId?: true
+    recipientEmail?: true
+    recipientName?: true
+    status?: true
+    errorMessage?: true
+    sentAt?: true
+    deliveredAt?: true
+    openedAt?: true
+    clickedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailLogCountAggregateInputType = {
+    id?: true
+    campaignId?: true
+    recipientEmail?: true
+    recipientName?: true
+    status?: true
+    errorMessage?: true
+    sentAt?: true
+    deliveredAt?: true
+    openedAt?: true
+    clickedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailLog to aggregate.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailLogs
+    **/
+    _count?: true | EmailLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailLogMaxAggregateInputType
+  }
+
+  export type GetEmailLogAggregateType<T extends EmailLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailLog[P]>
+      : GetScalarType<T[P], AggregateEmailLog[P]>
+  }
+
+
+
+
+  export type EmailLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailLogWhereInput
+    orderBy?: EmailLogOrderByWithAggregationInput | EmailLogOrderByWithAggregationInput[]
+    by: EmailLogScalarFieldEnum[] | EmailLogScalarFieldEnum
+    having?: EmailLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailLogCountAggregateInputType | true
+    _min?: EmailLogMinAggregateInputType
+    _max?: EmailLogMaxAggregateInputType
+  }
+
+  export type EmailLogGroupByOutputType = {
+    id: string
+    campaignId: string
+    recipientEmail: string
+    recipientName: string | null
+    status: $Enums.EmailStatus
+    errorMessage: string | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    openedAt: Date | null
+    clickedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailLogCountAggregateOutputType | null
+    _min: EmailLogMinAggregateOutputType | null
+    _max: EmailLogMaxAggregateOutputType | null
+  }
+
+  type GetEmailLogGroupByPayload<T extends EmailLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailLogGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    openedAt?: boolean
+    clickedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    campaign?: boolean | EmailCampaignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailLog"]>
+
+  export type EmailLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    openedAt?: boolean
+    clickedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    campaign?: boolean | EmailCampaignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailLog"]>
+
+  export type EmailLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    openedAt?: boolean
+    clickedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    campaign?: boolean | EmailCampaignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailLog"]>
+
+  export type EmailLogSelectScalar = {
+    id?: boolean
+    campaignId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    openedAt?: boolean
+    clickedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmailLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "campaignId" | "recipientEmail" | "recipientName" | "status" | "errorMessage" | "sentAt" | "deliveredAt" | "openedAt" | "clickedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["emailLog"]>
+  export type EmailLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | EmailCampaignDefaultArgs<ExtArgs>
+  }
+  export type EmailLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | EmailCampaignDefaultArgs<ExtArgs>
+  }
+  export type EmailLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | EmailCampaignDefaultArgs<ExtArgs>
+  }
+
+  export type $EmailLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailLog"
+    objects: {
+      campaign: Prisma.$EmailCampaignPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      campaignId: string
+      recipientEmail: string
+      recipientName: string | null
+      status: $Enums.EmailStatus
+      errorMessage: string | null
+      sentAt: Date | null
+      deliveredAt: Date | null
+      openedAt: Date | null
+      clickedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailLog"]>
+    composites: {}
+  }
+
+  type EmailLogGetPayload<S extends boolean | null | undefined | EmailLogDefaultArgs> = $Result.GetResult<Prisma.$EmailLogPayload, S>
+
+  type EmailLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailLogCountAggregateInputType | true
+    }
+
+  export interface EmailLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailLog'], meta: { name: 'EmailLog' } }
+    /**
+     * Find zero or one EmailLog that matches the filter.
+     * @param {EmailLogFindUniqueArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailLogFindUniqueArgs>(args: SelectSubset<T, EmailLogFindUniqueArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailLogFindUniqueOrThrowArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailLogFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogFindFirstArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailLogFindFirstArgs>(args?: SelectSubset<T, EmailLogFindFirstArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogFindFirstOrThrowArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailLogFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailLogs
+     * const emailLogs = await prisma.emailLog.findMany()
+     * 
+     * // Get first 10 EmailLogs
+     * const emailLogs = await prisma.emailLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailLogWithIdOnly = await prisma.emailLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailLogFindManyArgs>(args?: SelectSubset<T, EmailLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailLog.
+     * @param {EmailLogCreateArgs} args - Arguments to create a EmailLog.
+     * @example
+     * // Create one EmailLog
+     * const EmailLog = await prisma.emailLog.create({
+     *   data: {
+     *     // ... data to create a EmailLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailLogCreateArgs>(args: SelectSubset<T, EmailLogCreateArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailLogs.
+     * @param {EmailLogCreateManyArgs} args - Arguments to create many EmailLogs.
+     * @example
+     * // Create many EmailLogs
+     * const emailLog = await prisma.emailLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailLogCreateManyArgs>(args?: SelectSubset<T, EmailLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailLogs and returns the data saved in the database.
+     * @param {EmailLogCreateManyAndReturnArgs} args - Arguments to create many EmailLogs.
+     * @example
+     * // Create many EmailLogs
+     * const emailLog = await prisma.emailLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailLogs and only return the `id`
+     * const emailLogWithIdOnly = await prisma.emailLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailLogCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailLog.
+     * @param {EmailLogDeleteArgs} args - Arguments to delete one EmailLog.
+     * @example
+     * // Delete one EmailLog
+     * const EmailLog = await prisma.emailLog.delete({
+     *   where: {
+     *     // ... filter to delete one EmailLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailLogDeleteArgs>(args: SelectSubset<T, EmailLogDeleteArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailLog.
+     * @param {EmailLogUpdateArgs} args - Arguments to update one EmailLog.
+     * @example
+     * // Update one EmailLog
+     * const emailLog = await prisma.emailLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailLogUpdateArgs>(args: SelectSubset<T, EmailLogUpdateArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailLogs.
+     * @param {EmailLogDeleteManyArgs} args - Arguments to filter EmailLogs to delete.
+     * @example
+     * // Delete a few EmailLogs
+     * const { count } = await prisma.emailLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailLogDeleteManyArgs>(args?: SelectSubset<T, EmailLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailLogs
+     * const emailLog = await prisma.emailLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailLogUpdateManyArgs>(args: SelectSubset<T, EmailLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailLogs and returns the data updated in the database.
+     * @param {EmailLogUpdateManyAndReturnArgs} args - Arguments to update many EmailLogs.
+     * @example
+     * // Update many EmailLogs
+     * const emailLog = await prisma.emailLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailLogs and only return the `id`
+     * const emailLogWithIdOnly = await prisma.emailLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailLogUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailLog.
+     * @param {EmailLogUpsertArgs} args - Arguments to update or create a EmailLog.
+     * @example
+     * // Update or create a EmailLog
+     * const emailLog = await prisma.emailLog.upsert({
+     *   create: {
+     *     // ... data to create a EmailLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailLogUpsertArgs>(args: SelectSubset<T, EmailLogUpsertArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogCountArgs} args - Arguments to filter EmailLogs to count.
+     * @example
+     * // Count the number of EmailLogs
+     * const count = await prisma.emailLog.count({
+     *   where: {
+     *     // ... the filter for the EmailLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailLogCountArgs>(
+      args?: Subset<T, EmailLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailLogAggregateArgs>(args: Subset<T, EmailLogAggregateArgs>): Prisma.PrismaPromise<GetEmailLogAggregateType<T>>
+
+    /**
+     * Group by EmailLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailLogGroupByArgs['orderBy'] }
+        : { orderBy?: EmailLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailLog model
+   */
+  readonly fields: EmailLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    campaign<T extends EmailCampaignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmailCampaignDefaultArgs<ExtArgs>>): Prisma__EmailCampaignClient<$Result.GetResult<Prisma.$EmailCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailLog model
+   */
+  interface EmailLogFieldRefs {
+    readonly id: FieldRef<"EmailLog", 'String'>
+    readonly campaignId: FieldRef<"EmailLog", 'String'>
+    readonly recipientEmail: FieldRef<"EmailLog", 'String'>
+    readonly recipientName: FieldRef<"EmailLog", 'String'>
+    readonly status: FieldRef<"EmailLog", 'EmailStatus'>
+    readonly errorMessage: FieldRef<"EmailLog", 'String'>
+    readonly sentAt: FieldRef<"EmailLog", 'DateTime'>
+    readonly deliveredAt: FieldRef<"EmailLog", 'DateTime'>
+    readonly openedAt: FieldRef<"EmailLog", 'DateTime'>
+    readonly clickedAt: FieldRef<"EmailLog", 'DateTime'>
+    readonly createdAt: FieldRef<"EmailLog", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailLog findUnique
+   */
+  export type EmailLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog findUniqueOrThrow
+   */
+  export type EmailLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog findFirst
+   */
+  export type EmailLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailLogs.
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailLogs.
+     */
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailLog findFirstOrThrow
+   */
+  export type EmailLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailLogs.
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailLogs.
+     */
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailLog findMany
+   */
+  export type EmailLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailLogs to fetch.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailLogs.
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailLog create
+   */
+  export type EmailLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmailLog.
+     */
+    data: XOR<EmailLogCreateInput, EmailLogUncheckedCreateInput>
+  }
+
+  /**
+   * EmailLog createMany
+   */
+  export type EmailLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailLogs.
+     */
+    data: EmailLogCreateManyInput | EmailLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailLog createManyAndReturn
+   */
+  export type EmailLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailLogs.
+     */
+    data: EmailLogCreateManyInput | EmailLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailLog update
+   */
+  export type EmailLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmailLog.
+     */
+    data: XOR<EmailLogUpdateInput, EmailLogUncheckedUpdateInput>
+    /**
+     * Choose, which EmailLog to update.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog updateMany
+   */
+  export type EmailLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailLogs.
+     */
+    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailLogs to update
+     */
+    where?: EmailLogWhereInput
+    /**
+     * Limit how many EmailLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailLog updateManyAndReturn
+   */
+  export type EmailLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailLogs.
+     */
+    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailLogs to update
+     */
+    where?: EmailLogWhereInput
+    /**
+     * Limit how many EmailLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailLog upsert
+   */
+  export type EmailLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmailLog to update in case it exists.
+     */
+    where: EmailLogWhereUniqueInput
+    /**
+     * In case the EmailLog found by the `where` argument doesn't exist, create a new EmailLog with this data.
+     */
+    create: XOR<EmailLogCreateInput, EmailLogUncheckedCreateInput>
+    /**
+     * In case the EmailLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailLogUpdateInput, EmailLogUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailLog delete
+   */
+  export type EmailLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+    /**
+     * Filter which EmailLog to delete.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog deleteMany
+   */
+  export type EmailLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailLogs to delete
+     */
+    where?: EmailLogWhereInput
+    /**
+     * Limit how many EmailLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailLog without action
+   */
+  export type EmailLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18626,6 +22758,8 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     password: 'password',
+    phone: 'phone',
+    plan: 'plan',
     role: 'role',
     permissions: 'permissions',
     createdAt: 'createdAt',
@@ -18849,6 +22983,67 @@ export namespace Prisma {
   export type ParticipantBadgeScalarFieldEnum = (typeof ParticipantBadgeScalarFieldEnum)[keyof typeof ParticipantBadgeScalarFieldEnum]
 
 
+  export const EmailCampaignScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    name: 'name',
+    description: 'description',
+    type: 'type',
+    recipientType: 'recipientType',
+    subject: 'subject',
+    htmlContent: 'htmlContent',
+    textContent: 'textContent',
+    status: 'status',
+    scheduledAt: 'scheduledAt',
+    sentAt: 'sentAt',
+    totalRecipients: 'totalRecipients',
+    successCount: 'successCount',
+    failureCount: 'failureCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailCampaignScalarFieldEnum = (typeof EmailCampaignScalarFieldEnum)[keyof typeof EmailCampaignScalarFieldEnum]
+
+
+  export const EmailTemplateScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    subject: 'subject',
+    htmlContent: 'htmlContent',
+    textContent: 'textContent',
+    type: 'type',
+    category: 'category',
+    isGlobal: 'isGlobal',
+    eventId: 'eventId',
+    isActive: 'isActive',
+    isDefault: 'isDefault',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
+
+
+  export const EmailLogScalarFieldEnum: {
+    id: 'id',
+    campaignId: 'campaignId',
+    recipientEmail: 'recipientEmail',
+    recipientName: 'recipientName',
+    status: 'status',
+    errorMessage: 'errorMessage',
+    sentAt: 'sentAt',
+    deliveredAt: 'deliveredAt',
+    openedAt: 'openedAt',
+    clickedAt: 'clickedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailLogScalarFieldEnum = (typeof EmailLogScalarFieldEnum)[keyof typeof EmailLogScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18903,6 +23098,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserPlan'
+   */
+  export type EnumUserPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserPlan'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserPlan[]'
+   */
+  export type ListEnumUserPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserPlan[]'>
     
 
 
@@ -18984,6 +23193,76 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CampaignType'
+   */
+  export type EnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CampaignType[]'
+   */
+  export type ListEnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'RecipientType'
+   */
+  export type EnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType'>
+    
+
+
+  /**
+   * Reference to a field of type 'RecipientType[]'
+   */
+  export type ListEnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CampaignStatus'
+   */
+  export type EnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CampaignStatus[]'
+   */
+  export type ListEnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateCategory'
+   */
+  export type EnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateCategory[]'
+   */
+  export type ListEnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EmailStatus'
+   */
+  export type EnumEmailStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EmailStatus[]'
+   */
+  export type ListEnumEmailStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -19010,6 +23289,8 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
+    plan?: EnumUserPlanFilter<"User"> | $Enums.UserPlan
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     permissions?: StringNullableListFilter<"User">
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -19027,6 +23308,8 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    plan?: SortOrder
     role?: SortOrder
     permissions?: SortOrder
     createdAt?: SortOrder
@@ -19047,6 +23330,8 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
+    plan?: EnumUserPlanFilter<"User"> | $Enums.UserPlan
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     permissions?: StringNullableListFilter<"User">
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -19064,6 +23349,8 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    plan?: SortOrder
     role?: SortOrder
     permissions?: SortOrder
     createdAt?: SortOrder
@@ -19084,6 +23371,8 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    plan?: EnumUserPlanWithAggregatesFilter<"User"> | $Enums.UserPlan
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     permissions?: StringNullableListFilter<"User">
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -19311,6 +23600,8 @@ export namespace Prisma {
     badges?: BadgeListRelationFilter
     badgeTemplates?: BadgeTemplateListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
+    emailCampaigns?: EmailCampaignListRelationFilter
+    emailTemplates?: EmailTemplateListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -19344,6 +23635,8 @@ export namespace Prisma {
     badges?: BadgeOrderByRelationAggregateInput
     badgeTemplates?: BadgeTemplateOrderByRelationAggregateInput
     participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
+    emailCampaigns?: EmailCampaignOrderByRelationAggregateInput
+    emailTemplates?: EmailTemplateOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -19380,6 +23673,8 @@ export namespace Prisma {
     badges?: BadgeListRelationFilter
     badgeTemplates?: BadgeTemplateListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
+    emailCampaigns?: EmailCampaignListRelationFilter
+    emailTemplates?: EmailTemplateListRelationFilter
   }, "id" | "slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -20212,6 +24507,316 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ParticipantBadge"> | Date | string
   }
 
+  export type EmailCampaignWhereInput = {
+    AND?: EmailCampaignWhereInput | EmailCampaignWhereInput[]
+    OR?: EmailCampaignWhereInput[]
+    NOT?: EmailCampaignWhereInput | EmailCampaignWhereInput[]
+    id?: StringFilter<"EmailCampaign"> | string
+    eventId?: StringFilter<"EmailCampaign"> | string
+    name?: StringFilter<"EmailCampaign"> | string
+    description?: StringNullableFilter<"EmailCampaign"> | string | null
+    type?: EnumCampaignTypeFilter<"EmailCampaign"> | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFilter<"EmailCampaign"> | $Enums.RecipientType
+    subject?: StringFilter<"EmailCampaign"> | string
+    htmlContent?: StringFilter<"EmailCampaign"> | string
+    textContent?: StringNullableFilter<"EmailCampaign"> | string | null
+    status?: EnumCampaignStatusFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    scheduledAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
+    totalRecipients?: IntNullableFilter<"EmailCampaign"> | number | null
+    successCount?: IntNullableFilter<"EmailCampaign"> | number | null
+    failureCount?: IntNullableFilter<"EmailCampaign"> | number | null
+    createdAt?: DateTimeFilter<"EmailCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailCampaign"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    emailLogs?: EmailLogListRelationFilter
+  }
+
+  export type EmailCampaignOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    type?: SortOrder
+    recipientType?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrderInput | SortOrder
+    status?: SortOrder
+    scheduledAt?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    totalRecipients?: SortOrderInput | SortOrder
+    successCount?: SortOrderInput | SortOrder
+    failureCount?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    emailLogs?: EmailLogOrderByRelationAggregateInput
+  }
+
+  export type EmailCampaignWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmailCampaignWhereInput | EmailCampaignWhereInput[]
+    OR?: EmailCampaignWhereInput[]
+    NOT?: EmailCampaignWhereInput | EmailCampaignWhereInput[]
+    eventId?: StringFilter<"EmailCampaign"> | string
+    name?: StringFilter<"EmailCampaign"> | string
+    description?: StringNullableFilter<"EmailCampaign"> | string | null
+    type?: EnumCampaignTypeFilter<"EmailCampaign"> | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFilter<"EmailCampaign"> | $Enums.RecipientType
+    subject?: StringFilter<"EmailCampaign"> | string
+    htmlContent?: StringFilter<"EmailCampaign"> | string
+    textContent?: StringNullableFilter<"EmailCampaign"> | string | null
+    status?: EnumCampaignStatusFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    scheduledAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
+    totalRecipients?: IntNullableFilter<"EmailCampaign"> | number | null
+    successCount?: IntNullableFilter<"EmailCampaign"> | number | null
+    failureCount?: IntNullableFilter<"EmailCampaign"> | number | null
+    createdAt?: DateTimeFilter<"EmailCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailCampaign"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    emailLogs?: EmailLogListRelationFilter
+  }, "id">
+
+  export type EmailCampaignOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    type?: SortOrder
+    recipientType?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrderInput | SortOrder
+    status?: SortOrder
+    scheduledAt?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    totalRecipients?: SortOrderInput | SortOrder
+    successCount?: SortOrderInput | SortOrder
+    failureCount?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailCampaignCountOrderByAggregateInput
+    _avg?: EmailCampaignAvgOrderByAggregateInput
+    _max?: EmailCampaignMaxOrderByAggregateInput
+    _min?: EmailCampaignMinOrderByAggregateInput
+    _sum?: EmailCampaignSumOrderByAggregateInput
+  }
+
+  export type EmailCampaignScalarWhereWithAggregatesInput = {
+    AND?: EmailCampaignScalarWhereWithAggregatesInput | EmailCampaignScalarWhereWithAggregatesInput[]
+    OR?: EmailCampaignScalarWhereWithAggregatesInput[]
+    NOT?: EmailCampaignScalarWhereWithAggregatesInput | EmailCampaignScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailCampaign"> | string
+    eventId?: StringWithAggregatesFilter<"EmailCampaign"> | string
+    name?: StringWithAggregatesFilter<"EmailCampaign"> | string
+    description?: StringNullableWithAggregatesFilter<"EmailCampaign"> | string | null
+    type?: EnumCampaignTypeWithAggregatesFilter<"EmailCampaign"> | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeWithAggregatesFilter<"EmailCampaign"> | $Enums.RecipientType
+    subject?: StringWithAggregatesFilter<"EmailCampaign"> | string
+    htmlContent?: StringWithAggregatesFilter<"EmailCampaign"> | string
+    textContent?: StringNullableWithAggregatesFilter<"EmailCampaign"> | string | null
+    status?: EnumCampaignStatusWithAggregatesFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    scheduledAt?: DateTimeNullableWithAggregatesFilter<"EmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"EmailCampaign"> | Date | string | null
+    totalRecipients?: IntNullableWithAggregatesFilter<"EmailCampaign"> | number | null
+    successCount?: IntNullableWithAggregatesFilter<"EmailCampaign"> | number | null
+    failureCount?: IntNullableWithAggregatesFilter<"EmailCampaign"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmailCampaign"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailCampaign"> | Date | string
+  }
+
+  export type EmailTemplateWhereInput = {
+    AND?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    OR?: EmailTemplateWhereInput[]
+    NOT?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    id?: StringFilter<"EmailTemplate"> | string
+    name?: StringFilter<"EmailTemplate"> | string
+    description?: StringNullableFilter<"EmailTemplate"> | string | null
+    subject?: StringFilter<"EmailTemplate"> | string
+    htmlContent?: StringFilter<"EmailTemplate"> | string
+    textContent?: StringNullableFilter<"EmailTemplate"> | string | null
+    type?: EnumCampaignTypeFilter<"EmailTemplate"> | $Enums.CampaignType
+    category?: EnumTemplateCategoryNullableFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    isGlobal?: BoolFilter<"EmailTemplate"> | boolean
+    eventId?: StringNullableFilter<"EmailTemplate"> | string | null
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    isDefault?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+  }
+
+  export type EmailTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrderInput | SortOrder
+    type?: SortOrder
+    category?: SortOrderInput | SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type EmailTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    OR?: EmailTemplateWhereInput[]
+    NOT?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    name?: StringFilter<"EmailTemplate"> | string
+    description?: StringNullableFilter<"EmailTemplate"> | string | null
+    subject?: StringFilter<"EmailTemplate"> | string
+    htmlContent?: StringFilter<"EmailTemplate"> | string
+    textContent?: StringNullableFilter<"EmailTemplate"> | string | null
+    type?: EnumCampaignTypeFilter<"EmailTemplate"> | $Enums.CampaignType
+    category?: EnumTemplateCategoryNullableFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    isGlobal?: BoolFilter<"EmailTemplate"> | boolean
+    eventId?: StringNullableFilter<"EmailTemplate"> | string | null
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    isDefault?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+  }, "id">
+
+  export type EmailTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrderInput | SortOrder
+    type?: SortOrder
+    category?: SortOrderInput | SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailTemplateCountOrderByAggregateInput
+    _max?: EmailTemplateMaxOrderByAggregateInput
+    _min?: EmailTemplateMinOrderByAggregateInput
+  }
+
+  export type EmailTemplateScalarWhereWithAggregatesInput = {
+    AND?: EmailTemplateScalarWhereWithAggregatesInput | EmailTemplateScalarWhereWithAggregatesInput[]
+    OR?: EmailTemplateScalarWhereWithAggregatesInput[]
+    NOT?: EmailTemplateScalarWhereWithAggregatesInput | EmailTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    name?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    description?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
+    subject?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    htmlContent?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    textContent?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
+    type?: EnumCampaignTypeWithAggregatesFilter<"EmailTemplate"> | $Enums.CampaignType
+    category?: EnumTemplateCategoryNullableWithAggregatesFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    isGlobal?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
+    eventId?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
+    isActive?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
+    isDefault?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailTemplate"> | Date | string
+  }
+
+  export type EmailLogWhereInput = {
+    AND?: EmailLogWhereInput | EmailLogWhereInput[]
+    OR?: EmailLogWhereInput[]
+    NOT?: EmailLogWhereInput | EmailLogWhereInput[]
+    id?: StringFilter<"EmailLog"> | string
+    campaignId?: StringFilter<"EmailLog"> | string
+    recipientEmail?: StringFilter<"EmailLog"> | string
+    recipientName?: StringNullableFilter<"EmailLog"> | string | null
+    status?: EnumEmailStatusFilter<"EmailLog"> | $Enums.EmailStatus
+    errorMessage?: StringNullableFilter<"EmailLog"> | string | null
+    sentAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    openedAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    clickedAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailLog"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailLog"> | Date | string
+    campaign?: XOR<EmailCampaignScalarRelationFilter, EmailCampaignWhereInput>
+  }
+
+  export type EmailLogOrderByWithRelationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    openedAt?: SortOrderInput | SortOrder
+    clickedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    campaign?: EmailCampaignOrderByWithRelationInput
+  }
+
+  export type EmailLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmailLogWhereInput | EmailLogWhereInput[]
+    OR?: EmailLogWhereInput[]
+    NOT?: EmailLogWhereInput | EmailLogWhereInput[]
+    campaignId?: StringFilter<"EmailLog"> | string
+    recipientEmail?: StringFilter<"EmailLog"> | string
+    recipientName?: StringNullableFilter<"EmailLog"> | string | null
+    status?: EnumEmailStatusFilter<"EmailLog"> | $Enums.EmailStatus
+    errorMessage?: StringNullableFilter<"EmailLog"> | string | null
+    sentAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    openedAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    clickedAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailLog"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailLog"> | Date | string
+    campaign?: XOR<EmailCampaignScalarRelationFilter, EmailCampaignWhereInput>
+  }, "id">
+
+  export type EmailLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    openedAt?: SortOrderInput | SortOrder
+    clickedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailLogCountOrderByAggregateInput
+    _max?: EmailLogMaxOrderByAggregateInput
+    _min?: EmailLogMinOrderByAggregateInput
+  }
+
+  export type EmailLogScalarWhereWithAggregatesInput = {
+    AND?: EmailLogScalarWhereWithAggregatesInput | EmailLogScalarWhereWithAggregatesInput[]
+    OR?: EmailLogScalarWhereWithAggregatesInput[]
+    NOT?: EmailLogScalarWhereWithAggregatesInput | EmailLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailLog"> | string
+    campaignId?: StringWithAggregatesFilter<"EmailLog"> | string
+    recipientEmail?: StringWithAggregatesFilter<"EmailLog"> | string
+    recipientName?: StringNullableWithAggregatesFilter<"EmailLog"> | string | null
+    status?: EnumEmailStatusWithAggregatesFilter<"EmailLog"> | $Enums.EmailStatus
+    errorMessage?: StringNullableWithAggregatesFilter<"EmailLog"> | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"EmailLog"> | Date | string | null
+    deliveredAt?: DateTimeNullableWithAggregatesFilter<"EmailLog"> | Date | string | null
+    openedAt?: DateTimeNullableWithAggregatesFilter<"EmailLog"> | Date | string | null
+    clickedAt?: DateTimeNullableWithAggregatesFilter<"EmailLog"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmailLog"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailLog"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -20219,6 +24824,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -20236,6 +24843,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -20253,6 +24862,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20270,6 +24881,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20287,6 +24900,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -20301,6 +24916,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20315,6 +24932,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20546,6 +25165,8 @@ export namespace Prisma {
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -20578,6 +25199,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -20610,6 +25233,8 @@ export namespace Prisma {
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -20642,6 +25267,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -21576,6 +26203,371 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EmailCampaignCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutEmailCampaignsInput
+    emailLogs?: EmailLogCreateNestedManyWithoutCampaignInput
+  }
+
+  export type EmailCampaignUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type EmailCampaignUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutEmailCampaignsNestedInput
+    emailLogs?: EmailLogUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type EmailCampaignUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailLogs?: EmailLogUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type EmailCampaignCreateManyInput = {
+    id?: string
+    eventId: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailCampaignUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailCampaignUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    type?: $Enums.CampaignType
+    category?: $Enums.TemplateCategory | null
+    isGlobal?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event?: EventCreateNestedOneWithoutEmailTemplatesInput
+  }
+
+  export type EmailTemplateUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    type?: $Enums.CampaignType
+    category?: $Enums.TemplateCategory | null
+    isGlobal?: boolean
+    eventId?: string | null
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneWithoutEmailTemplatesNestedInput
+  }
+
+  export type EmailTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    type?: $Enums.CampaignType
+    category?: $Enums.TemplateCategory | null
+    isGlobal?: boolean
+    eventId?: string | null
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogCreateInput = {
+    id?: string
+    recipientEmail: string
+    recipientName?: string | null
+    status?: $Enums.EmailStatus
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    openedAt?: Date | string | null
+    clickedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    campaign: EmailCampaignCreateNestedOneWithoutEmailLogsInput
+  }
+
+  export type EmailLogUncheckedCreateInput = {
+    id?: string
+    campaignId: string
+    recipientEmail: string
+    recipientName?: string | null
+    status?: $Enums.EmailStatus
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    openedAt?: Date | string | null
+    clickedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    campaign?: EmailCampaignUpdateOneRequiredWithoutEmailLogsNestedInput
+  }
+
+  export type EmailLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogCreateManyInput = {
+    id?: string
+    campaignId: string
+    recipientEmail: string
+    recipientName?: string | null
+    status?: $Enums.EmailStatus
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    openedAt?: Date | string | null
+    clickedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21615,6 +26607,13 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type EnumUserPlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserPlanFilter<$PrismaModel> | $Enums.UserPlan
   }
 
   export type EnumUserRoleFilter<$PrismaModel = never> = {
@@ -21685,6 +26684,8 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     password?: SortOrder
+    phone?: SortOrder
+    plan?: SortOrder
     role?: SortOrder
     permissions?: SortOrder
     createdAt?: SortOrder
@@ -21699,6 +26700,8 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     password?: SortOrder
+    phone?: SortOrder
+    plan?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21712,6 +26715,8 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     password?: SortOrder
+    phone?: SortOrder
+    plan?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21766,6 +26771,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumUserPlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserPlanWithAggregatesFilter<$PrismaModel> | $Enums.UserPlan
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserPlanFilter<$PrismaModel>
+    _max?: NestedEnumUserPlanFilter<$PrismaModel>
   }
 
   export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -21973,6 +26988,18 @@ export namespace Prisma {
     none?: ParticipantBadgeWhereInput
   }
 
+  export type EmailCampaignListRelationFilter = {
+    every?: EmailCampaignWhereInput
+    some?: EmailCampaignWhereInput
+    none?: EmailCampaignWhereInput
+  }
+
+  export type EmailTemplateListRelationFilter = {
+    every?: EmailTemplateWhereInput
+    some?: EmailTemplateWhereInput
+    none?: EmailTemplateWhereInput
+  }
+
   export type event_sessionsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -21998,6 +27025,14 @@ export namespace Prisma {
   }
 
   export type ParticipantBadgeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmailCampaignOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmailTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22551,6 +27586,274 @@ export namespace Prisma {
     _max?: NestedEnumBadgeStatusFilter<$PrismaModel>
   }
 
+  export type EnumCampaignTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
+  }
+
+  export type EnumRecipientTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecipientTypeFilter<$PrismaModel> | $Enums.RecipientType
+  }
+
+  export type EnumCampaignStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignStatusFilter<$PrismaModel> | $Enums.CampaignStatus
+  }
+
+  export type EmailLogListRelationFilter = {
+    every?: EmailLogWhereInput
+    some?: EmailLogWhereInput
+    none?: EmailLogWhereInput
+  }
+
+  export type EmailLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmailCampaignCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    recipientType?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    status?: SortOrder
+    scheduledAt?: SortOrder
+    sentAt?: SortOrder
+    totalRecipients?: SortOrder
+    successCount?: SortOrder
+    failureCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailCampaignAvgOrderByAggregateInput = {
+    totalRecipients?: SortOrder
+    successCount?: SortOrder
+    failureCount?: SortOrder
+  }
+
+  export type EmailCampaignMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    recipientType?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    status?: SortOrder
+    scheduledAt?: SortOrder
+    sentAt?: SortOrder
+    totalRecipients?: SortOrder
+    successCount?: SortOrder
+    failureCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailCampaignMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    recipientType?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    status?: SortOrder
+    scheduledAt?: SortOrder
+    sentAt?: SortOrder
+    totalRecipients?: SortOrder
+    successCount?: SortOrder
+    failureCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailCampaignSumOrderByAggregateInput = {
+    totalRecipients?: SortOrder
+    successCount?: SortOrder
+    failureCount?: SortOrder
+  }
+
+  export type EnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
+    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
+  }
+
+  export type EnumRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecipientTypeWithAggregatesFilter<$PrismaModel> | $Enums.RecipientType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRecipientTypeFilter<$PrismaModel>
+    _max?: NestedEnumRecipientTypeFilter<$PrismaModel>
+  }
+
+  export type EnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel> | $Enums.CampaignStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCampaignStatusFilter<$PrismaModel>
+    _max?: NestedEnumCampaignStatusFilter<$PrismaModel>
+  }
+
+  export type EnumTemplateCategoryNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel> | $Enums.TemplateCategory | null
+  }
+
+  export type EmailTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrder
+    isActive?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrder
+    isActive?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    isGlobal?: SortOrder
+    eventId?: SortOrder
+    isActive?: SortOrder
+    isDefault?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
+    _max?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
+  }
+
+  export type EnumEmailStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEmailStatusFilter<$PrismaModel> | $Enums.EmailStatus
+  }
+
+  export type EmailCampaignScalarRelationFilter = {
+    is?: EmailCampaignWhereInput
+    isNot?: EmailCampaignWhereInput
+  }
+
+  export type EmailLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    sentAt?: SortOrder
+    deliveredAt?: SortOrder
+    openedAt?: SortOrder
+    clickedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    sentAt?: SortOrder
+    deliveredAt?: SortOrder
+    openedAt?: SortOrder
+    clickedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    sentAt?: SortOrder
+    deliveredAt?: SortOrder
+    openedAt?: SortOrder
+    clickedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumEmailStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEmailStatusWithAggregatesFilter<$PrismaModel> | $Enums.EmailStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEmailStatusFilter<$PrismaModel>
+    _max?: NestedEnumEmailStatusFilter<$PrismaModel>
+  }
+
   export type UserCreatepermissionsInput = {
     set: string[]
   }
@@ -22607,6 +27910,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type EnumUserPlanFieldUpdateOperationsInput = {
+    set?: $Enums.UserPlan
   }
 
   export type EnumUserRoleFieldUpdateOperationsInput = {
@@ -22797,6 +28104,20 @@ export namespace Prisma {
     connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
   }
 
+  export type EmailCampaignCreateNestedManyWithoutEventInput = {
+    create?: XOR<EmailCampaignCreateWithoutEventInput, EmailCampaignUncheckedCreateWithoutEventInput> | EmailCampaignCreateWithoutEventInput[] | EmailCampaignUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailCampaignCreateOrConnectWithoutEventInput | EmailCampaignCreateOrConnectWithoutEventInput[]
+    createMany?: EmailCampaignCreateManyEventInputEnvelope
+    connect?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+  }
+
+  export type EmailTemplateCreateNestedManyWithoutEventInput = {
+    create?: XOR<EmailTemplateCreateWithoutEventInput, EmailTemplateUncheckedCreateWithoutEventInput> | EmailTemplateCreateWithoutEventInput[] | EmailTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailTemplateCreateOrConnectWithoutEventInput | EmailTemplateCreateOrConnectWithoutEventInput[]
+    createMany?: EmailTemplateCreateManyEventInputEnvelope
+    connect?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+  }
+
   export type event_sessionsUncheckedCreateNestedManyWithoutEventsInput = {
     create?: XOR<event_sessionsCreateWithoutEventsInput, event_sessionsUncheckedCreateWithoutEventsInput> | event_sessionsCreateWithoutEventsInput[] | event_sessionsUncheckedCreateWithoutEventsInput[]
     connectOrCreate?: event_sessionsCreateOrConnectWithoutEventsInput | event_sessionsCreateOrConnectWithoutEventsInput[]
@@ -22844,6 +28165,20 @@ export namespace Prisma {
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
     createMany?: ParticipantBadgeCreateManyEventInputEnvelope
     connect?: ParticipantBadgeWhereUniqueInput | ParticipantBadgeWhereUniqueInput[]
+  }
+
+  export type EmailCampaignUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EmailCampaignCreateWithoutEventInput, EmailCampaignUncheckedCreateWithoutEventInput> | EmailCampaignCreateWithoutEventInput[] | EmailCampaignUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailCampaignCreateOrConnectWithoutEventInput | EmailCampaignCreateOrConnectWithoutEventInput[]
+    createMany?: EmailCampaignCreateManyEventInputEnvelope
+    connect?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+  }
+
+  export type EmailTemplateUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EmailTemplateCreateWithoutEventInput, EmailTemplateUncheckedCreateWithoutEventInput> | EmailTemplateCreateWithoutEventInput[] | EmailTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailTemplateCreateOrConnectWithoutEventInput | EmailTemplateCreateOrConnectWithoutEventInput[]
+    createMany?: EmailTemplateCreateManyEventInputEnvelope
+    connect?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -22956,6 +28291,34 @@ export namespace Prisma {
     deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
   }
 
+  export type EmailCampaignUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EmailCampaignCreateWithoutEventInput, EmailCampaignUncheckedCreateWithoutEventInput> | EmailCampaignCreateWithoutEventInput[] | EmailCampaignUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailCampaignCreateOrConnectWithoutEventInput | EmailCampaignCreateOrConnectWithoutEventInput[]
+    upsert?: EmailCampaignUpsertWithWhereUniqueWithoutEventInput | EmailCampaignUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EmailCampaignCreateManyEventInputEnvelope
+    set?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    disconnect?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    delete?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    connect?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    update?: EmailCampaignUpdateWithWhereUniqueWithoutEventInput | EmailCampaignUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EmailCampaignUpdateManyWithWhereWithoutEventInput | EmailCampaignUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EmailCampaignScalarWhereInput | EmailCampaignScalarWhereInput[]
+  }
+
+  export type EmailTemplateUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EmailTemplateCreateWithoutEventInput, EmailTemplateUncheckedCreateWithoutEventInput> | EmailTemplateCreateWithoutEventInput[] | EmailTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailTemplateCreateOrConnectWithoutEventInput | EmailTemplateCreateOrConnectWithoutEventInput[]
+    upsert?: EmailTemplateUpsertWithWhereUniqueWithoutEventInput | EmailTemplateUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EmailTemplateCreateManyEventInputEnvelope
+    set?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    disconnect?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    delete?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    connect?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    update?: EmailTemplateUpdateWithWhereUniqueWithoutEventInput | EmailTemplateUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EmailTemplateUpdateManyWithWhereWithoutEventInput | EmailTemplateUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EmailTemplateScalarWhereInput | EmailTemplateScalarWhereInput[]
+  }
+
   export type event_sessionsUncheckedUpdateManyWithoutEventsNestedInput = {
     create?: XOR<event_sessionsCreateWithoutEventsInput, event_sessionsUncheckedCreateWithoutEventsInput> | event_sessionsCreateWithoutEventsInput[] | event_sessionsUncheckedCreateWithoutEventsInput[]
     connectOrCreate?: event_sessionsCreateOrConnectWithoutEventsInput | event_sessionsCreateOrConnectWithoutEventsInput[]
@@ -23052,6 +28415,34 @@ export namespace Prisma {
     update?: ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput | ParticipantBadgeUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: ParticipantBadgeUpdateManyWithWhereWithoutEventInput | ParticipantBadgeUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: ParticipantBadgeScalarWhereInput | ParticipantBadgeScalarWhereInput[]
+  }
+
+  export type EmailCampaignUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EmailCampaignCreateWithoutEventInput, EmailCampaignUncheckedCreateWithoutEventInput> | EmailCampaignCreateWithoutEventInput[] | EmailCampaignUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailCampaignCreateOrConnectWithoutEventInput | EmailCampaignCreateOrConnectWithoutEventInput[]
+    upsert?: EmailCampaignUpsertWithWhereUniqueWithoutEventInput | EmailCampaignUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EmailCampaignCreateManyEventInputEnvelope
+    set?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    disconnect?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    delete?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    connect?: EmailCampaignWhereUniqueInput | EmailCampaignWhereUniqueInput[]
+    update?: EmailCampaignUpdateWithWhereUniqueWithoutEventInput | EmailCampaignUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EmailCampaignUpdateManyWithWhereWithoutEventInput | EmailCampaignUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EmailCampaignScalarWhereInput | EmailCampaignScalarWhereInput[]
+  }
+
+  export type EmailTemplateUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EmailTemplateCreateWithoutEventInput, EmailTemplateUncheckedCreateWithoutEventInput> | EmailTemplateCreateWithoutEventInput[] | EmailTemplateUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EmailTemplateCreateOrConnectWithoutEventInput | EmailTemplateCreateOrConnectWithoutEventInput[]
+    upsert?: EmailTemplateUpsertWithWhereUniqueWithoutEventInput | EmailTemplateUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EmailTemplateCreateManyEventInputEnvelope
+    set?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    disconnect?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    delete?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    connect?: EmailTemplateWhereUniqueInput | EmailTemplateWhereUniqueInput[]
+    update?: EmailTemplateUpdateWithWhereUniqueWithoutEventInput | EmailTemplateUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EmailTemplateUpdateManyWithWhereWithoutEventInput | EmailTemplateUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EmailTemplateScalarWhereInput | EmailTemplateScalarWhereInput[]
   }
 
   export type EventCreateNestedOneWithoutRegistrationsInput = {
@@ -23502,6 +28893,112 @@ export namespace Prisma {
     update?: XOR<XOR<BadgeTemplateUpdateToOneWithWhereWithoutParticipantBadgesInput, BadgeTemplateUpdateWithoutParticipantBadgesInput>, BadgeTemplateUncheckedUpdateWithoutParticipantBadgesInput>
   }
 
+  export type EventCreateNestedOneWithoutEmailCampaignsInput = {
+    create?: XOR<EventCreateWithoutEmailCampaignsInput, EventUncheckedCreateWithoutEmailCampaignsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEmailCampaignsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type EmailLogCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<EmailLogCreateWithoutCampaignInput, EmailLogUncheckedCreateWithoutCampaignInput> | EmailLogCreateWithoutCampaignInput[] | EmailLogUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: EmailLogCreateOrConnectWithoutCampaignInput | EmailLogCreateOrConnectWithoutCampaignInput[]
+    createMany?: EmailLogCreateManyCampaignInputEnvelope
+    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+  }
+
+  export type EmailLogUncheckedCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<EmailLogCreateWithoutCampaignInput, EmailLogUncheckedCreateWithoutCampaignInput> | EmailLogCreateWithoutCampaignInput[] | EmailLogUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: EmailLogCreateOrConnectWithoutCampaignInput | EmailLogCreateOrConnectWithoutCampaignInput[]
+    createMany?: EmailLogCreateManyCampaignInputEnvelope
+    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+  }
+
+  export type EnumCampaignTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CampaignType
+  }
+
+  export type EnumRecipientTypeFieldUpdateOperationsInput = {
+    set?: $Enums.RecipientType
+  }
+
+  export type EnumCampaignStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CampaignStatus
+  }
+
+  export type EventUpdateOneRequiredWithoutEmailCampaignsNestedInput = {
+    create?: XOR<EventCreateWithoutEmailCampaignsInput, EventUncheckedCreateWithoutEmailCampaignsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEmailCampaignsInput
+    upsert?: EventUpsertWithoutEmailCampaignsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEmailCampaignsInput, EventUpdateWithoutEmailCampaignsInput>, EventUncheckedUpdateWithoutEmailCampaignsInput>
+  }
+
+  export type EmailLogUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<EmailLogCreateWithoutCampaignInput, EmailLogUncheckedCreateWithoutCampaignInput> | EmailLogCreateWithoutCampaignInput[] | EmailLogUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: EmailLogCreateOrConnectWithoutCampaignInput | EmailLogCreateOrConnectWithoutCampaignInput[]
+    upsert?: EmailLogUpsertWithWhereUniqueWithoutCampaignInput | EmailLogUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: EmailLogCreateManyCampaignInputEnvelope
+    set?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    disconnect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    delete?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    update?: EmailLogUpdateWithWhereUniqueWithoutCampaignInput | EmailLogUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: EmailLogUpdateManyWithWhereWithoutCampaignInput | EmailLogUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
+  }
+
+  export type EmailLogUncheckedUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<EmailLogCreateWithoutCampaignInput, EmailLogUncheckedCreateWithoutCampaignInput> | EmailLogCreateWithoutCampaignInput[] | EmailLogUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: EmailLogCreateOrConnectWithoutCampaignInput | EmailLogCreateOrConnectWithoutCampaignInput[]
+    upsert?: EmailLogUpsertWithWhereUniqueWithoutCampaignInput | EmailLogUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: EmailLogCreateManyCampaignInputEnvelope
+    set?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    disconnect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    delete?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
+    update?: EmailLogUpdateWithWhereUniqueWithoutCampaignInput | EmailLogUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: EmailLogUpdateManyWithWhereWithoutCampaignInput | EmailLogUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutEmailTemplatesInput = {
+    create?: XOR<EventCreateWithoutEmailTemplatesInput, EventUncheckedCreateWithoutEmailTemplatesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEmailTemplatesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type NullableEnumTemplateCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.TemplateCategory | null
+  }
+
+  export type EventUpdateOneWithoutEmailTemplatesNestedInput = {
+    create?: XOR<EventCreateWithoutEmailTemplatesInput, EventUncheckedCreateWithoutEmailTemplatesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEmailTemplatesInput
+    upsert?: EventUpsertWithoutEmailTemplatesInput
+    disconnect?: EventWhereInput | boolean
+    delete?: EventWhereInput | boolean
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEmailTemplatesInput, EventUpdateWithoutEmailTemplatesInput>, EventUncheckedUpdateWithoutEmailTemplatesInput>
+  }
+
+  export type EmailCampaignCreateNestedOneWithoutEmailLogsInput = {
+    create?: XOR<EmailCampaignCreateWithoutEmailLogsInput, EmailCampaignUncheckedCreateWithoutEmailLogsInput>
+    connectOrCreate?: EmailCampaignCreateOrConnectWithoutEmailLogsInput
+    connect?: EmailCampaignWhereUniqueInput
+  }
+
+  export type EnumEmailStatusFieldUpdateOperationsInput = {
+    set?: $Enums.EmailStatus
+  }
+
+  export type EmailCampaignUpdateOneRequiredWithoutEmailLogsNestedInput = {
+    create?: XOR<EmailCampaignCreateWithoutEmailLogsInput, EmailCampaignUncheckedCreateWithoutEmailLogsInput>
+    connectOrCreate?: EmailCampaignCreateOrConnectWithoutEmailLogsInput
+    upsert?: EmailCampaignUpsertWithoutEmailLogsInput
+    connect?: EmailCampaignWhereUniqueInput
+    update?: XOR<XOR<EmailCampaignUpdateToOneWithWhereWithoutEmailLogsInput, EmailCampaignUpdateWithoutEmailLogsInput>, EmailCampaignUncheckedUpdateWithoutEmailLogsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -23539,6 +29036,13 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumUserPlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserPlanFilter<$PrismaModel> | $Enums.UserPlan
   }
 
   export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
@@ -23627,6 +29131,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumUserPlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserPlanWithAggregatesFilter<$PrismaModel> | $Enums.UserPlan
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserPlanFilter<$PrismaModel>
+    _max?: NestedEnumUserPlanFilter<$PrismaModel>
   }
 
   export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -23744,6 +29258,91 @@ export namespace Prisma {
     _max?: NestedEnumBadgeStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumCampaignTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
+  }
+
+  export type NestedEnumRecipientTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecipientTypeFilter<$PrismaModel> | $Enums.RecipientType
+  }
+
+  export type NestedEnumCampaignStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignStatusFilter<$PrismaModel> | $Enums.CampaignStatus
+  }
+
+  export type NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
+    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecipientTypeWithAggregatesFilter<$PrismaModel> | $Enums.RecipientType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRecipientTypeFilter<$PrismaModel>
+    _max?: NestedEnumRecipientTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel> | $Enums.CampaignStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCampaignStatusFilter<$PrismaModel>
+    _max?: NestedEnumCampaignStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTemplateCategoryNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel> | $Enums.TemplateCategory | null
+  }
+
+  export type NestedEnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
+    _max?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEmailStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEmailStatusFilter<$PrismaModel> | $Enums.EmailStatus
+  }
+
+  export type NestedEnumEmailStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEmailStatusWithAggregatesFilter<$PrismaModel> | $Enums.EmailStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEmailStatusFilter<$PrismaModel>
+    _max?: NestedEnumEmailStatusFilter<$PrismaModel>
+  }
+
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -23811,6 +29410,8 @@ export namespace Prisma {
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserInput = {
@@ -23842,6 +29443,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserInput = {
@@ -23987,6 +29590,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -24003,6 +29608,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -24035,6 +29642,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24051,6 +29660,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24067,6 +29678,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -24083,6 +29696,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -24115,6 +29730,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24131,6 +29748,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24195,6 +29814,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -24211,6 +29832,8 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     password?: string | null
+    phone?: string | null
+    plan?: $Enums.UserPlan
     role?: $Enums.UserRole
     permissions?: UserCreatepermissionsInput | string[]
     createdAt?: Date | string
@@ -24449,6 +30072,98 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EmailCampaignCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    emailLogs?: EmailLogCreateNestedManyWithoutCampaignInput
+  }
+
+  export type EmailCampaignUncheckedCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type EmailCampaignCreateOrConnectWithoutEventInput = {
+    where: EmailCampaignWhereUniqueInput
+    create: XOR<EmailCampaignCreateWithoutEventInput, EmailCampaignUncheckedCreateWithoutEventInput>
+  }
+
+  export type EmailCampaignCreateManyEventInputEnvelope = {
+    data: EmailCampaignCreateManyEventInput | EmailCampaignCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmailTemplateCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    type?: $Enums.CampaignType
+    category?: $Enums.TemplateCategory | null
+    isGlobal?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUncheckedCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    type?: $Enums.CampaignType
+    category?: $Enums.TemplateCategory | null
+    isGlobal?: boolean
+    isActive?: boolean
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateCreateOrConnectWithoutEventInput = {
+    where: EmailTemplateWhereUniqueInput
+    create: XOR<EmailTemplateCreateWithoutEventInput, EmailTemplateUncheckedCreateWithoutEventInput>
+  }
+
+  export type EmailTemplateCreateManyEventInputEnvelope = {
+    data: EmailTemplateCreateManyEventInput | EmailTemplateCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type event_sessionsUpsertWithWhereUniqueWithoutEventsInput = {
     where: event_sessionsWhereUniqueInput
     update: XOR<event_sessionsUpdateWithoutEventsInput, event_sessionsUncheckedUpdateWithoutEventsInput>
@@ -24505,6 +30220,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24521,6 +30238,8 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     permissions?: UserUpdatepermissionsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24727,6 +30446,81 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
   }
 
+  export type EmailCampaignUpsertWithWhereUniqueWithoutEventInput = {
+    where: EmailCampaignWhereUniqueInput
+    update: XOR<EmailCampaignUpdateWithoutEventInput, EmailCampaignUncheckedUpdateWithoutEventInput>
+    create: XOR<EmailCampaignCreateWithoutEventInput, EmailCampaignUncheckedCreateWithoutEventInput>
+  }
+
+  export type EmailCampaignUpdateWithWhereUniqueWithoutEventInput = {
+    where: EmailCampaignWhereUniqueInput
+    data: XOR<EmailCampaignUpdateWithoutEventInput, EmailCampaignUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EmailCampaignUpdateManyWithWhereWithoutEventInput = {
+    where: EmailCampaignScalarWhereInput
+    data: XOR<EmailCampaignUpdateManyMutationInput, EmailCampaignUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EmailCampaignScalarWhereInput = {
+    AND?: EmailCampaignScalarWhereInput | EmailCampaignScalarWhereInput[]
+    OR?: EmailCampaignScalarWhereInput[]
+    NOT?: EmailCampaignScalarWhereInput | EmailCampaignScalarWhereInput[]
+    id?: StringFilter<"EmailCampaign"> | string
+    eventId?: StringFilter<"EmailCampaign"> | string
+    name?: StringFilter<"EmailCampaign"> | string
+    description?: StringNullableFilter<"EmailCampaign"> | string | null
+    type?: EnumCampaignTypeFilter<"EmailCampaign"> | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFilter<"EmailCampaign"> | $Enums.RecipientType
+    subject?: StringFilter<"EmailCampaign"> | string
+    htmlContent?: StringFilter<"EmailCampaign"> | string
+    textContent?: StringNullableFilter<"EmailCampaign"> | string | null
+    status?: EnumCampaignStatusFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    scheduledAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
+    totalRecipients?: IntNullableFilter<"EmailCampaign"> | number | null
+    successCount?: IntNullableFilter<"EmailCampaign"> | number | null
+    failureCount?: IntNullableFilter<"EmailCampaign"> | number | null
+    createdAt?: DateTimeFilter<"EmailCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailCampaign"> | Date | string
+  }
+
+  export type EmailTemplateUpsertWithWhereUniqueWithoutEventInput = {
+    where: EmailTemplateWhereUniqueInput
+    update: XOR<EmailTemplateUpdateWithoutEventInput, EmailTemplateUncheckedUpdateWithoutEventInput>
+    create: XOR<EmailTemplateCreateWithoutEventInput, EmailTemplateUncheckedCreateWithoutEventInput>
+  }
+
+  export type EmailTemplateUpdateWithWhereUniqueWithoutEventInput = {
+    where: EmailTemplateWhereUniqueInput
+    data: XOR<EmailTemplateUpdateWithoutEventInput, EmailTemplateUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EmailTemplateUpdateManyWithWhereWithoutEventInput = {
+    where: EmailTemplateScalarWhereInput
+    data: XOR<EmailTemplateUpdateManyMutationInput, EmailTemplateUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EmailTemplateScalarWhereInput = {
+    AND?: EmailTemplateScalarWhereInput | EmailTemplateScalarWhereInput[]
+    OR?: EmailTemplateScalarWhereInput[]
+    NOT?: EmailTemplateScalarWhereInput | EmailTemplateScalarWhereInput[]
+    id?: StringFilter<"EmailTemplate"> | string
+    name?: StringFilter<"EmailTemplate"> | string
+    description?: StringNullableFilter<"EmailTemplate"> | string | null
+    subject?: StringFilter<"EmailTemplate"> | string
+    htmlContent?: StringFilter<"EmailTemplate"> | string
+    textContent?: StringNullableFilter<"EmailTemplate"> | string | null
+    type?: EnumCampaignTypeFilter<"EmailTemplate"> | $Enums.CampaignType
+    category?: EnumTemplateCategoryNullableFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    isGlobal?: BoolFilter<"EmailTemplate"> | boolean
+    eventId?: StringNullableFilter<"EmailTemplate"> | string | null
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    isDefault?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+  }
+
   export type EventCreateWithoutRegistrationsInput = {
     id?: string
     name: string
@@ -24756,6 +30550,8 @@ export namespace Prisma {
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -24787,6 +30583,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -24974,6 +30772,8 @@ export namespace Prisma {
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -25005,6 +30805,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput = {
@@ -25112,6 +30914,8 @@ export namespace Prisma {
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutEvent_sessionsInput = {
@@ -25143,6 +30947,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutEvent_sessionsInput = {
@@ -25216,6 +31022,8 @@ export namespace Prisma {
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutEvent_sessionsInput = {
@@ -25247,6 +31055,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SessionParticipantUpsertWithWhereUniqueWithoutSessionInput = {
@@ -25294,6 +31104,8 @@ export namespace Prisma {
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorsInput = {
@@ -25325,6 +31137,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorsInput = {
@@ -25372,6 +31186,8 @@ export namespace Prisma {
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorsInput = {
@@ -25403,6 +31219,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type event_sessionsCreateWithoutParticipantsInput = {
@@ -25626,6 +31444,8 @@ export namespace Prisma {
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutAppointmentsInput = {
@@ -25657,6 +31477,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutAppointmentsInput = {
@@ -25798,6 +31620,8 @@ export namespace Prisma {
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutAppointmentsInput = {
@@ -25829,6 +31653,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutSentAppointmentsInput = {
@@ -25966,6 +31792,8 @@ export namespace Prisma {
     appointments?: AppointmentCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgesInput = {
@@ -25997,6 +31825,8 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgesInput = {
@@ -26044,6 +31874,8 @@ export namespace Prisma {
     appointments?: AppointmentUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgesInput = {
@@ -26075,6 +31907,8 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateWithoutBadgeTemplatesInput = {
@@ -26106,6 +31940,8 @@ export namespace Prisma {
     appointments?: AppointmentCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgeTemplatesInput = {
@@ -26137,6 +31973,8 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgeTemplatesInput = {
@@ -26222,6 +32060,8 @@ export namespace Prisma {
     appointments?: AppointmentUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgeTemplatesInput = {
@@ -26253,6 +32093,8 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -26347,6 +32189,8 @@ export namespace Prisma {
     appointments?: AppointmentCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutParticipantBadgesInput = {
@@ -26378,6 +32222,8 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutParticipantBadgesInput = {
@@ -26507,6 +32353,8 @@ export namespace Prisma {
     appointments?: AppointmentUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutParticipantBadgesInput = {
@@ -26538,6 +32386,8 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type BadgeTemplateUpsertWithoutParticipantBadgesInput = {
@@ -26571,6 +32421,470 @@ export namespace Prisma {
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventCreateWithoutEmailCampaignsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logo?: string | null
+    event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    user: UserCreateNestedOneWithoutEventsInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutEmailCampaignsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    logo?: string | null
+    event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutEmailCampaignsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutEmailCampaignsInput, EventUncheckedCreateWithoutEmailCampaignsInput>
+  }
+
+  export type EmailLogCreateWithoutCampaignInput = {
+    id?: string
+    recipientEmail: string
+    recipientName?: string | null
+    status?: $Enums.EmailStatus
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    openedAt?: Date | string | null
+    clickedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailLogUncheckedCreateWithoutCampaignInput = {
+    id?: string
+    recipientEmail: string
+    recipientName?: string | null
+    status?: $Enums.EmailStatus
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    openedAt?: Date | string | null
+    clickedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailLogCreateOrConnectWithoutCampaignInput = {
+    where: EmailLogWhereUniqueInput
+    create: XOR<EmailLogCreateWithoutCampaignInput, EmailLogUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type EmailLogCreateManyCampaignInputEnvelope = {
+    data: EmailLogCreateManyCampaignInput | EmailLogCreateManyCampaignInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithoutEmailCampaignsInput = {
+    update: XOR<EventUpdateWithoutEmailCampaignsInput, EventUncheckedUpdateWithoutEmailCampaignsInput>
+    create: XOR<EventCreateWithoutEmailCampaignsInput, EventUncheckedCreateWithoutEmailCampaignsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutEmailCampaignsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutEmailCampaignsInput, EventUncheckedUpdateWithoutEmailCampaignsInput>
+  }
+
+  export type EventUpdateWithoutEmailCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutEmailCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EmailLogUpsertWithWhereUniqueWithoutCampaignInput = {
+    where: EmailLogWhereUniqueInput
+    update: XOR<EmailLogUpdateWithoutCampaignInput, EmailLogUncheckedUpdateWithoutCampaignInput>
+    create: XOR<EmailLogCreateWithoutCampaignInput, EmailLogUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type EmailLogUpdateWithWhereUniqueWithoutCampaignInput = {
+    where: EmailLogWhereUniqueInput
+    data: XOR<EmailLogUpdateWithoutCampaignInput, EmailLogUncheckedUpdateWithoutCampaignInput>
+  }
+
+  export type EmailLogUpdateManyWithWhereWithoutCampaignInput = {
+    where: EmailLogScalarWhereInput
+    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyWithoutCampaignInput>
+  }
+
+  export type EmailLogScalarWhereInput = {
+    AND?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
+    OR?: EmailLogScalarWhereInput[]
+    NOT?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
+    id?: StringFilter<"EmailLog"> | string
+    campaignId?: StringFilter<"EmailLog"> | string
+    recipientEmail?: StringFilter<"EmailLog"> | string
+    recipientName?: StringNullableFilter<"EmailLog"> | string | null
+    status?: EnumEmailStatusFilter<"EmailLog"> | $Enums.EmailStatus
+    errorMessage?: StringNullableFilter<"EmailLog"> | string | null
+    sentAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    openedAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    clickedAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailLog"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailLog"> | Date | string
+  }
+
+  export type EventCreateWithoutEmailTemplatesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logo?: string | null
+    event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    user: UserCreateNestedOneWithoutEventsInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    sponsors?: SponsorCreateNestedManyWithoutEventInput
+    appointments?: AppointmentCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutEmailTemplatesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location: string
+    slug: string
+    banner?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    sector?: string | null
+    type?: string | null
+    format?: string | null
+    timezone?: string | null
+    videoUrl?: string | null
+    supportEmail?: string | null
+    archived?: boolean
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    logo?: string | null
+    event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    badgeTemplates?: BadgeTemplateUncheckedCreateNestedManyWithoutEventInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
+    emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutEmailTemplatesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutEmailTemplatesInput, EventUncheckedCreateWithoutEmailTemplatesInput>
+  }
+
+  export type EventUpsertWithoutEmailTemplatesInput = {
+    update: XOR<EventUpdateWithoutEmailTemplatesInput, EventUncheckedUpdateWithoutEmailTemplatesInput>
+    create: XOR<EventCreateWithoutEmailTemplatesInput, EventUncheckedCreateWithoutEmailTemplatesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutEmailTemplatesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutEmailTemplatesInput, EventUncheckedUpdateWithoutEmailTemplatesInput>
+  }
+
+  export type EventUpdateWithoutEmailTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutEmailTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+    appointments?: AppointmentUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EmailCampaignCreateWithoutEmailLogsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutEmailCampaignsInput
+  }
+
+  export type EmailCampaignUncheckedCreateWithoutEmailLogsInput = {
+    id?: string
+    eventId: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailCampaignCreateOrConnectWithoutEmailLogsInput = {
+    where: EmailCampaignWhereUniqueInput
+    create: XOR<EmailCampaignCreateWithoutEmailLogsInput, EmailCampaignUncheckedCreateWithoutEmailLogsInput>
+  }
+
+  export type EmailCampaignUpsertWithoutEmailLogsInput = {
+    update: XOR<EmailCampaignUpdateWithoutEmailLogsInput, EmailCampaignUncheckedUpdateWithoutEmailLogsInput>
+    create: XOR<EmailCampaignCreateWithoutEmailLogsInput, EmailCampaignUncheckedCreateWithoutEmailLogsInput>
+    where?: EmailCampaignWhereInput
+  }
+
+  export type EmailCampaignUpdateToOneWithWhereWithoutEmailLogsInput = {
+    where?: EmailCampaignWhereInput
+    data: XOR<EmailCampaignUpdateWithoutEmailLogsInput, EmailCampaignUncheckedUpdateWithoutEmailLogsInput>
+  }
+
+  export type EmailCampaignUpdateWithoutEmailLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutEmailCampaignsNestedInput
+  }
+
+  export type EmailCampaignUncheckedUpdateWithoutEmailLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26690,6 +33004,8 @@ export namespace Prisma {
     badges?: BadgeUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserInput = {
@@ -26721,6 +33037,8 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     badgeTemplates?: BadgeTemplateUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
+    emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
+    emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutUserInput = {
@@ -26856,6 +33174,41 @@ export namespace Prisma {
     deliveredAt?: Date | string | null
     customData?: string | null
     qrCodeData?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailCampaignCreateManyEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    type?: $Enums.CampaignType
+    recipientType?: $Enums.RecipientType
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    totalRecipients?: number | null
+    successCount?: number | null
+    failureCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateCreateManyEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    type?: $Enums.CampaignType
+    category?: $Enums.TemplateCategory | null
+    isGlobal?: boolean
+    isActive?: boolean
+    isDefault?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27157,6 +33510,113 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EmailCampaignUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailLogs?: EmailLogUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type EmailCampaignUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailLogs?: EmailLogUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type EmailCampaignUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
+    successCount?: NullableIntFieldUpdateOperationsInput | number | null
+    failureCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
+    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    isGlobal?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SessionParticipantCreateManyParticipantInput = {
     id?: string
     sessionId: string
@@ -27441,6 +33901,62 @@ export namespace Prisma {
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customData?: NullableStringFieldUpdateOperationsInput | string | null
     qrCodeData?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogCreateManyCampaignInput = {
+    id?: string
+    recipientEmail: string
+    recipientName?: string | null
+    status?: $Enums.EmailStatus
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    openedAt?: Date | string | null
+    clickedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailLogUpdateWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogUncheckedUpdateWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogUncheckedUpdateManyWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

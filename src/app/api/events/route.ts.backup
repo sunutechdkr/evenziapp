@@ -6,27 +6,22 @@ import prisma from "@/lib/prisma";
 // GET /api/events - Récupérer la liste des événements
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
-    let whereCondition: any = {};
-    if (session.user.role === "ORGANIZER") whereCondition.userId = session.user.id;
-    else if (session.user.role === "USER" || session.user.role === "STAFF") return NextResponse.json([]);
     const { searchParams } = new URL(request.url);
     const includeArchived = searchParams.get('includeArchived') === 'true';
     const onlyArchived = searchParams.get('onlyArchived') === 'true';
     
     // Construire la condition de filtrage pour l'archivage
-    whereCondition = { ...whereCondition };
+    let archivedCondition = {};
     if (onlyArchived) {
-      whereCondition.archived = true;
+      archivedCondition = { archived: true };
     } else if (!includeArchived) {
-      whereCondition.archived = false;
+      archivedCondition = { archived: false };
     }
     // Si includeArchived est true, on ne filtre pas sur archived
     
     // Utiliser Prisma ORM au lieu de raw SQL pour une meilleure gestion des types
     const events = await prisma.event.findMany({
-      where: whereCondition,
+      where: archivedCondition,
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
@@ -60,7 +55,7 @@ export async function GET(request: Request) {
     });
     
     // Formater les données pour inclure le nombre d'inscriptions
-    const formattedEvents = events.map((event: any) => ({
+    const formattedEvents = events.map(event => ({
       ...event,
       start_date: event.startDate, // Pour compatibilité legacy
       end_date: event.endDate,     // Pour compatibilité legacy

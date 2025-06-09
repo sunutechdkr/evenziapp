@@ -19,6 +19,7 @@ import {
   PresentationChartLineIcon,
   Bars3Icon,
   ClockIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/components/ui/Logo";
 
@@ -221,6 +222,11 @@ export function EventSidebar({
       name: "Participants", 
       href: `${baseUrl}/participants`, 
       icon: UserGroupIcon,
+    },
+    { 
+      name: "Communication", 
+      href: `${baseUrl}/communication`, 
+      icon: EnvelopeIcon,
     },
     { 
       name: "Rendez-vous", 
