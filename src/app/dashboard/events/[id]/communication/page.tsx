@@ -10,7 +10,8 @@ import {
   DocumentTextIcon,
   ChartBarIcon,
   CalendarIcon,
-  EyeIcon
+  EyeIcon,
+  PaperAirplaneIcon
 } from '@heroicons/react/24/outline';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
+import SendEmailModal from "@/components/templates/SendEmailModal";
 import Link from 'next/link';
 
 interface Campaign {
@@ -59,6 +61,8 @@ export default function CommunicationPage() {
   const [loading, setLoading] = useState(true);
   const [templatesLoading, setTemplatesLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sendModalOpen, setSendModalOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<EmailTemplate | null>(null);
 
   useEffect(() => {
     fetchCampaigns();
@@ -170,6 +174,11 @@ export default function CommunicationPage() {
     } catch (error) {
       console.error('Erreur:', error);
     }
+  };
+
+  const handleSendEmail = (template: EmailTemplate) => {
+    setSelectedTemplate(template);
+    setSendModalOpen(true);
   };
 
   if (!session?.user || (session.user.role !== 'ORGANIZER' && session.user.role !== 'ADMIN')) {
@@ -396,6 +405,21 @@ export default function CommunicationPage() {
                                           onClick={(e) => e.stopPropagation()}
                                         />
                                       </div>
+                                      {template.isActive && (
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleSendEmail(template);
+                                          }}
+                                          className="text-green-600 border-green-600 hover:bg-green-50"
+                                        >
+                                          <PaperAirplaneIcon className="h-4 w-4 mr-1" />
+                                          Envoyer
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
                                   <p className="text-sm text-gray-600 mb-3">{template.description}</p>
@@ -416,6 +440,17 @@ export default function CommunicationPage() {
           </Tabs>
         </div>
       </div>
+
+      {/* Modal d'envoi d'email */}
+      <SendEmailModal
+        isOpen={sendModalOpen}
+        onClose={() => {
+          setSendModalOpen(false);
+          setSelectedTemplate(null);
+        }}
+        template={selectedTemplate}
+        eventId={eventId as string}
+      />
     </div>
   );
 } 
