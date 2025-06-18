@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 
-const secret = process.env.NEXTAUTH_SECRET || 'default-secret-for-dev';
+const secret = process.env.NEXTAUTH_SECRET;
+
+if (!secret) {
+  throw new Error('NEXTAUTH_SECRET is required');
+}
 
 interface JWTPayload {
   participantId?: string;

@@ -6,6 +6,7 @@ import EmailProvider from "next-auth/providers/email";
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 import { Resend } from 'resend';
+import { authOptions } from '@/lib/auth';
 
 // Initialiser Resend avec la clé API
 const resend = new Resend(process.env.RESEND_API_KEY);

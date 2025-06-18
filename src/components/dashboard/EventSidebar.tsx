@@ -266,7 +266,7 @@ export function EventSidebar({
     <>
       {/* Version mobile: bouton d'ouverture */}
       <button
-        className={`md:hidden fixed z-30 bottom-4 right-4 p-3 rounded-full bg-[#81B441] text-white shadow-lg transition-transform duration-200 ${
+        className={`md:hidden fixed z-30 top-4 left-4 p-3 rounded-full bg-[#81B441] text-white shadow-lg transition-transform duration-200 ${
           isExpanded ? 'rotate-45' : 'rotate-0'
         }`}
         onClick={() => toggleExpand(!isExpanded)}
@@ -274,7 +274,7 @@ export function EventSidebar({
         {isExpanded ? (
           <XMarkIcon className="h-6 w-6" />
         ) : (
-          <ChevronRightIcon className="h-6 w-6" />
+          <Bars3Icon className="h-6 w-6" />
         )}
       </button>
       
@@ -354,6 +354,7 @@ export function EventSidebar({
                 {item.href ? (
                   <Link 
                     href={item.href}
+                    onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }}
                     className={`
                       block py-2 px-3 rounded-md transition-colors duration-200
                       ${isActive(item.href, item.exact) 
@@ -402,6 +403,7 @@ export function EventSidebar({
                         <Link
                           key={subItem.name}
                           href={subItem.href}
+                          onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }}
                             className={`
                               block py-2 px-3 rounded-md text-sm transition-colors duration-200
                               ${isActive(subItem.href)

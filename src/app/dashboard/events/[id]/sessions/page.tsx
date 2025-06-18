@@ -49,6 +49,7 @@ type Speaker = {
 
 export default function EventSessionsPage({ params }: { params: Promise<{ id: string }> }) {
   const [eventId, setEventId] = useState<string>("");
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [event, setEvent] = useState<Event | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
@@ -238,9 +239,9 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <EventSidebar eventId={eventId} />
+      <EventSidebar eventId={eventId} onExpandChange={setSidebarExpanded} />
       
-      <main className="flex-1 p-6 ml-0 md:ml-64 transition-all duration-300 overflow-auto">
+      <main className={`transition-all duration-300 ease-in-out ${sidebarExpanded ? "md:ml-64" : "ml-0"} flex-1 p-6 overflow-auto`}>
         <div className="max-w-7xl mx-auto">
           {/* Header with back button and actions */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">

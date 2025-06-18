@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer toutes les campagnes d'un événement
 export async function GET(
@@ -32,12 +32,13 @@ export async function GET(
 
     // Récupérer les campagnes
     const campaigns = await prisma.emailCampaign.findMany({
-      where: {
-        eventId: id,
+      where: { eventId: id },
+      include: {
+        _count: {
+          select: { recipients: true }
+        }
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(campaigns);
@@ -78,7 +79,6 @@ export async function POST(
     }
 
     const body = await request.json();
-    
     const {
       name,
       description,
@@ -91,9 +91,9 @@ export async function POST(
     } = body;
 
     // Validation des données
-    if (!name || !subject || !htmlContent || !recipientType) {
+    if (!name || !subject || !htmlContent) {
       return NextResponse.json(
-        { error: 'Données manquantes' },
+        { error: 'Nom, sujet et contenu HTML sont requis' },
         { status: 400 }
       );
     }
@@ -105,12 +105,12 @@ export async function POST(
         name,
         description,
         type: type || 'CUSTOM',
-        recipientType,
+        recipientType: recipientType || 'ALL_PARTICIPANTS',
         subject,
         htmlContent,
         textContent,
-        status: scheduledAt ? 'SCHEDULED' : 'DRAFT',
         scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
+        status: 'DRAFT',
       },
     });
 

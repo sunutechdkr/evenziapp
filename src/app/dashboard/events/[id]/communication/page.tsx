@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { 
   PlusIcon, 
@@ -9,15 +9,17 @@ import {
   EnvelopeIcon,
   DocumentTextIcon,
   ChartBarIcon,
-  CalendarIcon,
-  EyeIcon,
-  PaperAirplaneIcon
+  CalendarIcon
 } from '@heroicons/react/24/outline';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import SendEmailModal from "@/components/templates/SendEmailModal";
 import Link from 'next/link';
@@ -55,6 +57,7 @@ interface EmailTemplate {
 
 export default function CommunicationPage() {
   const { id: eventId } = useParams();
+  const router = useRouter();
   const { data: session } = useSession();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
@@ -63,6 +66,16 @@ export default function CommunicationPage() {
   const [error, setError] = useState<string | null>(null);
   const [sendModalOpen, setSendModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<EmailTemplate | null>(null);
+  
+  // États pour le modal de création
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    subject: '',
+    description: '',
+    target: ''
+  });
 
   useEffect(() => {
     fetchCampaigns();
@@ -101,26 +114,53 @@ export default function CommunicationPage() {
     }
   };
 
-  const toggleTemplate = async (templateId: string, isActive: boolean) => {
+  const deleteCampaign = async (campaignId: string) => {
     try {
-      const response = await fetch(`/api/events/${eventId}/templates/${templateId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ isActive }),
+      const response = await fetch(`/api/events/${eventId}/campaigns/${campaignId}`, {
+        method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour du template');
+        throw new Error('Erreur lors de la suppression');
       }
 
-      setTemplates(templates.map(template => 
-        template.id === templateId ? { ...template, isActive } : template
-      ));
+      setCampaigns(campaigns.filter(c => c.id !== campaignId));
     } catch (error) {
       console.error('Erreur:', error);
     }
+  };
+
+  // Fonction pour obtenir les informations de campagne d'un template
+  const getTemplateStatus = (template: EmailTemplate) => {
+    // Chercher une campagne liée à ce template
+    const templateCampaigns = campaigns.filter(c => 
+      c.subject.includes(template.name) ||
+      c.description?.includes(template.name)
+    );
+
+    if (templateCampaigns.length > 0) {
+      // Prendre la campagne la plus récente
+      const latestCampaign = templateCampaigns.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )[0];
+
+      return {
+        status: latestCampaign.status,
+        campaign: latestCampaign
+      };
+    }
+
+    return { status: null, campaign: null };
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const getStatusBadge = (status: string) => {
@@ -148,37 +188,97 @@ export default function CommunicationPage() {
     return typeMap[type as keyof typeof typeMap] || type;
   };
 
-  const getTemplatesBySection = (section: string) => {
-    const sectionMap = {
-      inscription: ['CONFIRMATION_INSCRIPTION'],
-      participants: ['BIENVENUE_PARTICIPANT', 'RAPPEL_EVENEMENT', 'INFOS_PRATIQUES', 'SUIVI_POST_EVENEMENT'],
-      exposants: ['GUIDE_EXPOSANT', 'RAPPEL_INSTALLATION', 'INFOS_TECHNIQUES_STAND', 'BILAN_PARTICIPATION'],
-      speakers: ['CONFIRMATION_SPEAKER', 'INFOS_TECHNIQUES_PRESENTATION', 'RAPPEL_PRESENTATION', 'REMERCIEMENT_SPEAKER'],
-    };
-    
-    const categories = sectionMap[section as keyof typeof sectionMap] || [];
-    return templates.filter(t => categories.includes(t.category));
-  };
+  // Fonction pour créer un nouveau template
+  const createTemplate = async () => {
+    if (!formData.name.trim() || !formData.subject.trim() || !formData.target) {
+      alert('Veuillez remplir tous les champs obligatoires');
+      return;
+    }
 
-  const deleteCampaign = async (campaignId: string) => {
+    // Mapper les cibles vers les catégories techniques
+    const targetToCategory = {
+      'participants': 'BIENVENUE_PARTICIPANT',
+      'exposants': 'GUIDE_EXPOSANT',
+      'speakers': 'CONFIRMATION_SPEAKER',
+      'autres': 'INFOS_PRATIQUES'
+    };
+
     try {
-      const response = await fetch(`/api/events/${eventId}/campaigns/${campaignId}`, {
-        method: 'DELETE',
+      setCreating(true);
+      const response = await fetch(`/api/events/${eventId}/templates`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          subject: formData.subject.trim(),
+          description: formData.description.trim() || null,
+          category: targetToCategory[formData.target as keyof typeof targetToCategory],
+          htmlContent: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h1 style="color: #333; text-align: center;">{{eventName}}</h1>
+              <p style="color: #666; line-height: 1.6;">
+                Bonjour {{participantName}},
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                Contenu de votre email ici...
+              </p>
+              <div style="text-align: center; margin: 30px 0;">
+                <img src="{{eventBanner}}" alt="Bannière de l'événement" style="max-width: 100%; height: auto; border-radius: 8px;" />
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                Cordialement,<br>
+                L'équipe {{eventName}}
+              </p>
+            </div>
+          `.trim(),
+          textContent: `
+            {{eventName}}
+            
+            Bonjour {{participantName}},
+            
+            Contenu de votre email ici...
+            
+            Cordialement,
+            L'équipe {{eventName}}
+          `.trim(),
+          isActive: false,
+          isDefault: false,
+          isGlobal: false
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la suppression');
+        throw new Error('Erreur lors de la création du template');
       }
 
-      setCampaigns(campaigns.filter(c => c.id !== campaignId));
+      const newTemplate = await response.json();
+      
+      // Fermer le modal et réinitialiser le formulaire
+      setCreateModalOpen(false);
+      setFormData({ name: '', subject: '', description: '', target: '' });
+      
+      // Rediriger vers l'édition du nouveau template
+      router.push(`/dashboard/events/${eventId}/communication/templates/${newTemplate.id}/edit`);
+      
     } catch (error) {
       console.error('Erreur:', error);
+      alert('Erreur lors de la création du template');
+    } finally {
+      setCreating(false);
     }
   };
 
-  const handleSendEmail = (template: EmailTemplate) => {
-    setSelectedTemplate(template);
-    setSendModalOpen(true);
+  // Fonction pour ouvrir le modal avec une cible spécifique
+  const openCreateModal = (defaultTarget?: string) => {
+    setFormData({
+      name: '',
+      subject: '',
+      description: '',
+      target: defaultTarget || ''
+    });
+    setCreateModalOpen(true);
   };
 
   if (!session?.user || (session.user.role !== 'ORGANIZER' && session.user.role !== 'ADMIN')) {
@@ -208,12 +308,13 @@ export default function CommunicationPage() {
                 <h1 className="text-2xl font-bold text-gray-900">Communication</h1>
                 <p className="text-gray-600 mt-1">Gérez vos campagnes emails et templates pour cet événement</p>
               </div>
-              <Link href={`/dashboard/events/${eventId}/communication/create`}>
-                <Button className="bg-[#81B441] hover:bg-[#6a9636]">
-                  <PlusIcon className="h-4 w-4 mr-2" />
-                  Nouvelle campagne
-                </Button>
-              </Link>
+              <Button 
+                className="bg-[#81B441] hover:bg-[#6a9636]"
+                onClick={() => openCreateModal()}
+              >
+                <PlusIcon className="h-4 w-4 mr-2" />
+                Nouvelle campagne
+              </Button>
             </div>
           </div>
 
@@ -296,12 +397,13 @@ export default function CommunicationPage() {
                       <EnvelopeIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune campagne</h3>
                       <p className="text-gray-600 mb-4">Commencez par créer votre première campagne email.</p>
-                      <Link href={`/dashboard/events/${eventId}/communication/create`}>
-                        <Button className="bg-[#81B441] hover:bg-[#6a9636]">
-                          <PlusIcon className="h-4 w-4 mr-2" />
-                          Créer une campagne
-                        </Button>
-                      </Link>
+                      <Button 
+                        className="bg-[#81B441] hover:bg-[#6a9636]"
+                        onClick={() => openCreateModal()}
+                      >
+                        <PlusIcon className="h-4 w-4 mr-2" />
+                        Créer une campagne
+                      </Button>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -328,9 +430,6 @@ export default function CommunicationPage() {
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Button variant="outline" size="sm">
-                                <EyeIcon className="h-4 w-4" />
-                              </Button>
                               <Button 
                                 variant="outline" 
                                 size="sm"
@@ -351,90 +450,309 @@ export default function CommunicationPage() {
             {/* Templates Tab */}
             <TabsContent value="templates">
               <div className="space-y-6">
-                {/* Templates par section */}
-                {['inscription', 'participants', 'exposants', 'speakers'].map((section) => {
-                  const sectionTemplates = getTemplatesBySection(section);
-                  const sectionLabels = {
-                    inscription: { title: 'Inscription', icon: '✅', description: '1 template pour confirmer les inscriptions' },
-                    participants: { title: 'Participants', icon: '👥', description: '4 templates pour communiquer avec les participants' },
-                    exposants: { title: 'Exposants', icon: '🏢', description: '4 templates pour gérer les exposants' },
-                    speakers: { title: 'Speakers', icon: '🎤', description: '4 templates pour les intervenants' },
-                  };
-                  
-                  const sectionInfo = sectionLabels[section as keyof typeof sectionLabels];
-                  
-                  return (
-                    <Card key={section}>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <span className="text-2xl">{sectionInfo.icon}</span>
-                          {sectionInfo.title}
-                        </CardTitle>
-                        <CardDescription>{sectionInfo.description}</CardDescription>
+                {templatesLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-gray-500">Chargement des templates...</div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Section Registration/Participants */}
+                    <Card>
+                      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg text-blue-900">Campagnes pour les participants</CardTitle>
+                            <CardDescription className="text-blue-700">Templates pour les participants et inscriptions</CardDescription>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="border-blue-200 text-blue-700 hover:bg-blue-50"
+                            onClick={() => openCreateModal('participants')}
+                          >
+                            <PlusIcon className="h-4 w-4 mr-2" />
+                            Créer un email
+                          </Button>
+                        </div>
                       </CardHeader>
-                      <CardContent>
-                        {templatesLoading ? (
-                          <div className="flex items-center justify-center py-4">
-                            <div className="text-gray-500">Chargement...</div>
-                          </div>
-                        ) : sectionTemplates.length === 0 ? (
-                          <div className="text-center py-4">
-                            <p className="text-gray-500">Aucun template disponible pour cette section</p>
-                          </div>
-                        ) : (
-                          <div className="space-y-3">
-                            {sectionTemplates.map((template) => (
+                      <CardContent className="p-0">
+                        <div className="divide-y divide-gray-100">
+                          {templates.filter(t => ['CONFIRMATION_INSCRIPTION', 'BIENVENUE_PARTICIPANT', 'RAPPEL_EVENEMENT', 'INFOS_PRATIQUES'].includes(t.category || '')).map((template) => {
+                            const { campaign } = getTemplateStatus(template);
+                            return (
                               <Link 
                                 key={template.id} 
                                 href={`/dashboard/events/${eventId}/communication/templates/${template.id}/edit`}
                                 className="block"
                               >
-                                <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
-                                  <div className="flex items-center justify-between mb-2">
-                                    <div className="flex items-center gap-2">
-                                      <h4 className="font-medium text-gray-900">{template.name}</h4>
-                                      {template.isDefault && (
-                                        <Badge variant="outline" className="text-xs">Par défaut</Badge>
-                                      )}
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <div className="flex items-center">
-                                        <Switch
-                                          checked={template.isActive}
-                                          onCheckedChange={(checked) => toggleTemplate(template.id, checked)}
-                                          onClick={(e) => e.stopPropagation()}
-                                        />
+                                <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-2 h-2 rounded-full ${template.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+                                      <div>
+                                        <h4 className="font-medium text-gray-900">{template.name}</h4>
+                                        <p className="text-sm text-gray-600">{template.subject}</p>
                                       </div>
-                                      {template.isActive && (
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            handleSendEmail(template);
-                                          }}
-                                          className="text-green-600 border-green-600 hover:bg-green-50"
-                                        >
-                                          <PaperAirplaneIcon className="h-4 w-4 mr-1" />
-                                          Envoyer
-                                        </Button>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                      <div className="text-sm font-medium">
+                                        {template.isActive ? (
+                                          <span className="text-green-600">● Active</span>
+                                        ) : (
+                                          <span className="text-gray-500">● Inactive</span>
+                                        )}
+                                      </div>
+                                      <div className="text-xs text-gray-500">Participants</div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-2">
+                                      {campaign && (
+                                        <div className="text-xs text-gray-500">
+                                          {campaign.totalRecipients || 0} envoyés • {Math.round(((campaign.successCount || 0) / (campaign.totalRecipients || 1)) * 100)}% ouvert
+                                        </div>
                                       )}
                                     </div>
                                   </div>
-                                  <p className="text-sm text-gray-600 mb-3">{template.description}</p>
-                                  <p className="text-xs text-gray-500">
-                                    Sujet: {template.subject}
-                                  </p>
                                 </div>
                               </Link>
-                            ))}
-                          </div>
-                        )}
+                            );
+                          })}
+                        </div>
                       </CardContent>
                     </Card>
-                  );
-                })}
+
+                    {/* Section Exhibitors */}
+                    <Card>
+                      <CardHeader className="bg-gradient-to-r from-purple-50 to-violet-50 border-b">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg text-purple-900">Campagnes pour les exposants</CardTitle>
+                            <CardDescription className="text-purple-700">Templates pour les exposants</CardDescription>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="border-purple-200 text-purple-700 hover:bg-purple-50"
+                            onClick={() => openCreateModal('exposants')}
+                          >
+                            <PlusIcon className="h-4 w-4 mr-2" />
+                            Créer un email
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <div className="divide-y divide-gray-100">
+                          {templates.filter(t => ['GUIDE_EXPOSANT', 'RAPPEL_INSTALLATION', 'INFOS_TECHNIQUES_STAND'].includes(t.category || '')).map((template) => {
+                            const { status, campaign } = getTemplateStatus(template);
+                            return (
+                              <Link 
+                                key={template.id} 
+                                href={`/dashboard/events/${eventId}/communication/templates/${template.id}/edit`}
+                                className="block"
+                              >
+                                <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-2 h-2 rounded-full ${template.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+                                      <div>
+                                        <h4 className="font-medium text-gray-900">{template.name}</h4>
+                                        <p className="text-sm text-gray-600">{template.subject}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                      <div className="text-sm font-medium">
+                                        {status === 'SENT' ? (
+                                          <span className="text-green-600">● Envoyé</span>
+                                        ) : status === 'SCHEDULED' ? (
+                                          <span className="text-orange-600">● Programmé</span>
+                                        ) : template.isActive ? (
+                                          <span className="text-green-600">● Active</span>
+                                        ) : (
+                                          <span className="text-gray-500">● Inactive</span>
+                                        )}
+                                      </div>
+                                      <div className="text-xs text-gray-500">
+                                        {status === 'SENT' && campaign ? formatDate(campaign.sentAt || campaign.createdAt) : 
+                                         status === 'SCHEDULED' && campaign ? formatDate(campaign.scheduledAt || campaign.createdAt) : 
+                                         'En attente'}
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-2">
+                                      {campaign && (
+                                        <div className="text-xs text-gray-500">
+                                          {campaign.totalRecipients || 0} • {Math.round(((campaign.successCount || 0) / (campaign.totalRecipients || 1)) * 100)}%
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Section Speakers */}
+                    <Card>
+                      <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg text-orange-900">Campagnes pour les intervenants</CardTitle>
+                            <CardDescription className="text-orange-700">Templates pour les intervenants</CardDescription>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="border-orange-200 text-orange-700 hover:bg-orange-50"
+                            onClick={() => openCreateModal('speakers')}
+                          >
+                            <PlusIcon className="h-4 w-4 mr-2" />
+                            Créer un email
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <div className="divide-y divide-gray-100">
+                          {templates.filter(t => ['CONFIRMATION_SPEAKER', 'INFOS_TECHNIQUES_PRESENTATION', 'RAPPEL_PRESENTATION'].includes(t.category || '')).map((template) => {
+                            const { status, campaign } = getTemplateStatus(template);
+                            return (
+                              <Link 
+                                key={template.id} 
+                                href={`/dashboard/events/${eventId}/communication/templates/${template.id}/edit`}
+                                className="block"
+                              >
+                                <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-2 h-2 rounded-full ${template.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+                                      <div>
+                                        <h4 className="font-medium text-gray-900">{template.name}</h4>
+                                        <p className="text-sm text-gray-600">{template.subject}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                      <div className="text-sm font-medium">
+                                        {status === 'SENT' ? (
+                                          <span className="text-green-600">● Envoyé</span>
+                                        ) : status === 'SCHEDULED' ? (
+                                          <span className="text-orange-600">● Programmé</span>
+                                        ) : template.isActive ? (
+                                          <span className="text-green-600">● Active</span>
+                                        ) : (
+                                          <span className="text-gray-500">● Inactive</span>
+                                        )}
+                                      </div>
+                                      <div className="text-xs text-gray-500">
+                                        {status === 'SENT' && campaign ? formatDate(campaign.sentAt || campaign.createdAt) : 
+                                         status === 'SCHEDULED' && campaign ? formatDate(campaign.scheduledAt || campaign.createdAt) : 
+                                         'En attente'}
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-2">
+                                      {campaign && (
+                                        <div className="text-xs text-gray-500">
+                                          {campaign.totalRecipients || 0} • {Math.round(((campaign.successCount || 0) / (campaign.totalRecipients || 1)) * 100)}%
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Section Autres */}
+                    <Card>
+                      <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-50 border-b">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg text-gray-900">Autres campagnes</CardTitle>
+                            <CardDescription className="text-gray-700">Templates divers et personnalisés</CardDescription>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="border-gray-200 text-gray-700 hover:bg-gray-50"
+                            onClick={() => openCreateModal('autres')}
+                          >
+                            <PlusIcon className="h-4 w-4 mr-2" />
+                            Créer un email
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <div className="divide-y divide-gray-100">
+                          {templates.filter(t => !['CONFIRMATION_INSCRIPTION', 'BIENVENUE_PARTICIPANT', 'RAPPEL_EVENEMENT', 'INFOS_PRATIQUES', 'GUIDE_EXPOSANT', 'RAPPEL_INSTALLATION', 'INFOS_TECHNIQUES_STAND', 'CONFIRMATION_SPEAKER', 'INFOS_TECHNIQUES_PRESENTATION', 'RAPPEL_PRESENTATION'].includes(t.category || '')).map((template) => {
+                            const { status, campaign } = getTemplateStatus(template);
+                            return (
+                              <Link 
+                                key={template.id} 
+                                href={`/dashboard/events/${eventId}/communication/templates/${template.id}/edit`}
+                                className="block"
+                              >
+                                <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-2 h-2 rounded-full ${template.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+                                      <div>
+                                        <h4 className="font-medium text-gray-900">{template.name}</h4>
+                                        <p className="text-sm text-gray-600">{template.subject}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                      <div className="text-sm font-medium">
+                                        {status === 'SENT' ? (
+                                          <span className="text-green-600">● Envoyé</span>
+                                        ) : status === 'SCHEDULED' ? (
+                                          <span className="text-orange-600">● Programmé</span>
+                                        ) : template.isActive ? (
+                                          <span className="text-green-600">● Active</span>
+                                        ) : (
+                                          <span className="text-gray-500">● Inactive</span>
+                                        )}
+                                      </div>
+                                      <div className="text-xs text-gray-500">
+                                        {status === 'SENT' && campaign ? formatDate(campaign.sentAt || campaign.createdAt) : 
+                                         status === 'SCHEDULED' && campaign ? formatDate(campaign.scheduledAt || campaign.createdAt) : 
+                                         'En attente'}
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-2">
+                                      {campaign && (
+                                        <div className="text-xs text-gray-500">
+                                          {campaign.totalRecipients || 0} • {Math.round(((campaign.successCount || 0) / (campaign.totalRecipients || 1)) * 100)}%
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
               </div>
             </TabsContent>
           </Tabs>
@@ -451,6 +769,122 @@ export default function CommunicationPage() {
         template={selectedTemplate}
         eventId={eventId as string}
       />
+
+      {/* Modal de création de template */}
+      <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
+        <DialogContent className="sm:max-w-[500px] border-0 shadow-xl">
+          <DialogHeader className="bg-gradient-to-r from-[#81B441] to-[#6a9636] text-white p-6 rounded-t-lg -m-6 mb-4">
+            <DialogTitle className="text-xl font-semibold text-white">Créer un nouveau template</DialogTitle>
+            <DialogDescription className="text-green-50 mt-2">
+              Remplissez les champs ci-dessous pour créer un nouveau template email.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-6 py-4 px-2">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right font-medium text-gray-700">
+                Nom *
+              </Label>
+              <Input
+                id="name"
+                placeholder="Nom du template"
+                className="col-span-3 border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#81B441] focus:ring-opacity-20 shadow-sm"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subject" className="text-right font-medium text-gray-700">
+                Sujet *
+              </Label>
+              <Input
+                id="subject"
+                placeholder="Sujet de l'email"
+                className="col-span-3 border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#81B441] focus:ring-opacity-20 shadow-sm"
+                value={formData.subject}
+                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right font-medium text-gray-700">
+                Description
+              </Label>
+              <Textarea
+                id="description"
+                placeholder="Description optionnelle du template"
+                className="col-span-3 border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#81B441] focus:ring-opacity-20 shadow-sm resize-none"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="target" className="text-right font-medium text-gray-700">
+                Cible *
+              </Label>
+              <Select
+                value={formData.target}
+                onValueChange={(value) => setFormData({ ...formData, target: value })}
+              >
+                <SelectTrigger className="col-span-3 border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#81B441] focus:ring-opacity-20 shadow-sm">
+                  <SelectValue placeholder="Sélectionnez une cible" />
+                </SelectTrigger>
+                <SelectContent className="border-0 shadow-lg">
+                  <SelectItem value="participants">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      Participants
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="exposants">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      Exposants
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="speakers">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      Speakers
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="autres">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+                      Autres
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter className="flex gap-3 pt-4 border-t border-gray-100">
+            <Button 
+              variant="outline" 
+              onClick={() => setCreateModalOpen(false)}
+              className="border-0 bg-gray-100 hover:bg-gray-200 text-gray-700"
+            >
+              Annuler
+            </Button>
+            <Button 
+              onClick={createTemplate}
+              disabled={creating}
+              className="bg-[#81B441] hover:bg-[#6a9636] text-white border-0 shadow-md"
+            >
+              {creating ? (
+                <>
+                  <span className="animate-spin mr-2">⚪</span>
+                  Création...
+                </>
+              ) : (
+                <>
+                  <PlusIcon className="h-4 w-4 mr-2" />
+                  Créer le template
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 } 

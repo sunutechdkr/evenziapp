@@ -34,6 +34,9 @@ const userRoutes = [
   '/dashboard/user'
 ];
 
+// Simple rate limiting (à remplacer par Redis en production)
+const rateLimit = new Map();
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
@@ -109,6 +112,30 @@ export async function middleware(request: NextRequest) {
       default:
         return NextResponse.redirect(new URL('/dashboard/user', request.url));
     }
+  }
+
+  // Check rate limit
+  const ip = request.ip || 'unknown';
+  const now = Date.now();
+  const windowMs = 15 * 60 * 1000; // 15 minutes
+  const maxRequests = 100;
+
+  const userRequests = rateLimit.get(ip) || { count: 0, resetTime: now + windowMs };
+
+  if (now > userRequests.resetTime) {
+    userRequests.count = 1;
+    userRequests.resetTime = now + windowMs;
+  } else {
+    userRequests.count++;
+  }
+
+  rateLimit.set(ip, userRequests);
+
+  if (userRequests.count > maxRequests) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429 }
+    );
   }
 
   // Continue to protected route

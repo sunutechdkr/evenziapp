@@ -39,3 +39,31 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Build et cache
+.next/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Cache webpack
+.cache/
+
+# Fichiers temporaires
+tmp/
+temp/
+tmp_files/
+*.tmp
+*.bak
+temp_*
+tmp_*
+
+# Test files
+test-results/
+test-files/
+
+# Backups (garder seulement le dernier)
+backups/backup_20250610_234932/
+
+# Logs
+*.log
+.vercel
+

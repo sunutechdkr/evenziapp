@@ -63,7 +63,7 @@ export function NotificationPanel({
       
       {/* Panneau latéral */}
       <div 
-        className={`fixed top-0 right-0 h-full w-80 bg-[#212529] shadow-xl z-40 transform transition-transform duration-300 ease-in-out ${
+        onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }} className={`fixed top-0 right-0 h-full w-80 bg-[#212529] shadow-xl z-40 transform transition-transform duration-300 ease-in-out ${
           show ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -206,7 +206,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
     <>
       {/* Version mobile: bouton d'ouverture */}
       <button
-        className={`md:hidden fixed z-30 bottom-4 right-4 p-3 rounded-full bg-[#81B441] text-white shadow-lg transition-transform duration-200 ${
+        className={`md:hidden fixed z-30 top-4 left-4 p-3 rounded-full bg-[#81B441] text-white shadow-lg transition-transform duration-200 ${
           isExpanded ? 'rotate-45' : 'rotate-0'
         }`}
         onClick={() => toggleExpand(!isExpanded)}
@@ -214,7 +214,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
         {isExpanded ? (
           <XMarkIcon className="h-6 w-6" />
         ) : (
-          <ChevronRightIcon className="h-6 w-6" />
+          <Bars3Icon className="h-6 w-6" />
         )}
       </button>
       
@@ -239,7 +239,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
       
       {/* Barre latérale */}
       <aside 
-        className={`${
+        onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }} className={`${
           isExpanded ? 'translate-x-0 w-64' : '-translate-x-full w-0 md:w-16 md:translate-x-0'
         } fixed left-0 top-0 h-screen z-30 bg-gray-800 transition-all duration-300 ease-in-out transform overflow-y-auto overflow-x-hidden border-r border-gray-700`}
         style={{ 
@@ -292,7 +292,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
             <Link
               key={item.name}
               href={item.href}
-                className={`
+                onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }} className={`
                   block py-2 px-3 rounded-md transition-colors duration-200
                   ${item.highlight 
                     ? 'bg-purple-100 text-purple-900 hover:bg-purple-200' 

@@ -1,145 +1,166 @@
-# Inevent - Système de Gestion d'Événements
+# 🎉 InEvent - Plateforme de Gestion d'Événements
 
-Inevent est une application moderne de gestion d'événements construite avec Next.js, permettant aux organisateurs de créer, gérer et suivre leurs événements, ainsi que de faciliter l'enregistrement et le check-in des participants via QR code.
+Une plateforme moderne et complète pour la gestion d'événements, développée avec Next.js 15, Prisma, et PostgreSQL.
 
-## Fonctionnalités principales
+## ✨ Fonctionnalités
 
-- 🗓️ **Gestion d'événements** : Création, modification et suppression d'événements
-- 👥 **Gestion des participants** : Inscription, envoi d'e-mails et gestion des présences
-- 📱 **Check-in par QR code** : Système de check-in rapide via scan de QR code
-- 📊 **Tableau de bord** : Visualisation des statistiques et métriques clés
-- 🖨️ **Badges et certificats** : Génération de badges et certificats personnalisés
-- 🔒 **Authentification** : Système d'authentification sécurisé avec NextAuth
+- 📅 **Gestion d'événements** : Création, modification et gestion complète d'événements
+- 👥 **Gestion des participants** : Inscriptions, check-in QR code, badges personnalisés
+- 📊 **Analytiques avancées** : Tableaux de bord avec graphiques interactifs
+- 📧 **Communication** : Système d'emailing intégré avec templates personnalisables
+- 🎨 **Interface moderne** : Design responsive avec Tailwind CSS et Radix UI
+- 🔒 **Authentification sécurisée** : NextAuth.js avec support multi-providers
+- 📱 **Mobile-first** : Interface entièrement responsive
 
-## Structure du projet
+## 🚀 Déploiement sur Railway
 
-```
-inevent/
-├── prisma/                 # Schéma et migrations de base de données
-├── public/                 # Fichiers statiques
-├── src/
-│   ├── app/                # Routes de l'application (Next.js App Router)
-│   │   ├── api/            # Routes API
-│   │   ├── auth/           # Pages d'authentification
-│   │   ├── dashboard/      # Pages du tableau de bord
-│   │   │   └── eventslist/ # Page de check-in des participants
-│   ├── components/         # Composants réutilisables
-│   │   ├── dashboard/      # Composants du tableau de bord
-│   │   ├── auth/           # Composants d'authentification
-│   │   └── ...            
-│   ├── lib/                # Utilitaires et bibliothèques
-│   │   └── supabase.ts     # Configuration de Supabase
-│   └── types/              # Types et interfaces TypeScript
-├── .env                    # Variables d'environnement
-├── package.json            # Dépendances et scripts
-└── README.md               # Documentation du projet
+### Prérequis
+- Compte [Railway](https://railway.app)
+- Base de données PostgreSQL (fournie par Railway)
+
+### Étapes de déploiement
+
+1. **Cloner le repository**
+```bash
+git clone <your-repo-url>
+cd inevent
 ```
 
-## Technologies utilisées
+2. **Créer un nouveau projet Railway**
+- Connectez-vous à Railway
+- Cliquez sur "New Project"
+- Sélectionnez "Deploy from GitHub repo"
 
-- **Framework** : Next.js 15
-- **Langage** : TypeScript
-- **Base de données** : PostgreSQL (via Prisma)
-- **Stockage** : Supabase
+3. **Configurer la base de données**
+- Ajoutez un service PostgreSQL à votre projet Railway
+- Copiez la `DATABASE_URL` générée
+
+4. **Variables d'environnement**
+Configurez ces variables dans Railway :
+
+```env
+# Base de données (fournie par Railway)
+DATABASE_URL=postgresql://...
+
+# NextAuth (générez une clé secrète forte)
+NEXTAUTH_SECRET=your-super-secret-key-here
+NEXTAUTH_URL=https://your-app.railway.app
+
+# Email (optionnel)
+RESEND_API_KEY=your-resend-api-key
+
+# Production
+NODE_ENV=production
+PORT=3000
+```
+
+5. **Déployer**
+- Railway détectera automatiquement le `railway.toml`
+- Le déploiement se lancera automatiquement
+- Les migrations Prisma s'exécuteront automatiquement
+
+### Génération du NEXTAUTH_SECRET
+
+```bash
+openssl rand -base64 32
+```
+
+## 🛠️ Développement local
+
+### Installation
+
+```bash
+# Installer les dépendances
+npm install
+
+# Configurer la base de données
+cp env.example .env.local
+# Éditez .env.local avec vos variables
+
+# Générer le client Prisma
+npx prisma generate
+
+# Appliquer les migrations
+npx prisma db push
+
+# Lancer le serveur de développement
+npm run dev
+```
+
+### Scripts disponibles
+
+```bash
+npm run dev      # Serveur de développement
+npm run build    # Build de production
+npm run start    # Serveur de production
+npm run lint     # Linter ESLint
+```
+
+## 📁 Structure du projet
+
+```
+src/
+├── app/                 # App Router (Next.js 13+)
+│   ├── api/            # Routes API
+│   ├── dashboard/      # Interface d'administration
+│   └── auth/           # Pages d'authentification
+├── components/         # Composants réutilisables
+│   ├── ui/            # Composants UI de base
+│   └── dashboard/     # Composants du dashboard
+├── lib/               # Utilitaires et configurations
+├── types/             # Types TypeScript
+└── generated/         # Client Prisma généré
+```
+
+## 🔧 Technologies utilisées
+
+- **Framework** : Next.js 15 (App Router)
+- **Base de données** : PostgreSQL + Prisma ORM
 - **Authentification** : NextAuth.js
-- **Style** : CSS Modules et Tailwind CSS
-- **Icônes** : Heroicons
+- **UI** : Tailwind CSS + Radix UI
+- **Graphiques** : Chart.js + React-Chartjs-2
+- **Email** : Resend
+- **QR Codes** : html5-qrcode + qrcode
+- **Déploiement** : Railway
 
-## Installation et démarrage
+## 📊 Fonctionnalités détaillées
 
-1. Clonez le dépôt :
-   ```bash
-   git clone https://github.com/votre-utilisateur/inevent.git
-   cd inevent
-   ```
+### Dashboard
+- Vue d'ensemble des événements
+- Statistiques en temps réel
+- Graphiques interactifs
 
-2. Installez les dépendances :
-   ```bash
-   npm install
-   ```
+### Gestion d'événements
+- Création d'événements avec formulaire complet
+- Upload d'images (bannières, logos)
+- Gestion des sessions et intervenants
+- Système de sponsoring
 
-3. Configurez votre fichier `.env` avec vos propres variables d'environnement.
+### Participants
+- Inscription en ligne
+- Génération automatique de QR codes
+- Check-in mobile
+- Export des données
 
-4. Générez le client Prisma :
-   ```bash
-   npx prisma generate
-   ```
+### Communication
+- Templates d'emails personnalisables
+- Campagnes d'emailing
+- Notifications automatiques
 
-5. Créez et migrez la base de données :
-   ```bash
-   npx prisma migrate dev --name init
-   ```
+## 🔒 Sécurité
 
-6. Lancez le serveur de développement :
-   ```bash
-   npm run dev
-   ```
+- Headers de sécurité configurés
+- Validation des données avec Zod
+- Authentification sécurisée
+- Protection CSRF
+- Chiffrement des mots de passe
 
-7. Accédez à l'application à l'adresse [http://localhost:3000](http://localhost:3000)
+## 📞 Support
 
-## Configuration de la base de données
+Pour toute question ou problème :
+- Email : support@inevent.com
+- Documentation : [docs.inevent.com](https://docs.inevent.com)
 
-Le projet utilise Prisma avec PostgreSQL. Pour configurer votre base de données :
+## 📄 Licence
 
-1. Installez PostgreSQL localement ou utilisez un service cloud
-2. Mettez à jour l'URL de connexion dans le fichier `.env`
-3. Exécutez les migrations avec `npx prisma migrate dev`
-
-## Scripts de sauvegarde et restauration
-
-Le projet dispose de scripts pour faciliter la gestion des versions et le dépannage :
-
-### Sauvegarde
-
-Pour sauvegarder l'état actuel du projet :
-
-```bash
-# Avec un nom personnalisé
-./scripts/save.sh nom_de_version
-
-# Sans nom (utilisera automatiquement la date actuelle)
-./scripts/save.sh
-```
-
-### Restauration
-
-Pour restaurer le projet à une version précédente :
-
-```bash
-./scripts/restore.sh nom_de_version
-```
-
-Cela créera également une branche de sauvegarde avant la restauration, au cas où vous souhaiteriez revenir à l'état précédent.
-
-### Nettoyage
-
-Pour nettoyer l'application en cas de problèmes :
-
-```bash
-./scripts/clean.sh
-```
-
-Ce script arrête les processus Node.js en cours, supprime les fichiers temporaires et les caches, réinstalle les dépendances et reconstruit l'application.
-
-## Contribuer au projet
-
-1. Forker le projet
-2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. Committer vos changements (`git commit -m 'Ajout d'une nouvelle fonctionnalité'`)
-4. Pusher sur la branche (`git push origin feature/nouvelle-fonctionnalite`)
-5. Ouvrir une Pull Request
-
-## Bonnes pratiques de développement
-
-- **Nommage** : Utilisez des noms explicites pour les composants et fonctions
-- **Organisation** : Maintenez une séparation claire entre les composants, pages et utilitaires
-- **Commentaires** : Ajoutez des commentaires pour expliquer les parties complexes du code
-- **TypeScript** : Utilisez correctement les types pour améliorer la maintenabilité
-- **Tests** : Écrivez des tests pour les fonctionnalités importantes
-
-## Ressources supplémentaires
-
-- [Documentation Next.js](https://nextjs.org/docs)
-- [Documentation Prisma](https://www.prisma.io/docs)
-- [Documentation Supabase](https://supabase.io/docs)
-- [Documentation NextAuth.js](https://next-auth.js.org/)
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.

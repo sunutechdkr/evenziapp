@@ -1,0 +1,512 @@
+
+Object.defineProperty(exports, "__esModule", { value: true });
+
+const {
+  Decimal,
+  objectEnumValues,
+  makeStrictEnum,
+  Public,
+  getRuntime,
+  skip
+} = require('./runtime/index-browser.js')
+
+
+const Prisma = {}
+
+exports.Prisma = Prisma
+exports.$Enums = {}
+
+/**
+ * Prisma Client JS version: 6.6.0
+ * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+ */
+Prisma.prismaVersion = {
+  client: "6.6.0",
+  engine: "f676762280b54cd07c770017ed3711ddde35f37a"
+}
+
+Prisma.PrismaClientKnownRequestError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientKnownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)};
+Prisma.PrismaClientUnknownRequestError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientUnknownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.PrismaClientRustPanicError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientRustPanicError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.PrismaClientInitializationError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientInitializationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.PrismaClientValidationError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientValidationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.Decimal = Decimal
+
+/**
+ * Re-export of sql-template-tag
+ */
+Prisma.sql = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`sqltag is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.empty = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`empty is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.join = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`join is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.raw = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`raw is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.validator = Public.validator
+
+/**
+* Extensions
+*/
+Prisma.getExtensionContext = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`Extensions.getExtensionContext is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.defineExtension = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`Extensions.defineExtension is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+
+/**
+ * Shorthand utilities for JSON filtering
+ */
+Prisma.DbNull = objectEnumValues.instances.DbNull
+Prisma.JsonNull = objectEnumValues.instances.JsonNull
+Prisma.AnyNull = objectEnumValues.instances.AnyNull
+
+Prisma.NullTypes = {
+  DbNull: objectEnumValues.classes.DbNull,
+  JsonNull: objectEnumValues.classes.JsonNull,
+  AnyNull: objectEnumValues.classes.AnyNull
+}
+
+
+
+/**
+ * Enums
+ */
+
+exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
+  Serializable: 'Serializable'
+});
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  image: 'image',
+  password: 'password',
+  phone: 'phone',
+  plan: 'plan',
+  role: 'role',
+  permissions: 'permissions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  lastLogin: 'lastLogin'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+};
+
+exports.Prisma.EventScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  location: 'location',
+  slug: 'slug',
+  banner: 'banner',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  sector: 'sector',
+  type: 'type',
+  format: 'format',
+  timezone: 'timezone',
+  videoUrl: 'videoUrl',
+  supportEmail: 'supportEmail',
+  archived: 'archived',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  logo: 'logo'
+};
+
+exports.Prisma.RegistrationScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phone: 'phone',
+  type: 'type',
+  jobTitle: 'jobTitle',
+  company: 'company',
+  eventId: 'eventId',
+  qrCode: 'qrCode',
+  shortCode: 'shortCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  checkedIn: 'checkedIn',
+  checkInTime: 'checkInTime'
+};
+
+exports.Prisma.Event_sessionsScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  location: 'location',
+  speaker: 'speaker',
+  capacity: 'capacity',
+  format: 'format',
+  banner: 'banner',
+  video_url: 'video_url',
+  event_id: 'event_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.SponsorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  logo: 'logo',
+  website: 'website',
+  level: 'level',
+  visible: 'visible',
+  eventId: 'eventId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  participantId: 'participantId',
+  registeredAt: 'registeredAt',
+  attendedSession: 'attendedSession',
+  attendanceTime: 'attendanceTime'
+};
+
+exports.Prisma.AppointmentScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  requesterId: 'requesterId',
+  recipientId: 'recipientId',
+  status: 'status',
+  message: 'message',
+  proposedTime: 'proposedTime',
+  confirmedTime: 'confirmedTime',
+  location: 'location',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OtpCodeScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  eventId: 'eventId',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.BadgeScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  canvasData: 'canvasData',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BadgeTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  canvasData: 'canvasData',
+  isGlobal: 'isGlobal',
+  eventId: 'eventId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ParticipantBadgeScalarFieldEnum = {
+  id: 'id',
+  registrationId: 'registrationId',
+  eventId: 'eventId',
+  templateId: 'templateId',
+  status: 'status',
+  generatedAt: 'generatedAt',
+  printedAt: 'printedAt',
+  deliveredAt: 'deliveredAt',
+  customData: 'customData',
+  qrCodeData: 'qrCodeData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailCampaignScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  recipientType: 'recipientType',
+  subject: 'subject',
+  htmlContent: 'htmlContent',
+  textContent: 'textContent',
+  status: 'status',
+  scheduledAt: 'scheduledAt',
+  sentAt: 'sentAt',
+  totalRecipients: 'totalRecipients',
+  successCount: 'successCount',
+  failureCount: 'failureCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  subject: 'subject',
+  htmlContent: 'htmlContent',
+  textContent: 'textContent',
+  type: 'type',
+  category: 'category',
+  isGlobal: 'isGlobal',
+  eventId: 'eventId',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailLogScalarFieldEnum = {
+  id: 'id',
+  campaignId: 'campaignId',
+  recipientEmail: 'recipientEmail',
+  recipientName: 'recipientName',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  openedAt: 'openedAt',
+  clickedAt: 'clickedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.UserPlan = exports.$Enums.UserPlan = {
+  STARTER: 'STARTER',
+  PRO: 'PRO',
+  PREMIUM: 'PREMIUM'
+};
+
+exports.UserRole = exports.$Enums.UserRole = {
+  USER: 'USER',
+  STAFF: 'STAFF',
+  ORGANIZER: 'ORGANIZER',
+  ADMIN: 'ADMIN'
+};
+
+exports.SponsorLevel = exports.$Enums.SponsorLevel = {
+  PLATINUM: 'PLATINUM',
+  GOLD: 'GOLD',
+  SILVER: 'SILVER',
+  BRONZE: 'BRONZE',
+  PARTNER: 'PARTNER',
+  MEDIA: 'MEDIA',
+  OTHER: 'OTHER'
+};
+
+exports.AppointmentStatus = exports.$Enums.AppointmentStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  COMPLETED: 'COMPLETED'
+};
+
+exports.BadgeStatus = exports.$Enums.BadgeStatus = {
+  GENERATED: 'GENERATED',
+  PRINTED: 'PRINTED',
+  DELIVERED: 'DELIVERED'
+};
+
+exports.CampaignType = exports.$Enums.CampaignType = {
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  REMINDER: 'REMINDER',
+  INVITATION: 'INVITATION',
+  FOLLOW_UP: 'FOLLOW_UP',
+  CUSTOM: 'CUSTOM'
+};
+
+exports.RecipientType = exports.$Enums.RecipientType = {
+  ALL_PARTICIPANTS: 'ALL_PARTICIPANTS',
+  PARTICIPANTS: 'PARTICIPANTS',
+  SPEAKERS: 'SPEAKERS',
+  EXHIBITORS: 'EXHIBITORS',
+  SPONSORS: 'SPONSORS',
+  CUSTOM_LIST: 'CUSTOM_LIST'
+};
+
+exports.CampaignStatus = exports.$Enums.CampaignStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+};
+
+exports.TemplateCategory = exports.$Enums.TemplateCategory = {
+  CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
+  BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
+  RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
+  INFOS_PRATIQUES: 'INFOS_PRATIQUES',
+  SUIVI_POST_EVENEMENT: 'SUIVI_POST_EVENEMENT',
+  GUIDE_EXPOSANT: 'GUIDE_EXPOSANT',
+  RAPPEL_INSTALLATION: 'RAPPEL_INSTALLATION',
+  INFOS_TECHNIQUES_STAND: 'INFOS_TECHNIQUES_STAND',
+  BILAN_PARTICIPATION: 'BILAN_PARTICIPATION',
+  CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
+  INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
+  RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
+  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER'
+};
+
+exports.EmailStatus = exports.$Enums.EmailStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED',
+  OPENED: 'OPENED',
+  CLICKED: 'CLICKED'
+};
+
+exports.Prisma.ModelName = {
+  User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
+  Event: 'Event',
+  Registration: 'Registration',
+  event_sessions: 'event_sessions',
+  Sponsor: 'Sponsor',
+  SessionParticipant: 'SessionParticipant',
+  Appointment: 'Appointment',
+  OtpCode: 'OtpCode',
+  Badge: 'Badge',
+  BadgeTemplate: 'BadgeTemplate',
+  ParticipantBadge: 'ParticipantBadge',
+  EmailCampaign: 'EmailCampaign',
+  EmailTemplate: 'EmailTemplate',
+  EmailLog: 'EmailLog'
+};
+
+/**
+ * This is a stub Prisma Client that will error at runtime if called.
+ */
+class PrismaClient {
+  constructor() {
+    return new Proxy(this, {
+      get(target, prop) {
+        let message
+        const runtime = getRuntime()
+        if (runtime.isEdge) {
+          message = `PrismaClient is not configured to run in ${runtime.prettyName}. In order to run Prisma Client on edge runtime, either:
+- Use Prisma Accelerate: https://pris.ly/d/accelerate
+- Use Driver Adapters: https://pris.ly/d/driver-adapters
+`;
+        } else {
+          message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
+        }
+
+        message += `
+If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
+
+        throw new Error(message)
+      }
+    })
+  }
+}
+
+exports.PrismaClient = PrismaClient
+
+Object.assign(exports, Prisma)

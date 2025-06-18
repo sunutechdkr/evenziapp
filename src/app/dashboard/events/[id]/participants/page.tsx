@@ -108,7 +108,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [participantToDelete, setParticipantToDelete] = useState<Participant | null>(null);
   const [cancelCheckInConfirmOpen, setCancelCheckInConfirmOpen] = useState(false);
-  const [processing, setProcessing] = useState<{[key: string]: boolean}>({});
+// State pour tracker si le sidebar est étendu ou réduit
+const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processing, setProcessing] = useState<{[key: string]: boolean}>({});
   const [participantType, setParticipantType] = useState('all');
   const [checkinStatus, setCheckinStatus] = useState('all');
   const [selectedParticipant, setSelectedParticipant] = useState<Participant | null>(null);
@@ -1257,7 +1258,59 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       toast.error('Erreur lors de la suppression du participant');
     }
   };
+// Fermer la boîte de dialogue de confirmation d'annulation de check-in
+const closeCancelCheckInConfirm = () => {
+  setCancelCheckInConfirmOpen(false);
+};
 
+// Gérer l'annulation de l'enregistrement d'un participant
+const handleCancelCheckIn = async () => {
+  if (!selectedParticipant) return;
+  
+  try {
+    setProcessing((prev: Record<string, boolean>) => ({ ...prev, [selectedParticipant.id]: true }));
+    
+    // Appel à l'API pour annuler l'enregistrement
+    const response = await fetchWithRetry(
+      `/api/events/${eventId}/registrations/${selectedParticipant.id}/cancel-checkin`, 
+      createFetchOptions('POST')
+    );
+    
+    if (response.ok) {
+      // Mettre à jour l'état local du participant
+      setParticipants(prev => 
+        prev.map(p => 
+          p.id === selectedParticipant.id 
+            ? { ...p, checkedIn: false, checkinTime: undefined } 
+            : p
+        )
+      );
+      
+      // Mettre à jour le participant sélectionné dans la sidebar
+      setSelectedParticipant({
+        ...selectedParticipant,
+        checkedIn: false,
+        checkinTime: undefined
+      });
+      
+      toast.success('Enregistrement annulé avec succès');
+      
+      // Rafraîchir la liste des participants
+      setTimeout(() => {
+        fetchParticipants();
+      }, 1000);
+    } else {
+      // Gérer les erreurs
+      const error = await response.json();
+      toast.error(error.message || 'Erreur lors de l\'annulation');
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'annulation:', error);
+    toast.error('Erreur technique lors de l\'annulation');
+  } finally {
+    setProcessing((prev: Record<string, boolean>) => ({ ...prev, [selectedParticipant.id]: false }));
+  }
+}; 
   // Afficher un état de chargement
   if (loading) {
     return (
@@ -1279,11 +1332,11 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
   
   return (
     <div className="participants-container bg-[#f9fafb] min-h-screen">
-      <EventSidebar eventId={eventId} activeTab="participants" />
+      <EventSidebar eventId={eventId} activeTab="participants" onExpandChange={setSidebarExpanded} />
       
-      <div className="p-6 ml-64">
+      <div className={`transition-all duration-300 ease-in-out ${sidebarExpanded ? "md:ml-64" : "ml-0"} p-4 md:p-6`}>
         {/* En-tête de la page */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
           <div>
             <div className="flex items-center space-x-2 text-sm text-gray-500 mb-1">
               <Link href="/dashboard" className="hover:text-gray-700">Dashboard</Link>
@@ -1300,7 +1353,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               )}
               <span className="font-medium text-gray-600">Participants</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
               {loading ? (
                 <Skeleton className="h-8 w-48" />
               ) : (
@@ -1309,7 +1362,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             </h1>
           </div>
           
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             <Button
               variant="outline"
               className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]"
@@ -1357,7 +1410,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               </div>
               
         {/* Carte des statistiques */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-500">Total des participants</CardTitle>
@@ -1425,8 +1478,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
           </div>
           
         {/* Barre de recherche et filtres */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center w-full max-w-md relative">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-4 md:space-y-0">
+          <div className="flex items-center w-full md:max-w-md relative">
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
                     type="text"
@@ -1437,9 +1490,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   />
                 </div>
           
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
             <Select value={participantType} onValueChange={setParticipantType}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[160px] md:w-[180px]">
                 <SelectValue placeholder="Type de participant" />
               </SelectTrigger>
               <SelectContent>
@@ -1450,7 +1503,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             </Select>
             
             <Select value={checkinStatus} onValueChange={setCheckinStatus}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[160px] md:w-[180px]">
                 <SelectValue placeholder="Statut check-in" />
               </SelectTrigger>
               <SelectContent>
@@ -1468,7 +1521,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             <div className="text-sm text-gray-600">
               <span className="font-medium">{selectedParticipants.length}</span> participant(s) sélectionné(s)
                 </div>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -1576,7 +1629,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                       />
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                         <Avatar className="h-9 w-9 bg-gradient-to-br from-blue-100 to-green-100 border border-white">
                           <AvatarFallback className="text-gray-700">{participant.firstName.charAt(0)}{participant.lastName.charAt(0)}</AvatarFallback>
                         </Avatar>
@@ -2117,61 +2170,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
           </DialogFooter>
         </DialogContent>
       </Dialog>
-                    </div>
+    </div>
   );
 } 
 
 
-// Fermer la boîte de dialogue de confirmation d'annulation de check-in
-const closeCancelCheckInConfirm = () => {
-  setCancelCheckInConfirmOpen(false);
-};
-
-// Gérer l'annulation de l'enregistrement d'un participant
-const handleCancelCheckIn = async () => {
-  if (!selectedParticipant) return;
-  
-  try {
-    setProcessing((prev: Record<string, boolean>) => ({ ...prev, [selectedParticipant.id]: true }));
-    
-    // Appel à l'API pour annuler l'enregistrement
-    const response = await fetchWithRetry(
-      `/api/events/${params.id}/registrations/${selectedParticipant.id}/cancel-checkin`, 
-      createFetchOptions('POST')
-    );
-    
-    if (response.ok) {
-      // Mettre à jour l'état local du participant
-      setParticipants(prev => 
-        prev.map(p => 
-          p.id === selectedParticipant.id 
-            ? { ...p, checkedIn: false, checkinTime: undefined } 
-            : p
-        )
-      );
-      
-      // Mettre à jour le participant sélectionné dans la sidebar
-      setSelectedParticipant({
-        ...selectedParticipant,
-        checkedIn: false,
-        checkinTime: undefined
-      });
-      
-      toast.success('Enregistrement annulé avec succès');
-      
-      // Rafraîchir la liste des participants
-      setTimeout(() => {
-        fetchParticipants();
-      }, 1000);
-    } else {
-      // Gérer les erreurs
-      const error = await response.json();
-      toast.error(error.message || 'Erreur lors de l\'annulation');
-    }
-  } catch (error) {
-    console.error('Erreur lors de l\'annulation:', error);
-    toast.error('Erreur technique lors de l\'annulation');
-  } finally {
-    setProcessing((prev: Record<string, boolean>) => ({ ...prev, [selectedParticipant.id]: false }));
-  }
-};

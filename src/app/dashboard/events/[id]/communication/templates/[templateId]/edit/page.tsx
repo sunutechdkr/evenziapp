@@ -3,14 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { ArrowLeftIcon, CheckIcon, XMarkIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, CheckIcon, XMarkIcon, EnvelopeIcon, CalendarIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
+import SendEmailModal from "@/components/templates/SendEmailModal";
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
@@ -19,6 +21,22 @@ const RichTextEditor = dynamic(() => import('@/components/ui/RichTextEditor'), {
   ssr: false,
   loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-md" />
 });
+
+interface Campaign {
+  id: string;
+  name: string;
+  description?: string;
+  type: string;
+  recipientType: string;
+  subject: string;
+  status: string;
+  scheduledAt?: string;
+  sentAt?: string;
+  totalRecipients?: number;
+  successCount?: number;
+  failureCount?: number;
+  createdAt: string;
+}
 
 interface EmailTemplate {
   id: string;
@@ -69,9 +87,15 @@ export default function TemplateEditPage() {
   const [testSuccess, setTestSuccess] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
+  // Template management state
+  const [sendModalOpen, setSendModalOpen] = useState(false);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [templateLoading, setTemplateLoading] = useState(false);
+
   useEffect(() => {
     fetchTemplate();
     fetchEvent();
+    fetchCampaigns();
   }, [eventId, templateId]);
 
   useEffect(() => {
@@ -115,6 +139,83 @@ export default function TemplateEditPage() {
     } catch (err) {
       console.error('Erreur event:', err);
     }
+  };
+
+  const fetchCampaigns = async () => {
+    try {
+      const response = await fetch(`/api/events/${eventId}/campaigns`);
+      if (!response.ok) {
+        throw new Error('Erreur lors du chargement des campagnes');
+      }
+      const data = await response.json();
+      setCampaigns(data);
+    } catch (err) {
+      console.error('Erreur campaigns:', err);
+    }
+  };
+
+  const toggleTemplate = async (isActive: boolean) => {
+    if (!template) return;
+
+    setTemplateLoading(true);
+    try {
+      const response = await fetch(`/api/events/${eventId}/templates/${templateId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isActive }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du template');
+      }
+
+      const updatedTemplate = await response.json();
+      setTemplate(updatedTemplate);
+      
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de la mise à jour du template');
+    } finally {
+      setTemplateLoading(false);
+    }
+  };
+
+  const handleSendEmail = () => {
+    setSendModalOpen(true);
+  };
+
+  const getTemplateStatus = () => {
+    // Chercher une campagne liée à ce template
+    const templateCampaigns = campaigns.filter((c: Campaign) => 
+      c.subject.includes(template?.name || '') ||
+      c.description?.includes(template?.name || '')
+    );
+
+    if (templateCampaigns.length > 0) {
+      // Prendre la campagne la plus récente
+      const latestCampaign = templateCampaigns.sort((a: Campaign, b: Campaign) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )[0];
+
+      return {
+        status: latestCampaign.status,
+        campaign: latestCampaign
+      };
+    }
+
+    return { status: null, campaign: null };
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const getCategoryLabel = (category: string) => {
@@ -389,6 +490,103 @@ export default function TemplateEditPage() {
                 </div>
               </div>
 
+              {/* Template Activation and Campaign Management */}
+              <div className="bg-white rounded-lg shadow-sm border p-6">
+                <h2 className="text-lg font-semibold mb-4">Activation et campagnes</h2>
+                <div className="space-y-6">
+                  {/* Template Activation */}
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <h3 className="font-medium text-gray-900">Statut du template</h3>
+                      <p className="text-sm text-gray-600">
+                        {template?.isActive ? 'Template activé et prêt à être utilisé' : 'Template désactivé'}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={`text-sm font-medium ${
+                        template?.isActive ? 'text-green-700' : 'text-gray-500'
+                      }`}>
+                        {template?.isActive ? 'Actif' : 'Inactif'}
+                      </span>
+                      <Switch
+                        checked={template?.isActive || false}
+                        disabled={templateLoading}
+                        onCheckedChange={(checked) => toggleTemplate(checked)}
+                        className="data-[state=checked]:bg-green-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Campaign Info */}
+                  {template?.isActive && (() => {
+                    const { status, campaign } = getTemplateStatus();
+                    return (
+                      <div className="space-y-4">
+                        {/* Campaign Status */}
+                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <CalendarIcon className="h-5 w-5 text-blue-500" />
+                            <div>
+                              <h4 className="font-medium text-gray-900">État de la campagne</h4>
+                              <p className="text-sm text-gray-600">
+                                {status === 'SENT' ? 'Campagne envoyée' :
+                                 status === 'SCHEDULED' ? 'Campagne programmée' :
+                                 'Aucune campagne active'}
+                              </p>
+                            </div>
+                          </div>
+                          {status && (
+                            <Badge variant={status === 'SENT' ? 'default' : 'secondary'}>
+                              {status === 'SENT' ? 'Envoyé' : 
+                               status === 'SCHEDULED' ? 'Programmé' : status}
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Campaign Details */}
+                        {campaign && (
+                          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h4 className="font-medium text-blue-900 mb-2">Détails de la dernière campagne</h4>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <span className="text-blue-700 font-medium">Destinataires:</span>
+                                <span className="ml-2">{campaign.totalRecipients || 0}</span>
+                              </div>
+                              <div>
+                                <span className="text-blue-700 font-medium">Succès:</span>
+                                <span className="ml-2 text-green-600">{campaign.successCount || 0}</span>
+                              </div>
+                              {campaign.sentAt && (
+                                <div className="col-span-2">
+                                  <span className="text-blue-700 font-medium">Date d&apos;envoi:</span>
+                                  <span className="ml-2">{formatDate(campaign.sentAt)}</span>
+                                </div>
+                              )}
+                              {campaign.scheduledAt && !campaign.sentAt && (
+                                <div className="col-span-2">
+                                  <span className="text-blue-700 font-medium">Programmé pour:</span>
+                                  <span className="ml-2">{formatDate(campaign.scheduledAt)}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Action Button */}
+                        <Button
+                          onClick={handleSendEmail}
+                          className="w-full bg-[#81B441] hover:bg-[#6a9636]"
+                          disabled={!template?.isActive}
+                        >
+                          <PaperAirplaneIcon className="h-4 w-4 mr-2" />
+                          Programmer une nouvelle campagne
+                        </Button>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
               <div className="bg-white rounded-lg shadow-sm border p-6">
                 <h2 className="text-lg font-semibold mb-4">Contenu HTML</h2>
                 <RichTextEditor
@@ -447,39 +645,28 @@ export default function TemplateEditPage() {
             <div className="flex flex-col items-center justify-center py-8">
               <div className="relative">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                  <svg className="w-8 h-8 text-green-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                  <CheckIcon className="h-8 w-8 text-green-600" />
+                  <div className="absolute inset-0 bg-green-100 rounded-full animate-ping opacity-75"></div>
                 </div>
-                {/* Cercles d'animation */}
-                <div className="absolute inset-0 w-16 h-16 bg-green-100 rounded-full animate-ping opacity-20"></div>
-                <div className="absolute inset-0 w-16 h-16 bg-green-100 rounded-full animate-ping opacity-10" style={{ animationDelay: '0.5s' }}></div>
               </div>
               <h3 className="text-lg font-semibold text-green-800 mb-2">Email envoyé avec succès !</h3>
-              <p className="text-sm text-green-600 text-center">
-                Vérifiez votre boîte de réception à l&apos;adresse :<br />
-                <strong>{testEmail}</strong>
-              </p>
+              <p className="text-green-600 text-center">Vérifiez votre boîte de réception</p>
             </div>
           ) : (
-            /* Formulaire normal */
-            <>
-              <div className="space-y-4 mt-4">
-                <div>
-                  <Label htmlFor="testEmail">Adresse email</Label>
-                  <Input
-                    id="testEmail"
-                    type="email"
-                    value={testEmail}
-                    onChange={(e) => setTestEmail(e.target.value)}
-                    placeholder="exemple@email.com"
-                    className="mt-2"
-                    disabled={sendingTest}
-                  />
-                </div>
+            <div className="space-y-4 mt-4">
+              <div>
+                <Label htmlFor="testEmail">Adresse email</Label>
+                <Input
+                  id="testEmail"
+                  type="email"
+                  placeholder="votre.email@exemple.com"
+                  value={testEmail}
+                  onChange={(e) => setTestEmail(e.target.value)}
+                  className="mt-2"
+                />
               </div>
-
-              <div className="flex justify-end gap-2 mt-6">
+              
+              <div className="flex justify-end gap-2">
                 <Button 
                   variant="outline" 
                   onClick={() => setIsTestModalOpen(false)}
@@ -492,14 +679,23 @@ export default function TemplateEditPage() {
                   disabled={!testEmail || sendingTest}
                   className="bg-[#81B441] hover:bg-[#6a9636]"
                 >
-                  <EnvelopeIcon className="h-4 w-4 mr-2" />
-                  {sendingTest ? 'Envoi...' : 'Envoyer'}
+                  {sendingTest ? 'Envoi...' : 'Envoyer le test'}
                 </Button>
               </div>
-            </>
+            </div>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Modal d'envoi d'email */}
+      <SendEmailModal
+        isOpen={sendModalOpen}
+        onClose={() => {
+          setSendModalOpen(false);
+        }}
+        template={template}
+        eventId={eventId as string}
+      />
     </div>
   );
 } 
