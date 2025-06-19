@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = context.params;
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query") || "";
     

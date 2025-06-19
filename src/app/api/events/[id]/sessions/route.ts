@@ -15,7 +15,7 @@ type Speaker = {
 // GET /api/events/[id]/sessions - Récupérer toutes les sessions d'un événement
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string | string[] }> }
+  context: { params: { id: string | string[] } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -159,7 +159,7 @@ export async function GET(
 // POST /api/events/[id]/sessions - Créer une nouvelle session
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string | string[] }> }
+  context: { params: { id: string | string[] } }
 ) {
   try {
     const session = await getServerSession(authOptions);

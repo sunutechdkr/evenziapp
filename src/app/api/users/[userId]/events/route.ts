@@ -6,11 +6,10 @@ import { UserRole } from '@/types/models';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
+  context: { params: { userId: string } }
 ) {
   try {
-    // Await params for Next.js 15 compatibility
-    const { userId } = await params;
+    const { userId } = context.params;
     
     // Vérifier l'authentification et les autorisations
     const session = await getServerSession(authOptions);

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 // GET: Récupère tous les rendez-vous pour un événement spécifique
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -85,7 +85,7 @@ export async function GET(
 // POST: Crée un nouveau rendez-vous
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);

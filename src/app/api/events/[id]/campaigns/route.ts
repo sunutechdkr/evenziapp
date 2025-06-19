@@ -6,11 +6,10 @@ import { prisma } from '@/lib/prisma';
 // GET - Récupérer toutes les campagnes d'un événement
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
-    // Await params for Next.js 15 compatibility
-    const { id } = await params;
+    const { id } = context.params;
     
     const session = await getServerSession(authOptions);
     
@@ -54,11 +53,10 @@ export async function GET(
 // POST - Créer une nouvelle campagne
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
-    // Await params for Next.js 15 compatibility
-    const { id } = await params;
+    const { id } = context.params;
     
     const session = await getServerSession(authOptions);
     

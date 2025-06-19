@@ -7,7 +7,7 @@ import { authOptions } from "@/lib/auth";
 // Rechercher des participants d'un événement qui ne sont pas déjà inscrits à cette session
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string; sessionId: string }> }
+  context: { params: { id: string; sessionId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,7 +18,7 @@ export async function GET(
       );
     }
 
-    const { id, sessionId } = await params;
+    const { id, sessionId } = context.params;
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query") || "";
     

@@ -8,7 +8,7 @@ import { generateShortCode } from "@/lib/shortcodes";
 // GET /api/events/[id]/registrations - Get registrations for an event
 export async function GET(
   request: Request, 
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   // Check for authentication
   const session = await getServerSession(authOptions);
@@ -20,7 +20,7 @@ export async function GET(
     );
   }
   
-  const { id } = await params;
+  const { id } = context.params;
   const url = new URL(request.url);
   const userEmail = url.searchParams.get('userEmail');
   
@@ -144,7 +144,7 @@ export async function GET(
 // POST /api/events/[id]/registrations - Create a new registration
 export async function POST(
   request: Request, 
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   // Check for authentication
   const session = await getServerSession(authOptions);
@@ -156,7 +156,7 @@ export async function POST(
     );
   }
   
-  const { id } = await params;
+  const { id } = context.params;
   
   try {
     // Check if the event exists using raw SQL query

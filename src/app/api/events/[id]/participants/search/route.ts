@@ -3,11 +3,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     // Important: Attendre le paramètre id dans Next.js 14+
-    const { id } = await params;
+    const { id } = context.params;
     if (!id) {
       console.error("ID d'événement manquant dans la requête");
       return NextResponse.json(

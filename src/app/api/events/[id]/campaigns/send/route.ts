@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);

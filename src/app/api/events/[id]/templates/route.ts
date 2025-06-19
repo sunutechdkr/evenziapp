@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -13,7 +13,7 @@ export async function GET(
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const { id: eventId } = await params;
+    const { id: eventId } = context.params;
 
     // Vérifier que l'événement existe et que l'utilisateur y a accès
     const event = await prisma.event.findFirst({
@@ -122,7 +122,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -130,7 +130,7 @@ export async function POST(
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const { id: eventId } = await params;
+    const { id: eventId } = context.params;
 
     // Vérifier que l'événement existe et que l'utilisateur y a accès
     const event = await prisma.event.findFirst({

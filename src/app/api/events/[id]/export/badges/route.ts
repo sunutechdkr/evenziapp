@@ -7,7 +7,7 @@ import PDFDocument from 'pdfkit';
 // GET /api/events/[id]/export/badges - Exporter les badges au format PDF
 export async function GET(
   request: Request, 
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
@@ -19,7 +19,7 @@ export async function GET(
     );
   }
   
-  const { id } = await params;
+  const { id } = context.params;
   
   try {
     // Vérifier si l'événement existe

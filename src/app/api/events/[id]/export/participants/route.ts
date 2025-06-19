@@ -25,7 +25,7 @@ interface ParticipantData {
 // GET /api/events/[id]/export/participants - Exporter les participants au format Excel
 export async function GET(
   request: Request, 
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
@@ -37,7 +37,7 @@ export async function GET(
     );
   }
   
-  const { id } = await params;
+  const { id } = context.params;
   
   try {
     // Vérifier si l'événement existe

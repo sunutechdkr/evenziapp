@@ -7,7 +7,7 @@ import { authOptions } from "@/lib/auth";
 // Marquer la présence d'un participant à une session
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string; sessionId: string }> }
+  context: { params: { id: string; sessionId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,7 +18,7 @@ export async function PATCH(
       );
     }
 
-    const { id, sessionId } = await params;
+    const { id, sessionId } = context.params;
     const { participantId, attended } = await request.json();
 
     if (!participantId) {

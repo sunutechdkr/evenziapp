@@ -26,7 +26,7 @@ type Sponsor = {
 // GET /api/events/[id]/sponsors - Récupérer tous les sponsors d'un événement
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -77,7 +77,7 @@ export async function GET(
 // POST /api/events/[id]/sponsors - Ajouter un nouveau sponsor
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
