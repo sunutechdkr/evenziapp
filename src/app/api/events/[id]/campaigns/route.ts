@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 // GET - Récupérer toutes les campagnes d'un événement
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Await params for Next.js 15 compatibility
@@ -30,7 +30,7 @@ export async function GET(
       return NextResponse.json({ error: 'Événement non trouvé' }, { status: 404 });
     }
 
-    // Récupérer les campagnes
+    // Récupérer les campagnes avec stats
     const campaigns = await prisma.emailCampaign.findMany({
       where: { eventId: id },
       include: {
@@ -54,7 +54,7 @@ export async function GET(
 // POST - Créer une nouvelle campagne
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Await params for Next.js 15 compatibility

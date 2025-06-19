@@ -1,24 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { UserRole } from '@/types/models';
-
-const prisma = new PrismaClient();
-
-type EventRecord = {
-  id: string;
-  name: string;
-  start_date: Date;
-  end_date: Date;
-  slug: string | null;
-}
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
+    // Await params for Next.js 15 compatibility
+    const { userId } = await params;
+    
     // Vérifier l'authentification et les autorisations
     const session = await getServerSession(authOptions);
     
@@ -28,35 +21,35 @@ export async function GET(
 
     // Vérifier que l'utilisateur est autorisé (admin ou l'utilisateur lui-même)
     const isAdmin = session.user?.role === UserRole.ADMIN;
-    const isSelf = session.user?.id === (await params).userId;
+    const isSelf = session.user?.id === userId;
 
     if (!isAdmin && !isSelf) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 403 });
     }
 
     // Récupérer les événements de l'utilisateur
-    const events = await prisma.events.findMany({
+    const events = await prisma.event.findMany({
       where: {
-        user_id: (await params).userId
+        userId: userId
       },
       select: {
         id: true,
         name: true,
-        start_date: true,
-        end_date: true,
+        startDate: true,
+        endDate: true,
         slug: true,
       },
       orderBy: {
-        start_date: 'desc'
+        startDate: 'desc'
       }
     });
 
     // Formater les données pour la réponse
-    const formattedEvents = events.map((event: EventRecord) => ({
+    const formattedEvents = events.map((event) => ({
       id: event.id,
       name: event.name,
-      startDate: event.start_date,
-      endDate: event.end_date,
+      startDate: event.startDate,
+      endDate: event.endDate,
       slug: event.slug
     }));
 

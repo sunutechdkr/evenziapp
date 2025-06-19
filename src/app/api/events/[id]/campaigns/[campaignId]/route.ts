@@ -6,7 +6,7 @@ import prisma from '@/lib/prisma';
 // GET - Récupérer une campagne spécifique
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
     // Await params for Next.js 15 compatibility
@@ -61,7 +61,7 @@ export async function GET(
 // PUT - Mettre à jour une campagne
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
     // Await params for Next.js 15 compatibility
@@ -147,7 +147,7 @@ export async function PUT(
 // DELETE - Supprimer une campagne
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
     // Await params for Next.js 15 compatibility
@@ -200,4 +200,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-} 
+}

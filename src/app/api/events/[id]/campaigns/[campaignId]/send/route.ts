@@ -9,12 +9,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // POST - Envoyer une campagne email
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
-  // Await params for Next.js 15 compatibility
-  const { id, campaignId } = await params;
-  
   try {
+    // Await params for Next.js 15 compatibility
+    const { id, campaignId } = await params;
+    
     const session = await getServerSession(authOptions);
     
     if (!session?.user) {
@@ -141,7 +141,7 @@ export async function POST(
           text: campaign.textContent?.replace(/{{name}}/g, recipient.name),
         });
 
-        // Logger le succès
+        // Enregistrer la livraison
         await prisma.emailLog.create({
           data: {
             campaignId,
@@ -156,7 +156,7 @@ export async function POST(
       } catch (error) {
         console.error(`Erreur envoi email à ${recipient.email}:`, error);
         
-        // Logger l'échec
+        // Enregistrer l'échec
         await prisma.emailLog.create({
           data: {
             campaignId,
@@ -191,6 +191,9 @@ export async function POST(
 
   } catch (error) {
     console.error('Erreur lors de l\'envoi de la campagne:', error);
+    
+    // Pour éviter l'erreur de linter, nous devons récupérer campaignId à nouveau
+    const { campaignId } = await params;
     
     // Marquer la campagne comme échouée
     await prisma.emailCampaign.update({

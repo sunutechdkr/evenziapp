@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { QrCodeIcon, UserIcon } from "@heroicons/react/24/outline";
@@ -18,8 +18,8 @@ const participants = [
   { id: "8", firstName: "Mariama", lastName: "Gueye", email: "mariama.gueye@example.com", eventId: "event-5", qrCode: "PART-008" }
 ];
 
-// Page d'enregistrement des participants et de check-in par QR code ou recherche par nom
-export default function EventsListPage() {
+// Composant principal qui utilise useSearchParams
+function EventsListComponent() {
   const searchParams = useSearchParams();
   const eventId = searchParams.get("eventId");
   const [activeTab, setActiveTab] = useState<'qr' | 'name'>('qr');
@@ -429,5 +429,14 @@ export default function EventsListPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+// Composant principal qui utilise Suspense
+export default function EventsListPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EventsListComponent />
+    </Suspense>
   );
 } 

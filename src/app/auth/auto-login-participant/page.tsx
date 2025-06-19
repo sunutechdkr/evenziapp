@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
-export default function AutoLoginParticipantPage() {
+function AutoLoginParticipantComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -104,5 +104,20 @@ export default function AutoLoginParticipantPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function AutoLoginParticipantPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="text-center p-8 bg-gray-800 rounded-xl shadow-lg">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#81B441] mx-auto mb-4"></div>
+          <p className="text-white font-medium">Initialisation...</p>
+        </div>
+      </div>
+    }>
+      <AutoLoginParticipantComponent />
+    </Suspense>
   );
 } 
