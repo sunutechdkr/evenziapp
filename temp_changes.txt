@@ -1,1 +1,0 @@
-// Modified link to point to /event instead of /dashboard/events/${eventId}/apercu

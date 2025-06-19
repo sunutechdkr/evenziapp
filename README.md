@@ -1,166 +1,183 @@
-# 🎉 InEvent - Plateforme de Gestion d'Événements
+# 🎉 InEvent - Event Management Platform
 
-Une plateforme moderne et complète pour la gestion d'événements, développée avec Next.js 15, Prisma, et PostgreSQL.
+A modern, full-stack event management platform built with Next.js 15, TypeScript, and Tailwind CSS.
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-- 📅 **Gestion d'événements** : Création, modification et gestion complète d'événements
-- 👥 **Gestion des participants** : Inscriptions, check-in QR code, badges personnalisés
-- 📊 **Analytiques avancées** : Tableaux de bord avec graphiques interactifs
-- 📧 **Communication** : Système d'emailing intégré avec templates personnalisables
-- 🎨 **Interface moderne** : Design responsive avec Tailwind CSS et Radix UI
-- 🔒 **Authentification sécurisée** : NextAuth.js avec support multi-providers
-- 📱 **Mobile-first** : Interface entièrement responsive
+- **Event Management**: Create, edit, and manage events with ease
+- **Participant Registration**: Streamlined registration process with QR codes
+- **Email Campaigns**: Automated email marketing with templates
+- **Real-time Analytics**: Track registrations, check-ins, and engagement
+- **Multi-role Support**: Admin, organizer, and participant dashboards
+- **Responsive Design**: Mobile-first approach with modern UI
+- **Authentication**: Secure authentication with NextAuth.js
+- **Database**: PostgreSQL with Prisma ORM
 
-## 🚀 Déploiement sur Railway
+## 🚀 Tech Stack
 
-### Prérequis
-- Compte [Railway](https://railway.app)
-- Base de données PostgreSQL (fournie par Railway)
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Database**: PostgreSQL + Prisma
+- **Authentication**: NextAuth.js
+- **Email**: Resend
+- **Deployment**: Vercel
+- **State Management**: React Hooks + Context
 
-### Étapes de déploiement
+## 📦 Installation
 
-1. **Cloner le repository**
-```bash
-git clone <your-repo-url>
-cd inevent
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sunutechdkr/ineventapp.git
+   cd ineventapp
+   ```
 
-2. **Créer un nouveau projet Railway**
-- Connectez-vous à Railway
-- Cliquez sur "New Project"
-- Sélectionnez "Deploy from GitHub repo"
+2. **Install dependencies**
+   ```bash
+   npm install --legacy-peer-deps
+   ```
 
-3. **Configurer la base de données**
-- Ajoutez un service PostgreSQL à votre projet Railway
-- Copiez la `DATABASE_URL` générée
+3. **Environment Setup**
+   ```bash
+   cp env.example .env.local
+   # Edit .env.local with your configuration
+   ```
 
-4. **Variables d'environnement**
-Configurez ces variables dans Railway :
+4. **Database Setup**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-```env
-# Base de données (fournie par Railway)
-DATABASE_URL=postgresql://...
+5. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
 
-# NextAuth (générez une clé secrète forte)
-NEXTAUTH_SECRET=your-super-secret-key-here
-NEXTAUTH_URL=https://your-app.railway.app
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-# Email (optionnel)
-RESEND_API_KEY=your-resend-api-key
+## 🔧 Environment Variables
 
-# Production
-NODE_ENV=production
-PORT=3000
-```
-
-5. **Déployer**
-- Railway détectera automatiquement le `railway.toml`
-- Le déploiement se lancera automatiquement
-- Les migrations Prisma s'exécuteront automatiquement
-
-### Génération du NEXTAUTH_SECRET
-
-```bash
-openssl rand -base64 32
-```
-
-## 🛠️ Développement local
-
-### Installation
+Create a `.env.local` file with the following variables:
 
 ```bash
-# Installer les dépendances
-npm install
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/inevent"
 
-# Configurer la base de données
-cp env.example .env.local
-# Éditez .env.local avec vos variables
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key"
 
-# Générer le client Prisma
-npx prisma generate
+# Email (Resend)
+RESEND_API_KEY="your-resend-api-key"
 
-# Appliquer les migrations
-npx prisma db push
-
-# Lancer le serveur de développement
-npm run dev
+# Upload (Optional)
+NEXT_PUBLIC_UPLOAD_URL="your-upload-service-url"
 ```
 
-### Scripts disponibles
-
-```bash
-npm run dev      # Serveur de développement
-npm run build    # Build de production
-npm run start    # Serveur de production
-npm run lint     # Linter ESLint
-```
-
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 src/
-├── app/                 # App Router (Next.js 13+)
-│   ├── api/            # Routes API
-│   ├── dashboard/      # Interface d'administration
-│   └── auth/           # Pages d'authentification
-├── components/         # Composants réutilisables
-│   ├── ui/            # Composants UI de base
-│   └── dashboard/     # Composants du dashboard
-├── lib/               # Utilitaires et configurations
-├── types/             # Types TypeScript
-└── generated/         # Client Prisma généré
+├── app/                    # Next.js 15 App Router
+│   ├── api/               # API routes
+│   ├── auth/              # Authentication pages
+│   ├── dashboard/         # Dashboard pages
+│   └── event/             # Public event pages
+├── components/            # Reusable UI components
+├── lib/                   # Utility functions and configurations
+├── types/                 # TypeScript type definitions
+└── generated/             # Generated files (Prisma client)
+
+prisma/
+└── schema.prisma          # Database schema
+
+public/                    # Static assets
 ```
 
-## 🔧 Technologies utilisées
+## 🎯 Key Features
 
-- **Framework** : Next.js 15 (App Router)
-- **Base de données** : PostgreSQL + Prisma ORM
-- **Authentification** : NextAuth.js
-- **UI** : Tailwind CSS + Radix UI
-- **Graphiques** : Chart.js + React-Chartjs-2
-- **Email** : Resend
-- **QR Codes** : html5-qrcode + qrcode
-- **Déploiement** : Railway
+### Event Management
+- Create and customize events
+- Manage sessions and speakers
+- Handle sponsors and partnerships
+- Generate QR codes for check-ins
 
-## 📊 Fonctionnalités détaillées
+### Participant Experience
+- Easy registration process
+- Email confirmations and reminders
+- Digital badges and certificates
+- Mobile-friendly interface
 
-### Dashboard
-- Vue d'ensemble des événements
-- Statistiques en temps réel
-- Graphiques interactifs
+### Analytics & Reporting
+- Real-time dashboard
+- Registration analytics
+- Check-in tracking
+- Email campaign metrics
 
-### Gestion d'événements
-- Création d'événements avec formulaire complet
-- Upload d'images (bannières, logos)
-- Gestion des sessions et intervenants
-- Système de sponsoring
+### Email Marketing
+- Custom email templates
+- Automated campaigns
+- Recipient management
+- Delivery tracking
 
-### Participants
-- Inscription en ligne
-- Génération automatique de QR codes
-- Check-in mobile
-- Export des données
+## 🛠️ Development
 
-### Communication
-- Templates d'emails personnalisables
-- Campagnes d'emailing
-- Notifications automatiques
+### Available Scripts
 
-## 🔒 Sécurité
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript checks
 
-- Headers de sécurité configurés
-- Validation des données avec Zod
-- Authentification sécurisée
-- Protection CSRF
-- Chiffrement des mots de passe
+### Database Commands
+
+- `npx prisma generate` - Generate Prisma client
+- `npx prisma db push` - Push schema to database
+- `npx prisma studio` - Open Prisma Studio
+- `npx prisma migrate dev` - Create and apply migrations
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Set environment variables in Vercel dashboard
+4. Deploy automatically on every push
+
+### Manual Deployment
+
+```bash
+npm run build
+npm run start
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+- **Development**: SunuTech Team
+- **Design**: Modern UI/UX principles
+- **Architecture**: Full-stack Next.js application
 
 ## 📞 Support
 
-Pour toute question ou problème :
-- Email : support@inevent.com
-- Documentation : [docs.inevent.com](https://docs.inevent.com)
+For support and questions:
+- Create an issue on GitHub
+- Contact: [Your contact information]
 
-## 📄 Licence
+---
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+Built with ❤️ using Next.js 15 and modern web technologies. 

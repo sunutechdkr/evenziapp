@@ -1,9 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
-.pnp.*
+.pnp.js
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -12,10 +12,14 @@
 
 # testing
 /coverage
+test-results/
+test-files/
 
 # next.js
 /.next/
 /out/
+build/
+dist/
 
 # production
 /build
@@ -23,6 +27,8 @@
 # misc
 .DS_Store
 *.pem
+*.tsbuildinfo
+next-env.d.ts
 
 # debug
 npm-debug.log*
@@ -31,39 +37,89 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env*.local
+.env.production
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
-# Build et cache
-.next/
-*.tsbuildinfo
-tsconfig.tsbuildinfo
 
-# Cache webpack
-.cache/
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Fichiers temporaires
+# OS
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
 tmp/
 temp/
 tmp_files/
-*.tmp
-*.bak
-temp_*
-tmp_*
+backups/
+backup/
 
 # Test files
-test-results/
-test-files/
+test-*.js
+*test*.js
+audit-*.js
+create-*.js
+setup-*.js
 
-# Backups (garder seulement le dernier)
-backups/backup_20250610_234932/
+# Scripts and utilities
+*.sh
+deploy-*.sh
+update_*.sh
+create_backup.sh
 
-# Logs
-*.log
-.vercel
+# Documentation temp files
+*_DEPLOY*.md
+*_DEBUG*.md
+*_TROUBLESHOOTING*.md
+*_FINAL*.md
+*_GUIDE*.md
+*_SETUP*.md
+SOLUTION_*.md
+VERCEL_*.md
+README_DEPLOY_FIX.md
+DEPLOYMENT_GUIDE.md
+GITHUB_SETUP.md
+DEPLOY_*.md
+
+# Database files
+*.sql
+*.db
+
+# Docker (if not using)
+Dockerfile
+.dockerignore
+railway.toml
+
+# Temporary files
+tmp_*
+temp_*
+*.tmp
+*.temp
+
+# Backup files
+*.backup
+*.bak
+
+# Config temp files
+tmp_next_config.js
+postcss.config.mjs
 
