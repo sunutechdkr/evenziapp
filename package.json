@@ -10,6 +10,9 @@
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
+  "overrides": {
+    "date-fns": "^3.6.0"
+  },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
     "@headlessui/react": "^2.2.2",
@@ -46,7 +49,7 @@
     "chart.js": "^4.4.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.5.0",
     "html2canvas": "^1.4.1",
     "html5-qrcode": "^2.3.8",
