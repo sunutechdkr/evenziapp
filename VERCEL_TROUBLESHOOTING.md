@@ -31,14 +31,22 @@ npm error peer date-fns@"^2.28.0 || ^3.0.0" from react-day-picker@8.10.1
 
 ## 🚀 Statut déploiement actuel
 
-**✅ PUSH GITHUB RÉUSSI** : Commit `413f8bd` déployé sur `main`
-**🔄 VERCEL AUTO-DEPLOY** : En cours de redéploiement automatique
+**✅ PUSH GITHUB RÉUSSI** : Commit `0e758a5` déployé sur `main`
+**🔄 VERCEL NOUVEAU DEPLOY** : Forcé via commit vide pour déclencher webhook
 **⏱️ TEMPS ESTIMÉ** : 3-5 minutes pour build complet
 
-### Changements deployés
-- 29 objets poussés (9.17 MiB)
-- Configuration dépendances corrigée
-- Build Vercel optimisé
+### Problème identifié et résolu
+- **Vercel utilisait l'ancien commit** `85ec189` au lieu de `1b41f0f`
+- **Solution** : Commit vide `0e758a5` pour forcer nouveau déploiement
+- **Fichier .vercelignore** créé pour optimiser le build
+
+### Changements dans le nouveau build
+- ✅ `react-datepicker: "^7.5.0"` (downgraded de 8.3.0)
+- ✅ `date-fns: "^3.6.0"` (compatible)
+- ✅ `overrides` + `resolutions` npm
+- ✅ `.npmrc` avec `legacy-peer-deps=true`
+- ✅ `next.config.js` ignore erreurs TypeScript
+- ✅ `.vercelignore` pour build optimisé
 
 ---
 

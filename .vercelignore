@@ -1,0 +1,43 @@
+# Dossiers de développement
+.next/
+node_modules/
+.git/
+
+# Fichiers de cache et temporaires
+*.log
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Documentation et guides (facultatif)
+README_DEPLOY_FIX.md
+VERCEL_TROUBLESHOOTING.md
+GITHUB_SETUP.md
+DEPLOYMENT_GUIDE.md
+
+# Backups et scripts locaux
+backups/
+scripts/setup-env.js
+scripts/create-env.js
+deploy-to-github.sh
+
+# Tests et développement
+*.test.js
+*.test.ts
+*.test.tsx
+test/
+tests/
+__tests__/
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers de build locaux
+dist/
+build/
+out/ 
