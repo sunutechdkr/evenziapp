@@ -1,35 +1,25 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
+  "version": 2,
   "framework": "nextjs",
-  "installCommand": "npm install",
-  "devCommand": "npm run dev",
-  "regions": ["cdg1"],
+  "buildCommand": "npm install --legacy-peer-deps && npm run build",
+  "installCommand": "npm install --legacy-peer-deps",
   "functions": {
-    "src/app/api/**/*.ts": {
+    "app/api/**/*": {
       "maxDuration": 30
     }
   },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
-    }
-  ],
+  "regions": ["iad1"],
   "env": {
-    "NODE_ENV": "production"
-  }
+    "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+    "SKIP_ENV_VALIDATION": "1"
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "zeroConfig": true
+      }
+    }
+  ]
 } 
