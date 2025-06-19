@@ -6,7 +6,15 @@
   "env": {
     "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
     "SKIP_ENV_VALIDATION": "1",
-    "NEXT_TELEMETRY_DISABLED": "1"
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+      "SKIP_ENV_VALIDATION": "1",
+      "NODE_ENV": "production"
+    }
   },
   "functions": {
     "app/**/*": {
@@ -19,7 +27,8 @@
       "src": "package.json",
       "use": "@vercel/next",
       "config": {
-        "zeroConfig": true
+        "zeroConfig": true,
+        "maxLambdaSize": "50mb"
       }
     }
   ]
