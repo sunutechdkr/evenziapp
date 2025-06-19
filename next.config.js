@@ -80,7 +80,7 @@ const nextConfig = {
     ];
   },
 
-  // Configuration expérimentale
+  // Configuration externe des serveurs
   serverExternalPackages: ['@prisma/client'],
 };
 
