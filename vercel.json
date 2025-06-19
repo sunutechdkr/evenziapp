@@ -1,35 +1,13 @@
 {
-  "version": 2,
-  "framework": "nextjs",
-  "buildCommand": "npm install --legacy-peer-deps && npm run build",
   "installCommand": "npm install --legacy-peer-deps",
+  "buildCommand": "npm install --legacy-peer-deps && npm run build",
   "env": {
     "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-    "SKIP_ENV_VALIDATION": "1",
-    "NEXT_TELEMETRY_DISABLED": "1",
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-      "SKIP_ENV_VALIDATION": "1",
-      "NODE_ENV": "production"
-    }
+    "SKIP_ENV_VALIDATION": "1"
   },
   "functions": {
-    "app/**/*": {
-      "runtime": "nodejs20.x"
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
     }
-  },
-  "regions": ["iad1"],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next",
-      "config": {
-        "zeroConfig": true,
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ]
+  }
 } 

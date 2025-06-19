@@ -1,4 +1,4 @@
-# 🎉 InEvent - Event Management Platform
+# 🎉 Evenzi - Event Management Platform
 
 A modern, full-stack event management platform built with Next.js 15, TypeScript, and Tailwind CSS.
 
@@ -28,8 +28,8 @@ A modern, full-stack event management platform built with Next.js 15, TypeScript
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/sunutechdkr/ineventapp.git
-   cd ineventapp
+   git clone https://github.com/sunutechdkr/evenzi.git
+   cd evenzi
    ```
 
 2. **Install dependencies**
@@ -62,7 +62,7 @@ Create a `.env.local` file with the following variables:
 
 ```bash
 # Database
-DATABASE_URL="postgresql://username:password@localhost:5432/inevent"
+DATABASE_URL="postgresql://username:password@localhost:5432/evenzi"
 
 # NextAuth
 NEXTAUTH_URL="http://localhost:3000"

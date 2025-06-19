@@ -1,8 +1,8 @@
 {
-  "name": "inevent",
+  "name": "evenzi",
   "version": "0.2.0",
   "private": true,
-  "description": "VERCEL_DEPLOY_FIXED - dépendances corrigées pour build Vercel",
+  "description": "🎉 Evenzi - Modern Event Management Platform built with Next.js 15, TypeScript, and Tailwind CSS",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
