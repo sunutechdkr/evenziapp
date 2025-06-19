@@ -3,16 +3,17 @@
   "framework": "nextjs",
   "buildCommand": "npm install --legacy-peer-deps && npm run build",
   "installCommand": "npm install --legacy-peer-deps",
+  "env": {
+    "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+    "SKIP_ENV_VALIDATION": "1",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
   "functions": {
-    "app/api/**/*": {
-      "maxDuration": 30
+    "app/**/*": {
+      "runtime": "nodejs20.x"
     }
   },
   "regions": ["iad1"],
-  "env": {
-    "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-    "SKIP_ENV_VALIDATION": "1"
-  },
   "builds": [
     {
       "src": "package.json",
