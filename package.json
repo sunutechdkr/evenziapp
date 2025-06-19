@@ -6,11 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "build:production": "SKIP_ENV_VALIDATION=1 next build",
+    "build:notype": "next build --no-typescript-errors",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
   "overrides": {
+    "date-fns": "^3.6.0"
+  },
+  "resolutions": {
     "date-fns": "^3.6.0"
   },
   "dependencies": {
@@ -67,7 +71,7 @@
     "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
-    "react-datepicker": "^8.3.0",
+    "react-datepicker": "^7.5.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.3",

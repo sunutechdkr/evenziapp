@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { Toaster } from "sonner";
 
-// Configuration des polices Geist pour l'application
-const geistSans = Geist({
+// Configuration de la police Inter pour l'application
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-inter",
 });
 
 // Métadonnées générales de l'application pour le SEO
@@ -52,7 +47,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.svg" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background antialiased`}
+        className={`${inter.variable} min-h-screen bg-background font-sans antialiased`}
       >
         <AuthProvider>
           {children}

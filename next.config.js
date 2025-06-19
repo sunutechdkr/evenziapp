@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuration pour production
-  output: 'standalone',
+  // Configuration optimisée pour Vercel (pas de standalone)
+  poweredByHeader: false,
   
   // Optimisations webpack
   webpack: (config, { isServer }) => {
@@ -32,11 +32,12 @@ const nextConfig = {
     ],
   },
 
-  // Configuration pour le déploiement - ignorer ESLint temporairement
+  // Configuration pour le déploiement Vercel
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Ignore ESLint errors during Vercel build
   },
   
+  // Configuration TypeScript
   typescript: {
     ignoreBuildErrors: false,
   },
@@ -80,7 +81,7 @@ const nextConfig = {
     ];
   },
 
-  // Configuration des packages externes
+  // Configuration expérimentale
   serverExternalPackages: ['@prisma/client'],
 };
 
