@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/lib/resend';
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,7 +32,7 @@ export async function POST(request: NextRequest) {
     
     // Test 4: Test envoi email simple
     console.log('4. Test envoi email...');
-    const emailResult = await resend.emails.send({
+    const emailResult = await sendEmail({
       from: 'InEvent <noreply@ineventapp.com>',
       to: ['bouba@ineventapp.com'],
       subject: 'Test API OTP',

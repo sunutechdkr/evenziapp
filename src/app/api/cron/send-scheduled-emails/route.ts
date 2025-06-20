@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/lib/resend';
 
 export async function POST(request: NextRequest) {
   try {
@@ -77,7 +75,7 @@ export async function POST(request: NextRequest) {
               .replace(/\{\{participantName\}\}/g, emailLog.recipientName || 'Participant')
               .replace(/\{\{eventDate\}\}/g, new Date(campaign.event.startDate).toLocaleDateString());
 
-            await resend.emails.send({
+            await sendEmail({
               from: 'noreply@ineventapp.com',
               to: emailLog.recipientEmail,
               subject: processedSubject,

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/lib/resend';
 
 // Fonction pour générer un code OTP à 6 chiffres
 function generateOTP(): string {
@@ -149,7 +147,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Tentative d\'envoi d\'email avec Resend...');
     
-    const emailResult = await resend.emails.send({
+    const emailResult = await sendEmail({
       from: "InEvent <noreply@ineventapp.com>", // Utilise le domaine vérifié
       to: [email],
       subject: `🔐 Code de connexion - ${participant.event.name}`,

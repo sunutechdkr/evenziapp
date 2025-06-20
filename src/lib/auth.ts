@@ -6,8 +6,8 @@ import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 import { Resend } from 'resend';
 
-// Initialiser Resend avec la clé API
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialiser Resend avec la clé API seulement si elle existe
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Extend the next-auth types to include our custom properties
 declare module "next-auth" {
@@ -54,6 +54,12 @@ export const authOptions: NextAuthOptions = {
       // Personnaliser l'envoi d'emails avec Resend
       async sendVerificationRequest({ identifier: email, url }) {
         try {
+          // Vérifier si Resend est disponible
+          if (!resend) {
+            console.warn('Resend API key not configured, skipping email verification');
+            throw new Error('Service d\'email non configuré');
+          }
+
           const { data, error } = await resend.emails.send({
             from: 'InEvent <no-reply@ineventapp.com>',
             to: email,
