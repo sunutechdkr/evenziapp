@@ -7,26 +7,44 @@ import { createDefaultTemplates } from "@/lib/defaultTemplates";
 // GET /api/events - Récupérer la liste des événements
 export async function GET(request: Request) {
   try {
+    // Vérifier l'authentification
     const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     
+    if (!session) {
+      return NextResponse.json(
+        { error: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const includeArchived = searchParams.get('includeArchived') === 'true';
     const onlyArchived = searchParams.get('onlyArchived') === 'true';
     
-    let whereCondition: any = {};
+    // Construire la condition de filtrage pour l'archivage
+    let archivedCondition = {};
     if (onlyArchived) {
-      whereCondition.archived = true;
+      archivedCondition = { archived: true };
     } else if (!includeArchived) {
-      whereCondition.archived = false;
+      archivedCondition = { archived: false };
     }
+    // Si includeArchived est true, on ne filtre pas sur archived
     
-    if (session.user.role === "ORGANIZER") {
+    // Construire la condition de filtrage selon le rôle de l'utilisateur
+    let whereCondition = { ...archivedCondition };
+    
+    // Si l'utilisateur est ORGANIZER, il ne voit que ses événements
+    // Si c'est ADMIN, il voit tous les événements
+    // Si c'est USER/STAFF, il ne voit aucun événement
+    if (session.user.role === 'ORGANIZER') {
       whereCondition.userId = session.user.id;
-    } else if (session.user.role === "USER" || session.user.role === "STAFF") {
+    } else if (session.user.role === 'USER' || session.user.role === 'STAFF') {
+      // Les USER et STAFF ne peuvent pas gérer d'événements
       return NextResponse.json([]);
     }
+    // Les ADMIN voient tous les événements (pas de filtre supplémentaire)
     
+    // Utiliser Prisma ORM au lieu de raw SQL pour une meilleure gestion des types
     const events = await prisma.event.findMany({
       where: whereCondition,
       orderBy: { createdAt: 'desc' },
@@ -61,13 +79,14 @@ export async function GET(request: Request) {
       }
     });
     
-    const formattedEvents = events.map((event: any) => ({
+    // Formater les données pour inclure le nombre d'inscriptions
+    const formattedEvents = events.map(event => ({
       ...event,
-      start_date: event.startDate,
-      end_date: event.endDate,
+      start_date: event.startDate, // Pour compatibilité legacy
+      end_date: event.endDate,     // Pour compatibilité legacy
       registrations: event._count.registrations,
-      checkedInCount: 0,
-      checkInRate: 0
+      checkedInCount: 0, // TODO: Calculer le nombre de check-ins
+      checkInRate: 0     // TODO: Calculer le taux de check-in
     }));
     
     return NextResponse.json(formattedEvents);

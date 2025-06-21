@@ -6,7 +6,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    const { id: eventId } = await params;
+    const { id: eventId } = context.params;
     
     // Récupérer le paramètre de période depuis l'URL
     const url = new URL(request.url);
