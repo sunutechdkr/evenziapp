@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { Resend } from 'resend';
 import { prisma } from '@/lib/prisma';
+import { sendEmail } from '@/lib/resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = 'force-dynamic';
 
 export async function POST(
   request: NextRequest,
-  context: { params: { id: string; templateId: string } }
+  { params }: { params: { id: string, templateId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -16,19 +16,19 @@ export async function POST(
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const { id: eventId, templateId } = await params;
-    const { email, previewContent, subject } = await request.json();
+    const { id: eventId, templateId } = params;
+    const { email: testEmail, previewContent, subject } = await request.json();
 
     // Variables disponibles pour utilisation future si nécessaire
     console.log(`Envoi email test pour événement ${eventId}, template ${templateId}`);
 
-    if (!email || !previewContent || !subject) {
+    if (!testEmail || !previewContent || !subject) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
     }
 
     // Valider l'email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(testEmail)) {
       return NextResponse.json({ error: 'Adresse email invalide' }, { status: 400 });
     }
 
@@ -71,9 +71,9 @@ export async function POST(
       .replace(/\{\{supportEmail\}\}/g, 'support@ineventapp.com');
 
     // Envoyer l'email de test
-    await resend.emails.send({
-      from: 'noreply@ineventapp.com',
-      to: email,
+    await sendEmail({
+      from: 'InEvent <noreply@ineventapp.com>',
+      to: testEmail,
       subject: `[TEST] ${processedSubject}`,
       html: `
         <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">

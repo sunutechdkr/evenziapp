@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
+import { sendEmail } from '@/lib/resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = 'force-dynamic';
 
 export async function POST(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -16,7 +16,7 @@ export async function POST(
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const { id: eventId } = await params;
+    const { id: eventId } = params;
     const {
       name,
       description,
@@ -69,6 +69,10 @@ export async function POST(
       }
     });
 
+    if (!campaign.htmlContent) {
+      return NextResponse.json({ error: 'Le contenu de l\'email est vide' }, { status: 400 });
+    }
+
     let emailsSent = 0;
     let emailsFailed = 0;
 
@@ -91,7 +95,7 @@ export async function POST(
             .replace(/\{\{participantName\}\}/g, recipient.name)
             .replace(/\{\{eventDate\}\}/g, new Date(event.startDate).toLocaleDateString());
 
-          await resend.emails.send({
+          await sendEmail({
             from: 'noreply@ineventapp.com',
             to: recipient.email,
             subject: processedSubject,
@@ -172,23 +176,24 @@ export async function POST(
   }
 }
 
-async function getRecipients(eventId: string, recipientType: string) {
+async function getRecipients(eventId: string, recipientType: string): Promise<{email: string, name: string}[]> {
   switch (recipientType) {
     case 'ALL_PARTICIPANTS':
-      return await prisma.registration.findMany({
+      const allParticipants = await prisma.registration.findMany({
         where: { eventId },
         select: {
           email: true,
           firstName: true,
           lastName: true
         }
-      }).then(participants => participants.map(p => ({
+      });
+      return allParticipants.map((p: {email: string; firstName: string | null; lastName: string | null}) => ({
         email: p.email,
-        name: `${p.firstName} ${p.lastName}`
-      })));
+        name: `${p.firstName || ''} ${p.lastName || ''}`.trim()
+      }));
 
     case 'PARTICIPANTS':
-      return await prisma.registration.findMany({
+      const participants = await prisma.registration.findMany({
         where: { 
           eventId,
           type: 'PARTICIPANT'
@@ -198,10 +203,11 @@ async function getRecipients(eventId: string, recipientType: string) {
           firstName: true,
           lastName: true
         }
-      }).then(participants => participants.map(p => ({
+      });
+      return participants.map((p: {email: string; firstName: string | null; lastName: string | null}) => ({
         email: p.email,
-        name: `${p.firstName} ${p.lastName}`
-      })));
+        name: `${p.firstName || ''} ${p.lastName || ''}`.trim()
+      }));
 
     case 'SPEAKERS':
       // TODO: Implémenter quand la table speakers sera créée
@@ -218,7 +224,7 @@ async function getRecipients(eventId: string, recipientType: string) {
         select: { name: true, website: true }
       });
       
-      return sponsors.map(sponsor => ({
+      return sponsors.map((sponsor: {name: string, website: string | null}) => ({
         email: 'contact@' + (sponsor.website?.replace(/https?:\/\//, '') || 'example.com'),
         name: sponsor.name
       }));

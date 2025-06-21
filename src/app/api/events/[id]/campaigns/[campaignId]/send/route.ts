@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
+import { sendEmail } from '@/lib/resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = 'force-dynamic';
 
 // POST - Envoyer une campagne email
 export async function POST(
@@ -132,7 +132,7 @@ export async function POST(
     // Envoyer les emails
     for (const recipient of recipients) {
       try {
-        await resend.emails.send({
+        await sendEmail({
           from: 'InEvent <noreply@ineventapp.com>',
           to: recipient.email,
           subject: campaign.subject,
