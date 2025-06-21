@@ -1,9 +1,12 @@
 import jwt from 'jsonwebtoken';
 
-const secret = process.env.NEXTAUTH_SECRET;
-
-if (!secret) {
-  throw new Error('NEXTAUTH_SECRET is required');
+function getSecret(): string {
+  const secret = process.env.NEXTAUTH_SECRET;
+  if (!secret) {
+    console.error('JWT Secret (NEXTAUTH_SECRET) is not set.');
+    throw new Error('NEXTAUTH_SECRET is not set');
+  }
+  return secret;
 }
 
 interface JWTPayload {
@@ -16,6 +19,7 @@ interface JWTPayload {
 }
 
 export async function signJWT(payload: JWTPayload): Promise<string> {
+  const secret = getSecret();
   const token = jwt.sign(payload, secret, {
     expiresIn: '10m',
     algorithm: 'HS256'
@@ -26,6 +30,7 @@ export async function signJWT(payload: JWTPayload): Promise<string> {
 
 export async function verifyJWT(token: string): Promise<JWTPayload | null> {
   try {
+    const secret = getSecret();
     const decoded = jwt.verify(token, secret, { algorithms: ['HS256'] });
     return decoded as JWTPayload;
   } catch (error) {

@@ -3,8 +3,6 @@ import { verifyJWT } from '@/lib/jwt';
 import { prisma } from '@/lib/prisma';
 import { encode } from 'next-auth/jwt';
 
-export const dynamic = 'force-dynamic';
-
 export async function POST(request: NextRequest) {
   try {
     const { email, token } = await request.json();
