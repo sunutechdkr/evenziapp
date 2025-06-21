@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer un token de session NextAuth
+    const secret = process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build';
+
     const sessionToken = await encode({
       token: {
         id: user.id,
@@ -45,7 +47,7 @@ export async function POST(request: NextRequest) {
         role: user.role,
         permissions: user.permissions || [],
       },
-      secret: process.env.NEXTAUTH_SECRET!,
+      secret: secret,
       maxAge: 30 * 24 * 60 * 60, // 30 jours
     });
 
