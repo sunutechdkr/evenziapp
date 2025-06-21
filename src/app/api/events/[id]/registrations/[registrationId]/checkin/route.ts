@@ -21,7 +21,7 @@ export async function POST(
   // Pour raisons de sécurité, nous vérifions plus tard si l'utilisateur a le droit d'accéder à cet événement
   
   try {
-    const { id: eventId, registrationId } = await params;
+    const { id: eventId, registrationId } = context.params;
     
     console.log(`API de check-in: eventId=${eventId}, registrationId=${registrationId}`);
     

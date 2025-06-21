@@ -123,3 +123,5 @@ temp_*
 tmp_next_config.js
 postcss.config.mjs
 
+# Ouvrez le fichier .env et remplacez par votre vraie URL Neon
+DATABASE_URL="postgresql://votre_username:votre_password@ep-xxx.neon.tech/votre_db?sslmode=require""

@@ -6,23 +6,42 @@ import prisma from "@/lib/prisma";
 // GET /api/events - Récupérer la liste des événements
 export async function GET(request: Request) {
   try {
+    // Vérifier l'authentification
     const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
-    let whereCondition: any = {};
-    if (session.user.role === "ORGANIZER") whereCondition.userId = session.user.id;
-    else if (session.user.role === "USER" || session.user.role === "STAFF") return NextResponse.json([]);
+    
+    if (!session) {
+      return NextResponse.json(
+        { error: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const includeArchived = searchParams.get('includeArchived') === 'true';
     const onlyArchived = searchParams.get('onlyArchived') === 'true';
     
     // Construire la condition de filtrage pour l'archivage
-    whereCondition = { ...whereCondition };
+    let archivedCondition = {};
     if (onlyArchived) {
-      whereCondition.archived = true;
+      archivedCondition = { archived: true };
     } else if (!includeArchived) {
-      whereCondition.archived = false;
+      archivedCondition = { archived: false };
     }
     // Si includeArchived est true, on ne filtre pas sur archived
+    
+    // Construire la condition de filtrage selon le rôle de l'utilisateur
+    let whereCondition = { ...archivedCondition };
+    
+    // Si l'utilisateur est ORGANIZER, il ne voit que ses événements
+    // Si c'est ADMIN, il voit tous les événements
+    // Si c'est USER/STAFF, il ne voit aucun événement (ou on peut ajuster selon les besoins)
+    if (session.user.role === 'ORGANIZER') {
+      whereCondition.userId = session.user.id;
+    } else if (session.user.role === 'USER' || session.user.role === 'STAFF') {
+      // Les USER et STAFF ne peuvent pas gérer d'événements
+      return NextResponse.json([]);
+    }
+    // Les ADMIN voient tous les événements (pas de filtre supplémentaire)
     
     // Utiliser Prisma ORM au lieu de raw SQL pour une meilleure gestion des types
     const events = await prisma.event.findMany({
@@ -60,7 +79,7 @@ export async function GET(request: Request) {
     });
     
     // Formater les données pour inclure le nombre d'inscriptions
-    const formattedEvents = events.map((event: any) => ({
+    const formattedEvents = events.map(event => ({
       ...event,
       start_date: event.startDate, // Pour compatibilité legacy
       end_date: event.endDate,     // Pour compatibilité legacy
