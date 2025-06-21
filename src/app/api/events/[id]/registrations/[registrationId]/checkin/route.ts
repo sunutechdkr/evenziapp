@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { sendCheckinConfirmationEmail } from "@/lib/checkinEmail";
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(
   request: Request,
@@ -16,9 +19,6 @@ export async function POST(
       { status: 401 }
     );
   }
-  
-  // Autoriser les utilisateurs connectés (pas seulement les admin)
-  // Pour raisons de sécurité, nous vérifions plus tard si l'utilisateur a le droit d'accéder à cet événement
   
   try {
     const { id: eventId, registrationId } = context.params;
@@ -130,6 +130,32 @@ export async function POST(
       : null;
     
     console.log(`Check-in réussi pour le participant ${registrationId}`);
+    
+    // Envoi de l'email de confirmation de check-in
+    if (updatedRegistration) {
+      try {
+        const checkInTime = new Date().toLocaleString('fr-FR', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        await sendCheckinConfirmationEmail({
+          eventId: eventId,
+          participantEmail: updatedRegistration.email,
+          participantName: `${updatedRegistration.firstName} ${updatedRegistration.lastName}`,
+          checkInTime: checkInTime
+        });
+        
+        console.log(`📧 Email de confirmation envoyé à ${updatedRegistration.email}`);
+      } catch (emailError) {
+        console.error('⚠️ Erreur lors de l\'envoi de l\'email de confirmation:', emailError);
+        // On ne fait pas échouer le check-in si l'email échoue
+      }
+    }
     
     return NextResponse.json({
       message: "Check-in effectué avec succès",

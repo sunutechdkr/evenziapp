@@ -335,8 +335,9 @@ enum RecipientType {
 
 // Catégories de templates prédéfinis
 enum TemplateCategory {
-  // Inscription (1 template)
+  // Inscription (2 templates)
   CONFIRMATION_INSCRIPTION
+  CONFIRMATION_CHECKIN
   
   // Participants (4 templates)
   BIENVENUE_PARTICIPANT

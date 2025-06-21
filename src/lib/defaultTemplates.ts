@@ -238,6 +238,91 @@ export async function createDefaultTemplates(eventId: string) {
       `,
       isActive: false,
       isDefault: true
+    },
+    {
+      name: "Confirmation de présence",
+      subject: "✅ Bienvenue à {{eventName}} - Votre présence est confirmée !",
+      category: "CONFIRMATION_CHECKIN",
+      description: "Email automatique envoyé lors du check-in",
+      htmlContent: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f0f9ff;">
+          <div style="background: linear-gradient(135deg, #81B441 0%, #6a9636 100%); border-radius: 12px; padding: 2px;">
+            <div style="background: white; border-radius: 10px; padding: 30px;">
+              <div style="text-align: center; margin-bottom: 30px;">
+                <div style="background: linear-gradient(135deg, #81B441 0%, #6a9636 100%); width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                  <span style="color: white; font-size: 36px; font-weight: bold;">✓</span>
+                </div>
+                <h1 style="color: #81B441; margin: 0; font-size: 28px; font-weight: bold;">Bienvenue !</h1>
+                <p style="color: #6a9636; margin: 10px 0 0; font-size: 18px;">Votre présence est confirmée</p>
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 8px; padding: 25px; margin: 25px 0; border-left: 4px solid #81B441;">
+                <p style="color: #374151; line-height: 1.6; font-size: 16px; margin: 0 0 15px;">
+                  Bonjour <strong style="color: #81B441;">{{participantName}}</strong>,
+                </p>
+                
+                <p style="color: #374151; line-height: 1.6; font-size: 16px; margin: 0;">
+                  Nous vous confirmons votre arrivée à <strong>{{eventName}}</strong> le {{checkInTime}}.
+                </p>
+              </div>
+              
+              <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                <h3 style="color: #374151; margin: 0 0 15px 0; display: flex; align-items: center;">
+                  <span style="background: #81B441; color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 14px;">📍</span>
+                  Vous êtes maintenant présent(e) à l'événement
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                  <div>
+                    <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong style="color: #374151;">Événement :</strong><br>{{eventName}}</p>
+                    <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong style="color: #374151;">Lieu :</strong><br>{{eventLocation}}</p>
+                  </div>
+                  <div>
+                    <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong style="color: #374151;">Date :</strong><br>{{eventDate}}</p>
+                    <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong style="color: #374151;">Check-in :</strong><br>{{checkInTime}}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 8px; padding: 20px; margin: 25px 0; border: 1px solid #81B441;">
+                <h3 style="color: #15803d; margin: 0 0 15px 0; display: flex; align-items: center;">
+                  <span style="margin-right: 8px;">🎉</span>
+                  Profitez pleinement de votre expérience !
+                </h3>
+                <ul style="color: #166534; margin: 0; padding-left: 20px; line-height: 1.6;">
+                  <li>Explorez les différents stands et expositions</li>
+                  <li>Participez aux conférences et ateliers</li>
+                  <li>Rencontrez les autres participants</li>
+                  <li>N'hésitez pas à poser vos questions aux organisateurs</li>
+                </ul>
+              </div>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <div style="background: #f8fafc; border-radius: 8px; padding: 15px; display: inline-block;">
+                  <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                    <strong style="color: #374151;">Besoin d'aide ?</strong><br>
+                    Contactez-nous : <a href="mailto:{{supportEmail}}" style="color: #81B441; text-decoration: none; font-weight: bold;">{{supportEmail}}</a>
+                  </p>
+                </div>
+              </div>
+              
+              <div style="text-align: center; border-top: 2px solid #f1f5f9; padding-top: 20px; margin-top: 30px;">
+                <p style="color: #374151; line-height: 1.6; margin: 0;">
+                  Excellente journée à vous !<br>
+                  <strong style="color: #81B441;">L'équipe {{organizerName}}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px;">
+            <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+              Cet email a été envoyé automatiquement lors de votre check-in à {{eventName}}
+            </p>
+          </div>
+        </div>
+      `,
+      isActive: true,
+      isDefault: true
     }
   ];
 
