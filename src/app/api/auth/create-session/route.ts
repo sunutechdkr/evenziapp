@@ -3,6 +3,8 @@ import { verifyJWT } from '@/lib/jwt';
 import { prisma } from '@/lib/prisma';
 import { encode } from 'next-auth/jwt';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const { email, token } = await request.json();
@@ -37,8 +39,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer un token de session NextAuth
-    const secret = process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build';
-
     const sessionToken = await encode({
       token: {
         id: user.id,
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
         role: user.role,
         permissions: user.permissions || [],
       },
-      secret: secret,
+      secret: process.env.NEXTAUTH_SECRET!,
       maxAge: 30 * 24 * 60 * 60, // 30 jours
     });
 
