@@ -15,7 +15,7 @@ type Speaker = {
 // GET /api/events/[id]/sessions - Récupérer toutes les sessions d'un événement
 export async function GET(
   request: Request,
-  context: { params: { id: string | string[] } }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -27,9 +27,8 @@ export async function GET(
       );
     }
     
-    // Attendre les paramètres avant d'y accéder
-    const paramsData = await params;
-    const id = Array.isArray(paramsData.id) ? paramsData.id[0] : paramsData.id;
+    // Accéder directement aux paramètres depuis le contexte
+    const { id } = context.params;
     
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
@@ -159,7 +158,7 @@ export async function GET(
 // POST /api/events/[id]/sessions - Créer une nouvelle session
 export async function POST(
   request: Request,
-  context: { params: { id: string | string[] } }
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -171,9 +170,8 @@ export async function POST(
       );
     }
     
-    // Attendre les paramètres avant d'y accéder
-    const paramsData = await params;
-    const id = Array.isArray(paramsData.id) ? paramsData.id[0] : paramsData.id;
+    // Accéder directement aux paramètres depuis le contexte
+    const { id } = context.params;
     
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({

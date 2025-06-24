@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CalendarIcon, MapPinIcon, UsersIcon, MicrophoneIcon, BuildingStorefrontIcon, CheckCircleIcon, UserCircleIcon, ClockIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, MapPinIcon, UsersIcon, MicrophoneIcon, BuildingStorefrontIcon, CheckCircleIcon, UserCircleIcon, ClockIcon, ChevronRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -66,6 +67,7 @@ type Session = {
 
 export default function EventApercuPage() {
   const params = useParams();
+  const router = useRouter();
   const eventId = Array.isArray(params.id) ? params.id[0] : params.id;
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
@@ -246,88 +248,49 @@ export default function EventApercuPage() {
       const fetchSpeakers = async () => {
         setLoadingSpeakers(true);
         try {
-          // Utiliser l'API correcte pour récupérer les participants et filtrer les intervenants
           const response = await fetch(`/api/events/${eventId}/registrations`);
           if (response.ok) {
             const data = await response.json();
             
-            // Vérifier que data.registrations est bien un tableau
-            if (!data || !data.registrations || !Array.isArray(data.registrations)) {
-              console.error("Format de données invalide:", data);
+            if (data && data.registrations && Array.isArray(data.registrations)) {
+              // Filtrer uniquement les intervenants (type SPEAKER)
+              const speakersFromDB = data.registrations
+                .filter((reg: any) => reg.type === 'SPEAKER')
+                .map((reg: any) => ({
+                  id: reg.id,
+                  firstName: reg.firstName,
+                  lastName: reg.lastName,
+                  email: reg.email,
+                  jobTitle: reg.jobTitle || "Intervenant",
+                  company: reg.company || "",
+                  avatar: "",
+                  checkedIn: reg.checkedIn,
+                  type: reg.type,
+                  bio: `Intervenant expérimenté dans le domaine de ${reg.company || 'son secteur'}.`,
+                  expertise: [reg.jobTitle || "Expertise générale"],
+                  sessions: [],
+                  socialLinks: {}
+                }));
+              
+              setSpeakers(speakersFromDB);
+            } else {
+              // Aucun intervenant trouvé
               setSpeakers([]);
-              return;
-            }
-            
-            // Filtrer pour ne garder que les participants de type SPEAKER
-            const speakersData = data.registrations.filter((p: any) => 
-              p.type === 'SPEAKER' || p.type === 'speaker' || p.type === 'Speaker'
-            );
-            
-            // Mapper les données de Registration vers le format Participant
-            const mappedSpeakers = speakersData.map((reg: any) => ({
-              id: reg.id,
-              firstName: reg.firstName,
-              lastName: reg.lastName,
-              email: reg.email,
-              jobTitle: reg.jobTitle || "",
-              company: reg.company || "",
-              avatar: "", // Pas d'avatar dans l'API
-              checkedIn: reg.checkedIn,
-              type: "SPEAKER"
-            }));
-            
-            setSpeakers(mappedSpeakers);
-            
-            if (mappedSpeakers.length === 0) {
-              // Utiliser des données mockées si pas d'intervenant trouvé
-              setSpeakers([
-                {
-                  id: '101',
-                  firstName: 'Jean',
-                  lastName: 'Durand',
-                  jobTitle: 'Directeur Général',
-                  company: 'InnovateTech',
-                  email: 'jean.durand@example.com',
-                  avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-                  checkedIn: true
-                },
-                {
-                  id: '102',
-                  firstName: 'Marie',
-                  lastName: 'Leroy',
-                  jobTitle: 'Experte Intelligence Artificielle',
-                  company: 'AI Solutions',
-                  email: 'marie.leroy@example.com',
-                  avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-                  checkedIn: true
-                },
-                {
-                  id: '103',
-                  firstName: 'Antoine',
-                  lastName: 'Girard',
-                  jobTitle: 'Entrepreneur & Investisseur',
-                  company: 'Capital Ventures',
-                  email: 'antoine.girard@example.com',
-                  avatar: 'https://randomuser.me/api/portraits/men/22.jpg',
-                  checkedIn: false
-                }
-              ]);
             }
           } else {
-            console.error("Erreur lors de la récupération des intervenants:", await response.text());
-            // ... existing error handling ...
+            console.error("Erreur lors de la récupération des intervenants");
+            setSpeakers([]);
           }
         } catch (error) {
-          console.error("Erreur lors de la récupération des intervenants:", error);
-          // ... existing error handling ...
+          console.error("Erreur:", error);
+          setSpeakers([]);
         } finally {
           setLoadingSpeakers(false);
         }
       };
-      
       fetchSpeakers();
     }
-  }, [activeTab, eventId, event]);
+  }, [activeTab, event, eventId]);
 
   // Ajouter une fonction pour récupérer les sessions de l'agenda
   useEffect(() => {
@@ -1073,25 +1036,44 @@ export default function EventApercuPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header: Banner + Avatar + Main Info */}
       <div className="relative">
+        {/* Bouton retour au dashboard */}
+        <div className="absolute top-4 left-4 z-20">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-black bg-opacity-50 rounded-lg hover:bg-opacity-70 transition-all duration-200"
+          >
+            <ArrowLeftIcon className="w-4 h-4 mr-2" />
+            Retour au Dashboard
+          </Link>
+        </div>
+        
         <div className="w-full h-56 bg-gray-200">
-          {event.banner ? (
+          {event?.banner ? (
             <img src={event.banner} alt="Bannière" className="w-full h-56 object-cover" />
           ) : (
             <div className="w-full h-56 flex items-center justify-center text-gray-400 text-2xl font-bold bg-gradient-to-r from-blue-100 to-green-100">Aucune bannière</div>
           )}
         </div>
+        
         <div className="absolute left-8 -bottom-16 flex items-end">
           <div className="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-white flex items-center justify-center overflow-hidden">
-            {event.logo ? (
+            {event?.logo ? (
               <img src={event.logo} alt="Logo" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-4xl font-bold text-blue-600">{event.name?.charAt(0) || "E"}</span>
+              <span className="text-4xl font-bold text-blue-600">{event?.name?.charAt(0) || "E"}</span>
             )}
           </div>
           <div className="ml-6 mb-4">
             <div className="flex items-center text-gray-500 mt-2 flex-wrap gap-4">
-              <span className="flex items-center bg-white bg-opacity-90 px-3 py-1 rounded"><CalendarIcon className="w-5 h-5 mr-1" />{formatDate(event.startDate || '')}{event.endDate ? ` - ${formatDate(event.endDate || '')}` : ""}</span>
-              <span className="flex items-center bg-white bg-opacity-90 px-3 py-1 rounded"><MapPinIcon className="w-5 h-5 mr-1" />{event.location}</span>
+              <span className="flex items-center bg-white bg-opacity-90 px-3 py-1 rounded">
+                <CalendarIcon className="w-5 h-5 mr-1" />
+                {event?.startDate ? formatDate(event.startDate) : ''}
+                {event?.endDate ? ` - ${formatDate(event.endDate)}` : ""}
+              </span>
+              <span className="flex items-center bg-white bg-opacity-90 px-3 py-1 rounded">
+                <MapPinIcon className="w-5 h-5 mr-1" />
+                {event?.location}
+              </span>
             </div>
           </div>
         </div>
@@ -1475,70 +1457,60 @@ export default function EventApercuPage() {
           )}
           
           {activeTab === "speakers" && (
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Intervenants</h2>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">Intervenants</h2>
+              <p className="text-gray-600">
+                {loadingSpeakers ? "Chargement..." : `${speakers.length} intervenant${speakers.length !== 1 ? 's' : ''}`}
+              </p>
+            </div>
             
             {loadingSpeakers ? (
-              <div className="flex justify-center py-10">
-                <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#81B441] border-t-transparent"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
+                    <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4"></div>
+                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-3 bg-gray-300 rounded mb-4"></div>
+                    <div className="h-3 bg-gray-300 rounded"></div>
+                  </div>
+                ))}
               </div>
             ) : speakers.length === 0 ? (
-              <div className="bg-gray-100 rounded-lg p-6 text-center text-gray-500">
-                Aucun intervenant enregistré pour le moment.
+              <div className="text-center py-12">
+                <MicrophoneIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun intervenant défini pour le moment</h3>
+                <p className="text-gray-500">Les intervenants seront affichés une fois qu'ils seront ajoutés à l'événement.</p>
               </div>
             ) : (
-              <div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  {speakers.map(speaker => (
-                    <div key={speaker.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all hover:shadow-md flex flex-col">
-                      <div className="flex items-center gap-4 mb-3">
-                        <div className="flex-shrink-0">
-                          {speaker.avatar ? (
-                            <img src={speaker.avatar} alt={`${speaker.firstName} ${speaker.lastName}`} className="h-16 w-16 rounded-full object-cover" />
-                          ) : (
-                            <div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center">
-                              <UserCircleIcon className="h-10 w-10 text-gray-400" />
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-semibold text-gray-900 truncate">
-                            {speaker.firstName} {speaker.lastName}
-                          </h3>
-                          {speaker.jobTitle && (
-                            <p className="text-sm text-gray-600">
-                              {speaker.jobTitle}
-                            </p>
-                          )}
-                          {speaker.company && (
-                            <p className="text-sm text-[#81B441] font-medium">
-                              {speaker.company}
-                            </p>
-                          )}
-                        </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {speakers.map((speaker) => (
+                  <div
+                    key={speaker.id}
+                    className="bg-white rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer p-6"
+                    onClick={() => openSpeakerProfile(speaker)}
+                  >
+                    <div className="text-center">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
+                        {speaker.firstName?.charAt(0)}{speaker.lastName?.charAt(0)}
                       </div>
-                      
-                      <div className="mt-auto flex justify-between items-center pt-3 border-t border-gray-100">
-                        <div className="flex-shrink-0">
-                          {speaker.checkedIn ? (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              <CheckCircleIcon className="h-4 w-4 mr-1" />
-                              Présent
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                              En attente
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        {speaker.firstName} {speaker.lastName}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-2">{speaker.jobTitle}</p>
+                      <p className="text-xs text-gray-500">{speaker.company}</p>
+                      {speaker.checkedIn && (
+                        <Badge variant="secondary" className="mt-2 bg-green-100 text-green-800">
+                          <CheckCircleIcon className="w-3 h-3 mr-1" />
+                          Présent
+                        </Badge>
+                      )}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             )}
-          </section>
+          </div>
           )}
         </div>
         {/* Sidebar */}
