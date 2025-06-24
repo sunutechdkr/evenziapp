@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { sendCheckinConfirmationEmail } from "@/lib/checkinEmail";
 
 // Schema for QR code check-in
 const qrCheckInSchema = z.object({
@@ -258,6 +259,32 @@ export async function POST(request: Request) {
       
       console.log(`Successfully checked in participant ${updatedRegistration.id}`);
     
+      // Envoi de l'email de confirmation de check-in
+      if (updatedRegistration) {
+        try {
+          const checkInTime = new Date().toLocaleString('fr-FR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          await sendCheckinConfirmationEmail({
+            eventId: eventId,
+            participantEmail: updatedRegistration.email,
+            participantName: `${updatedRegistration.firstName} ${updatedRegistration.lastName}`,
+            checkInTime: checkInTime
+          });
+          
+          console.log(`📧 Email de confirmation envoyé à ${updatedRegistration.email}`);
+        } catch (emailError) {
+          console.error('⚠️ Erreur lors de l\'envoi de l\'email de confirmation:', emailError);
+          // On ne fait pas échouer le check-in si l'email échoue
+        }
+      }
+
       return NextResponse.json({
         message: "Check-in successful",
         registration: updatedRegistration,
