@@ -4,13 +4,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CalendarIcon, MapPinIcon, CheckCircleIcon, ClockIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { useRouter } from 'next/navigation';
+import { CalendarIcon, MapPinIcon, CheckCircleIcon, UsersIcon } from "@heroicons/react/24/outline";
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 // Importer les composants shadcn/ui
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -69,13 +68,10 @@ interface Event {
 }
 
 export default function ClientEventPage({ 
-  params,
   event
 }: { 
-  params: { slug: string },
   event: Event
 }) {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -83,6 +79,8 @@ export default function ClientEventPage({
     registrationId?: string;
     eventSlug?: string;
   } | null>(null);
+  
+  const router = useRouter();
   
   // Initialiser le formulaire avec react-hook-form et shadcn
   const form = useForm<RegistrationFormData>({
@@ -227,7 +225,7 @@ export default function ClientEventPage({
                 
                 {registrationData?.registrationId && (
                   <div className="bg-gray-50 rounded-lg p-4 border">
-                    <h4 className="font-semibold text-gray-800 mb-2">📋 Votre référence d'inscription</h4>
+                    <h4 className="font-semibold text-gray-800 mb-2">📋 Votre référence d&apos;inscription</h4>
                     <code className="bg-white px-3 py-1 rounded border text-sm font-mono text-gray-700">
                       {registrationData.registrationId}
                     </code>
@@ -240,24 +238,31 @@ export default function ClientEventPage({
               
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button 
-                  onClick={() => window.location.href = `/event/${event.slug}`}
+                  onClick={() => router.push('/')}
                   variant="outline"
                   className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
                 >
-                  Retour à l&apos;événement
+                  Retour à l&apos;accueil
                 </Button>
                 <Button 
-                  onClick={() => window.close()}
+                  onClick={() => {
+                    // Si possible, retour à la page précédente, sinon vers l'accueil
+                    if (window.history.length > 1) {
+                      router.back();
+                    } else {
+                      router.push('/');
+                    }
+                  }}
                   className="bg-[#81B441] hover:bg-[#729939] text-white"
                 >
-                  Fermer
+                  Terminer
                 </Button>
               </div>
             </CardContent>
           </Card>
           
           <p className="text-center text-sm text-gray-500 mt-6">
-            Des questions ? Contactez l'organisateur de l'événement pour obtenir de l'aide.
+            Des questions ? Contactez l&apos;organisateur de l&apos;événement pour obtenir de l&apos;aide.
           </p>
         </div>
       </div>
@@ -343,7 +348,7 @@ export default function ClientEventPage({
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">Erreur d'inscription</h3>
+                    <h3 className="text-sm font-medium text-red-800">Erreur d&apos;inscription</h3>
                     <p className="text-sm text-red-700 mt-1">{error}</p>
                   </div>
                 </div>
@@ -421,7 +426,7 @@ export default function ClientEventPage({
                         </FormControl>
                         <FormMessage className="text-red-500 text-sm" />
                         <p className="text-xs text-gray-500 mt-1">
-                          Votre badge et les informations de l'événement seront envoyés à cette adresse
+                          Votre badge et les informations de l&apos;événement seront envoyés à cette adresse
                         </p>
                       </FormItem>
                     )}
