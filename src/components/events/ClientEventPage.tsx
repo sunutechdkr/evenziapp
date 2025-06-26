@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CalendarIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, MapPinIcon, CheckCircleIcon, ClockIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -22,14 +24,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Schéma de validation du formulaire d'inscription
+// Schéma de validation du formulaire d'inscription amélioré
 const registrationSchema = z.object({
-  firstName: z.string().min(2, 'Le prénom est requis (minimum 2 caractères)'),
-  lastName: z.string().min(2, 'Le nom est requis (minimum 2 caractères)'),
-  email: z.string().email('Un email valide est requis'),
-  phone: z.string().optional(),
-  jobTitle: z.string().optional(),
-  company: z.string().optional(),
+  firstName: z.string()
+    .min(2, 'Le prénom doit contenir au moins 2 caractères')
+    .max(50, 'Le prénom ne peut pas dépasser 50 caractères')
+    .regex(/^[a-zA-ZÀ-ÿ\s-']+$/, 'Le prénom ne peut contenir que des lettres, espaces, tirets et apostrophes'),
+  lastName: z.string()
+    .min(2, 'Le nom doit contenir au moins 2 caractères')
+    .max(50, 'Le nom ne peut pas dépasser 50 caractères')
+    .regex(/^[a-zA-ZÀ-ÿ\s-']+$/, 'Le nom ne peut contenir que des lettres, espaces, tirets et apostrophes'),
+  email: z.string()
+    .email('Veuillez saisir une adresse email valide')
+    .max(100, 'L\'email ne peut pas dépasser 100 caractères'),
+  phone: z.string()
+    .optional()
+    .refine((val) => !val || /^[\d\s\-\+\(\)\.]+$/.test(val), {
+      message: 'Veuillez saisir un numéro de téléphone valide'
+    }),
+  jobTitle: z.string()
+    .max(100, 'La fonction ne peut pas dépasser 100 caractères')
+    .optional(),
+  company: z.string()
+    .max(100, 'Le nom de l\'entreprise ne peut pas dépasser 100 caractères')
+    .optional(),
   gdprConsent: z.boolean().refine(val => val === true, {
     message: 'Vous devez accepter les conditions pour vous inscrire',
   }),
@@ -61,6 +79,10 @@ export default function ClientEventPage({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [registrationData, setRegistrationData] = useState<{
+    registrationId?: string;
+    eventSlug?: string;
+  } | null>(null);
   
   // Initialiser le formulaire avec react-hook-form et shadcn
   const form = useForm<RegistrationFormData>({
@@ -99,73 +121,143 @@ export default function ClientEventPage({
       }
       
       const result = await response.json();
+      setRegistrationData(result);
       setSuccess(true);
       
-      // La redirection se fera via le bouton de la page de succès
+      // Scroll vers le haut pour afficher le message de succès
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
     } catch (err) {
       console.error('Erreur d\'inscription:', err);
       setError(err instanceof Error ? err.message : 'Une erreur s\'est produite pendant l\'inscription');
       setIsSubmitting(false);
+      
+      // Scroll vers l'erreur
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Fonction pour formater la date
+  const formatEventDate = (startDate: string, endDate: string, startTime?: string | null) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    const startDateStr = start.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+    if (start.toDateString() === end.toDateString()) {
+      // Même jour
+      return startTime ? `${startDateStr} à ${startTime}` : startDateStr;
+    } else {
+      // Plusieurs jours
+      const endDateStr = end.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      return `Du ${startDateStr} au ${endDateStr}`;
     }
   };
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         {/* Bannière réduite de l'événement */}
-        <div className="relative h-40 w-full bg-gradient-to-r from-gray-700 to-gray-900">
+        <div className="relative h-32 w-full bg-gradient-to-r from-[#81B441] to-[#6a9636]">
           {event.banner ? (
             <Image
               src={event.banner}
               alt={event.name}
               fill
               style={{ objectFit: 'cover' }}
-              className="z-0 opacity-80"
+              className="z-0 opacity-20"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-r from-[#81B441]/20 to-indigo-500/20"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#81B441] to-[#6a9636]"></div>
           )}
-          <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-            <h1 className="text-2xl md:text-3xl font-bold text-white drop-shadow-md">{event.name}</h1>
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <h1 className="text-xl md:text-2xl font-bold text-white drop-shadow-md">{event.name}</h1>
           </div>
         </div>
         
-        {/* Message de confirmation */}
-        <div className="max-w-2xl mx-auto w-full px-4 py-12 text-center">
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div className="rounded-full bg-green-100 p-5 mx-auto w-20 h-20 flex items-center justify-center mb-6">
-              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Inscription réussie!</h2>
-            
-            <div className="space-y-4 mb-8">
-              <p className="text-gray-600">
-                Merci de vous être inscrit à <span className="font-semibold">{event.name}</span>.
-              </p>
-              <p className="text-gray-600">
-                Un email contenant vos informations de connexion et votre badge a été envoyé à 
-                <span className="font-semibold text-[#81B441]"> {form.getValues().email}</span>.
-              </p>
-              <p className="text-gray-600">
-                Veuillez vérifier votre boîte de réception (et éventuellement vos spams).
-              </p>
-            </div>
-            
-            <div className="flex justify-center mt-8">
-              <Button 
-                onClick={() => window.location.href = `/dashboard/events/${event.id}/apercu`}
-                className="bg-[#81B441] hover:bg-[#729939] text-white px-8 py-2 text-base"
-              >
-                Terminer
-              </Button>
-            </div>
-          </div>
+        {/* Message de confirmation amélioré */}
+        <div className="max-w-3xl mx-auto w-full px-4 py-8">
+          <Card className="shadow-xl border-0 bg-white">
+            <CardContent className="p-8 text-center">
+              {/* Icône de succès animée */}
+              <div className="mx-auto w-24 h-24 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                <CheckCircleIcon className="w-12 h-12 text-white" />
+              </div>
+              
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Inscription confirmée !</h2>
+              
+              <div className="space-y-4 mb-8">
+                <p className="text-lg text-gray-700">
+                  Félicitations ! Vous êtes maintenant inscrit(e) à
+                </p>
+                <div className="bg-[#81B441] bg-opacity-10 rounded-lg p-4 border border-[#81B441] border-opacity-20">
+                  <h3 className="text-xl font-bold text-[#81B441] mb-2">{event.name}</h3>
+                  <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <CalendarIcon className="w-4 h-4 mr-1 text-[#81B441]" />
+                      {formatEventDate(event.startDate, event.endDate, event.startTime)}
+                    </div>
+                    <div className="flex items-center">
+                      <MapPinIcon className="w-4 h-4 mr-1 text-[#81B441]" />
+                      {event.location}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                  <h4 className="font-semibold text-blue-900 mb-2">📧 Vérifiez votre email</h4>
+                  <p className="text-blue-800 text-sm">
+                    Un email de confirmation avec votre badge QR et toutes les informations importantes 
+                    a été envoyé à <span className="font-semibold">{form.getValues().email}</span>.
+                  </p>
+                  <p className="text-blue-700 text-xs mt-2">
+                    N&apos;oubliez pas de vérifier vos spams si vous ne le trouvez pas dans votre boîte de réception.
+                  </p>
+                </div>
+                
+                {registrationData?.registrationId && (
+                  <div className="bg-gray-50 rounded-lg p-4 border">
+                    <h4 className="font-semibold text-gray-800 mb-2">📋 Votre référence d'inscription</h4>
+                    <code className="bg-white px-3 py-1 rounded border text-sm font-mono text-gray-700">
+                      {registrationData.registrationId}
+                    </code>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Conservez cette référence pour toute correspondance future
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button 
+                  onClick={() => window.location.href = `/event/${event.slug}`}
+                  variant="outline"
+                  className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
+                >
+                  Retour à l&apos;événement
+                </Button>
+                <Button 
+                  onClick={() => window.close()}
+                  className="bg-[#81B441] hover:bg-[#729939] text-white"
+                >
+                  Fermer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
           
-          <p className="text-sm text-gray-500">
-            Si vous avez des questions, veuillez contacter l'organisateur de l'événement.
+          <p className="text-center text-sm text-gray-500 mt-6">
+            Des questions ? Contactez l'organisateur de l'événement pour obtenir de l'aide.
           </p>
         </div>
       </div>
@@ -173,41 +265,44 @@ export default function ClientEventPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Bannière de l'événement */}
-      <div className="relative h-64 md:h-80 w-full bg-gradient-to-r from-gray-700 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Bannière de l'événement améliorée */}
+      <div className="relative h-72 md:h-96 w-full">
         {event.banner ? (
           <Image
             src={event.banner}
             alt={event.name}
             fill
             style={{ objectFit: 'cover' }}
-            className="z-0 opacity-80"
+            className="z-0"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-r from-[#81B441]/20 to-indigo-500/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#81B441] to-[#6a9636]"></div>
         )}
         
-        {/* Overlay avec informations de l'événement */}
-        <div className="absolute inset-0 bg-black/40 z-10 flex flex-col justify-end p-6">
+        {/* Overlay avec gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-10"></div>
+        
+        {/* Informations de l'événement */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-end p-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="max-w-3xl">
-              <div className="inline-block px-3 py-1 bg-[#81B441] text-white text-xs font-semibold rounded-full mb-3">
-                {new Date(event.startDate).toLocaleDateString('fr-FR')}
-                {event.endDate && new Date(event.startDate).toDateString() !== new Date(event.endDate).toDateString() && 
-                  ` - ${new Date(event.endDate).toLocaleDateString('fr-FR')}`}
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-md">{event.name}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-white/80 text-sm mt-2">
-                <div className="flex items-center">
-                  <CalendarIcon className="h-4 w-4 mr-2" />
+            <div className="max-w-4xl">
+              <Badge className="bg-[#81B441] text-white mb-4 text-sm">
+                {formatEventDate(event.startDate, event.endDate, event.startTime)}
+              </Badge>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                {event.name}
+              </h1>
+              <div className="flex flex-wrap items-center gap-6 text-white/90 text-base">
+                <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                  <CalendarIcon className="h-5 w-5 mr-2" />
                   <span>
                     {new Date(event.startDate).toLocaleDateString('fr-FR')}
                     {event.startTime && ` à ${event.startTime}`}
                   </span>
                 </div>
-                <div className="flex items-center">
-                  <MapPinIcon className="h-4 w-4 mr-2" />
+                <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                  <MapPinIcon className="h-5 w-5 mr-2" />
                   <span>{event.location}</span>
                 </div>
               </div>
@@ -218,21 +313,29 @@ export default function ClientEventPage({
       
       {/* Contenu principal */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white shadow-sm rounded-lg p-8 -mt-12 md:-mt-16 relative z-20 mb-12">
-          {event.description && (
-            <div className="prose max-w-none mb-8">
-              <p>{event.description}</p>
-            </div>
-          )}
-        </div>
+        {/* Description de l'événement */}
+        {event.description && (
+          <Card className="shadow-lg border-0 bg-white -mt-24 relative z-30 mb-12">
+            <CardContent className="p-8">
+              <div className="prose max-w-none">
+                <p className="text-lg text-gray-700 leading-relaxed">{event.description}</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
-        {/* Formulaire d'inscription */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="px-6 py-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Inscrivez-vous à cet événement</h2>
-            
+        {/* Formulaire d'inscription amélioré */}
+        <Card className="shadow-xl border-0 bg-white">
+          <CardHeader className="bg-gradient-to-r from-[#81B441] to-[#6a9636] text-white rounded-t-lg">
+            <CardTitle className="text-2xl font-bold text-center flex items-center justify-center">
+              <UsersIcon className="w-6 h-6 mr-2" />
+              Inscrivez-vous à cet événement
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="p-8">
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 max-w-2xl mx-auto">
+              <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-r-lg">
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -240,73 +343,89 @@ export default function ClientEventPage({
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm text-red-700">{error}</p>
+                    <h3 className="text-sm font-medium text-red-800">Erreur d'inscription</h3>
+                    <p className="text-sm text-red-700 mt-1">{error}</p>
                   </div>
                 </div>
               </div>
             )}
             
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-2xl mx-auto">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  {/* Champ prénom */}
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700">Prénom <span className="text-red-500">*</span></FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Jean" 
-                            {...field} 
-                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500" />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Champ nom */}
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700">Nom <span className="text-red-500">*</span></FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Dupont" 
-                            {...field} 
-                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500" />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Champ email (sur toute la largeur) */}
-                  <div className="sm:col-span-2">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {/* Section informations personnelles */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                    Informations personnelles
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {/* Champ prénom */}
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700">Email <span className="text-red-500">*</span></FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">
+                            Prénom <span className="text-red-500">*</span>
+                          </FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="jean.dupont@exemple.com" 
+                              placeholder="Jean" 
                               {...field} 
-                              className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none"
+                              className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none transition-colors"
                             />
                           </FormControl>
-                          <FormMessage className="text-red-500" />
+                          <FormMessage className="text-red-500 text-sm" />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Champ nom */}
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">
+                            Nom <span className="text-red-500">*</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Dupont" 
+                              {...field} 
+                              className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none transition-colors"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
                   </div>
+
+                  {/* Champ email */}
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 font-medium">
+                          Adresse email <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email"
+                            placeholder="jean.dupont@exemple.com" 
+                            {...field} 
+                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500 text-sm" />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Votre badge et les informations de l'événement seront envoyés à cette adresse
+                        </p>
+                      </FormItem>
+                    )}
+                  />
 
                   {/* Champ téléphone */}
                   <FormField
@@ -314,99 +433,136 @@ export default function ClientEventPage({
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700">Téléphone</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">Téléphone</FormLabel>
                         <FormControl>
                           <Input 
-                            placeholder="123-456-7890" 
+                            type="tel"
+                            placeholder="+33 6 12 34 56 78" 
                             {...field} 
-                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none"
+                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none transition-colors"
                           />
                         </FormControl>
-                        <FormMessage className="text-red-500" />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Champ fonction */}
-                  <FormField
-                    control={form.control}
-                    name="jobTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700">Fonction</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Directeur Marketing" 
-                            {...field} 
-                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500" />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Champ entreprise */}
-                  <FormField
-                    control={form.control}
-                    name="company"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700">Entreprise</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Entreprise XYZ" 
-                            {...field} 
-                            className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500" />
+                        <FormMessage className="text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
                 </div>
 
-                {/* Case à cocher RGPD */}
-                <FormField
-                  control={form.control}
-                  name="gdprConsent"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="data-[state=checked]:bg-[#81B441] data-[state=checked]:border-[#81B441]"
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-gray-700">
-                          Protection des données <span className="text-red-500">*</span>
-                        </FormLabel>
-                        <p className="text-sm text-gray-500">
-                          J'accepte que mes données soient traitées conformément à la {' '}
-                          <a href="/privacy-policy" className="text-[#81B441] underline hover:text-[#6a9636]">
-                            politique de confidentialité
-                          </a>.
-                        </p>
-                        <FormMessage className="text-red-500" />
-                      </div>
-                    </FormItem>
-                  )}
-                />
+                {/* Section informations professionnelles */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                    Informations professionnelles <span className="text-sm font-normal text-gray-500">(optionnel)</span>
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {/* Champ fonction */}
+                    <FormField
+                      control={form.control}
+                      name="jobTitle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Fonction</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Directeur Marketing" 
+                              {...field} 
+                              className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none transition-colors"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500 text-sm" />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Champ entreprise */}
+                    <FormField
+                      control={form.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Entreprise</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Entreprise XYZ" 
+                              {...field} 
+                              className="border-gray-300 focus:border-[#81B441] focus:ring-[#81B441] focus:ring-opacity-50 focus:outline-none transition-colors"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500 text-sm" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Section consentement RGPD */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                    Consentement et conditions
+                  </h3>
+                  
+                  <FormField
+                    control={form.control}
+                    name="gdprConsent"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-gray-200 p-4 bg-gray-50">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="data-[state=checked]:bg-[#81B441] data-[state=checked]:border-[#81B441] mt-1"
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-gray-700 font-medium">
+                            Protection des données <span className="text-red-500">*</span>
+                          </FormLabel>
+                          <p className="text-sm text-gray-600">
+                            J&apos;accepte que mes données personnelles soient collectées et traitées conformément à la {' '}
+                            <a 
+                              href="/privacy-policy" 
+                              target="_blank"
+                              className="text-[#81B441] underline hover:text-[#6a9636] font-medium"
+                            >
+                              politique de confidentialité
+                            </a>
+                            {' '} pour les besoins de ma participation à cet événement.
+                          </p>
+                          <FormMessage className="text-red-500 text-sm" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 {/* Bouton de soumission */}
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting} 
-                  className="w-full bg-[#81B441] hover:bg-[#729939] text-white focus:ring-[#81B441] focus:ring-opacity-50 focus:ring-offset-white transition-colors"
-                >
-                  {isSubmitting ? 'Inscription en cours...' : 'S\'inscrire à l\'événement'}
-                </Button>
+                <div className="pt-6">
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting} 
+                    className="w-full bg-gradient-to-r from-[#81B441] to-[#6a9636] hover:from-[#729939] hover:to-[#5a8230] text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-[1.02] focus:ring-4 focus:ring-[#81B441] focus:ring-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  >
+                    {isSubmitting ? (
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Inscription en cours...
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        <CheckCircleIcon className="w-5 h-5 mr-2" />
+                        S&apos;inscrire à l&apos;événement
+                      </div>
+                    )}
+                  </Button>
+                  
+                  <p className="text-center text-xs text-gray-500 mt-3">
+                    En vous inscrivant, vous recevrez un email de confirmation avec votre badge QR
+                  </p>
+                </div>
               </form>
             </Form>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
