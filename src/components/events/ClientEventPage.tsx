@@ -244,13 +244,7 @@ export default function ClientEventPage({
               
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button 
-                  onClick={() => {
-                    if (isClient) {
-                      router.push('/');
-                    } else {
-                      window.location.href = '/';
-                    }
-                  }}
+                  onClick={() => window.location.href = '/'}
                   variant="outline"
                   className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
                 >
@@ -258,13 +252,9 @@ export default function ClientEventPage({
                 </Button>
                 <Button 
                   onClick={() => {
-                    if (isClient) {
-                      // Si possible, retour à la page précédente, sinon vers l'accueil
-                      if (window.history.length > 1) {
-                        router.back();
-                      } else {
-                        router.push('/');
-                      }
+                    // Si possible, retour à la page précédente, sinon vers l'accueil
+                    if (window.history.length > 1) {
+                      window.history.back();
                     } else {
                       window.location.href = '/';
                     }
