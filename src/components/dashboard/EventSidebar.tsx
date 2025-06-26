@@ -22,8 +22,8 @@ import {
   EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/components/ui/Logo";
-
 import { UserProfile } from "@/components/dashboard/UserProfile";
+
 // Define types for menu items
 type SubMenuItem = {
   name: string;
@@ -124,7 +124,7 @@ export function NotificationPanel({
             </button>
           </div>
           
-          <div className="flex flex-col overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4">
             <div className="space-y-3">
               <div className="notification-item bg-gray-800 hover:bg-gray-700 rounded-md p-3 cursor-pointer transition-colors duration-200 transform hover:translate-x-1 border-l-2 border-[#81B441]">
                 <div className="flex justify-between items-start">
@@ -266,7 +266,7 @@ export function EventSidebar({
     <>
       {/* Version mobile: bouton d'ouverture */}
       <button
-        className={`md:hidden fixed z-30 top-4 left-4 p-3 rounded-full bg-[#81B441] text-white shadow-lg transition-transform duration-200 ${
+        className={`md:hidden fixed z-30 bottom-4 right-4 p-3 rounded-full bg-[#81B441] text-white shadow-lg transition-transform duration-200 ${
           isExpanded ? 'rotate-45' : 'rotate-0'
         }`}
         onClick={() => toggleExpand(!isExpanded)}
@@ -274,7 +274,7 @@ export function EventSidebar({
         {isExpanded ? (
           <XMarkIcon className="h-6 w-6" />
         ) : (
-          <Bars3Icon className="h-6 w-6" />
+          <ChevronRightIcon className="h-6 w-6" />
         )}
       </button>
       
@@ -317,16 +317,16 @@ export function EventSidebar({
         <div className="sidebar-content h-full flex flex-col">
           {/* En-tête avec logo */}
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
-            <div className="flex items-center space-x-3">
-              {/* Logo complet blanc occupant toute la largeur */}
+            <div className="flex items-center space-x-2">
+              {/* Logo */}
               <div className="flex flex-col">
                 <Logo width={120} height={30} color="white" />
-                <span className="text-gray-400 text-xs ">Événement</span>
+                <span className="text-gray-400 text-xs">Événement</span>
               </div>
             </div>
             {/* Bouton pour réduire la sidebar (version desktop) */}
             <button
-              className="hidden md:block text-gray-400 hover:text-white p-1 rounded-md transition-colors "
+              className="hidden md:block text-gray-400 hover:text-white p-1 rounded-md transition-colors"
               onClick={() => toggleExpand(!isExpanded)}
             >
               {isExpanded ? (
@@ -354,7 +354,6 @@ export function EventSidebar({
                 {item.href ? (
                   <Link 
                     href={item.href}
-                    onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }}
                     className={`
                       block py-2 px-3 rounded-md transition-colors duration-200
                       ${isActive(item.href, item.exact) 
@@ -403,7 +402,6 @@ export function EventSidebar({
                         <Link
                           key={subItem.name}
                           href={subItem.href}
-                          onClick={() => { if (window.innerWidth < 768) { toggleExpand(false); } }}
                             className={`
                               block py-2 px-3 rounded-md text-sm transition-colors duration-200
                               ${isActive(subItem.href)
