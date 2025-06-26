@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { CalendarIcon, MapPinIcon, CheckCircleIcon, UsersIcon } from "@heroicons/react/24/outline";
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 // Importer les composants shadcn/ui
 import { Input } from "@/components/ui/input";
@@ -79,14 +78,6 @@ export default function ClientEventPage({
     registrationId?: string;
     eventSlug?: string;
   } | null>(null);
-  const [isClient, setIsClient] = useState(false);
-  
-  const router = useRouter();
-  
-  // S'assurer que le composant est monté côté client
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Initialiser le formulaire avec react-hook-form et shadcn
   const form = useForm<RegistrationFormData>({

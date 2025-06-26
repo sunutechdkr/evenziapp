@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { generateShortCode } from "@/lib/shortcodes";
+import { sendRegistrationConfirmationEmail } from "@/lib/registrationEmail";
 
 // POST /api/register - Create a new registration without authentication
 export async function POST(request: Request) {
@@ -80,6 +81,21 @@ export async function POST(request: Request) {
         eventId,
       },
     });
+
+    // Envoyer l'email de confirmation d'inscription
+    try {
+      await sendRegistrationConfirmationEmail({
+        eventId: eventId,
+        participantEmail: email,
+        participantName: `${firstName} ${lastName}`,
+        registrationId: registration.id
+      });
+      
+      console.log(`📧 Email de confirmation d'inscription envoyé à ${email} pour l'événement ${event.name}`);
+    } catch (emailError) {
+      console.error('⚠️ Erreur lors de l\'envoi de l\'email de confirmation d\'inscription:', emailError);
+      // On ne fait pas échouer l'inscription si l'email échoue
+    }
     
     return NextResponse.json(
       { 
