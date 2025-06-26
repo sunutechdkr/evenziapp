@@ -10,10 +10,6 @@ export async function createDefaultTemplates(eventId: string) {
       htmlContent: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
           <div style="background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div style="text-align: center; margin-bottom: 30px;">
-              <img src="{{eventBanner}}" alt="{{eventName}}" style="max-width: 100%; height: auto; border-radius: 8px;" />
-            </div>
-            
             <h1 style="color: #81B441; text-align: center; margin-bottom: 20px;">Inscription confirmée !</h1>
             
             <p style="color: #374151; line-height: 1.6; font-size: 16px;">
@@ -29,6 +25,12 @@ export async function createDefaultTemplates(eventId: string) {
               <p style="margin: 5px 0; color: #6b7280;"><strong>Date :</strong> {{eventDate}}</p>
               <p style="margin: 5px 0; color: #6b7280;"><strong>Heure :</strong> {{eventTime}}</p>
               <p style="margin: 5px 0; color: #6b7280;"><strong>Lieu :</strong> {{eventLocation}}</p>
+            </div>
+            
+            <div style="background: #dcfce7; border-left: 4px solid #81B441; padding: 20px; margin: 25px 0;">
+              <h3 style="color: #15803d; margin: 0 0 15px 0;">✅ Votre inscription</h3>
+              <p style="color: #166534; margin: 5px 0;"><strong>Référence :</strong> {{registrationId}}</p>
+              <p style="color: #166534; margin: 5px 0; font-size: 14px;">Conservez cette référence pour toute correspondance future.</p>
             </div>
             
             <p style="color: #374151; line-height: 1.6; font-size: 16px;">

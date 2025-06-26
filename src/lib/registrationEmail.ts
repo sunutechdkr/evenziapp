@@ -42,9 +42,7 @@ export async function sendRegistrationConfirmationEmail(data: RegistrationEmailD
       return false;
     }
 
-    // 3. Préparer les variables de substitution
-    const logoBase64 = `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100"><rect width="400" height="100" fill="#81B441"/><text x="200" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white">Evenzi</text></svg>`).toString('base64')}`;
-    
+    // 3. Préparer les variables de substitution (sans image)
     const variables = {
       eventName: event.name,
       eventLocation: event.location,
@@ -58,7 +56,7 @@ export async function sendRegistrationConfirmationEmail(data: RegistrationEmailD
       participantName: data.participantName,
       supportEmail: event.supportEmail || 'support@evenzi.io',
       organizerName: 'Evenzi',
-      eventBanner: event.banner || logoBase64,
+      eventBanner: '', // Suppression de l'image pour éviter les problèmes d'affichage
       registrationId: data.registrationId
     };
 
@@ -131,12 +129,14 @@ export async function sendRegistrationConfirmationEmail(data: RegistrationEmailD
 
     } catch (emailError) {
       // 9. Mettre à jour les statistiques en cas d'erreur
+      const errorMessage = emailError instanceof Error ? emailError.message : 'Erreur inconnue';
+      
       await Promise.all([
         prisma.emailLog.update({
           where: { id: emailLog.id },
           data: {
             status: 'FAILED',
-            errorMessage: emailError.message
+            errorMessage: errorMessage
           }
         }),
         prisma.emailCampaign.update({
