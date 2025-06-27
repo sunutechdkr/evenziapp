@@ -99,68 +99,7 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
       const response = await fetch(`/api/events/${eventId}/tickets`);
       
       if (!response.ok) {
-        // Fallback vers des données de démonstration si l'API n'est pas disponible
-        console.log('API non disponible, utilisation des données de démonstration');
-        setTickets([
-          {
-            id: "demo-1",
-            name: "PARTICIPANT PREMIUM",
-            status: "TERMINATED",
-            price: 0,
-            usage: "117/Illimité",
-            validFrom: new Date("2025-05-30"),
-            validUntil: new Date("2025-06-25T19:00"),
-            group: "Attendees",
-            visibility: "VISIBLE",
-            description: "Accès complet à l'événement avec privilèges premium",
-            quantity: "",
-            sold: 117
-          },
-          {
-            id: "demo-2", 
-            name: "PARTICIPANT ACCESS",
-            status: "TERMINATED",
-            price: 0,
-            usage: "258/Illimité",
-            validFrom: new Date("2025-03-19"),
-            validUntil: new Date("2025-06-25T19:00"),
-            group: "Attendees",
-            visibility: "VISIBLE",
-            description: "Accès standard à l'événement",
-            quantity: "",
-            sold: 258
-          },
-          {
-            id: "demo-3",
-            name: "VISITEUR",
-            status: "TERMINATED", 
-            price: 0,
-            usage: "485/Illimité",
-            validFrom: new Date("2025-05-30"),
-            validUntil: new Date("2025-06-25T19:00"),
-            group: "Attendees",
-            visibility: "VISIBLE",
-            description: "Accès visiteur pour découvrir l'événement",
-            quantity: "",
-            sold: 485
-          },
-          {
-            id: "demo-4",
-            name: "SPEAKERS",
-            status: "TERMINATED",
-            price: 0,
-            usage: "15/50", 
-            validFrom: new Date("2025-03-19"),
-            validUntil: new Date("2025-06-25T19:00"),
-            group: "Speakers",
-            visibility: "VISIBLE",
-            description: "Accès réservé aux intervenants",
-            quantity: "50",
-            sold: 15
-          }
-        ]);
-        setLoading(false);
-        return;
+        throw new Error('Erreur lors du chargement des billets');
       }
       
       const data = await response.json();
@@ -254,27 +193,8 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
       });
 
       if (!response.ok) {
-        // Simulation de création réussie pour la démo
-        console.log('API non disponible, simulation de création réussie');
-        const newTicket: Ticket = {
-          id: `demo-new-${Date.now()}`,
-          name: ticketData.name,
-          status: 'ACTIVE',
-          price: ticketData.type === 'free' ? 0 : ticketData.price,
-          usage: ticketData.quantity ? `0/${ticketData.quantity}` : '0/Illimité',
-          validFrom: new Date(ticketData.startDate),
-          validUntil: new Date(ticketData.endDate),
-          group: ticketData.group,
-          visibility: ticketData.visibility === 'visible' ? 'VISIBLE' : 'HIDDEN',
-          description: ticketData.description,
-          quantity: ticketData.quantity,
-          sold: 0
-        };
-        
-        setTickets(prev => [newTicket, ...prev]);
-        setShowCreateModal(false);
-        toast.success('Billet créé avec succès ! (Mode démo)');
-        return;
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors de la création du billet');
       }
 
       const data = await response.json();
@@ -329,28 +249,8 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
       });
 
       if (!response.ok) {
-        // Simulation de mise à jour réussie pour la démo
-        console.log('API non disponible, simulation de mise à jour réussie');
-        const updatedTicket: Ticket = {
-          ...editingTicket,
-          name: ticketData.name,
-          price: ticketData.type === 'free' ? 0 : ticketData.price,
-          usage: ticketData.quantity ? 
-            `${editingTicket.sold || 0}/${ticketData.quantity}` : 
-            `${editingTicket.sold || 0}/Illimité`,
-          validFrom: new Date(ticketData.startDate),
-          validUntil: new Date(ticketData.endDate),
-          group: ticketData.group,
-          visibility: ticketData.visibility === 'visible' ? 'VISIBLE' : 'HIDDEN',
-          description: ticketData.description,
-          quantity: ticketData.quantity
-        };
-
-        setTickets(prev => prev.map(t => t.id === editingTicket.id ? updatedTicket : t));
-        setShowEditModal(false);
-        setEditingTicket(null);
-        toast.success('Billet mis à jour avec succès ! (Mode démo)');
-        return;
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors de la mise à jour du billet');
       }
 
       const data = await response.json();
@@ -378,17 +278,8 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
       });
 
       if (!response.ok) {
-        // Simulation de suppression réussie pour la démo
-        console.log('API non disponible, simulation de suppression réussie');
-        setTickets(prev => prev.filter(t => t.id !== idToDelete));
-        
-        if (showEditModal) {
-          setShowEditModal(false);
-          setEditingTicket(null);
-        }
-        
-        toast.success('Billet supprimé avec succès ! (Mode démo)');
-        return;
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors de la suppression du billet');
       }
 
       const data = await response.json();

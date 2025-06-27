@@ -127,13 +127,13 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   password: 'password',
-  phone: 'phone',
-  plan: 'plan',
-  role: 'role',
-  permissions: 'permissions',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  lastLogin: 'lastLogin'
+  permissions: 'permissions',
+  role: 'role',
+  lastLogin: 'lastLogin',
+  phone: 'phone',
+  plan: 'plan'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -181,12 +181,12 @@ exports.Prisma.EventScalarFieldEnum = {
   timezone: 'timezone',
   videoUrl: 'videoUrl',
   supportEmail: 'supportEmail',
-  archived: 'archived',
-  archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  logo: 'logo'
+  logo: 'logo',
+  archived: 'archived',
+  archivedAt: 'archivedAt'
 };
 
 exports.Prisma.RegistrationScalarFieldEnum = {
@@ -196,15 +196,15 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   type: 'type',
-  jobTitle: 'jobTitle',
-  company: 'company',
   eventId: 'eventId',
   qrCode: 'qrCode',
-  shortCode: 'shortCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   checkedIn: 'checkedIn',
-  checkInTime: 'checkInTime'
+  checkInTime: 'checkInTime',
+  shortCode: 'shortCode',
+  company: 'company',
+  jobTitle: 'jobTitle'
 };
 
 exports.Prisma.TicketScalarFieldEnum = {
@@ -235,12 +235,12 @@ exports.Prisma.Event_sessionsScalarFieldEnum = {
   location: 'location',
   speaker: 'speaker',
   capacity: 'capacity',
-  format: 'format',
-  banner: 'banner',
-  video_url: 'video_url',
   event_id: 'event_id',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  banner: 'banner',
+  format: 'format',
+  video_url: 'video_url'
 };
 
 exports.Prisma.SponsorScalarFieldEnum = {
@@ -393,17 +393,17 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.UserPlan = exports.$Enums.UserPlan = {
-  STARTER: 'STARTER',
-  PRO: 'PRO',
-  PREMIUM: 'PREMIUM'
-};
-
 exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER',
   STAFF: 'STAFF',
   ORGANIZER: 'ORGANIZER',
   ADMIN: 'ADMIN'
+};
+
+exports.UserPlan = exports.$Enums.UserPlan = {
+  STARTER: 'STARTER',
+  PRO: 'PRO',
+  PREMIUM: 'PREMIUM'
 };
 
 exports.TicketStatus = exports.$Enums.TicketStatus = {
@@ -467,7 +467,6 @@ exports.CampaignStatus = exports.$Enums.CampaignStatus = {
 
 exports.TemplateCategory = exports.$Enums.TemplateCategory = {
   CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
-  CONFIRMATION_CHECKIN: 'CONFIRMATION_CHECKIN',
   BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
   RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
   INFOS_PRATIQUES: 'INFOS_PRATIQUES',
@@ -479,7 +478,8 @@ exports.TemplateCategory = exports.$Enums.TemplateCategory = {
   CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
   INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
   RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
-  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER'
+  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER',
+  CONFIRMATION_CHECKIN: 'CONFIRMATION_CHECKIN'
 };
 
 exports.EmailStatus = exports.$Enums.EmailStatus = {

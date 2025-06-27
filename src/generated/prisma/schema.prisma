@@ -8,19 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  USER
-  STAFF
-  ORGANIZER
-  ADMIN
-}
-
-enum UserPlan {
-  STARTER
-  PRO
-  PREMIUM
-}
-
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -28,13 +15,13 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   password      String?
-  phone         String?
-  plan          UserPlan  @default(STARTER)
-  role          UserRole  @default(USER)
-  permissions   String[]  @default([])
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
+  permissions   String[]  @default([])
+  role          UserRole  @default(USER)
   lastLogin     DateTime? @map("last_login")
+  phone         String?
+  plan          UserPlan  @default(STARTER)
   accounts      Account[]
   events        Event[]
   sessions      Session[]
@@ -97,22 +84,22 @@ model Event {
   timezone          String?
   videoUrl          String?            @map("video_url")
   supportEmail      String?            @map("support_email")
-  archived          Boolean            @default(false) @map("archived")
-  archivedAt        DateTime?          @map("archived_at")
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
   userId            String             @map("user_id")
   logo              String?            @map("logo")
-  event_sessions    event_sessions[]
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  registrations     Registration[]
-  sponsors          Sponsor[]
+  archived          Boolean            @default(false) @map("archived")
+  archivedAt        DateTime?          @map("archived_at")
   appointments      Appointment[]
-  badges            Badge[]
   badgeTemplates    BadgeTemplate[]
-  participantBadges ParticipantBadge[]
+  badges            Badge[]
   emailCampaigns    EmailCampaign[]
   emailTemplates    EmailTemplate[]
+  event_sessions    event_sessions[]
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  participantBadges ParticipantBadge[]
+  registrations     Registration[]
+  sponsors          Sponsor[]
   tickets           Ticket[]
 
   @@map("events")
@@ -125,33 +112,22 @@ model Registration {
   email                String
   phone                String
   type                 String               @default("PARTICIPANT")
-  jobTitle             String?              @map("job_title")
-  company              String?              @map("company")
   eventId              String               @map("event_id")
   qrCode               String               @unique @map("qr_code")
-  shortCode            String?              @unique @map("short_code")
   createdAt            DateTime             @default(now()) @map("created_at")
   updatedAt            DateTime             @updatedAt @map("updated_at")
   checkedIn            Boolean              @default(false) @map("checked_in")
   checkInTime          DateTime?            @map("check_in_time")
+  shortCode            String?              @unique @map("short_code")
+  company              String?              @map("company")
+  jobTitle             String?              @map("job_title")
+  receivedAppointments Appointment[]        @relation("RecipientRelation")
+  sentAppointments     Appointment[]        @relation("RequesterRelation")
+  participantBadges    ParticipantBadge[]
   event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
   sessions             SessionParticipant[]
-  sentAppointments     Appointment[]        @relation("RequesterRelation")
-  receivedAppointments Appointment[]        @relation("RecipientRelation")
-  participantBadges    ParticipantBadge[]
 
   @@map("registrations")
-}
-
-enum TicketStatus {
-  ACTIVE
-  TERMINATED
-  DRAFT
-}
-
-enum TicketVisibility {
-  VISIBLE
-  HIDDEN
 }
 
 model Ticket {
@@ -159,7 +135,7 @@ model Ticket {
   name        String
   description String?
   price       Decimal          @default(0)
-  quantity    Int? // null = illimité
+  quantity    Int?
   sold        Int              @default(0)
   status      TicketStatus     @default(ACTIVE)
   visibility  TicketVisibility @default(VISIBLE)
@@ -185,12 +161,12 @@ model event_sessions {
   location     String?
   speaker      String?
   capacity     Int?
-  format       String?
-  banner       String?
-  video_url    String?
   event_id     String
   created_at   DateTime             @default(now())
   updated_at   DateTime
+  banner       String?
+  format       String?
+  video_url    String?
   events       Event                @relation(fields: [event_id], references: [id], onDelete: Cascade)
   participants SessionParticipant[]
 }
@@ -211,17 +187,6 @@ model Sponsor {
   @@map("sponsors")
 }
 
-enum SponsorLevel {
-  PLATINUM
-  GOLD
-  SILVER
-  BRONZE
-  PARTNER
-  MEDIA
-  OTHER
-}
-
-// Table de jointure pour les participants aux sessions
 model SessionParticipant {
   id              String         @id @default(cuid())
   sessionId       String         @map("session_id")
@@ -229,21 +194,13 @@ model SessionParticipant {
   registeredAt    DateTime       @default(now()) @map("registered_at")
   attendedSession Boolean        @default(false) @map("attended_session")
   attendanceTime  DateTime?      @map("attendance_time")
-  session         event_sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   participant     Registration   @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  session         event_sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@unique([sessionId, participantId])
   @@map("session_participants")
 }
 
-enum AppointmentStatus {
-  PENDING
-  ACCEPTED
-  DECLINED
-  COMPLETED
-}
-
-// Modèle pour les rendez-vous entre participants
 model Appointment {
   id            String            @id @default(cuid())
   eventId       String            @map("event_id")
@@ -257,10 +214,9 @@ model Appointment {
   notes         String?
   createdAt     DateTime          @default(now()) @map("created_at")
   updatedAt     DateTime          @updatedAt @map("updated_at")
-
-  event     Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  requester Registration @relation("RequesterRelation", fields: [requesterId], references: [id], onDelete: Cascade)
-  recipient Registration @relation("RecipientRelation", fields: [recipientId], references: [id], onDelete: Cascade)
+  event         Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  recipient     Registration      @relation("RecipientRelation", fields: [recipientId], references: [id], onDelete: Cascade)
+  requester     Registration      @relation("RequesterRelation", fields: [requesterId], references: [id], onDelete: Cascade)
 
   @@map("appointments")
 }
@@ -277,7 +233,6 @@ model OtpCode {
   @@map("otp_codes")
 }
 
-// Modèle pour les badges d'événements (LEGACY - garde pour compatibilité)
 model Badge {
   id         String   @id @default(cuid())
   eventId    String   @map("event_id")
@@ -286,10 +241,149 @@ model Badge {
   isDefault  Boolean  @default(false) @map("is_default")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
-
-  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@map("badges")
+}
+
+model BadgeTemplate {
+  id                String             @id @default(cuid())
+  name              String
+  description       String?
+  canvasData        String             @map("canvas_data")
+  isGlobal          Boolean            @default(false) @map("is_global")
+  eventId           String?            @map("event_id")
+  isActive          Boolean            @default(true) @map("is_active")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  event             Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participantBadges ParticipantBadge[]
+
+  @@map("badge_templates")
+}
+
+model ParticipantBadge {
+  id             String        @id @default(cuid())
+  registrationId String        @map("registration_id")
+  eventId        String        @map("event_id")
+  templateId     String        @map("template_id")
+  status         BadgeStatus   @default(GENERATED)
+  generatedAt    DateTime      @default(now()) @map("generated_at")
+  printedAt      DateTime?     @map("printed_at")
+  deliveredAt    DateTime?     @map("delivered_at")
+  customData     String?       @map("custom_data")
+  qrCodeData     String?       @map("qr_code_data")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  event          Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registration   Registration  @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  template       BadgeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([registrationId, eventId])
+  @@map("participant_badges")
+}
+
+model EmailCampaign {
+  id              String         @id @default(cuid())
+  eventId         String         @map("event_id")
+  name            String
+  description     String?
+  type            CampaignType   @default(CUSTOM)
+  recipientType   RecipientType  @default(ALL_PARTICIPANTS) @map("recipient_type")
+  subject         String
+  htmlContent     String         @map("html_content")
+  textContent     String?        @map("text_content")
+  status          CampaignStatus @default(DRAFT)
+  scheduledAt     DateTime?      @map("scheduled_at")
+  sentAt          DateTime?      @map("sent_at")
+  totalRecipients Int?           @map("total_recipients")
+  successCount    Int?           @map("success_count")
+  failureCount    Int?           @map("failure_count")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+  event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  emailLogs       EmailLog[]
+
+  @@map("email_campaigns")
+}
+
+model EmailTemplate {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  subject     String
+  htmlContent String            @map("html_content")
+  textContent String?           @map("text_content")
+  type        CampaignType      @default(CUSTOM)
+  category    TemplateCategory?
+  isGlobal    Boolean           @default(false) @map("is_global")
+  eventId     String?           @map("event_id")
+  isActive    Boolean           @default(true) @map("is_active")
+  isDefault   Boolean           @default(false) @map("is_default")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  event       Event?            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("email_templates")
+}
+
+model EmailLog {
+  id             String        @id @default(cuid())
+  campaignId     String        @map("campaign_id")
+  recipientEmail String        @map("recipient_email")
+  recipientName  String?       @map("recipient_name")
+  status         EmailStatus   @default(PENDING)
+  errorMessage   String?       @map("error_message")
+  sentAt         DateTime?     @map("sent_at")
+  deliveredAt    DateTime?     @map("delivered_at")
+  openedAt       DateTime?     @map("opened_at")
+  clickedAt      DateTime?     @map("clicked_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  campaign       EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@map("email_logs")
+}
+
+enum UserRole {
+  USER
+  STAFF
+  ORGANIZER
+  ADMIN
+}
+
+enum UserPlan {
+  STARTER
+  PRO
+  PREMIUM
+}
+
+enum TicketStatus {
+  ACTIVE
+  TERMINATED
+  DRAFT
+}
+
+enum TicketVisibility {
+  VISIBLE
+  HIDDEN
+}
+
+enum SponsorLevel {
+  PLATINUM
+  GOLD
+  SILVER
+  BRONZE
+  PARTNER
+  MEDIA
+  OTHER
+}
+
+enum AppointmentStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COMPLETED
 }
 
 enum BadgeStatus {
@@ -298,48 +392,6 @@ enum BadgeStatus {
   DELIVERED
 }
 
-// Modèles de badges réutilisables
-model BadgeTemplate {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  canvasData  String   @map("canvas_data")
-  isGlobal    Boolean  @default(false) @map("is_global") // Template global ou spécifique à un événement
-  eventId     String?  @map("event_id") // null si global
-  isActive    Boolean  @default(true) @map("is_active")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  event             Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  participantBadges ParticipantBadge[]
-
-  @@map("badge_templates")
-}
-
-// Badges individuels par participant
-model ParticipantBadge {
-  id             String      @id @default(cuid())
-  registrationId String      @map("registration_id")
-  eventId        String      @map("event_id")
-  templateId     String      @map("template_id")
-  status         BadgeStatus @default(GENERATED)
-  generatedAt    DateTime    @default(now()) @map("generated_at")
-  printedAt      DateTime?   @map("printed_at")
-  deliveredAt    DateTime?   @map("delivered_at")
-  customData     String?     @map("custom_data") // Données personnalisées spécifiques à ce badge
-  qrCodeData     String?     @map("qr_code_data") // Données QR personnalisées
-  createdAt      DateTime    @default(now()) @map("created_at")
-  updatedAt      DateTime    @updatedAt @map("updated_at")
-
-  registration Registration  @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-  event        Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  template     BadgeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-
-  @@unique([registrationId, eventId]) // Un badge par participant par événement
-  @@map("participant_badges")
-}
-
-// Modèles pour les campagnes emails
 enum CampaignStatus {
   DRAFT
   SCHEDULED
@@ -365,75 +417,21 @@ enum RecipientType {
   CUSTOM_LIST
 }
 
-// Catégories de templates prédéfinis
 enum TemplateCategory {
-  // Inscription (2 templates)
   CONFIRMATION_INSCRIPTION
-  CONFIRMATION_CHECKIN
-
-  // Participants (4 templates)
   BIENVENUE_PARTICIPANT
   RAPPEL_EVENEMENT
   INFOS_PRATIQUES
   SUIVI_POST_EVENEMENT
-
-  // Exposants (4 templates)
   GUIDE_EXPOSANT
   RAPPEL_INSTALLATION
   INFOS_TECHNIQUES_STAND
   BILAN_PARTICIPATION
-
-  // Speakers (4 templates)
   CONFIRMATION_SPEAKER
   INFOS_TECHNIQUES_PRESENTATION
   RAPPEL_PRESENTATION
   REMERCIEMENT_SPEAKER
-}
-
-model EmailCampaign {
-  id              String         @id @default(cuid())
-  eventId         String         @map("event_id")
-  name            String
-  description     String?
-  type            CampaignType   @default(CUSTOM)
-  recipientType   RecipientType  @default(ALL_PARTICIPANTS) @map("recipient_type")
-  subject         String
-  htmlContent     String         @map("html_content")
-  textContent     String?        @map("text_content")
-  status          CampaignStatus @default(DRAFT)
-  scheduledAt     DateTime?      @map("scheduled_at")
-  sentAt          DateTime?      @map("sent_at")
-  totalRecipients Int?           @map("total_recipients")
-  successCount    Int?           @map("success_count")
-  failureCount    Int?           @map("failure_count")
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-
-  event     Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  emailLogs EmailLog[]
-
-  @@map("email_campaigns")
-}
-
-model EmailTemplate {
-  id          String            @id @default(cuid())
-  name        String
-  description String?
-  subject     String
-  htmlContent String            @map("html_content")
-  textContent String?           @map("text_content")
-  type        CampaignType      @default(CUSTOM)
-  category    TemplateCategory? // Catégorie pour les templates prédéfinis
-  isGlobal    Boolean           @default(false) @map("is_global")
-  eventId     String?           @map("event_id")
-  isActive    Boolean           @default(true) @map("is_active")
-  isDefault   Boolean           @default(false) @map("is_default") // Template par défaut du système
-  createdAt   DateTime          @default(now()) @map("created_at")
-  updatedAt   DateTime          @updatedAt @map("updated_at")
-
-  event Event? @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@map("email_templates")
+  CONFIRMATION_CHECKIN
 }
 
 enum EmailStatus {
@@ -444,23 +442,4 @@ enum EmailStatus {
   BOUNCED
   OPENED
   CLICKED
-}
-
-model EmailLog {
-  id             String      @id @default(cuid())
-  campaignId     String      @map("campaign_id")
-  recipientEmail String      @map("recipient_email")
-  recipientName  String?     @map("recipient_name")
-  status         EmailStatus @default(PENDING)
-  errorMessage   String?     @map("error_message")
-  sentAt         DateTime?   @map("sent_at")
-  deliveredAt    DateTime?   @map("delivered_at")
-  openedAt       DateTime?   @map("opened_at")
-  clickedAt      DateTime?   @map("clicked_at")
-  createdAt      DateTime    @default(now()) @map("created_at")
-  updatedAt      DateTime    @updatedAt @map("updated_at")
-
-  campaign EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-
-  @@map("email_logs")
 }
