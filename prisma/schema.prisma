@@ -131,21 +131,22 @@ model Registration {
 }
 
 model Ticket {
-  id          String           @id @default(cuid())
+  id          String            @id @default(cuid())
   name        String
   description String?
-  price       Decimal          @default(0)
-  quantity    Int?
-  sold        Int              @default(0)
-  status      TicketStatus     @default(ACTIVE)
-  visibility  TicketVisibility @default(VISIBLE)
-  validFrom   DateTime         @map("valid_from")
-  validUntil  DateTime         @map("valid_until")
-  group       String           @default("Attendees")
-  eventId     String           @map("event_id")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  price       Decimal           @default(0)
+  currency    String            @default("EUR")
+  quantity    Int?              // null = illimité
+  sold        Int               @default(0)
+  status      TicketStatus      @default(ACTIVE)
+  visibility  TicketVisibility  @default(VISIBLE)
+  validFrom   DateTime          @map("valid_from")
+  validUntil  DateTime          @map("valid_until")
+  group       String            @default("Attendees")
+  eventId     String            @map("event_id")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  event       Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@map("tickets")
 }

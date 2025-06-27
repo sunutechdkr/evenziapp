@@ -22,6 +22,7 @@ type TicketFormData = {
   visibility: string;
   type: string;
   price: number;
+  currency: string;
   group: string;
   description: string;
 };
@@ -33,6 +34,20 @@ type CreateTicketFormProps = {
   editMode?: boolean;
   initialData?: Partial<TicketFormData>;
 };
+
+// Liste des devises disponibles
+const currencies = [
+  { code: "EUR", name: "Euro", symbol: "€" },
+  { code: "USD", name: "Dollar US", symbol: "$" },
+  { code: "XOF", name: "Franc CFA", symbol: "CFA" },
+  { code: "MAD", name: "Dirham", symbol: "DH" },
+  { code: "NGN", name: "Naira", symbol: "₦" },
+  { code: "GBP", name: "Livre Sterling", symbol: "£" },
+  { code: "CAD", name: "Dollar Canadien", symbol: "C$" },
+  { code: "CHF", name: "Franc Suisse", symbol: "CHF" },
+  { code: "JPY", name: "Yen", symbol: "¥" },
+  { code: "AUD", name: "Dollar Australien", symbol: "A$" }
+];
 
 export default function CreateTicketForm({ 
   onSubmit, 
@@ -49,6 +64,7 @@ export default function CreateTicketForm({
     visibility: initialData?.visibility || "visible",
     type: initialData?.type || "free",
     price: initialData?.price || 0,
+    currency: initialData?.currency || "EUR",
     group: initialData?.group || "",
     description: initialData?.description || ""
   });
@@ -227,21 +243,45 @@ export default function CreateTicketForm({
 
         {/* Prix si payant */}
         {formData.type === 'paid' && (
-          <div className="mt-4">
-            <Label htmlFor="price" className="text-sm font-medium text-gray-700">
-              * Prix du billet (€)
-            </Label>
-            <Input
-              id="price"
-              type="number"
-              min="0"
-              step="0.01"
-              placeholder="0.00"
-              value={formData.price}
-              onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
-              className="mt-1"
-              required
-            />
+          <div className="mt-4 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="price" className="text-sm font-medium text-gray-700">
+                  * Prix du billet
+                </Label>
+                <Input
+                  id="price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={formData.price}
+                  onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
+                  className="mt-1"
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="currency" className="text-sm font-medium text-gray-700">
+                  * Devise
+                </Label>
+                <Select 
+                  value={formData.currency} 
+                  onValueChange={(value) => handleInputChange('currency', value)}
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Sélectionner une devise" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        {currency.code} - {currency.name} ({currency.symbol})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
         )}
       </div>

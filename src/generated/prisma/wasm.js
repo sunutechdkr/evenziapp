@@ -212,6 +212,7 @@ exports.Prisma.TicketScalarFieldEnum = {
   name: 'name',
   description: 'description',
   price: 'price',
+  currency: 'currency',
   quantity: 'quantity',
   sold: 'sold',
   status: 'status',

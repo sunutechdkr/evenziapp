@@ -80,10 +80,13 @@ export async function PUT(
     const { id, ticketId } = await context.params;
     const body = await request.json();
 
+    console.log("Données reçues pour mise à jour de billet:", body);
+
     const {
       name,
       description,
       price,
+      currency,
       quantity,
       status,
       visibility,
@@ -96,6 +99,40 @@ export async function PUT(
     if (!name || !validFrom || !validUntil) {
       return NextResponse.json(
         { message: "Nom, date de début et date de fin sont requis" },
+        { status: 400 }
+      );
+    }
+
+    // Validation et conversion des dates
+    let startDate, endDate;
+    try {
+      // Supporter les formats "DD/MM/YYYY HH:mm" et ISO
+      if (validFrom.includes('/')) {
+        // Format DD/MM/YYYY HH:mm -> convertir en ISO
+        const [datePart, timePart] = validFrom.split(' ');
+        const [day, month, year] = datePart.split('/');
+        const isoString = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${timePart || '00:00'}:00.000Z`;
+        startDate = new Date(isoString);
+      } else {
+        startDate = new Date(validFrom);
+      }
+
+      if (validUntil.includes('/')) {
+        const [datePart, timePart] = validUntil.split(' ');
+        const [day, month, year] = datePart.split('/');
+        const isoString = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${timePart || '23:59'}:00.000Z`;
+        endDate = new Date(isoString);
+      } else {
+        endDate = new Date(validUntil);
+      }
+
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        throw new Error("Format de date invalide");
+      }
+    } catch (dateError) {
+      console.error("Erreur de conversion de date:", dateError);
+      return NextResponse.json(
+        { message: "Format de date invalide. Utilisez DD/MM/YYYY HH:mm" },
         { status: 400 }
       );
     }
@@ -138,15 +175,18 @@ export async function PUT(
       data: {
         name,
         description: description || null,
-        price: parseFloat(price) || 0,
-        quantity: quantity ? parseInt(quantity) : null,
+        price: parseFloat(price.toString()) || 0,
+        currency: currency || existingTicket.currency,
+        quantity: quantity && quantity !== "" ? parseInt(quantity.toString()) : null,
         status: status || existingTicket.status,
         visibility: visibility || existingTicket.visibility,
-        validFrom: new Date(validFrom),
-        validUntil: new Date(validUntil),
+        validFrom: startDate,
+        validUntil: endDate,
         group: group || existingTicket.group
       }
     });
+
+    console.log("Billet mis à jour avec succès:", updatedTicket);
 
     return NextResponse.json({
       success: true,
@@ -155,8 +195,18 @@ export async function PUT(
 
   } catch (error) {
     console.error("Erreur lors de la mise à jour du billet:", error);
+    
+    // Erreur spécifique pour la base de données
+    if (error instanceof Error && (error.message.includes('connect') || error.message.includes('database'))) {
+      return NextResponse.json(
+        { message: "Erreur de connexion à la base de données. Vérifiez la configuration DATABASE_URL." },
+        { status: 500 }
+      );
+    }
+
+    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     return NextResponse.json(
-      { message: "Erreur serveur" },
+      { message: `Erreur serveur: ${errorMessage}` },
       { status: 500 }
     );
   }

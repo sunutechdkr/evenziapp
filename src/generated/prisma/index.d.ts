@@ -10230,6 +10230,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     price: Decimal | null
+    currency: string | null
     quantity: number | null
     sold: number | null
     status: $Enums.TicketStatus | null
@@ -10247,6 +10248,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     price: Decimal | null
+    currency: string | null
     quantity: number | null
     sold: number | null
     status: $Enums.TicketStatus | null
@@ -10264,6 +10266,7 @@ export namespace Prisma {
     name: number
     description: number
     price: number
+    currency: number
     quantity: number
     sold: number
     status: number
@@ -10295,6 +10298,7 @@ export namespace Prisma {
     name?: true
     description?: true
     price?: true
+    currency?: true
     quantity?: true
     sold?: true
     status?: true
@@ -10312,6 +10316,7 @@ export namespace Prisma {
     name?: true
     description?: true
     price?: true
+    currency?: true
     quantity?: true
     sold?: true
     status?: true
@@ -10329,6 +10334,7 @@ export namespace Prisma {
     name?: true
     description?: true
     price?: true
+    currency?: true
     quantity?: true
     sold?: true
     status?: true
@@ -10433,6 +10439,7 @@ export namespace Prisma {
     name: string
     description: string | null
     price: Decimal
+    currency: string
     quantity: number | null
     sold: number
     status: $Enums.TicketStatus
@@ -10469,6 +10476,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     price?: boolean
+    currency?: boolean
     quantity?: boolean
     sold?: boolean
     status?: boolean
@@ -10487,6 +10495,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     price?: boolean
+    currency?: boolean
     quantity?: boolean
     sold?: boolean
     status?: boolean
@@ -10505,6 +10514,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     price?: boolean
+    currency?: boolean
     quantity?: boolean
     sold?: boolean
     status?: boolean
@@ -10523,6 +10533,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     price?: boolean
+    currency?: boolean
     quantity?: boolean
     sold?: boolean
     status?: boolean
@@ -10535,7 +10546,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TicketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "quantity" | "sold" | "status" | "visibility" | "validFrom" | "validUntil" | "group" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["ticket"]>
+  export type TicketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "currency" | "quantity" | "sold" | "status" | "visibility" | "validFrom" | "validUntil" | "group" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["ticket"]>
   export type TicketInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
   }
@@ -10556,6 +10567,7 @@ export namespace Prisma {
       name: string
       description: string | null
       price: Prisma.Decimal
+      currency: string
       quantity: number | null
       sold: number
       status: $Enums.TicketStatus
@@ -10994,6 +11006,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Ticket", 'String'>
     readonly description: FieldRef<"Ticket", 'String'>
     readonly price: FieldRef<"Ticket", 'Decimal'>
+    readonly currency: FieldRef<"Ticket", 'String'>
     readonly quantity: FieldRef<"Ticket", 'Int'>
     readonly sold: FieldRef<"Ticket", 'Int'>
     readonly status: FieldRef<"Ticket", 'TicketStatus'>
@@ -24232,6 +24245,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     price: 'price',
+    currency: 'currency',
     quantity: 'quantity',
     sold: 'sold',
     status: 'status',
@@ -25294,6 +25308,7 @@ export namespace Prisma {
     name?: StringFilter<"Ticket"> | string
     description?: StringNullableFilter<"Ticket"> | string | null
     price?: DecimalFilter<"Ticket"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"Ticket"> | string
     quantity?: IntNullableFilter<"Ticket"> | number | null
     sold?: IntFilter<"Ticket"> | number
     status?: EnumTicketStatusFilter<"Ticket"> | $Enums.TicketStatus
@@ -25312,6 +25327,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     price?: SortOrder
+    currency?: SortOrder
     quantity?: SortOrderInput | SortOrder
     sold?: SortOrder
     status?: SortOrder
@@ -25333,6 +25349,7 @@ export namespace Prisma {
     name?: StringFilter<"Ticket"> | string
     description?: StringNullableFilter<"Ticket"> | string | null
     price?: DecimalFilter<"Ticket"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"Ticket"> | string
     quantity?: IntNullableFilter<"Ticket"> | number | null
     sold?: IntFilter<"Ticket"> | number
     status?: EnumTicketStatusFilter<"Ticket"> | $Enums.TicketStatus
@@ -25351,6 +25368,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     price?: SortOrder
+    currency?: SortOrder
     quantity?: SortOrderInput | SortOrder
     sold?: SortOrder
     status?: SortOrder
@@ -25376,6 +25394,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Ticket"> | string
     description?: StringNullableWithAggregatesFilter<"Ticket"> | string | null
     price?: DecimalWithAggregatesFilter<"Ticket"> | Decimal | DecimalJsLike | number | string
+    currency?: StringWithAggregatesFilter<"Ticket"> | string
     quantity?: IntNullableWithAggregatesFilter<"Ticket"> | number | null
     sold?: IntWithAggregatesFilter<"Ticket"> | number
     status?: EnumTicketStatusWithAggregatesFilter<"Ticket"> | $Enums.TicketStatus
@@ -27033,6 +27052,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     price?: Decimal | DecimalJsLike | number | string
+    currency?: string
     quantity?: number | null
     sold?: number
     status?: $Enums.TicketStatus
@@ -27050,6 +27070,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     price?: Decimal | DecimalJsLike | number | string
+    currency?: string
     quantity?: number | null
     sold?: number
     status?: $Enums.TicketStatus
@@ -27067,6 +27088,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
@@ -27084,6 +27106,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
@@ -27101,6 +27124,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     price?: Decimal | DecimalJsLike | number | string
+    currency?: string
     quantity?: number | null
     sold?: number
     status?: $Enums.TicketStatus
@@ -27118,6 +27142,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
@@ -27134,6 +27159,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
@@ -28899,6 +28925,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     price?: SortOrder
+    currency?: SortOrder
     quantity?: SortOrder
     sold?: SortOrder
     status?: SortOrder
@@ -28922,6 +28949,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     price?: SortOrder
+    currency?: SortOrder
     quantity?: SortOrder
     sold?: SortOrder
     status?: SortOrder
@@ -28939,6 +28967,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     price?: SortOrder
+    currency?: SortOrder
     quantity?: SortOrder
     sold?: SortOrder
     status?: SortOrder
@@ -32160,6 +32189,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     price?: Decimal | DecimalJsLike | number | string
+    currency?: string
     quantity?: number | null
     sold?: number
     status?: $Enums.TicketStatus
@@ -32176,6 +32206,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     price?: Decimal | DecimalJsLike | number | string
+    currency?: string
     quantity?: number | null
     sold?: number
     status?: $Enums.TicketStatus
@@ -32578,6 +32609,7 @@ export namespace Prisma {
     name?: StringFilter<"Ticket"> | string
     description?: StringNullableFilter<"Ticket"> | string | null
     price?: DecimalFilter<"Ticket"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"Ticket"> | string
     quantity?: IntNullableFilter<"Ticket"> | number | null
     sold?: IntFilter<"Ticket"> | number
     status?: EnumTicketStatusFilter<"Ticket"> | $Enums.TicketStatus
@@ -35477,6 +35509,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     price?: Decimal | DecimalJsLike | number | string
+    currency?: string
     quantity?: number | null
     sold?: number
     status?: $Enums.TicketStatus
@@ -35897,6 +35930,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
@@ -35913,6 +35947,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
@@ -35929,6 +35964,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus

@@ -135,7 +135,8 @@ model Ticket {
   name        String
   description String?
   price       Decimal          @default(0)
-  quantity    Int?
+  currency    String           @default("EUR")
+  quantity    Int? // null = illimité
   sold        Int              @default(0)
   status      TicketStatus     @default(ACTIVE)
   visibility  TicketVisibility @default(VISIBLE)
