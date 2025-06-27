@@ -1379,7 +1379,7 @@ const handleCancelCheckIn = async () => {
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             <Button
               variant="outline"
-              className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
+              className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]"
               onClick={downloadCsvTemplate}
             >
               <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
@@ -1388,7 +1388,7 @@ const handleCancelCheckIn = async () => {
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white">
+                <Button variant="outline" className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]">
                   <ArrowUpTrayIcon className="h-4 w-4 mr-2" />
                   Importer
                 </Button>
@@ -1415,7 +1415,7 @@ const handleCancelCheckIn = async () => {
             
             <Button
               onClick={() => setShowAddManual(true)}
-              className="bg-[#81B441] hover:bg-[#72a339] text-white"
+              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
             >
               <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
