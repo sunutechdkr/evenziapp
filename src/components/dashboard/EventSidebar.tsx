@@ -197,6 +197,12 @@ export function EventSidebar({
   // Configuration des liens de navigation pour un événement
   const navigation: MenuItem[] = [
     { 
+      name: "Retour au dashboard", 
+      href: "/dashboard", 
+      icon: ChevronLeftIcon,
+      exact: false,
+    },
+    { 
       name: "Aperçu", 
       href: `${baseUrl}`, 
       icon: ChartBarIcon,

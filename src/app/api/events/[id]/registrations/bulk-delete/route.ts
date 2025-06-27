@@ -71,7 +71,7 @@ export async function POST(
     return NextResponse.json({
       message: `${deleteResult.count} participant(s) supprimé(s) avec succès`,
       deletedCount: deleteResult.count,
-      deletedParticipants: existingParticipants.map(p => ({
+      deletedParticipants: existingParticipants.map((p: { id: string; firstName: string; lastName: string }) => ({
         id: p.id,
         name: `${p.firstName} ${p.lastName}`
       }))

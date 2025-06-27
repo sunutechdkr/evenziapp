@@ -1338,21 +1338,6 @@ const handleCancelCheckIn = async () => {
         {/* En-tête de la page */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
           <div>
-            <div className="flex items-center space-x-2 text-sm text-gray-500 mb-1">
-              <Link href="/dashboard" className="hover:text-gray-700">Dashboard</Link>
-              <ChevronRightIcon className="h-4 w-4" />
-              <Link href="/dashboard/events" className="hover:text-gray-700">Événements</Link>
-              <ChevronRightIcon className="h-4 w-4" />
-              {event && (
-                <>
-                  <Link href={`/dashboard/events/${eventId}`} className="hover:text-gray-700 truncate max-w-[150px]">
-                    {event.name}
-            </Link>
-                  <ChevronRightIcon className="h-4 w-4" />
-                </>
-              )}
-              <span className="font-medium text-gray-600">Participants</span>
-            </div>
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
               {loading ? (
                 <Skeleton className="h-8 w-48" />
@@ -1377,18 +1362,12 @@ const handleCancelCheckIn = async () => {
                 <Button variant="outline" className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]">
                   <ArrowUpTrayIcon className="h-4 w-4 mr-2" />
                   Importer
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem onClick={() => document.getElementById('csv-upload')?.click()}>
-                  <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
-                  <span>Importer CSV</span>
-                  <input
-                    id="csv-upload"
-                    type="file"
-                    accept=".csv"
-                    className="hidden"
-                    onChange={handleCsvUpload}
+            </DropdownMenu>
+            
+            <Button
+              onClick={() => setShowAddManual(true)}
+              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
+            >                    onChange={handleCsvUpload}
                   />
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -1397,18 +1376,21 @@ const handleCancelCheckIn = async () => {
                   <span>Ajouter manuellement</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <Button
-              onClick={() => setShowAddManual(true)}
-              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
+              <UserPlusIcon className="h-4 w-4 mr-2" />
+              Ajouter un participant
+            </Button>
+          </div>
+        </div>
+            </Button>
+          </div>
+        </div>              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
             >
               <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
             </Button>
                 </div>
               </div>
-              
+            </div>              
         {/* Carte des statistiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <Card>
@@ -1621,14 +1603,14 @@ const handleCancelCheckIn = async () => {
                     className={`hover:bg-gray-50 cursor-pointer ${newParticipantId === participant.id ? 'new-participant-row' : ''}`}
                     onClick={() => openSidebar(participant)}
                   >
-                    <TableCell onClick={(e) => e.stopPropagation()} className="w-[40px]">
+                    <TableCell onClick={(e) => e.stopPropagation()} className="w-[40px] py-6">
                       <Checkbox 
                             checked={selectedParticipants.includes(participant.id)}
                         onCheckedChange={() => handleCheckboxChange(participant.id)}
                         aria-label={`Sélectionner ${participant.firstName} ${participant.lastName}`}
                       />
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-6">
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                         <Avatar className="h-9 w-9 bg-gradient-to-br from-blue-100 to-green-100 border border-white">
                           <AvatarFallback className="text-gray-700">{participant.firstName.charAt(0)}{participant.lastName.charAt(0)}</AvatarFallback>
@@ -1657,9 +1639,9 @@ const handleCancelCheckIn = async () => {
                               </div>
                             </div>
                     </TableCell>
-                    <TableCell>{participant.email}</TableCell>
-                    <TableCell>{participant.phone}</TableCell>
-                    <TableCell>
+                    <TableCell className="py-6">{participant.email}</TableCell>
+                    <TableCell className="py-6">{participant.phone}</TableCell>
+                    <TableCell className="py-6">
                       <Badge
                         variant={participant.type === 'PARTICIPANT' ? 'default' : 'secondary'}
                         className={
@@ -1671,10 +1653,10 @@ const handleCancelCheckIn = async () => {
                             {participant.type === 'PARTICIPANT' ? 'Participant' : 'Intervenant'}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-6">
                           {format(participant.registrationDate, "dd/MM/yyyy", { locale: fr })}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-6">
                       <Badge
                         variant={participant.checkedIn ? 'outline' : 'secondary'}
                         className={
@@ -1691,7 +1673,7 @@ const handleCancelCheckIn = async () => {
                         ) : 'Non enregistré'}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-6">
                       <div className="flex justify-center space-x-2" onClick={(e) => e.stopPropagation()}>
                         <Button
                           variant="outline"
