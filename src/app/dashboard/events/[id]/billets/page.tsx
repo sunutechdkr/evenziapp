@@ -11,6 +11,9 @@ import {
   Cog6ToothIcon,
   PencilIcon,
   TrashIcon,
+  ChartBarIcon,
+  ArrowArrowTrendingUpIcon,
+  UserGroupIcon
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +36,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import CreateTicketForm from "@/components/forms/CreateTicketForm";
 import { toast } from "react-hot-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Types
 type Ticket = {
@@ -49,23 +53,15 @@ type Ticket = {
   quantity?: number;
 };
 
-type Event = {
-  id: string;
-  name: string;
-  startDate: string;
-  endDate?: string;
-  location: string;
-  banner?: string;
-  slug?: string;
-};
 
 export default function EventTicketsPage({ params }: { params: Promise<{ id: string }> }) {
   const [eventId, setEventId] = useState<string>("");
-  const [event, setEvent] = useState<Event | null>(null);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingTicket, setEditingTicket] = useState<Ticket | null>(null);
 
   // Extraire l'ID de params au chargement
   useEffect(() => {
@@ -81,13 +77,6 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
     if (eventId) {
       // Simuler le chargement des données
       setTimeout(() => {
-        setEvent({
-          id: eventId,
-          name: "SENPHARMA",
-          startDate: "2025-06-25",
-          location: "Dakar, Sénégal"
-        });
-
         setTickets([
           {
             id: "1",
@@ -196,6 +185,47 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
     toast.success('Billet créé avec succès !');
   };
 
+  const handleEditTicket = (ticket: Ticket) => {
+    setEditingTicket(ticket);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateTicket = (ticketData: {
+    name: string;
+    startDate: string;
+    endDate: string;
+    quantity: string;
+    visibility: string;
+    type: string;
+    price: number;
+    group: string;
+    description: string;
+  }) => {
+    if (!editingTicket) return;
+
+    const updatedTicket: Ticket = {
+      ...editingTicket,
+      name: ticketData.name,
+      price: ticketData.type === 'free' ? 0 : ticketData.price,
+      validFrom: new Date(ticketData.startDate),
+      validUntil: new Date(ticketData.endDate),
+      group: ticketData.group,
+      visibility: ticketData.visibility === 'visible' ? 'VISIBLE' : 'HIDDEN',
+      description: ticketData.description,
+      quantity: ticketData.quantity === 'unlimited' ? undefined : parseInt(ticketData.quantity)
+    };
+
+    setTickets(prev => prev.map(t => t.id === editingTicket.id ? updatedTicket : t));
+    setShowEditModal(false);
+    setEditingTicket(null);
+    toast.success('Billet mis à jour avec succès !');
+  };
+
+  const handleDeleteTicket = (ticketId: string) => {
+    setTickets(prev => prev.filter(t => t.id !== ticketId));
+    toast.success('Billet supprimé avec succès !');
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen bg-gray-50">
@@ -226,6 +256,50 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
               une quantité limite optionnelle, des dates de disponibilité, et un groupe auquel les inscrits 
               seront assignés.
             </p>
+
+            {/* Statistiques rapides */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total des ventes</CardTitle>
+                  <ChartBarIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-[#81B441]">
+                    {tickets.reduce((sum, ticket) => sum + parseInt(ticket.usage.split('/')[0]), 0)}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    billets vendus au total
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Types de billets</CardTitle>
+                  <UserGroupIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-[#81B441]">{tickets.length}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {tickets.filter(t => t.status === 'ACTIVE').length} actifs, {tickets.filter(t => t.status === 'TERMINATED').length} terminés
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Taux de conversion</CardTitle>
+                  <ArrowTrendingUpIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-[#81B441]">89.2%</div>
+                  <p className="text-xs text-muted-foreground">
+                    taux moyen de conversion
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
             
             {/* Actions */}
             <div className="flex items-center justify-between">
@@ -257,7 +331,7 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
                   <TableHead>Prix</TableHead>
                   <TableHead>Utilisations</TableHead>
                   <TableHead>Valide à partir du</TableHead>
-                  <TableHead>Valide jusqu'au</TableHead>
+                  <TableHead>Valide jusqu&apos;au</TableHead>
                   <TableHead>Groupe</TableHead>
                   <TableHead>Visibilité</TableHead>
                   <TableHead className="w-12"></TableHead>
@@ -311,11 +385,14 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditTicket(ticket)}>
                             <PencilIcon className="h-4 w-4 mr-2" />
                             Modifier
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
+                          <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={() => handleDeleteTicket(ticket.id)}
+                          >
                             <TrashIcon className="h-4 w-4 mr-2" />
                             Supprimer
                           </DropdownMenuItem>
@@ -339,6 +416,31 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
           <CreateTicketForm
             onSubmit={handleCreateTicket}
             onCancel={() => setShowCreateModal(false)}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal d'édition */}
+      <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifier le billet</DialogTitle>
+          </DialogHeader>
+          <CreateTicketForm
+            editMode={true}
+            initialData={{
+              name: editingTicket?.name,
+              startDate: editingTicket?.validFrom.toISOString().slice(0, 16).replace('T', ' '),
+              endDate: editingTicket?.validUntil.toISOString().slice(0, 16).replace('T', ' '),
+              quantity: editingTicket?.quantity ? editingTicket.quantity.toString() : 'unlimited',
+              visibility: editingTicket?.visibility === 'VISIBLE' ? 'visible' : 'hidden',
+              type: editingTicket?.price === 0 ? 'free' : 'paid',
+              price: editingTicket?.price || 0,
+              group: editingTicket?.group,
+              description: editingTicket?.description || ''
+            }}
+            onSubmit={handleUpdateTicket}
+            onCancel={() => setShowEditModal(false)}
           />
         </DialogContent>
       </Dialog>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import { ArrowLeftIcon, CalendarIcon, AdjustmentsHorizontalIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import TicketAnalytics from "@/components/analytics/TicketAnalytics";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -411,7 +412,7 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
               </div>
 
               {/* Types de participants */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md mb-6">
                 <h2 className="text-lg font-medium mb-4">Répartition détaillée par type</h2>
                 {data?.participantTypes && data.participantTypes.length > 0 ? (
                   <div className="space-y-4">
@@ -445,6 +446,12 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
                 ) : (
                   <p className="text-center py-8 text-gray-500">Aucune donnée disponible</p>
                 )}
+              </div>
+
+              {/* Section Statistiques des Billets */}
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">Statistiques des Billets</h2>
+                <TicketAnalytics eventId={params.id} />
               </div>
             </div>
           )}

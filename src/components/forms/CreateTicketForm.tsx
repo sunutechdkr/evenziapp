@@ -29,22 +29,24 @@ type TicketFormData = {
 type CreateTicketFormProps = {
   onSubmit: (ticketData: TicketFormData) => void;
   onCancel: () => void;
+  editMode?: boolean;
+  initialData?: Partial<TicketFormData>;
 };
 
-export default function CreateTicketForm({ onSubmit, onCancel }: CreateTicketFormProps) {
+export default function CreateTicketForm({ onSubmit, onCancel, editMode = false, initialData }: CreateTicketFormProps) {
   const [formData, setFormData] = useState({
-    name: "",
-    startDate: "27/06/2025 00:00",
-    endDate: "27/07/2025 00:00",
-    quantity: "unlimited",
-    visibility: "visible",
-    type: "free",
-    price: 0,
-    group: "",
-    description: ""
+    name: initialData?.name || "",
+    startDate: initialData?.startDate || "27/06/2025 00:00",
+    endDate: initialData?.endDate || "27/07/2025 00:00",
+    quantity: initialData?.quantity || "unlimited",
+    visibility: initialData?.visibility || "visible",
+    type: initialData?.type || "free",
+    price: initialData?.price || 0,
+    group: initialData?.group || "",
+    description: initialData?.description || ""
   });
 
-  const [charCount, setCharCount] = useState(0);
+  const [charCount, setCharCount] = useState(initialData?.description?.length || 0);
   const maxChars = 500;
 
   const handleInputChange = (field: string, value: string | number) => {
@@ -72,8 +74,10 @@ export default function CreateTicketForm({ onSubmit, onCancel }: CreateTicketFor
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">L&apos;essentiel</h3>
         <p className="text-sm text-gray-600 mb-6">
-          Les billets seront disponibles aux dates spécifiées. Les billets masqués peuvent être 
-          accessibles via un lien d&apos;inscription direct ou être sélectionnés dans Studio.
+          {editMode ? 
+            "Modifiez les paramètres de votre billet. Les changements seront appliqués immédiatement." :
+            "Les billets seront disponibles aux dates spécifiées. Les billets masqués peuvent être accessibles via un lien d&apos;inscription direct ou être sélectionnés dans Studio."
+          }
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -274,7 +278,7 @@ export default function CreateTicketForm({ onSubmit, onCancel }: CreateTicketFor
           type="submit" 
           className="bg-[#81B441] hover:bg-[#72a339] text-white px-6"
         >
-          Créer
+          {editMode ? 'Mettre à jour' : 'Créer'}
         </Button>
       </div>
     </form>
