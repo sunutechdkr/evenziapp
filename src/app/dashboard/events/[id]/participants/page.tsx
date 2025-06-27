@@ -1362,12 +1362,18 @@ const handleCancelCheckIn = async () => {
                 <Button variant="outline" className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]">
                   <ArrowUpTrayIcon className="h-4 w-4 mr-2" />
                   Importer
-            </DropdownMenu>
-            
-            <Button
-              onClick={() => setShowAddManual(true)}
-              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
-            >                    onChange={handleCsvUpload}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => document.getElementById('csv-upload')?.click()}>
+                  <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
+                  <span>Importer CSV</span>
+                  <input
+                    id="csv-upload"
+                    type="file"
+                    accept=".csv"
+                    className="hidden"
+                    onChange={handleCsvUpload}
                   />
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -1376,21 +1382,18 @@ const handleCancelCheckIn = async () => {
                   <span>Ajouter manuellement</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
-              <UserPlusIcon className="h-4 w-4 mr-2" />
-              Ajouter un participant
-            </Button>
-          </div>
-        </div>
-            </Button>
-          </div>
-        </div>              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
+            </DropdownMenu>
+            
+            <Button
+              onClick={() => setShowAddManual(true)}
+              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
             >
               <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
             </Button>
                 </div>
               </div>
-            </div>              
+              
         {/* Carte des statistiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <Card>
