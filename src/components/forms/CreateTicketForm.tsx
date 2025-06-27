@@ -29,16 +29,23 @@ type TicketFormData = {
 type CreateTicketFormProps = {
   onSubmit: (ticketData: TicketFormData) => void;
   onCancel: () => void;
+  onDelete?: () => void;
   editMode?: boolean;
   initialData?: Partial<TicketFormData>;
 };
 
-export default function CreateTicketForm({ onSubmit, onCancel, editMode = false, initialData }: CreateTicketFormProps) {
+export default function CreateTicketForm({ 
+  onSubmit, 
+  onCancel, 
+  onDelete,
+  editMode = false, 
+  initialData 
+}: CreateTicketFormProps) {
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     startDate: initialData?.startDate || "27/06/2025 00:00",
     endDate: initialData?.endDate || "27/07/2025 00:00",
-    quantity: initialData?.quantity || "unlimited",
+    quantity: initialData?.quantity || "",
     visibility: initialData?.visibility || "visible",
     type: initialData?.type || "free",
     price: initialData?.price || 0,
@@ -60,6 +67,13 @@ export default function CreateTicketForm({ onSubmit, onCancel, editMode = false,
     if (value.length <= maxChars) {
       setCharCount(value.length);
       handleInputChange('description', value);
+    }
+  };
+
+  const handleQuantityChange = (value: string) => {
+    // Permettre seulement les chiffres ou vide pour "illimité"
+    if (value === "" || /^\d+$/.test(value)) {
+      handleInputChange('quantity', value);
     }
   };
 
@@ -129,22 +143,20 @@ export default function CreateTicketForm({ onSubmit, onCancel, editMode = false,
 
           {/* Quantité */}
           <div>
-            <Label className="text-sm font-medium text-gray-700">Quantité</Label>
-            <Select 
-              value={formData.quantity} 
-              onValueChange={(value) => handleInputChange('quantity', value)}
-            >
-              <SelectTrigger className="mt-1">
-                <SelectValue placeholder="Illimité" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="unlimited">Illimité</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-                <SelectItem value="100">100</SelectItem>
-                <SelectItem value="200">200</SelectItem>
-                <SelectItem value="500">500</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
+              Quantité
+            </Label>
+            <Input
+              id="quantity"
+              type="text"
+              placeholder="Illimité"
+              value={formData.quantity}
+              onChange={(e) => handleQuantityChange(e.target.value)}
+              className="mt-1"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Laissez vide pour une quantité illimitée
+            </p>
           </div>
 
           {/* Visibilité du billet */}
@@ -212,6 +224,26 @@ export default function CreateTicketForm({ onSubmit, onCancel, editMode = false,
             </Label>
           </div>
         </RadioGroup>
+
+        {/* Prix si payant */}
+        {formData.type === 'paid' && (
+          <div className="mt-4">
+            <Label htmlFor="price" className="text-sm font-medium text-gray-700">
+              * Prix du billet (€)
+            </Label>
+            <Input
+              id="price"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              value={formData.price}
+              onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
+              className="mt-1"
+              required
+            />
+          </div>
+        )}
       </div>
 
       {/* Section Autres paramètres */}
@@ -265,21 +297,36 @@ export default function CreateTicketForm({ onSubmit, onCancel, editMode = false,
       </div>
 
       {/* Actions */}
-      <div className="flex justify-end space-x-3 pt-6 border-t">
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={onCancel}
-          className="px-6"
-        >
-          Annuler
-        </Button>
-        <Button 
-          type="submit" 
-          className="bg-[#81B441] hover:bg-[#72a339] text-white px-6"
-        >
-          {editMode ? 'Mettre à jour' : 'Créer'}
-        </Button>
+      <div className="flex justify-between pt-6 border-t">
+        <div>
+          {editMode && onDelete && (
+            <Button 
+              type="button" 
+              variant="destructive"
+              onClick={onDelete}
+              className="px-6"
+            >
+              Supprimer billet
+            </Button>
+          )}
+        </div>
+        
+        <div className="flex space-x-3">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={onCancel}
+            className="px-6"
+          >
+            Annuler
+          </Button>
+          <Button 
+            type="submit" 
+            className="bg-[#81B441] hover:bg-[#72a339] text-white px-6"
+          >
+            {editMode ? 'Enregistrer' : 'Créer'}
+          </Button>
+        </div>
       </div>
     </form>
   );
