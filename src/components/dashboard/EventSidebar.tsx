@@ -20,6 +20,7 @@ import {
   Bars3Icon,
   ClockIcon,
   EnvelopeIcon,
+  TicketIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/components/ui/Logo";
 import { UserProfile } from "@/components/dashboard/UserProfile";
@@ -220,6 +221,7 @@ export function EventSidebar({
       expanded: inscriptionExpanded,
       onClick: () => setInscriptionExpanded(!inscriptionExpanded),
       subItems: [
+        { name: "Billets", href: `${baseUrl}/billets`, icon: TicketIcon },
         { name: "Badges", href: `${baseUrl}/inscription/badges`, icon: IdentificationIcon },
         { name: "Formulaire", href: `${baseUrl}/formulaire`, icon: DocumentTextIcon },
       ]
@@ -233,6 +235,7 @@ export function EventSidebar({
       name: "Communication", 
       href: `${baseUrl}/communication`, 
       icon: EnvelopeIcon,
+  TicketIcon,
     },
     { 
       name: "Rendez-vous", 
