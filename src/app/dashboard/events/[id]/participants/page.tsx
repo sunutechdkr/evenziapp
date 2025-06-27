@@ -133,7 +133,7 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
   // ID du participant nouvellement ajouté pour l'animation
   const [newParticipantId, setNewParticipantId] = useState<string | null>(null);
   
-  const participantsPerPage = 25;
+  const [participantsPerPage, setParticipantsPerPage] = useState(25);
   
   // Utiliser le hook useEffect pour extraire l'ID de manière asynchrone
   const [eventId, setEventId] = useState<string>("");
@@ -679,11 +679,40 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
   };
 
   // Bulk actions
-  const handleBulkDelete = () => {
-    if (confirm(`Voulez-vous vraiment supprimer ${selectedParticipants.length} participant(s) ?`)) {
+  const handleBulkDelete = async () => {
+    if (selectedParticipants.length === 0) {
+      toast.error("Aucun participant sélectionné");
+      return;
+    }
+
+    const confirmMessage = `Êtes-vous sûr de vouloir supprimer ${selectedParticipants.length} participant(s) ?`;
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      const response = await fetchWithRetry(
+        `/api/events/${eventId}/registrations/bulk-delete`,
+        createFetchOptions('POST', { participantIds: selectedParticipants })
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Erreur lors de la suppression');
+      }
+
+      const result = await response.json();
+      
+      // Mettre à jour la liste locale
       setParticipants(prev => prev.filter(p => !selectedParticipants.includes(p.id)));
       setSelectedParticipants([]);
       setSelectAll(false);
+      
+      toast.success(`${result.deletedCount} participant(s) supprimé(s) avec succès`);
+      
+    } catch (error) {
+      console.error('Erreur lors de la suppression multiple:', error);
+      toast.error('Erreur lors de la suppression des participants');
     }
   };
 
@@ -1350,7 +1379,7 @@ const handleCancelCheckIn = async () => {
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             <Button
               variant="outline"
-              className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]"
+              className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
               onClick={downloadCsvTemplate}
             >
               <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
@@ -1359,7 +1388,7 @@ const handleCancelCheckIn = async () => {
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]">
+                <Button variant="outline" className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white">
                   <ArrowUpTrayIcon className="h-4 w-4 mr-2" />
                   Importer
                 </Button>
@@ -1386,14 +1415,14 @@ const handleCancelCheckIn = async () => {
             
             <Button
               onClick={() => setShowAddManual(true)}
-              className="bg-[#81B441] hover:bg-[#72a339] button-hover-effect"
+              className="bg-[#81B441] hover:bg-[#72a339] text-white"
             >
               <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
             </Button>
-                </div>
-              </div>
-              
+          </div>
+        </div>
+        
         {/* Carte des statistiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <Card>
@@ -1755,6 +1784,99 @@ const handleCancelCheckIn = async () => {
             )}
           </div>
 
+          {/* Pagination et sélecteur d'éléments par page */}
+          {!loading && participants.length > 0 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between mt-6 space-y-4 sm:space-y-0">
+              {/* Informations de pagination */}
+              <div className="text-sm text-gray-700">
+                Affichage de {Math.min((currentPage - 1) * participantsPerPage + 1, filteredParticipants.length)} à{''}
+                {Math.min(currentPage * participantsPerPage, filteredParticipants.length)} sur{''}
+                {filteredParticipants.length} participant{filteredParticipants.length > 1 ? 's' : ''}
+              </div>
+              
+              {/* Contrôles de pagination */}
+              <div className="flex items-center space-x-4">
+                {/* Sélecteur d'éléments par page */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-700">Afficher :</span>
+                  <Select 
+                    value={participantsPerPage.toString()} 
+                    onValueChange={(value) => {
+                      setParticipantsPerPage(Number(value));
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <SelectTrigger className="w-20 h-8">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="25">25</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                      <SelectItem value="75">75</SelectItem>
+                      <SelectItem value="100">100</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                {/* Boutons de navigation */}
+                {totalPages > 1 && (
+                  <div className="flex items-center space-x-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronLeftIcon className="h-4 w-4" />
+                    </Button>
+                    
+                    {/* Numéros de page */}
+                    <div className="flex items-center space-x-1">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let pageNumber;
+                        if (totalPages <= 5) {
+                          pageNumber = i + 1;
+                        } else if (currentPage <= 3) {
+                          pageNumber = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          pageNumber = totalPages - 4 + i;
+                        } else {
+                          pageNumber = currentPage - 2 + i;
+                        }
+                        
+                        return (
+                          <Button
+                            key={pageNumber}
+                            variant={currentPage === pageNumber ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setCurrentPage(pageNumber)}
+                            className={`h-8 w-8 p-0 ${
+                              currentPage === pageNumber 
+                                ? 'bg-[#81B441] hover:bg-[#72a339] text-white' 
+                                : 'hover:bg-gray-50'
+                            }`}
+                          >
+                            {pageNumber}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronRightIcon className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
       {/* Panneau latéral des détails du participant */}
       <div className={`fixed inset-y-0 right-0 w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             {selectedParticipant && (

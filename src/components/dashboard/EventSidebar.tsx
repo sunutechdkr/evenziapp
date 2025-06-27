@@ -362,8 +362,8 @@ export function EventSidebar({
                     href={item.href}
                     className={`
                       block py-2 px-3 rounded-md transition-colors duration-200
-                      ${isActive(item.href, item.exact) 
-                        ? 'bg-[#81B441] text-white' 
+                      ${item.name === "Retour au dashboard" ? false : isActive(item.href, item.exact) 
+                        ? 'border border-gray-600 text-gray-300 hover:border-gray-500 hover:text-white' 
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                       }
                     `}
