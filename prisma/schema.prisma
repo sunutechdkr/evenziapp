@@ -113,6 +113,7 @@ model Event {
   participantBadges ParticipantBadge[]
   emailCampaigns    EmailCampaign[]
   emailTemplates    EmailTemplate[]
+  tickets        Ticket[]
 
   @@map("events")
 }
@@ -140,6 +141,37 @@ model Registration {
   participantBadges  ParticipantBadge[]
 
   @@map("registrations")
+}
+
+enum TicketStatus {
+  ACTIVE
+  TERMINATED
+  DRAFT
+}
+
+enum TicketVisibility {
+  VISIBLE
+  HIDDEN
+}
+
+model Ticket {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal           @default(0)
+  quantity    Int?              // null = illimité
+  sold        Int               @default(0)
+  status      TicketStatus      @default(ACTIVE)
+  visibility  TicketVisibility  @default(VISIBLE)
+  validFrom   DateTime          @map("valid_from")
+  validUntil  DateTime          @map("valid_until")
+  group       String            @default("Attendees")
+  eventId     String            @map("event_id")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  event       Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("tickets")
 }
 
 model event_sessions {

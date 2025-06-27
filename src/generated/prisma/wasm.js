@@ -207,6 +207,23 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   checkInTime: 'checkInTime'
 };
 
+exports.Prisma.TicketScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  quantity: 'quantity',
+  sold: 'sold',
+  status: 'status',
+  visibility: 'visibility',
+  validFrom: 'validFrom',
+  validUntil: 'validUntil',
+  group: 'group',
+  eventId: 'eventId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.Event_sessionsScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -389,6 +406,17 @@ exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN'
 };
 
+exports.TicketStatus = exports.$Enums.TicketStatus = {
+  ACTIVE: 'ACTIVE',
+  TERMINATED: 'TERMINATED',
+  DRAFT: 'DRAFT'
+};
+
+exports.TicketVisibility = exports.$Enums.TicketVisibility = {
+  VISIBLE: 'VISIBLE',
+  HIDDEN: 'HIDDEN'
+};
+
 exports.SponsorLevel = exports.$Enums.SponsorLevel = {
   PLATINUM: 'PLATINUM',
   GOLD: 'GOLD',
@@ -471,6 +499,7 @@ exports.Prisma.ModelName = {
   VerificationToken: 'VerificationToken',
   Event: 'Event',
   Registration: 'Registration',
+  Ticket: 'Ticket',
   event_sessions: 'event_sessions',
   Sponsor: 'Sponsor',
   SessionParticipant: 'SessionParticipant',
