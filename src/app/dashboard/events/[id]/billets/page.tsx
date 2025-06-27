@@ -138,7 +138,7 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
             {
               id: "demo-3",
               name: "VISITEUR",
-              status: "TERMINATED", 
+              status: "DRAFT", 
               price: 0,
               currency: "€",
               usage: "485/Illimité",
@@ -153,7 +153,7 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
             {
               id: "demo-4",
               name: "SPEAKERS",
-              status: "TERMINATED",
+              status: "ACTIVE",
               price: 0,
               currency: "€",
               usage: "15/50", 
@@ -211,11 +211,11 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'ACTIVE':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 text-green-800 hover:bg-green-200 cursor-pointer';
       case 'TERMINATED':
         return 'bg-gray-100 text-gray-800';
       case 'DRAFT':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-orange-100 text-orange-800 hover:bg-orange-200 cursor-pointer';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -224,11 +224,11 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
   const getStatusText = (status: string) => {
     switch (status) {
       case 'ACTIVE':
-        return 'Actif';
+        return 'En vente';
       case 'TERMINATED':
         return 'Terminé';
       case 'DRAFT':
-        return 'Brouillon';
+        return 'Inactif';
       default:
         return status;
     }
@@ -428,6 +428,69 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
     }
   };
 
+  const handleToggleStatus = async (ticket: Ticket, event: React.MouseEvent) => {
+    event.stopPropagation(); // Empêcher l'ouverture du modal d'édition
+    
+    // Ne pas permettre de changer le statut des billets terminés
+    if (ticket.status === 'TERMINATED') {
+      toast.error('Impossible de modifier le statut d\'un billet terminé');
+      return;
+    }
+
+    const newStatus = ticket.status === 'ACTIVE' ? 'DRAFT' : 'ACTIVE';
+    const statusText = newStatus === 'ACTIVE' ? 'En vente' : 'Inactif';
+
+    try {
+      const response = await fetch(`/api/events/${eventId}/tickets/${ticket.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: ticket.name,
+          description: ticket.description,
+          price: ticket.price,
+          currency: ticket.currency,
+          quantity: ticket.quantity || null,
+          status: newStatus,
+          visibility: ticket.visibility,
+          validFrom: ticket.validFrom.toISOString(),
+          validUntil: ticket.validUntil.toISOString(),
+          group: ticket.group
+        })
+      });
+
+      if (!response.ok) {
+        // Si c'est une erreur 500, simuler le changement de statut en mode démo
+        if (response.status === 500) {
+          console.log('Erreur 500 - Base de données non configurée, simulation de changement de statut');
+          const updatedTicket: Ticket = {
+            ...ticket,
+            status: newStatus as 'ACTIVE' | 'TERMINATED' | 'DRAFT'
+          };
+
+          setTickets(prev => prev.map(t => t.id === ticket.id ? updatedTicket : t));
+          toast.success(`Statut changé vers "${statusText}" ! (Mode démo - configurez DATABASE_URL sur Vercel)`);
+          return;
+        }
+
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors du changement de statut');
+      }
+
+      const data = await response.json();
+      
+      if (data.success && data.ticket) {
+        // Recharger la liste des billets
+        await loadTickets();
+        toast.success(`Statut changé vers "${statusText}" avec succès !`);
+      }
+    } catch (error) {
+      console.error('Erreur lors du changement de statut:', error);
+      toast.error(error instanceof Error ? error.message : 'Erreur lors du changement de statut');
+    }
+  };
+
   const formatFormDate = (date: Date) => {
     return format(date, 'dd/MM/yyyy HH:mm');
   };
@@ -488,7 +551,7 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
                 <CardContent>
                   <div className="text-2xl font-bold text-[#81B441]">{tickets.length}</div>
                   <p className="text-xs text-muted-foreground">
-                    {tickets.filter(t => t.status === 'ACTIVE').length} actifs, {tickets.filter(t => t.status === 'TERMINATED').length} terminés
+                    {tickets.filter(t => t.status === 'ACTIVE').length} en vente, {tickets.filter(t => t.status === 'DRAFT').length} inactifs, {tickets.filter(t => t.status === 'TERMINATED').length} terminés
                   </p>
                 </CardContent>
               </Card>
@@ -562,7 +625,14 @@ export default function EventTicketsPage({ params }: { params: Promise<{ id: str
                         </div>
                       </TableCell>
                       <TableCell className="py-6">
-                        <Badge className={getStatusColor(ticket.status)}>
+                        <Badge 
+                          className={getStatusColor(ticket.status)}
+                          onClick={(e) => handleToggleStatus(ticket, e)}
+                          title={ticket.status === 'TERMINATED' ? 
+                            'Impossible de modifier un billet terminé' : 
+                            `Cliquez pour ${ticket.status === 'ACTIVE' ? 'désactiver' : 'activer'} ce billet`
+                          }
+                        >
                           ● {getStatusText(ticket.status)}
                         </Badge>
                       </TableCell>
