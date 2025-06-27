@@ -2819,6 +2819,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type TicketCountOutputType
+   */
+
+  export type TicketCountOutputType = {
+    registrations: number
+  }
+
+  export type TicketCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registrations?: boolean | TicketCountOutputTypeCountRegistrationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TicketCountOutputType without action
+   */
+  export type TicketCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketCountOutputType
+     */
+    select?: TicketCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TicketCountOutputType without action
+   */
+  export type TicketCountOutputTypeCountRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegistrationWhereInput
+  }
+
+
+  /**
    * Count Type Event_sessionsCountOutputType
    */
 
@@ -8917,6 +8948,7 @@ export namespace Prisma {
     phone: string | null
     type: string | null
     eventId: string | null
+    ticketId: string | null
     qrCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8935,6 +8967,7 @@ export namespace Prisma {
     phone: string | null
     type: string | null
     eventId: string | null
+    ticketId: string | null
     qrCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8953,6 +8986,7 @@ export namespace Prisma {
     phone: number
     type: number
     eventId: number
+    ticketId: number
     qrCode: number
     createdAt: number
     updatedAt: number
@@ -8973,6 +9007,7 @@ export namespace Prisma {
     phone?: true
     type?: true
     eventId?: true
+    ticketId?: true
     qrCode?: true
     createdAt?: true
     updatedAt?: true
@@ -8991,6 +9026,7 @@ export namespace Prisma {
     phone?: true
     type?: true
     eventId?: true
+    ticketId?: true
     qrCode?: true
     createdAt?: true
     updatedAt?: true
@@ -9009,6 +9045,7 @@ export namespace Prisma {
     phone?: true
     type?: true
     eventId?: true
+    ticketId?: true
     qrCode?: true
     createdAt?: true
     updatedAt?: true
@@ -9100,6 +9137,7 @@ export namespace Prisma {
     phone: string
     type: string
     eventId: string
+    ticketId: string | null
     qrCode: string
     createdAt: Date
     updatedAt: Date
@@ -9135,6 +9173,7 @@ export namespace Prisma {
     phone?: boolean
     type?: boolean
     eventId?: boolean
+    ticketId?: boolean
     qrCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9147,6 +9186,7 @@ export namespace Prisma {
     sentAppointments?: boolean | Registration$sentAppointmentsArgs<ExtArgs>
     participantBadges?: boolean | Registration$participantBadgesArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    ticket?: boolean | Registration$ticketArgs<ExtArgs>
     sessions?: boolean | Registration$sessionsArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
@@ -9159,6 +9199,7 @@ export namespace Prisma {
     phone?: boolean
     type?: boolean
     eventId?: boolean
+    ticketId?: boolean
     qrCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9168,6 +9209,7 @@ export namespace Prisma {
     company?: boolean
     jobTitle?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    ticket?: boolean | Registration$ticketArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
   export type RegistrationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9178,6 +9220,7 @@ export namespace Prisma {
     phone?: boolean
     type?: boolean
     eventId?: boolean
+    ticketId?: boolean
     qrCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9187,6 +9230,7 @@ export namespace Prisma {
     company?: boolean
     jobTitle?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    ticket?: boolean | Registration$ticketArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
   export type RegistrationSelectScalar = {
@@ -9197,6 +9241,7 @@ export namespace Prisma {
     phone?: boolean
     type?: boolean
     eventId?: boolean
+    ticketId?: boolean
     qrCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9207,20 +9252,23 @@ export namespace Prisma {
     jobTitle?: boolean
   }
 
-  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "type" | "eventId" | "qrCode" | "createdAt" | "updatedAt" | "checkedIn" | "checkInTime" | "shortCode" | "company" | "jobTitle", ExtArgs["result"]["registration"]>
+  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "type" | "eventId" | "ticketId" | "qrCode" | "createdAt" | "updatedAt" | "checkedIn" | "checkInTime" | "shortCode" | "company" | "jobTitle", ExtArgs["result"]["registration"]>
   export type RegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     receivedAppointments?: boolean | Registration$receivedAppointmentsArgs<ExtArgs>
     sentAppointments?: boolean | Registration$sentAppointmentsArgs<ExtArgs>
     participantBadges?: boolean | Registration$participantBadgesArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    ticket?: boolean | Registration$ticketArgs<ExtArgs>
     sessions?: boolean | Registration$sessionsArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RegistrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    ticket?: boolean | Registration$ticketArgs<ExtArgs>
   }
   export type RegistrationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    ticket?: boolean | Registration$ticketArgs<ExtArgs>
   }
 
   export type $RegistrationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9230,6 +9278,7 @@ export namespace Prisma {
       sentAppointments: Prisma.$AppointmentPayload<ExtArgs>[]
       participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
       event: Prisma.$EventPayload<ExtArgs>
+      ticket: Prisma.$TicketPayload<ExtArgs> | null
       sessions: Prisma.$SessionParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -9240,6 +9289,7 @@ export namespace Prisma {
       phone: string
       type: string
       eventId: string
+      ticketId: string | null
       qrCode: string
       createdAt: Date
       updatedAt: Date
@@ -9646,6 +9696,7 @@ export namespace Prisma {
     sentAppointments<T extends Registration$sentAppointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sentAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     participantBadges<T extends Registration$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ticket<T extends Registration$ticketArgs<ExtArgs> = {}>(args?: Subset<T, Registration$ticketArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sessions<T extends Registration$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9683,6 +9734,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"Registration", 'String'>
     readonly type: FieldRef<"Registration", 'String'>
     readonly eventId: FieldRef<"Registration", 'String'>
+    readonly ticketId: FieldRef<"Registration", 'String'>
     readonly qrCode: FieldRef<"Registration", 'String'>
     readonly createdAt: FieldRef<"Registration", 'DateTime'>
     readonly updatedAt: FieldRef<"Registration", 'DateTime'>
@@ -10159,6 +10211,25 @@ export namespace Prisma {
   }
 
   /**
+   * Registration.ticket
+   */
+  export type Registration$ticketArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketInclude<ExtArgs> | null
+    where?: TicketWhereInput
+  }
+
+  /**
    * Registration.sessions
    */
   export type Registration$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10488,6 +10559,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    registrations?: boolean | Ticket$registrationsArgs<ExtArgs>
+    _count?: boolean | TicketCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ticket"]>
 
   export type TicketSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10549,6 +10622,8 @@ export namespace Prisma {
   export type TicketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "currency" | "quantity" | "sold" | "status" | "visibility" | "validFrom" | "validUntil" | "group" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["ticket"]>
   export type TicketInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    registrations?: boolean | Ticket$registrationsArgs<ExtArgs>
+    _count?: boolean | TicketCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TicketIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -10561,6 +10636,7 @@ export namespace Prisma {
     name: "Ticket"
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
+      registrations: Prisma.$RegistrationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10973,6 +11049,7 @@ export namespace Prisma {
   export interface Prisma__TicketClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registrations<T extends Ticket$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, Ticket$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11410,6 +11487,30 @@ export namespace Prisma {
      * Limit how many Tickets to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Ticket.registrations
+   */
+  export type Ticket$registrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Registration
+     */
+    select?: RegistrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Registration
+     */
+    omit?: RegistrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistrationInclude<ExtArgs> | null
+    where?: RegistrationWhereInput
+    orderBy?: RegistrationOrderByWithRelationInput | RegistrationOrderByWithRelationInput[]
+    cursor?: RegistrationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegistrationScalarFieldEnum | RegistrationScalarFieldEnum[]
   }
 
   /**
@@ -24227,6 +24328,7 @@ export namespace Prisma {
     phone: 'phone',
     type: 'type',
     eventId: 'eventId',
+    ticketId: 'ticketId',
     qrCode: 'qrCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -25194,6 +25296,7 @@ export namespace Prisma {
     phone?: StringFilter<"Registration"> | string
     type?: StringFilter<"Registration"> | string
     eventId?: StringFilter<"Registration"> | string
+    ticketId?: StringNullableFilter<"Registration"> | string | null
     qrCode?: StringFilter<"Registration"> | string
     createdAt?: DateTimeFilter<"Registration"> | Date | string
     updatedAt?: DateTimeFilter<"Registration"> | Date | string
@@ -25206,6 +25309,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    ticket?: XOR<TicketNullableScalarRelationFilter, TicketWhereInput> | null
     sessions?: SessionParticipantListRelationFilter
   }
 
@@ -25217,6 +25321,7 @@ export namespace Prisma {
     phone?: SortOrder
     type?: SortOrder
     eventId?: SortOrder
+    ticketId?: SortOrderInput | SortOrder
     qrCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25229,6 +25334,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentOrderByRelationAggregateInput
     participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
     event?: EventOrderByWithRelationInput
+    ticket?: TicketOrderByWithRelationInput
     sessions?: SessionParticipantOrderByRelationAggregateInput
   }
 
@@ -25245,6 +25351,7 @@ export namespace Prisma {
     phone?: StringFilter<"Registration"> | string
     type?: StringFilter<"Registration"> | string
     eventId?: StringFilter<"Registration"> | string
+    ticketId?: StringNullableFilter<"Registration"> | string | null
     createdAt?: DateTimeFilter<"Registration"> | Date | string
     updatedAt?: DateTimeFilter<"Registration"> | Date | string
     checkedIn?: BoolFilter<"Registration"> | boolean
@@ -25255,6 +25362,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    ticket?: XOR<TicketNullableScalarRelationFilter, TicketWhereInput> | null
     sessions?: SessionParticipantListRelationFilter
   }, "id" | "qrCode" | "shortCode">
 
@@ -25266,6 +25374,7 @@ export namespace Prisma {
     phone?: SortOrder
     type?: SortOrder
     eventId?: SortOrder
+    ticketId?: SortOrderInput | SortOrder
     qrCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25290,6 +25399,7 @@ export namespace Prisma {
     phone?: StringWithAggregatesFilter<"Registration"> | string
     type?: StringWithAggregatesFilter<"Registration"> | string
     eventId?: StringWithAggregatesFilter<"Registration"> | string
+    ticketId?: StringNullableWithAggregatesFilter<"Registration"> | string | null
     qrCode?: StringWithAggregatesFilter<"Registration"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Registration"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Registration"> | Date | string
@@ -25320,6 +25430,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     updatedAt?: DateTimeFilter<"Ticket"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    registrations?: RegistrationListRelationFilter
   }
 
   export type TicketOrderByWithRelationInput = {
@@ -25339,6 +25450,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
+    registrations?: RegistrationOrderByRelationAggregateInput
   }
 
   export type TicketWhereUniqueInput = Prisma.AtLeast<{
@@ -25361,6 +25473,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     updatedAt?: DateTimeFilter<"Ticket"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    registrations?: RegistrationListRelationFilter
   }, "id">
 
   export type TicketOrderByWithAggregationInput = {
@@ -26925,6 +27038,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
+    ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
@@ -26936,6 +27050,7 @@ export namespace Prisma {
     phone: string
     type?: string
     eventId: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26969,6 +27084,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
@@ -26980,6 +27096,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27002,6 +27119,7 @@ export namespace Prisma {
     phone: string
     type?: string
     eventId: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27037,6 +27155,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27063,6 +27182,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutTicketsInput
+    registrations?: RegistrationCreateNestedManyWithoutTicketInput
   }
 
   export type TicketUncheckedCreateInput = {
@@ -27081,6 +27201,7 @@ export namespace Prisma {
     eventId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutTicketInput
   }
 
   export type TicketUpdateInput = {
@@ -27099,6 +27220,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutTicketsNestedInput
+    registrations?: RegistrationUpdateManyWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateInput = {
@@ -27117,6 +27239,7 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrations?: RegistrationUncheckedUpdateManyWithoutTicketNestedInput
   }
 
   export type TicketCreateManyInput = {
@@ -28820,6 +28943,11 @@ export namespace Prisma {
     isNot?: EventWhereInput
   }
 
+  export type TicketNullableScalarRelationFilter = {
+    is?: TicketWhereInput | null
+    isNot?: TicketWhereInput | null
+  }
+
   export type SessionParticipantListRelationFilter = {
     every?: SessionParticipantWhereInput
     some?: SessionParticipantWhereInput
@@ -28838,6 +28966,7 @@ export namespace Prisma {
     phone?: SortOrder
     type?: SortOrder
     eventId?: SortOrder
+    ticketId?: SortOrder
     qrCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -28856,6 +28985,7 @@ export namespace Prisma {
     phone?: SortOrder
     type?: SortOrder
     eventId?: SortOrder
+    ticketId?: SortOrder
     qrCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -28874,6 +29004,7 @@ export namespace Prisma {
     phone?: SortOrder
     type?: SortOrder
     eventId?: SortOrder
+    ticketId?: SortOrder
     qrCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30364,6 +30495,12 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput
   }
 
+  export type TicketCreateNestedOneWithoutRegistrationsInput = {
+    create?: XOR<TicketCreateWithoutRegistrationsInput, TicketUncheckedCreateWithoutRegistrationsInput>
+    connectOrCreate?: TicketCreateOrConnectWithoutRegistrationsInput
+    connect?: TicketWhereUniqueInput
+  }
+
   export type SessionParticipantCreateNestedManyWithoutParticipantInput = {
     create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
@@ -30449,6 +30586,16 @@ export namespace Prisma {
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutRegistrationsInput, EventUpdateWithoutRegistrationsInput>, EventUncheckedUpdateWithoutRegistrationsInput>
   }
 
+  export type TicketUpdateOneWithoutRegistrationsNestedInput = {
+    create?: XOR<TicketCreateWithoutRegistrationsInput, TicketUncheckedCreateWithoutRegistrationsInput>
+    connectOrCreate?: TicketCreateOrConnectWithoutRegistrationsInput
+    upsert?: TicketUpsertWithoutRegistrationsInput
+    disconnect?: TicketWhereInput | boolean
+    delete?: TicketWhereInput | boolean
+    connect?: TicketWhereUniqueInput
+    update?: XOR<XOR<TicketUpdateToOneWithWhereWithoutRegistrationsInput, TicketUpdateWithoutRegistrationsInput>, TicketUncheckedUpdateWithoutRegistrationsInput>
+  }
+
   export type SessionParticipantUpdateManyWithoutParticipantNestedInput = {
     create?: XOR<SessionParticipantCreateWithoutParticipantInput, SessionParticipantUncheckedCreateWithoutParticipantInput> | SessionParticipantCreateWithoutParticipantInput[] | SessionParticipantUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
@@ -30525,6 +30672,20 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput
   }
 
+  export type RegistrationCreateNestedManyWithoutTicketInput = {
+    create?: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput> | RegistrationCreateWithoutTicketInput[] | RegistrationUncheckedCreateWithoutTicketInput[]
+    connectOrCreate?: RegistrationCreateOrConnectWithoutTicketInput | RegistrationCreateOrConnectWithoutTicketInput[]
+    createMany?: RegistrationCreateManyTicketInputEnvelope
+    connect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+  }
+
+  export type RegistrationUncheckedCreateNestedManyWithoutTicketInput = {
+    create?: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput> | RegistrationCreateWithoutTicketInput[] | RegistrationUncheckedCreateWithoutTicketInput[]
+    connectOrCreate?: RegistrationCreateOrConnectWithoutTicketInput | RegistrationCreateOrConnectWithoutTicketInput[]
+    createMany?: RegistrationCreateManyTicketInputEnvelope
+    connect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+  }
+
   export type DecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string
     increment?: Decimal | DecimalJsLike | number | string
@@ -30555,6 +30716,34 @@ export namespace Prisma {
     upsert?: EventUpsertWithoutTicketsInput
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutTicketsInput, EventUpdateWithoutTicketsInput>, EventUncheckedUpdateWithoutTicketsInput>
+  }
+
+  export type RegistrationUpdateManyWithoutTicketNestedInput = {
+    create?: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput> | RegistrationCreateWithoutTicketInput[] | RegistrationUncheckedCreateWithoutTicketInput[]
+    connectOrCreate?: RegistrationCreateOrConnectWithoutTicketInput | RegistrationCreateOrConnectWithoutTicketInput[]
+    upsert?: RegistrationUpsertWithWhereUniqueWithoutTicketInput | RegistrationUpsertWithWhereUniqueWithoutTicketInput[]
+    createMany?: RegistrationCreateManyTicketInputEnvelope
+    set?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    disconnect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    delete?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    connect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    update?: RegistrationUpdateWithWhereUniqueWithoutTicketInput | RegistrationUpdateWithWhereUniqueWithoutTicketInput[]
+    updateMany?: RegistrationUpdateManyWithWhereWithoutTicketInput | RegistrationUpdateManyWithWhereWithoutTicketInput[]
+    deleteMany?: RegistrationScalarWhereInput | RegistrationScalarWhereInput[]
+  }
+
+  export type RegistrationUncheckedUpdateManyWithoutTicketNestedInput = {
+    create?: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput> | RegistrationCreateWithoutTicketInput[] | RegistrationUncheckedCreateWithoutTicketInput[]
+    connectOrCreate?: RegistrationCreateOrConnectWithoutTicketInput | RegistrationCreateOrConnectWithoutTicketInput[]
+    upsert?: RegistrationUpsertWithWhereUniqueWithoutTicketInput | RegistrationUpsertWithWhereUniqueWithoutTicketInput[]
+    createMany?: RegistrationCreateManyTicketInputEnvelope
+    set?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    disconnect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    delete?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    connect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+    update?: RegistrationUpdateWithWhereUniqueWithoutTicketInput | RegistrationUpdateWithWhereUniqueWithoutTicketInput[]
+    updateMany?: RegistrationUpdateManyWithWhereWithoutTicketInput | RegistrationUpdateManyWithWhereWithoutTicketInput[]
+    deleteMany?: RegistrationScalarWhereInput | RegistrationScalarWhereInput[]
   }
 
   export type EventCreateNestedOneWithoutEvent_sessionsInput = {
@@ -32116,6 +32305,7 @@ export namespace Prisma {
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
+    ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
@@ -32126,6 +32316,7 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32199,6 +32390,7 @@ export namespace Prisma {
     group?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    registrations?: RegistrationCreateNestedManyWithoutTicketInput
   }
 
   export type TicketUncheckedCreateWithoutEventInput = {
@@ -32216,6 +32408,7 @@ export namespace Prisma {
     group?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutTicketInput
   }
 
   export type TicketCreateOrConnectWithoutEventInput = {
@@ -32543,6 +32736,7 @@ export namespace Prisma {
     phone?: StringFilter<"Registration"> | string
     type?: StringFilter<"Registration"> | string
     eventId?: StringFilter<"Registration"> | string
+    ticketId?: StringNullableFilter<"Registration"> | string | null
     qrCode?: StringFilter<"Registration"> | string
     createdAt?: DateTimeFilter<"Registration"> | Date | string
     updatedAt?: DateTimeFilter<"Registration"> | Date | string
@@ -32809,6 +33003,47 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
   }
 
+  export type TicketCreateWithoutRegistrationsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    quantity?: number | null
+    sold?: number
+    status?: $Enums.TicketStatus
+    visibility?: $Enums.TicketVisibility
+    validFrom: Date | string
+    validUntil: Date | string
+    group?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutTicketsInput
+  }
+
+  export type TicketUncheckedCreateWithoutRegistrationsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    quantity?: number | null
+    sold?: number
+    status?: $Enums.TicketStatus
+    visibility?: $Enums.TicketVisibility
+    validFrom: Date | string
+    validUntil: Date | string
+    group?: string
+    eventId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketCreateOrConnectWithoutRegistrationsInput = {
+    where: TicketWhereUniqueInput
+    create: XOR<TicketCreateWithoutRegistrationsInput, TicketUncheckedCreateWithoutRegistrationsInput>
+  }
+
   export type SessionParticipantCreateWithoutParticipantInput = {
     id?: string
     registeredAt?: Date | string
@@ -32962,6 +33197,53 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
   }
 
+  export type TicketUpsertWithoutRegistrationsInput = {
+    update: XOR<TicketUpdateWithoutRegistrationsInput, TicketUncheckedUpdateWithoutRegistrationsInput>
+    create: XOR<TicketCreateWithoutRegistrationsInput, TicketUncheckedCreateWithoutRegistrationsInput>
+    where?: TicketWhereInput
+  }
+
+  export type TicketUpdateToOneWithWhereWithoutRegistrationsInput = {
+    where?: TicketWhereInput
+    data: XOR<TicketUpdateWithoutRegistrationsInput, TicketUncheckedUpdateWithoutRegistrationsInput>
+  }
+
+  export type TicketUpdateWithoutRegistrationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    quantity?: NullableIntFieldUpdateOperationsInput | number | null
+    sold?: IntFieldUpdateOperationsInput | number
+    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
+    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutTicketsNestedInput
+  }
+
+  export type TicketUncheckedUpdateWithoutRegistrationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    quantity?: NullableIntFieldUpdateOperationsInput | number | null
+    sold?: IntFieldUpdateOperationsInput | number
+    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
+    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SessionParticipantUpsertWithWhereUniqueWithoutParticipantInput = {
     where: SessionParticipantWhereUniqueInput
     update: XOR<SessionParticipantUpdateWithoutParticipantInput, SessionParticipantUncheckedUpdateWithoutParticipantInput>
@@ -33063,6 +33345,60 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
   }
 
+  export type RegistrationCreateWithoutTicketInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    qrCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    shortCode?: string | null
+    company?: string | null
+    jobTitle?: string | null
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
+    event: EventCreateNestedOneWithoutRegistrationsInput
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutTicketInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    eventId: string
+    qrCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    shortCode?: string | null
+    company?: string | null
+    jobTitle?: string | null
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutTicketInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput>
+  }
+
+  export type RegistrationCreateManyTicketInputEnvelope = {
+    data: RegistrationCreateManyTicketInput | RegistrationCreateManyTicketInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EventUpsertWithoutTicketsInput = {
     update: XOR<EventUpdateWithoutTicketsInput, EventUncheckedUpdateWithoutTicketsInput>
     create: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
@@ -33140,6 +33476,22 @@ export namespace Prisma {
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type RegistrationUpsertWithWhereUniqueWithoutTicketInput = {
+    where: RegistrationWhereUniqueInput
+    update: XOR<RegistrationUpdateWithoutTicketInput, RegistrationUncheckedUpdateWithoutTicketInput>
+    create: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput>
+  }
+
+  export type RegistrationUpdateWithWhereUniqueWithoutTicketInput = {
+    where: RegistrationWhereUniqueInput
+    data: XOR<RegistrationUpdateWithoutTicketInput, RegistrationUncheckedUpdateWithoutTicketInput>
+  }
+
+  export type RegistrationUpdateManyWithWhereWithoutTicketInput = {
+    where: RegistrationScalarWhereInput
+    data: XOR<RegistrationUpdateManyMutationInput, RegistrationUncheckedUpdateManyWithoutTicketInput>
   }
 
   export type EventCreateWithoutEvent_sessionsInput = {
@@ -33507,6 +33859,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
+    ticket?: TicketCreateNestedOneWithoutRegistrationsInput
   }
 
   export type RegistrationUncheckedCreateWithoutSessionsInput = {
@@ -33517,6 +33870,7 @@ export namespace Prisma {
     phone: string
     type?: string
     eventId: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33608,6 +33962,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutSessionsInput = {
@@ -33618,6 +33973,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33771,6 +34127,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
+    ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
@@ -33782,6 +34139,7 @@ export namespace Prisma {
     phone: string
     type?: string
     eventId: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33818,6 +34176,7 @@ export namespace Prisma {
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
+    ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
@@ -33829,6 +34188,7 @@ export namespace Prisma {
     phone: string
     type?: string
     eventId: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33955,6 +34315,7 @@ export namespace Prisma {
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
@@ -33966,6 +34327,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34008,6 +34370,7 @@ export namespace Prisma {
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
@@ -34019,6 +34382,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34481,6 +34845,7 @@ export namespace Prisma {
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
     event: EventCreateNestedOneWithoutRegistrationsInput
+    ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
   }
 
@@ -34492,6 +34857,7 @@ export namespace Prisma {
     phone: string
     type?: string
     eventId: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34647,6 +35013,7 @@ export namespace Prisma {
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
@@ -34658,6 +35025,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35482,6 +35850,7 @@ export namespace Prisma {
     email: string
     phone: string
     type?: string
+    ticketId?: string | null
     qrCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35848,6 +36217,7 @@ export namespace Prisma {
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
+    ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
   }
 
@@ -35858,6 +36228,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35879,6 +36250,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    ticketId?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35940,6 +36312,7 @@ export namespace Prisma {
     group?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrations?: RegistrationUpdateManyWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateWithoutEventInput = {
@@ -35957,6 +36330,7 @@ export namespace Prisma {
     group?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrations?: RegistrationUncheckedUpdateManyWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateManyWithoutEventInput = {
@@ -36174,6 +36548,86 @@ export namespace Prisma {
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendedSession?: BoolFieldUpdateOperationsInput | boolean
     attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RegistrationCreateManyTicketInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    eventId: string
+    qrCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    shortCode?: string | null
+    company?: string | null
+    jobTitle?: string | null
+  }
+
+  export type RegistrationUpdateWithoutTicketInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+    sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutTicketInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+    sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateManyWithoutTicketInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    qrCode?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkedIn?: BoolFieldUpdateOperationsInput | boolean
+    checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortCode?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionParticipantCreateManySessionInput = {

@@ -197,6 +197,7 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   phone: 'phone',
   type: 'type',
   eventId: 'eventId',
+  ticketId: 'ticketId',
   qrCode: 'qrCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

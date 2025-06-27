@@ -113,6 +113,7 @@ model Registration {
   phone                String
   type                 String               @default("PARTICIPANT")
   eventId              String               @map("event_id")
+  ticketId             String?              @map("ticket_id")
   qrCode               String               @unique @map("qr_code")
   createdAt            DateTime             @default(now()) @map("created_at")
   updatedAt            DateTime             @updatedAt @map("updated_at")
@@ -125,28 +126,30 @@ model Registration {
   sentAppointments     Appointment[]        @relation("RequesterRelation")
   participantBadges    ParticipantBadge[]
   event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  ticket               Ticket?              @relation(fields: [ticketId], references: [id])
   sessions             SessionParticipant[]
 
   @@map("registrations")
 }
 
 model Ticket {
-  id          String           @id @default(cuid())
-  name        String
-  description String?
-  price       Decimal          @default(0)
-  currency    String           @default("EUR")
-  quantity    Int? // null = illimité
-  sold        Int              @default(0)
-  status      TicketStatus     @default(ACTIVE)
-  visibility  TicketVisibility @default(VISIBLE)
-  validFrom   DateTime         @map("valid_from")
-  validUntil  DateTime         @map("valid_until")
-  group       String           @default("Attendees")
-  eventId     String           @map("event_id")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  id            String           @id @default(cuid())
+  name          String
+  description   String?
+  price         Decimal          @default(0)
+  currency      String           @default("XOF")
+  quantity      Int? // null = illimité
+  sold          Int              @default(0)
+  status        TicketStatus     @default(ACTIVE)
+  visibility    TicketVisibility @default(VISIBLE)
+  validFrom     DateTime         @map("valid_from")
+  validUntil    DateTime         @map("valid_until")
+  group         String           @default("Attendees")
+  eventId       String           @map("event_id")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  event         Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registrations Registration[]
 
   @@map("tickets")
 }

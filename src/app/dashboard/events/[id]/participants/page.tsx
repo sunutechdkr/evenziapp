@@ -1420,9 +1420,9 @@ const handleCancelCheckIn = async () => {
               <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
             </Button>
-          </div>
-        </div>
-        
+                </div>
+              </div>
+              
         {/* Carte des statistiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <Card>
@@ -1774,7 +1774,7 @@ const handleCancelCheckIn = async () => {
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                  </div>
+                </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1782,7 +1782,7 @@ const handleCancelCheckIn = async () => {
             </Table>
           </Card>
             )}
-          </div>
+                  </div>
 
           {/* Pagination et sélecteur d'éléments par page */}
           {!loading && participants.length > 0 && (
@@ -1825,7 +1825,7 @@ const handleCancelCheckIn = async () => {
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                      disabled={currentPage === 1}
+                        disabled={currentPage === 1}
                       className="h-8 w-8 p-0"
                     >
                       <ChevronLeftIcon className="h-4 w-4" />
@@ -1867,16 +1867,16 @@ const handleCancelCheckIn = async () => {
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                      disabled={currentPage === totalPages}
+                        disabled={currentPage === totalPages}
                       className="h-8 w-8 p-0"
                     >
                       <ChevronRightIcon className="h-4 w-4" />
                     </Button>
                   </div>
                 )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
       {/* Panneau latéral des détails du participant */}
       <div className={`fixed inset-y-0 right-0 w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             {selectedParticipant && (

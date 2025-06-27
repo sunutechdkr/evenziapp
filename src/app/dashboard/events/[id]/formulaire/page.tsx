@@ -66,6 +66,8 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [registrationMode, setRegistrationMode] = useState<RegistrationMode>('inevent');
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [loadingTickets, setLoadingTickets] = useState(false);
   
   // Configuration du formulaire avec react-hook-form et shadcn
   const form = useForm<RegistrationFormData>({
@@ -121,6 +123,7 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
     
     if (params.id) {
       fetchEvent();
+      fetchTickets();
     }
   }, [params.id]);
 
@@ -153,7 +156,23 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
   const handleRegistrationModeChange = (mode: RegistrationMode) => {
     setRegistrationMode(mode);
   };
-  
+
+  // Fonction pour récupérer les billets
+  const fetchTickets = async () => {
+    setLoadingTickets(true);
+    try {
+      const response = await fetch(`/api/events/${params.id}/tickets`);
+      if (response.ok) {
+        const data = await response.json();
+        setTickets(data.tickets || []);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des billets:', error);
+    } finally {
+      setLoadingTickets(false);
+    }
+  };
+
   // Afficher un état de chargement pendant la récupération des données
   if (isLoading) {
     return (
@@ -595,6 +614,57 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
                         )}
                       />
                       
+
+                      {/* Section de sélection de billet */}
+                      <div className="sm:col-span-2">
+                        <FormLabel>Choisir un billet <span className="text-red-500">*</span></FormLabel>
+                        {loadingTickets ? (
+                          <div className="flex items-center justify-center py-4">
+                            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-[#81B441]"></div>
+                            <span className="ml-2 text-sm text-gray-500">Chargement des billets...</span>
+                          </div>
+                        ) : tickets.length > 0 ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                            {tickets.filter(ticket => ticket.status === 'ACTIVE' && ticket.visibility === 'VISIBLE').map((ticket) => (
+                              <div
+                                key={ticket.id}
+                                className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
+                                  !previewMode ? 'opacity-60 cursor-not-allowed' : 'hover:border-[#81B441] hover:shadow-md'
+                                }`}
+                                onClick={() => previewMode && console.log('Billet sélectionné:', ticket.id)}
+                              >
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1">
+                                    <h4 className="font-semibold text-gray-900">{ticket.name}</h4>
+                                    {ticket.description && (
+                                      <p className="text-sm text-gray-600 mt-1">{ticket.description}</p>
+                                    )}
+                                    <div className="mt-2 flex items-center justify-between">
+                                      <span className="text-lg font-bold text-[#81B441]">
+                                        {ticket.price === 0 ? 'Gratuit' : `${ticket.price} ${ticket.currency || 'XOF'}`}
+                                      </span>
+                                      <span className="text-xs text-gray-500">
+                                        {ticket.quantity ? `${ticket.sold || 0}/${ticket.quantity}` : 'Illimité'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="ml-3">
+                                    <div className={`w-4 h-4 rounded-full border-2 ${!previewMode ? 'border-gray-300' : 'border-[#81B441]'}`}>
+                                      {/* Radio button simulation */}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <p className="text-sm text-gray-500">
+                              Aucun billet disponible pour cet événement.
+                            </p>
+                          </div>
+                        )}
+                      </div>
                       <FormField
                         control={form.control}
                         name="type"
