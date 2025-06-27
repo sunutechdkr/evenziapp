@@ -79,13 +79,25 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
   const [data, setData] = useState<EventAnalytics | null>(null);
   const [dateRange, setDateRange] = useState<DateRange>('7j');
   const [showFilters, setShowFilters] = useState(false);
+  const [eventId, setEventId] = useState<string>("");
+  
+  // Extraire l'ID de params au chargement
+  useEffect(() => {
+    const extractParams = async () => {
+      const { id } = await params;
+      setEventId(id);
+    };
+    extractParams();
+  }, [params]);
   
   useEffect(() => {
+    if (!eventId) return;
+    
     const fetchAnalytics = async () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`/api/events/${params.id}/analytics?period=${dateRange}`);
+        const response = await fetch(`/api/events/${eventId}/analytics?period=${dateRange}`);
         
         if (!response.ok) {
           const status = response.status;
@@ -98,8 +110,8 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
         
         const analyticsData = await response.json();
         setData(analyticsData);
-      } catch (error) {
-        console.error("Erreur:", error);
+      } catch (fetchError) {
+        console.error("Erreur:", fetchError);
         setError("Impossible de charger les données analytiques.");
       } finally {
         setLoading(false);
@@ -107,7 +119,7 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
     };
 
     fetchAnalytics();
-  }, [params.id, dateRange]);
+  }, [eventId, dateRange]);
 
   // Configuration du graphique des inscriptions par jour
   const registrationsChartData = {
@@ -190,7 +202,7 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `analytics-event-${params.id}-${dateRange}.csv`);
+    link.setAttribute("download", `analytics-event-${eventId}-${dateRange}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -201,15 +213,26 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
     ((data.registrations.checkedIn / Math.max(1, data.registrations.total)) * 100).toFixed(0) + '%' : 
     '0%';
 
+  if (!eventId) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#81B441] mx-auto"></div>
+          <p className="mt-4 text-gray-600">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-container">
-      <EventSidebar eventId={params.id} />
+      <EventSidebar eventId={eventId} />
       <div className="dashboard-content">
         <main className="dashboard-main">
           {/* En-tête avec bouton de retour et options */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-4">
             <div className="flex items-center">
-              <Link href={`/dashboard/events/${params.id}`} className="text-gray-600 hover:text-gray-900 mr-4">
+              <Link href={`/dashboard/events/${eventId}`} className="text-gray-600 hover:text-gray-900 mr-4">
                 <ArrowLeftIcon className="h-5 w-5" />
               </Link>
               <h1 className="text-2xl font-bold">Analytique de l&apos;événement</h1>
@@ -303,12 +326,13 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
                     // Retenter la requête
                     const fetchData = async () => {
                       try {
-                        const response = await fetch(`/api/events/${params.id}/analytics?period=${dateRange}`);
+                        const response = await fetch(`/api/events/${eventId}/analytics?period=${dateRange}`);
                         if (!response.ok) throw new Error("Impossible de charger les données");
                         const data = await response.json();
                         setData(data);
                         setError(null);
-                      } catch (error) {
+                      } catch (retryError) {
+                        console.error("Retry error:", retryError);
                         setError("Impossible de charger les données analytiques.");
                       } finally {
                         setLoading(false);
@@ -451,7 +475,7 @@ export default function EventAnalyticsPage({ params }: { params: Promise<{ id: s
               {/* Section Statistiques des Billets */}
               <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-4 text-gray-900">Statistiques des Billets</h2>
-                <TicketAnalytics eventId={params.id} />
+                <TicketAnalytics eventId={eventId} />
               </div>
             </div>
           )}

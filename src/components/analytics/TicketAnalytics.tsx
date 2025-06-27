@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   TicketIcon, 
   UserGroupIcon, 
-  ArrowArrowTrendingUpIcon, 
+  ArrowTrendingUpIcon, 
   ChartBarIcon,
   EyeIcon,
   EyeSlashIcon
@@ -39,8 +39,8 @@ type TicketAnalyticsProps = {
   eventId: string;
 };
 
-export default function TicketAnalytics({ eventId: _ }: TicketAnalyticsProps) {
-  // Données de démonstration
+export default function TicketAnalytics({ eventId }: TicketAnalyticsProps) {
+  // Données de démonstration pour l'événement
   const ticketStats: TicketStats[] = [
     {
       id: "1",
@@ -87,6 +87,9 @@ export default function TicketAnalytics({ eventId: _ }: TicketAnalyticsProps) {
       price: 0
     }
   ];
+
+  // Utiliser eventId pour filtrer les données si nécessaire
+  console.log(`Loading analytics for event: ${eventId}`);
 
   const totalTicketsSold = ticketStats.reduce((sum, ticket) => sum + ticket.totalSold, 0);
   const totalRevenue = ticketStats.reduce((sum, ticket) => sum + ticket.totalRevenue, 0);
@@ -239,7 +242,7 @@ export default function TicketAnalytics({ eventId: _ }: TicketAnalyticsProps) {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: { name: string; percent: number }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"

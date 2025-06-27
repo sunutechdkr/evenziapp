@@ -12,7 +12,7 @@ import {
   PencilIcon,
   TrashIcon,
   ChartBarIcon,
-  ArrowArrowTrendingUpIcon,
+  ArrowTrendingUpIcon,
   UserGroupIcon
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
