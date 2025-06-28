@@ -26,8 +26,44 @@ export default function AddParticipantPage({ params }: { params: Promise<{ id: s
     phone: '',
     jobTitle: '',
     company: '',
-    type: 'PARTICIPANT'
+    type: 'PARTICIPANT',
+    ticketId: ''
   });
+  const [tickets, setTickets] = useState([]);
+  const [loadingTickets, setLoadingTickets] = useState(false);
+
+
+  // Fonction pour récupérer les billets
+  const fetchTickets = async () => {
+    setLoadingTickets(true);
+    try {
+      const response = await fetch(`/api/events/${params.id}/tickets`);
+      if (response.ok) {
+        const data = await response.json();
+        const availableTickets = (data.tickets || []).filter(
+          ticket => ticket.status === 'ACTIVE' && ticket.visibility === 'VISIBLE'
+        );
+        setTickets(availableTickets);
+        
+        // Sélectionner automatiquement le premier billet disponible
+        if (availableTickets.length > 0) {
+          setParticipant(prev => ({
+            ...prev,
+            ticketId: availableTickets[0].id
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des billets:', error);
+    } finally {
+      setLoadingTickets(false);
+    }
+  };
+
+  // Charger les billets au montage du composant
+  useEffect(() => {
+    fetchTickets();
+  }, [params.id]);
 
   // Vérifier si le formulaire est valide
   const isFormValid = () => {
@@ -54,6 +90,11 @@ export default function AddParticipantPage({ params }: { params: Promise<{ id: s
 
     if (!participant.phone.trim()) {
       errors.phone = 'Le téléphone est requis';
+      isValid = false;
+    }
+
+    if (!participant.ticketId.trim()) {
+      errors.ticketId = 'Veuillez sélectionner un billet';
       isValid = false;
     }
 
@@ -102,6 +143,7 @@ export default function AddParticipantPage({ params }: { params: Promise<{ id: s
         jobTitle: participant.jobTitle,
         company: participant.company,
         type: participant.type,
+        ticketId: participant.ticketId,
       };
       
       // Appeler l&apos;API pour créer un participant
@@ -149,7 +191,8 @@ export default function AddParticipantPage({ params }: { params: Promise<{ id: s
       phone: '',
       jobTitle: '',
       company: '',
-      type: 'PARTICIPANT'
+      type: 'PARTICIPANT',
+      ticketId: ''
     });
     setFieldErrors({});
     setFormStatus('idle');

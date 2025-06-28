@@ -71,24 +71,24 @@ export async function GET(
     
     // Si un userEmail est spécifié, retourner seulement l'enregistrement de cet utilisateur
     if (userEmail) {
-      const userRegistration = await prisma.$queryRaw`
-        SELECT 
-          id, 
-          first_name as "firstName", 
-          last_name as "lastName", 
-          email, 
-          phone, 
-          type, 
-          job_title as "jobTitle",
-          company,
-          event_id as "eventId", 
-          qr_code as "qrCode", 
-          short_code as "shortCode",
-          created_at as "createdAt",
-          updated_at as "updatedAt",
-          checked_in as "checkedIn", 
-          check_in_time as "checkInTime"
-        FROM registrations
+      const userRegistration = await prisma.$queryRaw`      SELECT 
+        id, 
+        first_name as "firstName", 
+        last_name as "lastName", 
+        email, 
+        phone, 
+        type, 
+        job_title as "jobTitle",
+        company,
+        event_id as "eventId", 
+        ticket_id as "ticketId",
+        qr_code as "qrCode", 
+        short_code as "shortCode",
+        created_at as "createdAt",
+        updated_at as "updatedAt",
+        checked_in as "checkedIn", 
+        check_in_time as "checkInTime"
+      FROM registrations
         WHERE event_id = ${id} AND email = ${userEmail}
         LIMIT 1
       `;
@@ -106,8 +106,7 @@ export async function GET(
     }
     
     // Get registrations for the event with SQL query to ensure all fields are included
-    const registrations = await prisma.$queryRaw`
-      SELECT 
+    const registrations = await prisma.$queryRaw`      SELECT 
         id, 
         first_name as "firstName", 
         last_name as "lastName", 
@@ -117,6 +116,7 @@ export async function GET(
         job_title as "jobTitle",
         company,
         event_id as "eventId", 
+        ticket_id as "ticketId",
         qr_code as "qrCode", 
         short_code as "shortCode",
         created_at as "createdAt",
@@ -180,8 +180,36 @@ export async function POST(
     }
     
     // Parse request body
-    const { firstName, lastName, email, phone, jobTitle, company, type } = await request.json();
+    const { firstName, lastName, email, phone, jobTitle, company, type, ticketId } = await request.json();
     
+
+    // If ticketId is provided, validate the ticket
+    if (ticketId) {
+      const ticket = await prisma.ticket.findFirst({
+        where: {
+          id: ticketId,
+          eventId: id,
+          status: 'ACTIVE',
+          visibility: 'VISIBLE'
+        }
+      });
+
+      if (!ticket) {
+        return NextResponse.json(
+          { message: "Billet non valide ou non disponible" },
+          { status: 400 }
+        );
+      }
+
+      // Check if ticket has reached its limit
+      if (ticket.quantity && ticket.sold >= ticket.quantity) {
+        return NextResponse.json(
+          { message: "Ce billet n'est plus disponible" },
+          { status: 400 }
+        );
+      }
+    }
+
     // Validate required fields
     if (!firstName || !lastName || !email || !phone) {
       return NextResponse.json(

@@ -7,7 +7,7 @@ import { sendRegistrationConfirmationEmail } from "@/lib/registrationEmail";
 export async function POST(request: Request) {
   try {
     // Parse request body
-    const { firstName, lastName, email, phone, jobTitle, company, type, eventId } = await request.json();
+    const { firstName, lastName, email, phone, jobTitle, company, type, eventId, ticketId } = await request.json();
     
     // Validate required fields
     if (!firstName || !lastName || !email || !eventId) {
@@ -29,6 +29,34 @@ export async function POST(request: Request) {
       );
     }
     
+
+    // If ticketId is provided, validate the ticket
+    if (ticketId) {
+      const ticket = await prisma.ticket.findFirst({
+        where: {
+          id: ticketId,
+          eventId: eventId,
+          status: 'ACTIVE',
+          visibility: 'VISIBLE'
+        }
+      });
+
+      if (!ticket) {
+        return NextResponse.json(
+          { message: "Billet non valide ou non disponible" },
+          { status: 400 }
+        );
+      }
+
+      // Check if ticket has reached its limit
+      if (ticket.quantity && ticket.sold >= ticket.quantity) {
+        return NextResponse.json(
+          { message: "Ce billet n'est plus disponible" },
+          { status: 400 }
+        );
+      }
+    }
+
     // Check if email is already registered for this event
     const existingRegistration = await prisma.registration.findFirst({
       where: {
@@ -79,8 +107,21 @@ export async function POST(request: Request) {
         qrCode,
         shortCode,
         eventId,
+        ticketId: ticketId || null,
       },
     });
+
+    // If a ticket was selected, increment the sold count
+    if (ticketId) {
+      await prisma.ticket.update({
+        where: { id: ticketId },
+        data: {
+          sold: {
+            increment: 1
+          }
+        }
+      });
+    }
 
     // Envoyer l'email de confirmation d'inscription
     try {

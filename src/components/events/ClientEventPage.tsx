@@ -46,12 +46,28 @@ const registrationSchema = z.object({
   company: z.string()
     .max(100, 'Le nom de l\'entreprise ne peut pas dépasser 100 caractères')
     .optional(),
+  ticketId: z.string({
+    required_error: 'Veuillez sélectionner un billet',
+  }),
   gdprConsent: z.boolean().refine(val => val === true, {
     message: 'Vous devez accepter les conditions pour vous inscrire',
   }),
 });
 
 type RegistrationFormData = z.infer<typeof registrationSchema>;
+
+
+interface Ticket {
+  id: string;
+  name: string;
+  description?: string | null;
+  price: number;
+  currency: string;
+  quantity?: number | null;
+  sold: number;
+  status: string;
+  visibility: string;
+}
 
 interface Event {
   id: string;
@@ -74,6 +90,9 @@ export default function ClientEventPage({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [loadingTickets, setLoadingTickets] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<string>('');
   const [registrationData, setRegistrationData] = useState<{
     registrationId?: string;
     eventSlug?: string;
@@ -89,9 +108,41 @@ export default function ClientEventPage({
       phone: "",
       jobTitle: "",
       company: "",
+      ticketId: "",
       gdprConsent: false,
     },
   });
+
+
+  // Fonction pour récupérer les billets
+  const fetchTickets = async () => {
+    setLoadingTickets(true);
+    try {
+      const response = await fetch(`/api/events/${event.id}/tickets`);
+      if (response.ok) {
+        const data = await response.json();
+        const availableTickets = (data.tickets || []).filter(
+          (ticket: Ticket) => ticket.status === 'ACTIVE' && ticket.visibility === 'VISIBLE'
+        );
+        setTickets(availableTickets);
+        
+        // Sélectionner automatiquement le premier billet disponible
+        if (availableTickets.length > 0) {
+          setSelectedTicket(availableTickets[0].id);
+          form.setValue('ticketId', availableTickets[0].id);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des billets:', error);
+    } finally {
+      setLoadingTickets(false);
+    }
+  };
+
+  // Charger les billets au montage du composant
+  useEffect(() => {
+    fetchTickets();
+  }, [event.id]);
 
   const onSubmit = async (data: RegistrationFormData) => {
     setIsSubmitting(true);
@@ -106,6 +157,7 @@ export default function ClientEventPage({
         body: JSON.stringify({
           ...data,
           eventId: event.id,
+          ticketId: data.ticketId,
           type: 'PARTICIPANT', // Type de participant toujours PARTICIPANT par défaut
         }),
       });
