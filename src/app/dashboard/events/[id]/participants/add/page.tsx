@@ -37,7 +37,7 @@ export default function AddParticipantPage({ params }: { params: Promise<{ id: s
   const fetchTickets = async () => {
     setLoadingTickets(true);
     try {
-      const response = await fetch(`/api/events/${params.id}/tickets`);
+      const response = await fetch(`/api/public/events/${params.id}/tickets`);
       if (response.ok) {
         const data = await response.json();
         const availableTickets = (data.tickets || []).filter(

@@ -13,6 +13,8 @@ const publicRoutes = [
   '/auth/auto-login',
   '/event',
   '/api/register',
+  '/api/events/slug', // API pour récupérer les événements par slug
+  '/api/public/events', // API publique pour les billets
   '/privacy-policy'
 ];
 
@@ -115,7 +117,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check rate limit
-  const ip = request.ip || 'unknown';
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
   const now = Date.now();
   const windowMs = 15 * 60 * 1000; // 15 minutes
   const maxRequests = 100;
