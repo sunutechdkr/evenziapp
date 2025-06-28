@@ -8,7 +8,7 @@ import { generateShortCode } from "@/lib/shortcodes";
 // GET /api/events/[id]/registrations - Get registrations for an event
 export async function GET(
   request: Request, 
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   // Check for authentication
   const session = await getServerSession(authOptions);
@@ -20,7 +20,7 @@ export async function GET(
     );
   }
   
-  const { id } = context.params;
+  const { id } = await context.params;
   const url = new URL(request.url);
   const userEmail = url.searchParams.get('userEmail');
   
@@ -71,25 +71,31 @@ export async function GET(
     
     // Si un userEmail est spécifié, retourner seulement l'enregistrement de cet utilisateur
     if (userEmail) {
-      const userRegistration = await prisma.$queryRaw`      SELECT 
-        id, 
-        first_name as "firstName", 
-        last_name as "lastName", 
-        email, 
-        phone, 
-        type, 
-        job_title as "jobTitle",
-        company,
-        event_id as "eventId", 
-        ticket_id as "ticketId",
-        qr_code as "qrCode", 
-        short_code as "shortCode",
-        created_at as "createdAt",
-        updated_at as "updatedAt",
-        checked_in as "checkedIn", 
-        check_in_time as "checkInTime"
-      FROM registrations
-        WHERE event_id = ${id} AND email = ${userEmail}
+      const userRegistration = await prisma.$queryRaw`      
+        SELECT 
+          r.id, 
+          r.first_name as "firstName", 
+          r.last_name as "lastName", 
+          r.email, 
+          r.phone, 
+          r.type, 
+          r.job_title as "jobTitle",
+          r.company,
+          r.event_id as "eventId", 
+          r.ticket_id as "ticketId",
+          r.qr_code as "qrCode", 
+          r.short_code as "shortCode",
+          r.created_at as "createdAt",
+          r.updated_at as "updatedAt",
+          r.checked_in as "checkedIn", 
+          r.check_in_time as "checkInTime",
+          t.id as "ticket_id",
+          t.name as "ticket_name",
+          t.price as "ticket_price",
+          t.currency as "ticket_currency"
+        FROM registrations r
+        LEFT JOIN tickets t ON r.ticket_id = t.id
+        WHERE r.event_id = ${id} AND r.email = ${userEmail}
         LIMIT 1
       `;
       
@@ -106,26 +112,32 @@ export async function GET(
     }
     
     // Get registrations for the event with SQL query to ensure all fields are included
-    const registrations = await prisma.$queryRaw`      SELECT 
-        id, 
-        first_name as "firstName", 
-        last_name as "lastName", 
-        email, 
-        phone, 
-        type, 
-        job_title as "jobTitle",
-        company,
-        event_id as "eventId", 
-        ticket_id as "ticketId",
-        qr_code as "qrCode", 
-        short_code as "shortCode",
-        created_at as "createdAt",
-        updated_at as "updatedAt",
-        checked_in as "checkedIn", 
-        check_in_time as "checkInTime"
-      FROM registrations
-      WHERE event_id = ${id}
-      ORDER BY created_at DESC
+    const registrations = await prisma.$queryRaw`      
+      SELECT 
+        r.id, 
+        r.first_name as "firstName", 
+        r.last_name as "lastName", 
+        r.email, 
+        r.phone, 
+        r.type, 
+        r.job_title as "jobTitle",
+        r.company,
+        r.event_id as "eventId", 
+        r.ticket_id as "ticketId",
+        r.qr_code as "qrCode", 
+        r.short_code as "shortCode",
+        r.created_at as "createdAt",
+        r.updated_at as "updatedAt",
+        r.checked_in as "checkedIn", 
+        r.check_in_time as "checkInTime",
+        t.id as "ticket_id",
+        t.name as "ticket_name",
+        t.price as "ticket_price",
+        t.currency as "ticket_currency"
+      FROM registrations r
+      LEFT JOIN tickets t ON r.ticket_id = t.id
+      WHERE r.event_id = ${id}
+      ORDER BY r.created_at DESC
     `;
     
     return NextResponse.json({
@@ -144,7 +156,7 @@ export async function GET(
 // POST /api/events/[id]/registrations - Create a new registration
 export async function POST(
   request: Request, 
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   // Check for authentication
   const session = await getServerSession(authOptions);
@@ -156,7 +168,7 @@ export async function POST(
     );
   }
   
-  const { id } = context.params;
+  const { id } = await context.params;
   
   try {
     // Check if the event exists using raw SQL query
@@ -257,6 +269,7 @@ export async function POST(
         qr_code, 
         short_code, 
         event_id, 
+        ticket_id,
         created_at, 
         updated_at, 
         checked_in
@@ -273,11 +286,20 @@ export async function POST(
         ${qrCode}, 
         ${shortCode}, 
         ${id}, 
+        ${ticketId || null},
         NOW(), 
         NOW(),
         false
       )
     `;
+
+    // If ticketId is provided, increment the sold count
+    if (ticketId) {
+      await prisma.ticket.update({
+        where: { id: ticketId },
+        data: { sold: { increment: 1 } }
+      });
+    }
     
     // Récupérer l'enregistrement nouvellement créé
     const newRegistration = await prisma.$queryRaw`
