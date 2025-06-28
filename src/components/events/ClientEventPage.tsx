@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -247,64 +247,66 @@ export default function ClientEventPage({
                 <p className="text-lg text-gray-700">
                   Félicitations ! Vous êtes maintenant inscrit(e) à
                 </p>
-                <div className="bg-[#81B441] bg-opacity-10 rounded-lg p-4 border border-[#81B441] border-opacity-20">
-                  <h3 className="text-xl font-bold text-[#81B441] mb-2">{event.name}</h3>
-                  <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center">
-                      <CalendarIcon className="w-4 h-4 mr-1 text-[#81B441]" />
-                      {formatEventDate(event.startDate, event.endDate, event.startTime)}
-                    </div>
-                    <div className="flex items-center">
-                      <MapPinIcon className="w-4 h-4 mr-1 text-[#81B441]" />
-                      {event.location}
+                
+                {/* Bloc unique regroupant toutes les informations */}
+                <div className="bg-gradient-to-br from-[#81B441]/10 to-[#6a9636]/5 rounded-xl p-6 border border-[#81B441]/20 space-y-4">
+                  {/* Informations de l'événement */}
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-[#81B441] mb-3">{event.name}</h3>
+                    <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-4">
+                      <div className="flex items-center">
+                        <CalendarIcon className="w-4 h-4 mr-1 text-[#81B441]" />
+                        {formatEventDate(event.startDate, event.endDate, event.startTime)}
+                      </div>
+                      <div className="flex items-center">
+                        <MapPinIcon className="w-4 h-4 mr-1 text-[#81B441]" />
+                        {event.location}
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <h4 className="font-semibold text-blue-900 mb-2">📧 Vérifiez votre email</h4>
-                  <p className="text-blue-800 text-sm">
-                    Un email de confirmation avec votre badge QR et toutes les informations importantes 
-                    a été envoyé à <span className="font-semibold">{form.getValues().email}</span>.
-                  </p>
-                  <p className="text-blue-700 text-xs mt-2">
-                    N&apos;oubliez pas de vérifier vos spams si vous ne le trouvez pas dans votre boîte de réception.
-                  </p>
-                </div>
-                
-                {registrationData?.registrationId && (
-                  <div className="bg-gray-50 rounded-lg p-4 border">
-                    <h4 className="font-semibold text-gray-800 mb-2">📋 Votre référence d&apos;inscription</h4>
-                    <code className="bg-white px-3 py-1 rounded border text-sm font-mono text-gray-700">
-                      {registrationData.registrationId}
-                    </code>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Conservez cette référence pour toute correspondance future
+                  
+                  {/* Informations email */}
+                  <div className="bg-blue-50/80 rounded-lg p-4 border border-blue-200/50">
+                    <h4 className="font-semibold text-blue-900 mb-2 flex items-center">
+                      <span className="mr-2">📧</span> Vérifiez votre email
+                    </h4>
+                    <p className="text-blue-800 text-sm mb-2">
+                      Un email de confirmation avec votre badge QR et toutes les informations importantes 
+                      a été envoyé à <span className="font-semibold">{form.getValues().email}</span>.
+                    </p>
+                    <p className="text-blue-700 text-xs">
+                      N&apos;oubliez pas de vérifier vos spams si vous ne le trouvez pas dans votre boîte de réception.
                     </p>
                   </div>
-                )}
+                  
+                  {/* Référence d'inscription */}
+                  {registrationData?.registrationId && (
+                    <div className="bg-gray-50/80 rounded-lg p-4 border border-gray-200/50">
+                      <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                        <span className="mr-2">📋</span> Votre référence d&apos;inscription
+                      </h4>
+                      <div className="text-center">
+                        <code className="bg-white px-4 py-2 rounded border text-sm font-mono text-gray-700 inline-block">
+                          {registrationData.registrationId}
+                        </code>
+                        <p className="text-xs text-gray-600 mt-2">
+                          Conservez cette référence pour toute correspondance future
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button 
-                  onClick={() => window.location.href = '/'}
-                  variant="outline"
-                  className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
-                >
-                  Retour à l&apos;accueil
-                </Button>
+              <div className="flex justify-center">
                 <Button 
                   onClick={() => {
-                    // Si possible, retour à la page précédente, sinon vers l'accueil
-                    if (window.history.length > 1) {
-                      window.history.back();
-                    } else {
-                      window.location.href = '/';
-                    }
+                    // Rediriger vers la page d'aperçu de l'événement
+                    window.location.href = `/event/${event.slug}`;
                   }}
-                  className="bg-[#81B441] hover:bg-[#729939] text-white"
+                  className="bg-[#81B441] hover:bg-[#729939] text-white px-8 py-3 text-lg font-semibold"
                 >
-                  Terminer
+                  Voir l&apos;événement
                 </Button>
               </div>
             </CardContent>
