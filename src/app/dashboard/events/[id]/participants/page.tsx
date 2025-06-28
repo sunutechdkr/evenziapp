@@ -71,13 +71,24 @@ type Participant = {
   phone: string;
   jobTitle?: string; // Fonction
   company?: string;  // Nom de l'entreprise
-  type: 'PARTICIPANT' | 'EXHIBITOR' | 'SPEAKER';
+  type: 'PARTICIPANT',
+    ticketId: '' | 'EXHIBITOR' | 'SPEAKER';
   registrationDate: Date;
   checkedIn: boolean;
   checkinTime?: Date | null;
   checkedInAt?: string;
   shortCode?: string;
   qrCode?: string;
+        ticket_id?: string;
+        ticket_name?: string;
+        ticket_price?: number;
+        ticket_currency?: string;
+  ticket?: {
+    id: string;
+    name: string;
+    price: number;
+    currency: string;
+  };
 };
 
 // Type d'événement
@@ -89,6 +100,19 @@ type Event = {
   location: string;
   banner?: string;
   slug?: string; // Ajouter le slug à l'interface Event
+};
+
+// Type de billet
+type Ticket = {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  currency: string;
+  quantity?: number;
+  sold: number;
+  status: string;
+  visibility: string;
 };
 
 export default function EventParticipantsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -120,6 +144,10 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
   const [showEditModal, setShowEditModal] = useState(false);
   const [participantToEdit, setParticipantToEdit] = useState<Participant | null>(null);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
+  // États pour la gestion des billets
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [loadingTickets, setLoadingTickets] = useState(false);
+  
   const [newParticipant, setNewParticipant] = useState({
     firstName: '',
     lastName: '',
@@ -233,7 +261,13 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
         checkedIn: reg.checkedIn,
         checkinTime: reg.checkInTime ? new Date(reg.checkInTime) : undefined,
         shortCode: reg.shortCode,
-        qrCode: reg.qrCode
+        qrCode: reg.qrCode,
+        ticket: reg.ticket_id ? {
+          id: reg.ticket_id,
+          name: reg.ticket_name || 'Billet',
+          price: reg.ticket_price || 0,
+          currency: reg.ticket_currency || 'XOF'
+        } : undefined
       }));
       
       console.log("Participants mappés:", mappedParticipants.length);
@@ -586,6 +620,7 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
       jobTitle: newParticipant.jobTitle,
       company: newParticipant.company,
           type: newParticipant.type,
+          ticketId: newParticipant.ticketId,
         })
       );
       
