@@ -71,14 +71,32 @@ type Participant = {
   phone: string;
   jobTitle?: string; // Fonction
   company?: string;  // Nom de l'entreprise
-  type: 'PARTICIPANT',
-    ticketId: '' | 'EXHIBITOR' | 'SPEAKER';
+  type: 'PARTICIPANT' | 'EXHIBITOR' | 'SPEAKER';
   registrationDate: Date;
   checkedIn: boolean;
   checkinTime?: Date | null;
   checkedInAt?: string;
   shortCode?: string;
   qrCode?: string;
+  ticket?: {
+    id: string;
+    name: string;
+    price: number;
+    currency: string;
+  };
+};
+
+// Type de billet
+type Ticket = {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  currency: string;
+  quantity?: number;
+  sold: number;
+  status: string;
+  visibility: string;
 };
 
 // Type d'événement
@@ -121,6 +139,9 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
   const [showEditModal, setShowEditModal] = useState(false);
   const [participantToEdit, setParticipantToEdit] = useState<Participant | null>(null);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [loadingTickets, setLoadingTickets] = useState(false);
+  
   const [newParticipant, setNewParticipant] = useState({
     firstName: '',
     lastName: '',
@@ -2184,7 +2205,39 @@ const handleCancelCheckIn = async () => {
                         />
                       </div>
                     </div>
-                    
+              <div className="form-field-animation">
+                <label htmlFor="ticketId" className="text-xs font-medium text-gray-700 mb-1 block">
+                  Billet <span className="text-red-500">*</span>
+                </label>
+                {loadingTickets ? (
+                  <div className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-sm bg-gray-50 flex items-center justify-center">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#81B441] border-t-transparent mr-2"></div>
+                    Chargement des billets...
+                  </div>
+                ) : tickets.length > 0 ? (
+                  <select
+                    id="ticketId"
+                    name="ticketId"
+                    required
+                    value={newParticipant.ticketId}
+                    onChange={handleInputChange}
+                    className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-sm focus:border-[#81B441] focus:outline-none focus:ring-[#81B441]"
+                  >
+                    <option value="">Sélectionner un billet</option>
+                    {tickets.map((ticket) => (
+                      <option key={ticket.id} value={ticket.id}>
+                        {ticket.name} - {ticket.price > 0 ? `${ticket.price} ${ticket.currency}` : 'Gratuit'}
+                        {ticket.quantity && ` (${ticket.quantity - ticket.sold} disponibles)`}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <div className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-sm bg-gray-50 text-gray-500">
+                    Aucun billet disponible
+                  </div>
+                )}
+              </div>
+              
               <div className="form-field-animation">
                 <label htmlFor="type" className="text-xs font-medium text-gray-700 mb-1 block">
                   Type de participant <span className="text-red-500">*</span>
