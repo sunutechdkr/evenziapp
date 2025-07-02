@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(
   request: Request,
-  context: { params: { id: string; registrationId: string } }
+  { params }: { params: Promise<{ id: string; registrationId: string }> }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
@@ -21,7 +21,7 @@ export async function POST(
   }
   
   try {
-    const { id: eventId, registrationId } = context.params;
+    const { id: eventId, registrationId } = await params;
     
     console.log(`API de check-in: eventId=${eventId}, registrationId=${registrationId}`);
     

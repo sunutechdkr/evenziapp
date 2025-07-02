@@ -25,7 +25,7 @@ interface SessionData {
 // GET /api/events/[id]/export/sessions - Exporter les sessions au format Excel
 export async function GET(
   request: Request, 
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
@@ -37,7 +37,7 @@ export async function GET(
     );
   }
   
-  const { id } = context.params;
+  const { id } = await params;
   
   try {
     // Vérifier si l'événement existe

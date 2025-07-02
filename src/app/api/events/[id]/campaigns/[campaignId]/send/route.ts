@@ -9,10 +9,10 @@ export const dynamic = 'force-dynamic';
 // POST - Envoyer une campagne email
 export async function POST(
   request: NextRequest,
-  context: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
-    const { id, campaignId } = context.params;
+    const { id, campaignId } = await params;
     
     const session = await getServerSession(authOptions);
     
@@ -193,7 +193,7 @@ export async function POST(
     
     // Marquer la campagne comme échouée
     await prisma.emailCampaign.update({
-      where: { id: context.params.campaignId },
+      where: { id: (await params).campaignId },
       data: { status: 'FAILED' },
     });
 

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 // GET: Récupère les détails d'un rendez-vous spécifique
 export async function GET(
   _request: NextRequest,
-  context: { params: { id: string; appointmentId: string } }
+  { params }: { params: Promise<{ id: string; appointmentId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -68,7 +68,7 @@ export async function GET(
 // PUT: Mise à jour d'un rendez-vous (accepter, refuser, terminer)
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string; appointmentId: string } }
+  { params }: { params: Promise<{ id: string; appointmentId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -166,7 +166,7 @@ export async function PUT(
 // DELETE: Supprime un rendez-vous
 export async function DELETE(
   _request: NextRequest,
-  context: { params: { id: string; appointmentId: string } }
+  { params }: { params: Promise<{ id: string; appointmentId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);

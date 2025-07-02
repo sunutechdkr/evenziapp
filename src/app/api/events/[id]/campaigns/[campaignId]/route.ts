@@ -6,10 +6,10 @@ import { prisma } from '@/lib/prisma';
 // GET - Récupérer une campagne spécifique
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
-    const { id, campaignId } = context.params;
+    const { id, campaignId } = await params;
     
     const session = await getServerSession(authOptions);
     
@@ -60,10 +60,10 @@ export async function GET(
 // PUT - Mettre à jour une campagne
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
-    const { id, campaignId } = context.params;
+    const { id, campaignId } = await params;
     
     const session = await getServerSession(authOptions);
     
@@ -145,10 +145,10 @@ export async function PUT(
 // DELETE - Supprimer une campagne
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string; campaignId: string } }
+  { params }: { params: Promise<{ id: string; campaignId: string }> }
 ) {
   try {
-    const { id, campaignId } = context.params;
+    const { id, campaignId } = await params;
     
     const session = await getServerSession(authOptions);
     

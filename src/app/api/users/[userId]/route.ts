@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 // Récupère les détails d'un utilisateur par son ID (admin uniquement)
 export async function GET(
   request: Request,
-  context: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Vérifier l'authentification et les autorisations
@@ -60,7 +60,7 @@ export async function GET(
 // Met à jour un utilisateur existant (admin uniquement)
 export async function PUT(
   request: Request,
-  context: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Vérifier l'authentification et les autorisations
@@ -167,7 +167,7 @@ export async function PUT(
 // Supprime un utilisateur (admin uniquement)
 export async function DELETE(
   request: Request,
-  context: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Vérifier l'authentification et les autorisations

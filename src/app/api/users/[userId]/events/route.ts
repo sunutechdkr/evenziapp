@@ -6,10 +6,10 @@ import { UserRole } from '@/types/models';
 
 export async function GET(
   request: NextRequest,
-  context: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
-    const { userId } = context.params;
+    const { userId } = await params;
     
     // Vérifier l'authentification et les autorisations
     const session = await getServerSession(authOptions);

@@ -3,14 +3,14 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: Request,
-  context: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   // Autoriser l'accès sans authentification pour cette route
   // car elle est utilisée par la page de check-in publique
   
   try {
     // Accéder au slug de manière sûre, en s'assurant que c'est bien une chaîne
-    const { slug } = context.params;
+    const { slug } = await params;
     
     if (!slug) {
       return NextResponse.json(

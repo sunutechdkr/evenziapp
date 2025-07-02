@@ -5,11 +5,11 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Accéder à l'ID de l'événement de manière sûre
-    const { id } = context.params;
+    const { id } = await params;
     
     // Si l'ID est manquant, retourner une erreur
     if (!id) {
@@ -90,7 +90,7 @@ export async function GET(
 // PUT /api/events/[id] - Mettre à jour un événement
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // 1. Vérifier l'authentification
@@ -104,7 +104,7 @@ export async function PUT(
     }
 
     // 2. Récupérer l'ID de l'événement
-    const { id } = context.params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(
@@ -251,7 +251,7 @@ export async function PUT(
 // DELETE /api/events/[id] - Supprimer un événement
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Vérifier l'authentification
@@ -264,7 +264,7 @@ export async function DELETE(
       );
     }
 
-    const { id } = context.params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(

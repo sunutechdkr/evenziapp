@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Vérifier l'authentification
@@ -18,7 +18,7 @@ export async function GET(
       );
     }
 
-    const { id } = context.params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(

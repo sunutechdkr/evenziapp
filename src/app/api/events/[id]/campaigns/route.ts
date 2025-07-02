@@ -6,10 +6,10 @@ import { prisma } from '@/lib/prisma';
 // GET - Récupérer toutes les campagnes d'un événement
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
     
     const session = await getServerSession(authOptions);
     
@@ -53,10 +53,10 @@ export async function GET(
 // POST - Créer une nouvelle campagne
 export async function POST(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
     
     const session = await getServerSession(authOptions);
     

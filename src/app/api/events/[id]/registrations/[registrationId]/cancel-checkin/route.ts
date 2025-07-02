@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export async function POST(
   request: Request,
-  context: { params: { id: string; registrationId: string } }
+  { params }: { params: Promise<{ id: string; registrationId: string }> }
 ) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);

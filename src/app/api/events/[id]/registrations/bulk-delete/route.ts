@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth";
 // POST /api/events/[id]/registrations/bulk-delete - Supprimer plusieurs participants
 export async function POST(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Vérifier l'authentification
@@ -18,7 +18,7 @@ export async function POST(
       );
     }
 
-    const { id: eventId } = context.params;
+    const { id: eventId } = await params;
     const { participantIds } = await request.json();
 
     // Valider les données

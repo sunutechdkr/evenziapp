@@ -31,10 +31,10 @@ interface SessionParticipantWithInfo {
 // Récupère tous les participants d'une session
 export async function GET(
   request: Request,
-  context: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
-    const { id, sessionId } = context.params;
+    const { id, sessionId } = await params;
 
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
@@ -115,7 +115,7 @@ export async function GET(
 // Ajouter un participant à une session
 export async function POST(
   request: Request,
-  context: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -126,7 +126,7 @@ export async function POST(
       );
     }
 
-    const { id, sessionId } = context.params;
+    const { id, sessionId } = await params;
     const { participantId } = await request.json();
 
     if (!participantId) {
@@ -215,7 +215,7 @@ export async function POST(
 // Supprimer un participant d'une session
 export async function DELETE(
   request: Request,
-  context: { params: { id: string; sessionId: string } }
+  { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
