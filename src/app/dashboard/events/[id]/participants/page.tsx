@@ -2088,7 +2088,7 @@ const handleCancelCheckIn = async () => {
                 </div>
                   </div>
                       </div>
-                    </div>
+                        </div>
                   
                   {/* Informations du billet */}
                   {selectedParticipant.ticket && (
@@ -2110,9 +2110,9 @@ const handleCancelCheckIn = async () => {
                               </p>
                             </div>
                             <TicketIcon className="h-5 w-5 text-[#81B441]" />
-                          </div>
                         </div>
                       </div>
+                    </div>
                     </>
                   )}
                     
@@ -2272,8 +2272,8 @@ const handleCancelCheckIn = async () => {
                           <option value="PARTICIPANT">Participant</option>
                           <option value="SPEAKER">Intervenant</option>
                         </select>
-                      </div>
-                  
+                </div>
+                
                   {/* Sélection du billet */}
                   <div className="mb-4">
                     <label htmlFor="ticketId" className="block text-sm font-medium text-gray-700 mb-1">
@@ -2282,7 +2282,7 @@ const handleCancelCheckIn = async () => {
                     {loadingTickets ? (
                       <div className="h-10 flex items-center justify-center border border-gray-300 rounded-md">
                         <span className="text-sm text-gray-500">Chargement des billets...</span>
-                      </div>
+                </div>
                     ) : tickets.length > 0 ? (
                       <select
                         id="ticketId"
@@ -2305,9 +2305,9 @@ const handleCancelCheckIn = async () => {
                         <span className="text-sm text-gray-500">Aucun billet disponible</span>
                       </div>
                     )}
-                  </div>
-                </div>
-                
+                    </div>
+                    </div>
+                    
             <DialogFooter className="mt-6">
               <Button type="button" variant="outline" onClick={closeAddModal}>
                     Annuler
@@ -2334,8 +2334,8 @@ const handleCancelCheckIn = async () => {
               {participantToDelete && (
                 <p className="text-gray-600">
                   Êtes-vous sûr de vouloir supprimer définitivement le participant <strong>{participantToDelete.firstName} {participantToDelete.lastName}</strong> ?
-                </p>
-              )}
+                          </p>
+                        )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 justify-end">
