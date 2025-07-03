@@ -327,9 +327,6 @@ export default function EventApercuPage() {
                 console.log(`Session ${session.title} - ${speakersWithAvatars.length} intervenants trouvés:`, speakersWithAvatars);
               }
               
-              // Pour le nombre de participants, utiliser la valeur retournée par l'API
-              const participantCount = session.participantCount || 0;
-              
               return {
                 id: session.id,
                 title: session.title,
@@ -339,7 +336,7 @@ export default function EventApercuPage() {
                 location: session.location,
                 speakers: speakersWithAvatars.length > 0 ? speakersWithAvatars : undefined,
                 day: formattedDay,
-                participantCount: participantCount
+                participantCount: session.participantCount || 0
               };
             });
             

@@ -89,7 +89,6 @@ export async function GET(
 
     // Enrichir les sessions avec les informations complètes des intervenants
     const enrichedSessions = await Promise.all(Array.from(sessions as any[]).map(async (session: any) => {
-      let speakerInfo: string | Speaker | Speaker[] = session.speaker;
       let sessionSpeakers: Speaker[] = [];
 
       // Si le champ speaker n'est pas vide, traiter les différents formats
