@@ -71,77 +71,139 @@ export async function GET(
         id, 
         first_name as "firstName", 
         last_name as "lastName", 
-        type
+        email,
+        job_title as "jobTitle",
+        company,
+        type,
+        checked_in as "checkedIn",
+        avatar
       FROM registrations
       WHERE event_id = ${id} AND type = 'SPEAKER'
     `;
 
-    // Transformer les données des sessions pour enrichir les informations des intervenants
+    // Créer un map des intervenants pour un accès rapide
+    const speakerMap = new Map();
+    (registrations as any[]).forEach((speaker: any) => {
+      speakerMap.set(speaker.id, speaker);
+    });
+
+    // Enrichir les sessions avec les informations complètes des intervenants
     const enrichedSessions = await Promise.all(Array.from(sessions as any[]).map(async (session: any) => {
       let speakerInfo: string | Speaker | Speaker[] = session.speaker;
-      
-      // Si le speaker est un ID, essayer de le convertir en objet avec firstName et lastName
-      if (session.speaker && typeof session.speaker === 'string') {
-        // Essayer de détecter si c'est un UUID (format d'ID typique)
-        if (session.speaker.includes('-') && !session.speaker.includes(',') && !session.speaker.includes('{')) {
-          // Chercher l'intervenant correspondant dans les inscriptions
-          const speakerMatch = Array.from(registrations as any[]).find((reg: any) => reg.id === session.speaker);
-          
-          if (speakerMatch) {
-            // Remplacer l'ID par un objet formaté avec firstName et lastName
-            speakerInfo = {
-              id: speakerMatch.id,
-              firstName: speakerMatch.firstName,
-              lastName: speakerMatch.lastName
-            };
-          } else {
-            // Si pas trouvé, créer un nom générique pour éviter d'afficher l'ID
-            speakerInfo = {
-              id: session.speaker,
-              firstName: `Intervenant`,
-              lastName: `${session.speaker.substring(0, 5)}`
-            };
-          }
-        }
+      let sessionSpeakers: Speaker[] = [];
+
+      // Si le champ speaker n'est pas vide, traiter les différents formats
+      if (session.speaker) {
+        console.log(`Processing speaker field for session ${session.title}:`, session.speaker);
         
-        // Si le champ contient une virgule, c'est probablement une liste de noms
+        // Si c'est déjà un tableau d'objets Speaker
+        if (Array.isArray(session.speaker)) {
+          sessionSpeakers = session.speaker.map((speaker: any) => ({
+            id: speaker.id,
+            firstName: speaker.firstName || speaker.first_name,
+            lastName: speaker.lastName || speaker.last_name,
+            email: speaker.email,
+            jobTitle: speaker.jobTitle || speaker.job_title,
+            company: speaker.company,
+            type: speaker.type || 'SPEAKER',
+            checkedIn: speaker.checkedIn || speaker.checked_in || false,
+            avatar: speaker.avatar
+          }));
+        }
+        // Si le champ contient des IDs séparés par des virgules
         else if (session.speaker.includes(',')) {
-          const speakerNames = session.speaker.split(',');
-          speakerInfo = speakerNames.map((name: string, index: number) => {
-            const trimmedName = name.trim();
-            const nameParts = trimmedName.split(' ');
-            return {
-              id: `speaker-${session.id}-${index}`,
-              firstName: nameParts[0] || "Intervenant",
-              lastName: nameParts.slice(1).join(' ') || ""
-            };
-          });
+          const speakerIds = session.speaker.split(',').map((id: string) => id.trim());
+          sessionSpeakers = speakerIds
+            .map((id: string) => speakerMap.get(id))
+            .filter(Boolean)
+            .map((speaker: any) => ({
+              id: speaker.id,
+              firstName: speaker.firstName,
+              lastName: speaker.lastName,
+              email: speaker.email,
+              jobTitle: speaker.jobTitle,
+              company: speaker.company,
+              type: speaker.type,
+              checkedIn: speaker.checkedIn,
+              avatar: speaker.avatar
+            }));
         }
-        
+        // Si c'est un seul ID
+        else if (speakerMap.has(session.speaker)) {
+          const speaker = speakerMap.get(session.speaker);
+          sessionSpeakers = [{
+            id: speaker.id,
+            firstName: speaker.firstName,
+            lastName: speaker.lastName,
+            email: speaker.email,
+            jobTitle: speaker.jobTitle,
+            company: speaker.company,
+            type: speaker.type,
+            checkedIn: speaker.checkedIn,
+            avatar: speaker.avatar
+          }];
+        }
         // Sinon, essayer de parser comme JSON
         else if (session.speaker.startsWith('{') || session.speaker.startsWith('[')) {
           try {
             const parsed = JSON.parse(session.speaker);
-            speakerInfo = parsed;
+            if (Array.isArray(parsed)) {
+              sessionSpeakers = parsed.map((speaker: any) => ({
+                id: speaker.id || `speaker-${session.id}-${Date.now()}`,
+                firstName: speaker.firstName || speaker.first_name || "",
+                lastName: speaker.lastName || speaker.last_name || "",
+                email: speaker.email || "",
+                jobTitle: speaker.jobTitle || speaker.job_title || "",
+                company: speaker.company || "",
+                type: speaker.type || 'SPEAKER',
+                checkedIn: speaker.checkedIn || speaker.checked_in || false,
+                avatar: speaker.avatar || null
+              }));
+            } else {
+              sessionSpeakers = [{
+                id: parsed.id || `speaker-${session.id}`,
+                firstName: parsed.firstName || parsed.first_name || "",
+                lastName: parsed.lastName || parsed.last_name || "",
+                email: parsed.email || "",
+                jobTitle: parsed.jobTitle || parsed.job_title || "",
+                company: parsed.company || "",
+                type: parsed.type || 'SPEAKER',
+                checkedIn: parsed.checkedIn || parsed.checked_in || false,
+                avatar: parsed.avatar || null
+              }];
+            }
           } catch (e) {
-            // Garder la valeur originale si le parsing échoue
+            console.error("Erreur de parsing JSON pour la session", session.title, e);
           }
         }
-        
         // Si c'est juste une chaîne de caractères (nom simple)
         else {
           const nameParts = session.speaker.trim().split(' ');
-          speakerInfo = {
+          sessionSpeakers = [{
             id: `speaker-${session.id}`,
             firstName: nameParts[0] || "Intervenant",
-            lastName: nameParts.slice(1).join(' ') || ""
-          };
+            lastName: nameParts.slice(1).join(' ') || "",
+            email: "",
+            jobTitle: "",
+            company: "",
+            type: 'SPEAKER',
+            checkedIn: false,
+            avatar: null
+          }];
         }
       }
       
+      // Compter les participants inscrits à cette session
+      const participantCount = await prisma.$queryRaw`
+        SELECT COUNT(*) as count
+        FROM session_participants
+        WHERE session_id = ${session.id}
+      `;
+      
       return {
         ...session,
-        speaker: speakerInfo
+        speakers: sessionSpeakers,
+        participantCount: Number((participantCount as any[])[0]?.count || 0)
       };
     }));
 

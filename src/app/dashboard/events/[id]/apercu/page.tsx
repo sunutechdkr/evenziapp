@@ -298,25 +298,13 @@ export default function EventApercuPage() {
       const fetchSessions = async () => {
         setLoadingSessions(true);
         try {
-          // Récupérer la liste des intervenants pour pouvoir associer leurs noms aux IDs
-          let registeredSpeakers: Participant[] = [];
-          try {
-            const speakersResponse = await fetch(`/api/events/${eventId}/registrations?type=SPEAKER`);
-            if (speakersResponse.ok) {
-              const data = await speakersResponse.json();
-              registeredSpeakers = data.registrations || [];
-            }
-          } catch (error) {
-            console.error("Erreur lors de la récupération de la liste des intervenants:", error);
-          }
-          
-          // Utiliser l'API directement depuis le dashboard des sessions
+          // Utiliser l'API améliorée qui retourne déjà les speakers formatés
           const response = await fetch(`/api/events/${eventId}/sessions`);
           if (response.ok) {
             const sessionsData = await response.json();
             
             // Log pour déboguer
-            console.log("Sessions récupérées:", sessionsData);
+            console.log("Sessions récupérées avec speakers:", sessionsData);
             
             // Transformer les données brutes de la base de données au format attendu
             const formattedSessions = sessionsData.map((session: any) => {
@@ -325,172 +313,22 @@ export default function EventApercuPage() {
               const endDate = new Date(session.end_date || session.endDate);
               const formattedDay = format(startDate, "d MMMM yyyy", { locale: fr });
               
-              // Extraire les informations des intervenants
-              let sessionSpeakers: Participant[] = [];
+              // Utiliser directement les speakers retournés par l'API
+              const sessionSpeakers = session.speakers || [];
               
-              // Log pour déboguer la valeur du champ speaker
-              console.log(`Session ${session.title} - speaker:`, session.speaker);
-              
-              // Vérifier si la session a un champ speaker et le traiter
-              if (session.speaker) {
-                // Si c'est une chaîne qui ressemble à un ID, essayer de la mapper à un intervenant existant
-                if (typeof session.speaker === 'string' && session.speaker.includes('-') && !session.speaker.includes(',')) {
-                  const speakerId = session.speaker.trim();
-                  // Rechercher cet ID dans la liste des intervenants
-                  const matchedSpeaker = registeredSpeakers.find(s => s.id === speakerId);
-                  
-                  if (matchedSpeaker) {
-                    // Utiliser les données complètes de l'intervenant
-                    sessionSpeakers.push({
-                      ...matchedSpeaker,
-                      avatar: matchedSpeaker.avatar || generateAvatarUrl(matchedSpeaker.firstName, matchedSpeaker.lastName)
-                    });
-                  } else {
-                    // Si aucun intervenant ne correspond, créer un intervenant avec un nom générique
-                    const displayName = `Intervenant ${speakerId.substring(0, 4)}`;
-                    sessionSpeakers.push({
-                      id: speakerId,
-                      firstName: displayName,
-                      lastName: "",
-                      jobTitle: "",
-                      company: "",
-                      type: "SPEAKER",
-                      checkedIn: false,
-                      avatar: generateAvatarUrl(displayName, "")
-                    });
-                  }
-                }
-                // Cas 1: La chaîne speaker contient plusieurs intervenants séparés par des virgules
-                else if (typeof session.speaker === 'string' && session.speaker.includes(',')) {
-                  const speakerNames = session.speaker.split(',');
-                  console.log("Liste d'intervenants séparés par virgules:", speakerNames);
-                  
-                  // Créer un objet pour chaque intervenant dans la liste
-                  speakerNames.forEach((name: string, index: number) => {
-                    const trimmedName = name.trim();
-                    if (trimmedName) {
-                      const nameParts = trimmedName.split(' ');
-                      const firstName = nameParts[0] || "";
-                      const lastName = nameParts.slice(1).join(' ') || "";
-                      
-                      sessionSpeakers.push({
-                        id: `speaker-${session.id}-${index}`,
-                        firstName,
-                        lastName,
-                        jobTitle: "",
-                        company: "",
-                        type: "SPEAKER",
-                        checkedIn: false
-                      });
-                    }
-                  });
-                }
-                // Cas 2: Si c'est une chaîne JSON, essayer de la parser
-                else if (typeof session.speaker === 'string' && (session.speaker.trim().startsWith('{') || session.speaker.trim().startsWith('['))) {
-                  try {
-                    const speakerData = JSON.parse(session.speaker);
-                    console.log("Données JSON parsées:", speakerData);
-                    
-                    // Si c'est un tableau d'intervenants
-                    if (Array.isArray(speakerData)) {
-                      speakerData.forEach((speaker: any, index: number) => {
-                        sessionSpeakers.push({
-                          id: speaker.id || `speaker-${session.id}-${index}`,
-                          firstName: speaker.firstName || speaker.first_name || "",
-                          lastName: speaker.lastName || speaker.last_name || "",
-                          jobTitle: speaker.jobTitle || speaker.job_title || "",
-                          company: speaker.company || speaker.organization || "",
-                          type: "SPEAKER",
-                          checkedIn: speaker.checkedIn || speaker.checked_in || false
-                        });
-                      });
-                    } 
-                    // Si c'est un seul intervenant
-                    else if (speakerData.id || speakerData.firstName || speakerData.first_name) {
-                      sessionSpeakers.push({
-                        id: speakerData.id || `speaker-${session.id}`,
-                        firstName: speakerData.firstName || speakerData.first_name || "",
-                        lastName: speakerData.lastName || speakerData.last_name || "",
-                        jobTitle: speakerData.jobTitle || speakerData.job_title || "",
-                        company: speakerData.company || speakerData.organization || "",
-                        type: "SPEAKER",
-                        checkedIn: speakerData.checkedIn || speakerData.checked_in || false
-                      });
-                    }
-                  } catch (parseError) {
-                    console.error("Erreur de parsing JSON:", parseError);
-                  }
-                } 
-                // Cas 3: Si c'est déjà un objet, l'utiliser directement
-                else if (typeof session.speaker === 'object' && session.speaker !== null) {
-                  console.log("Objet speaker:", session.speaker);
-                  
-                  // Vérifier si c'est un tableau d'intervenants
-                  if (Array.isArray(session.speaker)) {
-                    session.speaker.forEach((speaker: any, index: number) => {
-                      sessionSpeakers.push({
-                        id: speaker.id || `speaker-${session.id}-${index}`,
-                        firstName: speaker.firstName || speaker.first_name || "",
-                        lastName: speaker.lastName || speaker.last_name || "",
-                        jobTitle: speaker.jobTitle || speaker.job_title || "",
-                        company: speaker.company || speaker.organization || "",
-                        type: "SPEAKER",
-                        checkedIn: speaker.checkedIn || speaker.checked_in || false
-                      });
-                    });
-                  } else {
-                    // C'est un seul intervenant
-                    sessionSpeakers.push({
-                      id: session.speaker.id || `speaker-${session.id}`,
-                      firstName: session.speaker.firstName || session.speaker.first_name || "",
-                      lastName: session.speaker.lastName || session.speaker.last_name || "",
-                      jobTitle: session.speaker.jobTitle || session.speaker.job_title || "",
-                      company: session.speaker.company || session.speaker.organization || "",
-                      type: "SPEAKER",
-                      checkedIn: session.speaker.checkedIn || session.speaker.checked_in || false
-                    });
-                  }
-                } 
-                // Cas 4: Si c'est une chaîne simple (nom de l'intervenant)
-                else if (typeof session.speaker === 'string' && session.speaker.trim()) {
-                  console.log("Chaîne speaker:", session.speaker);
-                  const speakerName = session.speaker.trim();
-                  
-                  // Considérons que le format est généralement "Prénom Nom" ou similaire
-                  const nameParts = speakerName.split(' ');
-                  let firstName = "";
-                  let lastName = "";
-                  
-                  // Si un seul mot, considérons comme prénom
-                  if (nameParts.length === 1) {
-                    firstName = nameParts[0];
-                  } 
-                  // Si plusieurs mots, prenons le premier comme prénom et le reste comme nom
-                  else if (nameParts.length > 1) {
-                    firstName = nameParts[0];
-                    lastName = nameParts.slice(1).join(' ');
-                  }
-                  
-                  // Créer un intervenant à partir du nom
-                  sessionSpeakers.push({
-                    id: `speaker-${session.id}-${Date.now()}`,
-                    firstName,
-                    lastName,
-                    jobTitle: "",
-                    company: "",
-                    type: "SPEAKER",
-                    checkedIn: false
-                  });
-                }
-              }
+              // Ajouter des avatars pour les speakers qui n'en ont pas
+              const speakersWithAvatars = sessionSpeakers.map((speaker: any) => ({
+                ...speaker,
+                avatar: speaker.avatar || generateAvatarUrl(speaker.firstName, speaker.lastName)
+              }));
               
               // Si nous avons des données d'intervenants, log pour vérifier
-              if (sessionSpeakers.length > 0) {
-                console.log(`Session ${session.title} - ${sessionSpeakers.length} intervenants trouvés:`, sessionSpeakers);
+              if (speakersWithAvatars.length > 0) {
+                console.log(`Session ${session.title} - ${speakersWithAvatars.length} intervenants trouvés:`, speakersWithAvatars);
               }
               
-              // Pour le nombre de participants, utiliser la valeur de la base de données ou 0 par défaut
-              const participantCount = session.participant_count || 0;
+              // Pour le nombre de participants, utiliser la valeur retournée par l'API
+              const participantCount = session.participantCount || 0;
               
               return {
                 id: session.id,
@@ -499,7 +337,7 @@ export default function EventApercuPage() {
                 startTime: `${startDate.toISOString().split('T')[0]}T${session.start_time || "09:00:00"}`,
                 endTime: `${endDate.toISOString().split('T')[0]}T${session.end_time || "10:00:00"}`,
                 location: session.location,
-                speakers: sessionSpeakers.length > 0 ? sessionSpeakers : undefined,
+                speakers: speakersWithAvatars.length > 0 ? speakersWithAvatars : undefined,
                 day: formattedDay,
                 participantCount: participantCount
               };

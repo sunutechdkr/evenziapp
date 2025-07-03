@@ -71,18 +71,13 @@ type Participant = {
   phone: string;
   jobTitle?: string; // Fonction
   company?: string;  // Nom de l'entreprise
-  type: 'PARTICIPANT',
-    ticketId: '' | 'EXHIBITOR' | 'SPEAKER';
+  type: 'PARTICIPANT' | 'EXHIBITOR' | 'SPEAKER';
   registrationDate: Date;
   checkedIn: boolean;
   checkinTime?: Date | null;
   checkedInAt?: string;
   shortCode?: string;
   qrCode?: string;
-        ticket_id?: string;
-        ticket_name?: string;
-        ticket_price?: number;
-        ticket_currency?: string;
 };
 
 // Type d'événement
@@ -132,7 +127,8 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
     phone: '',
     jobTitle: '',
     company: '',
-    type: 'PARTICIPANT'
+    type: 'PARTICIPANT',
+    ticketId: ''
   });
   
   // ID du participant nouvellement ajouté pour l'animation
@@ -220,7 +216,6 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
         jobTitle?: string;
         company?: string;
         type: string;
-    ticketId: string;
         createdAt: string;
         checkedIn: boolean;
         checkInTime?: string;
@@ -239,13 +234,7 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
         checkedIn: reg.checkedIn,
         checkinTime: reg.checkInTime ? new Date(reg.checkInTime) : undefined,
         shortCode: reg.shortCode,
-        qrCode: reg.qrCode,
-        ticket: reg.ticket_id ? {
-          id: reg.ticket_id,
-          name: reg.ticket_name || 'Billet',
-          price: reg.ticket_price || 0,
-          currency: reg.ticket_currency || 'XOF'
-        } : undefined
+        qrCode: reg.qrCode
       }));
       
       console.log("Participants mappés:", mappedParticipants.length);
@@ -476,41 +465,6 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
     
     return () => clearTimeout(timer);
   }, [eventId]); // Dépendre de eventId au lieu de params.id
-
-  // Fonction pour récupérer les billets
-  const fetchTickets = async () => {
-    setLoadingTickets(true);
-    try {
-      const response = await fetch(`/api/public/events/${eventId}/tickets`);
-      if (response.ok) {
-        const data = await response.json();
-        const availableTickets = (data.tickets || []).filter(
-          ticket => ticket.status === 'ACTIVE' && ticket.visibility === 'VISIBLE'
-        );
-        setTickets(availableTickets);
-        
-        // Sélectionner automatiquement le premier billet disponible
-        if (availableTickets.length > 0) {
-          setNewParticipant(prev => ({
-            ...prev,
-            ticketId: availableTickets[0].id
-          }));
-        }
-      }
-    } catch (error) {
-      console.error('Erreur lors du chargement des billets:', error);
-    } finally {
-      setLoadingTickets(false);
-    }
-  };
-  
-  // Charger les billets quand eventId change
-  useEffect(() => {
-    if (eventId) {
-      fetchTickets();
-    }
-  }, [eventId]);
-
   
   // Ajouter un effet pour recharger les données si aucun participant n'est affiché après un certain temps
   useEffect(() => {
@@ -633,7 +587,6 @@ const [sidebarExpanded, setSidebarExpanded] = useState(true);   const [processin
       jobTitle: newParticipant.jobTitle,
       company: newParticipant.company,
           type: newParticipant.type,
-          ticketId: newParticipant.ticketId || null,
         })
       );
       
@@ -1407,6 +1360,40 @@ const handleCancelCheckIn = async () => {
     );
   }
   
+  // Fonction pour récupérer les billets
+  const fetchTickets = async () => {
+    setLoadingTickets(true);
+    try {
+      const response = await fetch(`/api/public/events/${eventId}/tickets`);
+      if (response.ok) {
+        const data = await response.json();
+        const availableTickets = (data.tickets || []).filter(
+          ticket => ticket.status === 'ACTIVE' && ticket.visibility === 'VISIBLE'
+        );
+        setTickets(availableTickets);
+        
+        // Sélectionner automatiquement le premier billet disponible
+        if (availableTickets.length > 0) {
+          setNewParticipant(prev => ({
+            ...prev,
+            ticketId: availableTickets[0].id
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des billets:', error);
+    } finally {
+      setLoadingTickets(false);
+    }
+  };
+  
+  // Charger les billets quand eventId change
+  useEffect(() => {
+    if (eventId) {
+      fetchTickets();
+    }
+  }, [eventId]);
+  
   return (
     <div className="participants-container bg-[#f9fafb] min-h-screen">
       <EventSidebar eventId={eventId} activeTab="participants" onExpandChange={setSidebarExpanded} />
@@ -1671,7 +1658,6 @@ const handleCancelCheckIn = async () => {
                   <TableHead>Email</TableHead>
                   <TableHead>Téléphone</TableHead>
                   <TableHead>Type</TableHead>
-                    <TableHead>Billet</TableHead>
                   <TableHead>Date d'inscription</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead className="text-center">Actions</TableHead>
@@ -2088,33 +2074,7 @@ const handleCancelCheckIn = async () => {
                 </div>
                   </div>
                       </div>
-                        </div>
-                  
-                  {/* Informations du billet */}
-                  {selectedParticipant.ticket && (
-                    <>
-                      <Separator className="my-1" />
-                      <div className="p-6">
-                        <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
-                          <TicketIcon className="h-4 w-4 mr-2 text-[#81B441]" />
-                          Billet sélectionné
-                        </h4>
-                        <div className="bg-gray-50 p-4 rounded-lg border">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{selectedParticipant.ticket.name}</p>
-                              <p className="text-xs text-gray-600 mt-1">
-                                {selectedParticipant.ticket.price > 0 
-                                  ? `${selectedParticipant.ticket.price} ${selectedParticipant.ticket.currency}` 
-                                  : 'Gratuit'}
-                              </p>
-                            </div>
-                            <TicketIcon className="h-5 w-5 text-[#81B441]" />
-                        </div>
-                      </div>
                     </div>
-                    </>
-                  )}
                     
             {/* Actions en bas du panneau */}
             <div className="p-5 border-t flex justify-between">
@@ -2258,6 +2218,39 @@ const handleCancelCheckIn = async () => {
                     </div>
                     
               <div className="form-field-animation">
+                <label htmlFor="ticketId" className="text-xs font-medium text-gray-700 mb-1 block">
+                  Billet <span className="text-red-500">*</span>
+                </label>
+                {loadingTickets ? (
+                  <div className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-sm bg-gray-50 flex items-center justify-center">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#81B441] border-t-transparent mr-2"></div>
+                    Chargement des billets...
+                  </div>
+                ) : tickets.length > 0 ? (
+                  <select
+                    id="ticketId"
+                    name="ticketId"
+                    required
+                    value={newParticipant.ticketId}
+                    onChange={handleInputChange}
+                    className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-sm focus:border-[#81B441] focus:outline-none focus:ring-[#81B441]"
+                  >
+                    <option value="">Sélectionner un billet</option>
+                    {tickets.map((ticket) => (
+                      <option key={ticket.id} value={ticket.id}>
+                        {ticket.name} - {ticket.price > 0 ? `${ticket.price} ${ticket.currency}` : 'Gratuit'}
+                        {ticket.quantity && ` (${ticket.quantity - ticket.sold} disponibles)`}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <div className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-sm bg-gray-50 text-gray-500">
+                    Aucun billet disponible
+                  </div>
+                )}
+              </div>
+                    
+              <div className="form-field-animation">
                 <label htmlFor="type" className="text-xs font-medium text-gray-700 mb-1 block">
                   Type de participant <span className="text-red-500">*</span>
                         </label>
@@ -2272,42 +2265,9 @@ const handleCancelCheckIn = async () => {
                           <option value="PARTICIPANT">Participant</option>
                           <option value="SPEAKER">Intervenant</option>
                         </select>
+                      </div>
                 </div>
                 
-                  {/* Sélection du billet */}
-                  <div className="mb-4">
-                    <label htmlFor="ticketId" className="block text-sm font-medium text-gray-700 mb-1">
-                      Billet *
-                    </label>
-                    {loadingTickets ? (
-                      <div className="h-10 flex items-center justify-center border border-gray-300 rounded-md">
-                        <span className="text-sm text-gray-500">Chargement des billets...</span>
-                </div>
-                    ) : tickets.length > 0 ? (
-                      <select
-                        id="ticketId"
-                        name="ticketId"
-                        value={newParticipant.ticketId}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent"
-                        required
-                      >
-                        <option value="">Sélectionner un billet</option>
-                        {tickets.map((ticket) => (
-                          <option key={ticket.id} value={ticket.id}>
-                            {ticket.name} - {ticket.price > 0 ? `${ticket.price} ${ticket.currency}` : 'Gratuit'}
-                            {ticket.quantity && ticket.sold >= ticket.quantity ? ' (Épuisé)' : ''}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <div className="h-10 flex items-center justify-center border border-gray-300 rounded-md bg-gray-50">
-                        <span className="text-sm text-gray-500">Aucun billet disponible</span>
-                      </div>
-                    )}
-                    </div>
-                    </div>
-                    
             <DialogFooter className="mt-6">
               <Button type="button" variant="outline" onClick={closeAddModal}>
                     Annuler
@@ -2334,8 +2294,8 @@ const handleCancelCheckIn = async () => {
               {participantToDelete && (
                 <p className="text-gray-600">
                   Êtes-vous sûr de vouloir supprimer définitivement le participant <strong>{participantToDelete.firstName} {participantToDelete.lastName}</strong> ?
-                          </p>
-                        )}
+                </p>
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 justify-end">
