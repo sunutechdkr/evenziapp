@@ -10,7 +10,7 @@
   --gray-dark: #4b5563;
   --gray-50: #f9fafb;
   
-  /* Shadcn variables */
+  /* Shadcn/ui CSS variables */
   --border: 210 40% 98%;
   --input: 210 40% 98%;
   --ring: 142 76% 36%;
@@ -126,23 +126,44 @@ body {
   }
 }
 
-/* Sidebar styles */
-.sidebar {
-  width: 16rem;
-  height: 100vh;
-  background-color: #1f2937;
-  border-right: 1px solid #374151;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 40;
-  transition: all 0.3s ease;
-  overflow-y: auto;
-  overflow-x: hidden;
+/* Dashboard header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.sidebar-collapsed {
-  width: 4rem;
+.dashboard-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.dashboard-description {
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Login page animations */
@@ -316,15 +337,58 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* Responsive grid improvements */
-@media (min-width: 640px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+/* Animations pour le Check-in */
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(129, 180, 65, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(129, 180, 65, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(129, 180, 65, 0);
   }
 }
 
-@media (min-width: 1024px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+.checkin-button {
+  animation: pulse-border 2s infinite;
+}
+
+/* Spinner d'état de chargement */
+.checkin-spinner {
+  height: 1.25rem;
+  width: 1.25rem;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animation pour les nouveaux participants */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
   }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.new-participant-row {
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.new-participant-row.fade-bg {
+  background-color: #dcfce7;
+}
+
+.status-badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge-success:hover {
+  background-color: #bbf7d0;
 }
