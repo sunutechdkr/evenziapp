@@ -118,7 +118,7 @@ export async function GET(
           Math.round((clickedEmails / openedEmails) * 100) : 0
       },
       recentCampaigns,
-      statusBreakdown: emailStatusStats.reduce((acc, stat) => {
+      statusBreakdown: emailStatusStats.reduce((acc: Record<string, number>, stat: { status: string; _count: { status: number } }) => {
         acc[stat.status] = stat._count.status;
         return acc;
       }, {} as Record<string, number>)

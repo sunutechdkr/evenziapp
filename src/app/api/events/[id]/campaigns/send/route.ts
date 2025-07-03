@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -16,7 +16,7 @@ export async function POST(
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const { id: eventId } = params;
+    const { id: eventId } = await params;
     const {
       name,
       description,
