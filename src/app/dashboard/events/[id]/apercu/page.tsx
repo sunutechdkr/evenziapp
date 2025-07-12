@@ -1,17 +1,29 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { CalendarIcon, MapPinIcon, UsersIcon, MicrophoneIcon, BuildingStorefrontIcon, CheckCircleIcon, UserCircleIcon, ChevronRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, MapPinIcon, UsersIcon, MicrophoneIcon, BuildingStorefrontIcon, CheckCircleIcon, UserCircleIcon, ClockIcon, ChevronRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "react-hot-toast";
+import ClientOnly from "@/components/ClientOnly";
+
+// Types
+type RegistrationData = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  jobTitle?: string;
+  company?: string;
+  checkedIn: boolean;
+  type: string;
+};
 
 type Event = {
   id: string;
@@ -30,7 +42,6 @@ type Event = {
   organizer?: { name?: string; role?: string };
 };
 
-// Ajouter un type pour les participants
 type Participant = {
   id: string;
   firstName: string;
@@ -51,7 +62,6 @@ type Participant = {
   };
 };
 
-// Ajouter un type pour les sessions
 type Session = {
   id: string;
   title: string;
@@ -67,7 +77,6 @@ type Session = {
 
 export default function EventApercuPage() {
   const params = useParams();
-  const router = useRouter();
   const eventId = Array.isArray(params.id) ? params.id[0] : params.id;
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,15 +88,16 @@ export default function EventApercuPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  // État pour le dialogue de détails de session
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [isParticipating, setIsParticipating] = useState(false);
-  // Utiliser useMemo pour éviter les erreurs d'hydratation React #310
+  const [selectedSpeaker, setSelectedSpeaker] = useState<Participant | null>(null);
+  const [isSpeakerModalOpen, setIsSpeakerModalOpen] = useState(false);
+
   // Utiliser useMemo pour éviter les erreurs d'hydratation React #310
   const participantsToShow = useMemo(() => {
     // Éviter le filtrage côté serveur pour prévenir les erreurs d'hydratation
-    if (typeof window === "undefined") return participants;
+    if (typeof window === 'undefined') return participants;
     if (!searchTerm) return participants;
     
     return participants.filter(p => 
@@ -95,9 +105,7 @@ export default function EventApercuPage() {
       (p.company && p.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (p.jobTitle && p.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-  }, [participants, searchTerm]);  // Ajout d'un nouvel état pour le profil intervenant sélectionné
-  const [selectedSpeaker, setSelectedSpeaker] = useState<Participant | null>(null);
-  const [isSpeakerModalOpen, setIsSpeakerModalOpen] = useState(false);
+  }, [participants, searchTerm]);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -115,26 +123,23 @@ export default function EventApercuPage() {
     fetchEvent();
   }, [eventId]);
 
-  // Ajouter une fonction pour récupérer les participants
+  // Récupérer les participants
   useEffect(() => {
     if (activeTab === "participants" && event) {
       const fetchParticipants = async () => {
         setLoadingParticipants(true);
         try {
-          // Utiliser l'API correcte pour récupérer les participants depuis la base de données
           const response = await fetch(`/api/events/${eventId}/registrations`);
           if (response.ok) {
             const data = await response.json();
             
-            // Vérifier que data.registrations est bien un tableau
             if (!data || !data.registrations || !Array.isArray(data.registrations)) {
               console.error("Format de données invalide:", data);
               setParticipants([]);
               return;
             }
             
-            // Mapper les données de Registration vers le format Participant
-            const mappedParticipants = data.registrations.map((reg: any) => ({
+            const mappedParticipants = data.registrations.map((reg: RegistrationData) => ({
               id: reg.id,
               firstName: reg.firstName,
               lastName: reg.lastName,
@@ -149,94 +154,11 @@ export default function EventApercuPage() {
             setParticipants(mappedParticipants);
           } else {
             console.error("Erreur lors de la récupération des participants:", await response.text());
-            // Utiliser des données mockées en cas d'erreur API
-            setParticipants([
-              {
-                id: '1',
-                firstName: 'Sophie',
-                lastName: 'Martin',
-                jobTitle: 'Directrice Marketing',
-                company: 'TechCorp',
-                email: 'sophie.martin@example.com',
-                checkedIn: true
-              },
-              {
-                id: '2',
-                firstName: 'Thomas',
-                lastName: 'Dubois',
-                jobTitle: 'Développeur Frontend',
-                company: 'WebInnovate',
-                email: 'thomas.dubois@example.com',
-                checkedIn: true
-              },
-              {
-                id: '3',
-                firstName: 'Léa',
-                lastName: 'Bernard',
-                jobTitle: 'Consultante UX/UI',
-                company: 'DesignHub',
-                email: 'lea.bernard@example.com',
-                checkedIn: false
-              },
-              {
-                id: '4',
-                firstName: 'Mohamed',
-                lastName: 'Ndiaye',
-                jobTitle: 'Chef de projet',
-                company: 'GlobalConsult',
-                email: 'mohamed.ndiaye@example.com',
-                checkedIn: false
-              },
-              {
-                id: '5',
-                firstName: 'Aurélie',
-                lastName: 'Robert',
-                jobTitle: 'Responsable Innovation',
-                company: 'FutureTech',
-                email: 'aurelie.robert@example.com',
-                checkedIn: true
-              },
-              {
-                id: '6',
-                firstName: 'Pierre',
-                lastName: 'Lefèvre',
-                jobTitle: 'Architecte Logiciel',
-                company: 'SoftArch',
-                email: 'pierre.lefevre@example.com',
-                checkedIn: false
-              },
-              {
-                id: '7',
-                firstName: 'Fatima',
-                lastName: 'Ouahabi',
-                jobTitle: 'Responsable Marketing Digital',
-                company: 'DigitalImpact',
-                email: 'fatima.ouahabi@example.com',
-                checkedIn: true
-              },
-              {
-                id: '8',
-                firstName: 'Ahmed',
-                lastName: 'Benali',
-                jobTitle: 'CTO',
-                company: 'TechInnovate',
-                email: 'ahmed.benali@example.com',
-                checkedIn: true
-              },
-              {
-                id: '9',
-                firstName: 'Julie',
-                lastName: 'Moreau',
-                jobTitle: 'UX Designer',
-                company: 'DesignCraft',
-                email: 'julie.moreau@example.com',
-                checkedIn: false
-              }
-            ]);
+            setParticipants([]);
           }
         } catch (error) {
           console.error("Erreur lors de la récupération des participants:", error);
-          // ... existing error handling ...
+          setParticipants([]);
         } finally {
           setLoadingParticipants(false);
         }
@@ -246,7 +168,7 @@ export default function EventApercuPage() {
     }
   }, [activeTab, eventId, event]);
 
-  // Récupérer les intervenants directement depuis l'API des participants
+  // Récupérer les intervenants
   useEffect(() => {
     if (activeTab === "speakers" && event) {
       const fetchSpeakers = async () => {
@@ -257,10 +179,9 @@ export default function EventApercuPage() {
             const data = await response.json();
             
             if (data && data.registrations && Array.isArray(data.registrations)) {
-              // Filtrer uniquement les intervenants (type SPEAKER)
               const speakersFromDB = data.registrations
-                .filter((reg: any) => reg.type === 'SPEAKER')
-                .map((reg: any) => ({
+                .filter((reg: RegistrationData) => reg.type === 'SPEAKER')
+                .map((reg: RegistrationData) => ({
                   id: reg.id,
                   firstName: reg.firstName,
                   lastName: reg.lastName,
@@ -278,7 +199,6 @@ export default function EventApercuPage() {
               
               setSpeakers(speakersFromDB);
             } else {
-              // Aucun intervenant trouvé
               setSpeakers([]);
             }
           } else {
@@ -296,40 +216,26 @@ export default function EventApercuPage() {
     }
   }, [activeTab, event, eventId]);
 
-  // Ajouter une fonction pour récupérer les sessions de l'agenda
+  // Récupérer les sessions
   useEffect(() => {
     if (activeTab === "agenda" && event) {
       const fetchSessions = async () => {
         setLoadingSessions(true);
         try {
-          // Utiliser l'API améliorée qui retourne déjà les speakers formatés
           const response = await fetch(`/api/events/${eventId}/sessions`);
           if (response.ok) {
             const sessionsData = await response.json();
             
-            // Log pour déboguer
-            console.log("Sessions récupérées avec speakers:", sessionsData);
-            
-            // Transformer les données brutes de la base de données au format attendu
             const formattedSessions = sessionsData.map((session: any) => {
-              // Formater les dates selon notre schéma de données
               const startDate = new Date(session.start_date || session.startDate);
               const endDate = new Date(session.end_date || session.endDate);
               const formattedDay = format(startDate, "d MMMM yyyy", { locale: fr });
               
-              // Utiliser directement les speakers retournés par l'API
               const sessionSpeakers = session.speakers || [];
-              
-              // Ajouter des avatars pour les speakers qui n'en ont pas
               const speakersWithAvatars = sessionSpeakers.map((speaker: any) => ({
                 ...speaker,
                 avatar: speaker.avatar || generateAvatarUrl(speaker.firstName, speaker.lastName)
               }));
-              
-              // Si nous avons des données d'intervenants, log pour vérifier
-              if (speakersWithAvatars.length > 0) {
-                console.log(`Session ${session.title} - ${speakersWithAvatars.length} intervenants trouvés:`, speakersWithAvatars);
-              }
               
               return {
                 id: session.id,
@@ -344,12 +250,10 @@ export default function EventApercuPage() {
               };
             });
             
-            // Trier les sessions par jour et heure
             formattedSessions.sort((a: Session, b: Session) => 
               new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
             );
             
-            console.log("Sessions formatées:", formattedSessions);
             setSessions(formattedSessions);
           } else {
             console.error("Erreur lors de la récupération des sessions:", await response.text());
@@ -367,144 +271,28 @@ export default function EventApercuPage() {
     }
   }, [activeTab, eventId, event]);
 
-  // Fonction pour ouvrir le modal avec les détails de la session
   const openSessionDetails = async (session: Session) => {
     setSelectedSession(session);
     setIsSessionModalOpen(true);
-    // Vérifier si l'utilisateur participe déjà à cette session
     checkParticipationStatus(session.id);
-    
-    // Charger les détails des intervenants depuis l'API si la session a des speakers
-    if (session.speakers && session.speakers.length > 0) {
-      try {
-        // Récupérer la liste complète des intervenants de l'événement pour enrichir les données
-        const speakersResponse = await fetch(`/api/events/${eventId}/registrations?type=SPEAKER`);
-        let registeredSpeakers: Participant[] = [];
-        
-        if (speakersResponse.ok) {
-          const data = await speakersResponse.json();
-          registeredSpeakers = data.registrations || [];
-        }
-        
-        const enhancedSpeakers = await Promise.all(
-          session.speakers.map(async (speaker: any) => {
-            // Si c'est juste une chaîne (ID), chercher l'intervenant dans les données existantes
-            if (typeof speaker === 'string') {
-              // Vérifier d'abord si cet ID existe dans la liste des intervenants chargés
-              const existingSpeaker = registeredSpeakers.find(s => s.id === speaker);
-              if (existingSpeaker) {
-                return {
-                  ...existingSpeaker,
-                  avatar: existingSpeaker.avatar || generateAvatarUrl(existingSpeaker.firstName, existingSpeaker.lastName)
-                };
-              }
-              
-              // Si non trouvé, essayer de charger depuis l'API
-              try {
-                const response = await fetch(`/api/events/${eventId}/registrations/${speaker}`);
-                if (response.ok) {
-                  const data = await response.json();
-                  if (data && data.registration) {
-                    return {
-                      ...data.registration,
-                      id: speaker,
-                      avatar: data.registration.avatar || generateAvatarUrl(data.registration.firstName, data.registration.lastName)
-                    };
-                  }
-                }
-              } catch (error) {
-                console.error(`Erreur lors du chargement des détails de l'intervenant ${speaker}:`, error);
-              }
-              
-              // Si tout échoue, retourner un objet avec l'ID
-              return {
-                id: speaker,
-                firstName: "Intervenant",
-                lastName: "",
-                checkedIn: false,
-                avatar: generateAvatarUrl("I", ""),
-                type: "SPEAKER"
-              };
-            }
-            
-            // Si c'est déjà un objet avec firstName et lastName, utiliser directement
-            if (speaker.firstName && speaker.lastName) {
-              return {
-                ...speaker,
-                avatar: speaker.avatar || generateAvatarUrl(speaker.firstName, speaker.lastName)
-              };
-            }
-            
-            // Si c'est un objet sans firstName/lastName, essayer de récupérer les données complètes
-            if (speaker.id && !speaker.id.startsWith('speaker-')) {
-              try {
-                const response = await fetch(`/api/events/${eventId}/registrations/${speaker.id}`);
-                if (response.ok) {
-                  const data = await response.json();
-                  if (data && data.registration) {
-                    return {
-                      ...speaker,
-                      ...data.registration,
-                      id: speaker.id,
-                      avatar: data.registration.avatar || generateAvatarUrl(data.registration.firstName, data.registration.lastName)
-                    };
-                  }
-                }
-              } catch (error) {
-                console.error(`Erreur lors du chargement des détails de l'intervenant ${speaker.id}:`, error);
-              }
-            }
-            
-            // Si tout échoue, utiliser les données originales avec un avatar par défaut
-            return {
-              ...speaker,
-              firstName: speaker.firstName || "Intervenant",
-              lastName: speaker.lastName || "",
-              avatar: speaker.avatar || generateAvatarUrl(speaker.firstName || "I", speaker.lastName || "")
-            };
-          })
-        );
-        
-        // Mettre à jour la session avec les speakers enrichis
-        console.log("Speakers enrichis:", enhancedSpeakers);
-        setSelectedSession({
-          ...session,
-          speakers: enhancedSpeakers
-        });
-      } catch (error) {
-        console.error("Erreur lors du chargement des détails des intervenants:", error);
-      }
-    }
   };
 
-  // Fermer le modal de détails de session
-  const closeSessionDetails = () => {
-    setIsSessionModalOpen(false);
-    setIsParticipating(false); // Réinitialiser l'état de participation en fermant le modal
-  };
-
-  // Vérifier si l'utilisateur participe déjà à cette session
   const checkParticipationStatus = async (sessionId: string) => {
-    // Pour cette démo, nous utilisons une simulation locale
     setIsParticipating(false);
     
-    // Dans une application réelle, vous pourriez vérifier via une API
     try {
       const response = await fetch(`/api/events/${eventId}/sessions/${sessionId}/participants/check`);
       if (response.ok) {
         const data = await response.json();
         setIsParticipating(data.isParticipating || false);
       }
-    } catch (error) {
+    } catch {
       console.log("API de vérification de participation non disponible");
-      // Simulation aléatoire pour la démo (20% de chance d'être déjà inscrit)
       setIsParticipating(Math.random() < 0.2);
     }
   };
 
-  // Fonction utilitaire pour mettre à jour l'état de participation
   const updateParticipationStatus = (sessionId: string, isAdding: boolean = true) => {
-    // Mettre à jour le compteur de participants localement
     setSessions(prevSessions => 
       prevSessions.map(s => 
         s.id === sessionId 
@@ -512,36 +300,27 @@ export default function EventApercuPage() {
               ...s, 
               participantCount: isAdding 
                 ? (s.participantCount || 0) + 1 
-                : Math.max((s.participantCount || 0) - 1, 0) // Éviter les valeurs négatives
+                : Math.max((s.participantCount || 0) - 1, 0)
             } 
           : s
       )
     );
     
-    // Si la session sélectionnée est celle en cours de mise à jour,
-    // mettre à jour également son compteur
     if (selectedSession && selectedSession.id === sessionId) {
       setSelectedSession({
         ...selectedSession,
         participantCount: isAdding 
           ? (selectedSession.participantCount || 0) + 1 
-          : Math.max((selectedSession.participantCount || 0) - 1, 0) // Éviter les valeurs négatives
+          : Math.max((selectedSession.participantCount || 0) - 1, 0)
       });
     }
-
-    // Log de debug
-    console.log(`Compteur de participants ${isAdding ? 'incrémenté' : 'décrémenté'} pour la session ${sessionId}`);
   };
 
-  // Participer à une session
   const participateInSession = async (sessionId: string) => {
     if (isParticipating) {
-      // Si déjà inscrit, on se désinscrit
       try {
-        // Simuler un délai pour montrer le chargement à l'utilisateur
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Tenter de se désinscrire via l'API si elle existe
         try {
           const response = await fetch(`/api/events/${eventId}/sessions/${sessionId}/participants`, {
             method: 'DELETE',
@@ -552,17 +331,16 @@ export default function EventApercuPage() {
 
           if (response.ok) {
             setIsParticipating(false);
-            updateParticipationStatus(sessionId, false); // Décrémentation
+            updateParticipationStatus(sessionId, false);
             toast.success("Vous êtes désinscrit de cette session");
             return;
           }
-        } catch (apiError) {
+        } catch {
           console.log("API de désinscription non disponible, simulation locale utilisée");
         }
         
-        // Si l'API n'existe pas ou a échoué, simuler localement
         setIsParticipating(false);
-        updateParticipationStatus(sessionId, false); // Décrémentation
+        updateParticipationStatus(sessionId, false);
         toast.success("Vous êtes désinscrit de cette session (simulation)");
         
       } catch (error) {
@@ -570,36 +348,29 @@ export default function EventApercuPage() {
         toast.error("Une erreur est survenue lors de la désinscription");
       }
     } else {
-      // Si pas encore inscrit, on s'inscrit
       try {
         setIsParticipating(true);
-        
-        // Simuler un délai pour montrer le chargement à l'utilisateur
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Tenter d'utiliser l'API si elle existe
         try {
           const response = await fetch(`/api/events/${eventId}/sessions/${sessionId}/participants`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              // Éventuellement inclure des détails sur l'utilisateur si nécessaire
-            }),
+            body: JSON.stringify({}),
           });
 
           if (response.ok) {
-            updateParticipationStatus(sessionId, true); // Incrémentation
+            updateParticipationStatus(sessionId, true);
             toast.success("Vous êtes inscrit à cette session");
             return;
           }
-        } catch (apiError) {
+        } catch {
           console.log("API de participation non disponible, simulation locale utilisée");
         }
         
-        // Si l'API n'existe pas ou a échoué, simuler localement
-        updateParticipationStatus(sessionId, true); // Incrémentation
+        updateParticipationStatus(sessionId, true);
         toast.success("Vous êtes inscrit à cette session (simulation)");
         
       } catch (error) {
@@ -610,14 +381,9 @@ export default function EventApercuPage() {
     }
   };
 
-  // Fonction pour ouvrir le profil d'un intervenant
   const openSpeakerProfile = async (speaker: Participant | string) => {
-    console.log("Ouverture du profil de l'intervenant:", speaker);
-    
-    // Si speaker est juste un ID (chaîne de caractères)
     if (typeof speaker === 'string') {
       try {
-        // Afficher un placeholder pendant le chargement
         setSelectedSpeaker({
           id: speaker,
           firstName: "Chargement",
@@ -628,15 +394,12 @@ export default function EventApercuPage() {
         });
         setIsSpeakerModalOpen(true);
         
-        // Récupérer les données complètes depuis l'API
         const response = await fetch(`/api/events/${eventId}/registrations/${speaker}`);
         if (response.ok) {
           const data = await response.json();
           const registration = data.registration;
           
-          // Si on a trouvé l'intervenant, mettre à jour les informations
           if (registration) {
-            // Trouver les sessions auxquelles participe cet intervenant
             const speakerSessions = sessions
               .filter(session => 
                 session.speakers?.some(s => 
@@ -670,7 +433,6 @@ export default function EventApercuPage() {
             });
           }
         } else {
-          // Si l'API échoue, créer un profil plus informatif que l'ID brut
           setSelectedSpeaker({
             id: speaker,
             firstName: "Intervenant",
@@ -687,160 +449,25 @@ export default function EventApercuPage() {
       } catch (error) {
         console.error("Erreur lors du chargement des détails de l'intervenant:", error);
       }
-    } 
-    // Si c'est déjà un objet Participant
-    else {
-      // Initialiser le modal avec les informations de base disponibles
+    } else {
       setSelectedSpeaker({
         ...speaker,
         avatar: speaker.avatar || generateAvatarUrl(speaker.firstName, speaker.lastName)
       });
       setIsSpeakerModalOpen(true);
-      
-      // Charger les détails complets depuis l'API si nous avons un ID
-      if (speaker.id && !speaker.id.startsWith('speaker-')) {
-        try {
-          const response = await fetch(`/api/events/${eventId}/registrations/${speaker.id}`);
-          if (response.ok) {
-            const data = await response.json();
-            const registration = data.registration;
-            
-            if (registration) {
-              // Trouver les sessions auxquelles participe cet intervenant
-              const speakerSessions = sessions
-                .filter(session => 
-                  session.speakers?.some(s => 
-                    (typeof s === 'string' && s === speaker.id) || 
-                    (typeof s === 'object' && s.id === speaker.id)
-                  )
-                )
-                .map(session => ({
-                  id: session.id,
-                  title: session.title
-                }));
-              
-              // Mettre à jour avec les données complètes
-              setSelectedSpeaker({
-                id: registration.id,
-                firstName: registration.firstName,
-                lastName: registration.lastName,
-                email: registration.email,
-                jobTitle: registration.jobTitle || speaker.jobTitle || "",
-                company: registration.company || speaker.company || "",
-                bio: registration.bio || "Cet intervenant est un expert dans son domaine.",
-                expertise: registration.expertise || ["Expertise"],
-                sessions: speakerSessions.length > 0 ? speakerSessions : (speaker.sessions || []),
-                socialLinks: registration.socialLinks || { 
-                  twitter: `@${registration.firstName.toLowerCase()}`, 
-                  linkedin: `/in/${registration.firstName.toLowerCase()}-${registration.lastName.toLowerCase()}`,
-                  website: registration.company ? `https://www.${registration.company.toLowerCase().replace(/\s+/g, '')}.com` : "https://example.com"
-                },
-                avatar: registration.avatar || speaker.avatar || generateAvatarUrl(registration.firstName, registration.lastName),
-                checkedIn: registration.checkedIn || speaker.checkedIn || false,
-                type: registration.type || speaker.type || "SPEAKER"
-              });
-            }
-          }
-        } catch (error) {
-          console.error("Erreur lors du chargement des détails complémentaires de l'intervenant:", error);
-        }
-      }
     }
   };
 
-  // Fermer le modal de profil d'intervenant
   const closeSpeakerProfile = () => {
     setIsSpeakerModalOpen(false);
     setSelectedSpeaker(null);
   };
 
-  // Fonction pour générer un avatar par défaut basé sur le nom
   const generateAvatarUrl = (firstName: string, lastName: string) => {
-    // Utilise une API d'avatar basée sur les initiales avec des couleurs aléatoires
     const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
     const colors = ['81B441', '4169E1', 'E91E63', 'FF9800', '009688', '673AB7'];
     const colorIndex = (firstName.length + lastName.length) % colors.length;
     return `https://ui-avatars.com/api/?name=${initials}&background=${colors[colorIndex]}&color=fff&size=128`;
-  };
-
-  // Fonction pour charger les détails complets d'un intervenant
-  const loadSpeakerDetails = async (speakerId: string) => {
-    console.log(`Chargement des détails pour l'intervenant: ${speakerId}`);
-    try {
-      // Si l'ID est un ID réel (pas un ID généré), utiliser l'API
-      if (speakerId && !speakerId.startsWith('speaker-')) {
-        const response = await fetch(`/api/events/${eventId}/registrations/${speakerId}`);
-        if (response.ok) {
-          const data = await response.json();
-          const registration = data.registration;
-          
-          // Récupérer les sessions auxquelles participe cet intervenant
-          const speakerSessions = sessions
-            .filter(session => 
-              session.speakers?.some(s => s.id === speakerId)
-            )
-            .map(session => ({
-              id: session.id,
-              title: session.title
-            }));
-          
-          return {
-            id: registration.id,
-            firstName: registration.firstName,
-            lastName: registration.lastName,
-            email: registration.email,
-            jobTitle: registration.jobTitle || "",
-            company: registration.company || "",
-            bio: registration.bio || "Cet intervenant est un expert dans son domaine avec plusieurs années d'expérience professionnelle.",
-            expertise: registration.expertise || ["Innovation", "Développement durable", "Technologies"],
-            sessions: speakerSessions.length > 0 ? speakerSessions : [{ id: "1", title: "Session principale" }],
-            socialLinks: registration.socialLinks || { 
-              twitter: `@${registration.firstName.toLowerCase()}${registration.lastName.toLowerCase()}`, 
-              linkedin: `/in/${registration.firstName.toLowerCase()}-${registration.lastName.toLowerCase()}`,
-              website: registration.company ? `https://www.${registration.company.toLowerCase().replace(/\s+/g, '')}.com` : "https://example.com"
-            },
-            avatar: registration.avatar || generateAvatarUrl(registration.firstName, registration.lastName),
-            checkedIn: registration.checkedIn || false,
-            type: registration.type || "SPEAKER"
-          };
-        }
-      }
-    } catch (error) {
-      console.log("API de profil d'intervenant non disponible ou erreur:", error);
-    }
-    
-    // Si l'intervenant est disponible, utiliser ses données pour générer un avatar
-    if (selectedSpeaker) {
-      // Simulation de données si l'API échoue
-      return {
-        ...selectedSpeaker,
-        bio: selectedSpeaker.bio || "Cet intervenant est un expert dans son domaine avec plusieurs années d'expérience professionnelle.",
-        sessions: selectedSpeaker.sessions || [{ id: "1", title: "Session principale" }],
-        socialLinks: selectedSpeaker.socialLinks || { 
-          twitter: `@${selectedSpeaker.firstName.toLowerCase()}${selectedSpeaker.lastName.toLowerCase()}`, 
-          linkedin: `/in/${selectedSpeaker.firstName.toLowerCase()}-${selectedSpeaker.lastName.toLowerCase()}`, 
-          website: selectedSpeaker.company ? `https://www.${selectedSpeaker.company.toLowerCase().replace(/\s+/g, '')}.com` : "https://example.com" 
-        },
-        expertise: selectedSpeaker.expertise || ["Innovation", "Développement durable", "Technologies"],
-        avatar: selectedSpeaker.avatar || generateAvatarUrl(selectedSpeaker.firstName, selectedSpeaker.lastName)
-      };
-    }
-    
-    // Si aucune donnée n'est disponible, retourner des données par défaut
-    return {
-      id: "default-speaker",
-      firstName: "Prénom",
-      lastName: "Nom",
-      jobTitle: "Titre professionnel",
-      company: "Entreprise",
-      bio: "Information biographique par défaut.",
-      sessions: [{ id: "1", title: "Session principale" }],
-      socialLinks: { twitter: "@speaker", linkedin: "/in/speaker", website: "https://example.com" },
-      expertise: ["Expertise 1", "Expertise 2"],
-      avatar: "https://ui-avatars.com/api/?name=SP&background=81B441&color=fff&size=128",
-      checkedIn: false,
-      type: "SPEAKER"
-    };
   };
 
   if (loading) {
@@ -862,7 +489,6 @@ export default function EventApercuPage() {
     );
   }
 
-  // Format helpers
   const formatDate = (date: string) => {
     try {
       return format(new Date(date), "d MMMM yyyy", { locale: fr });
@@ -1033,7 +659,6 @@ export default function EventApercuPage() {
                                     </Badge>
                                   )}
                                   
-                                  {/* Badge pour les sessions sans intervenants */}
                                   {(!session.speakers || session.speakers.length === 0) && (
                                     <Badge variant="outline" className="flex items-center gap-1 bg-gray-50 text-gray-500">
                                       <MicrophoneIcon className="w-3 h-3" />
@@ -1083,14 +708,11 @@ export default function EventApercuPage() {
                           </div>
                         )}
                         
-                        {/* Section des intervenants dans le modal de session */}
                         <div className="mb-4">
                           <h4 className="text-sm font-medium mb-2 text-gray-700">Intervenants</h4>
                           {selectedSession.speakers && selectedSession.speakers.length > 0 ? (
                             <div className="space-y-2">
                               {selectedSession.speakers.map((speaker, index) => {
-                                // S'assurer que nous avons toujours un objet avec firstName et lastName pour l'affichage
-                                // Si speaker est une chaîne (ID), utiliser directement cet ID
                                 return (
                                   <div 
                                     key={typeof speaker === 'string' ? speaker : speaker.id || index} 
@@ -1099,15 +721,12 @@ export default function EventApercuPage() {
                                   >
                                     <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                                       {typeof speaker === 'string' ? (
-                                        // Pour un ID, afficher une lettre comme placeholder
                                         <div className="h-full w-full flex items-center justify-center bg-[#81B441] text-white font-bold text-lg">
                                           I
                                         </div>
                                       ) : speaker.avatar ? (
-                                        // Si on a un avatar, l'afficher
                                         <img src={speaker.avatar} alt={`${speaker.firstName} ${speaker.lastName}`} className="h-full w-full object-cover" />
                                       ) : (
-                                        // Sinon, utiliser les initiales
                                         <div className="h-full w-full flex items-center justify-center bg-[#81B441] text-white font-bold text-lg">
                                           {speaker.firstName?.charAt(0) || "I"}{speaker.lastName?.charAt(0) || ""}
                                         </div>
@@ -1115,10 +734,8 @@ export default function EventApercuPage() {
                                     </div>
                                     <div className="flex-1">
                                       {typeof speaker === 'string' ? (
-                                        // Pour un ID, afficher un nom générique
                                         <p className="font-medium text-gray-800">Intervenant #{(speaker as string).substring(0, 4)}</p>
                                       ) : (
-                                        // Sinon, afficher le nom complet
                                         <>
                                           <p className="font-medium text-gray-800">{speaker.firstName} {speaker.lastName}</p>
                                           {speaker.jobTitle && <p className="text-xs text-gray-500">{speaker.jobTitle}</p>}
@@ -1139,31 +756,6 @@ export default function EventApercuPage() {
                               <div className="w-12 h-12 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
                                 <MicrophoneIcon className="h-6 w-6 text-gray-400" />
                               </div>
-                              <button 
-                                className="mt-3 text-xs text-[#81B441] hover:underline"
-                                onClick={() => {
-                                  // Ajouter des intervenants factices pour démonstration
-                                  if (selectedSession && !selectedSession.speakers) {
-                                    const fakeSpeakers: Participant[] = [
-                                      {
-                                        id: "demo-1",
-                                        firstName: "Marie",
-                                        lastName: "Dupont",
-                                        jobTitle: "Directrice Innovation",
-                                        company: "TechFuture",
-                                        checkedIn: true,
-                                        type: "SPEAKER"
-                                      }
-                                    ];
-                                    setSelectedSession({
-                                      ...selectedSession,
-                                      speakers: fakeSpeakers
-                                    });
-                                  }
-                                }}
-                              >
-                                Voir un exemple d'intervenant
-                              </button>
                             </div>
                           )}
                         </div>
@@ -1209,90 +801,96 @@ export default function EventApercuPage() {
           )}
           
           {activeTab === "participants" && (
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Participants</h2>
-            
-            {loadingParticipants ? (
-              <div className="flex justify-center py-10">
-                <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#81B441] border-t-transparent"></div>
-              </div>
-            ) : participants.length === 0 ? (
-              <div className="bg-gray-100 rounded-lg p-6 text-center text-gray-500">
-                Aucun participant inscrit pour le moment.
-              </div>
-            ) : (
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <div className="text-sm text-gray-500">
-                    {participants.length} participant{participants.length > 1 ? 's' : ''} 
-                    <span className="ml-2 text-[#81B441]">
-                      ({participants.filter(p => p.checkedIn).length} présent{participants.filter(p => p.checkedIn).length > 1 ? 's' : ''})
-                    </span>
-                  </div>
-                  <div className="relative">
-                    <input 
-                      type="text" 
-                      placeholder="Rechercher un participant..." 
-                      className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <svg className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
+          <ClientOnly fallback={
+            <div className="flex justify-center py-10">
+              <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#81B441] border-t-transparent"></div>
+            </div>
+          }>
+            <section className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">Participants</h2>
+              
+              {loadingParticipants ? (
+                <div className="flex justify-center py-10">
+                  <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#81B441] border-t-transparent"></div>
                 </div>
-                
-                <div className="space-y-3">
-                  {participantsToShow.map(participant => (
-                    <div key={participant.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 transition-all hover:shadow-md">
-                      <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0">
-                          {participant.avatar ? (
-                            <img src={participant.avatar} alt={`${participant.firstName} ${participant.lastName}`} className="h-14 w-14 rounded-full object-cover" />
-                          ) : (
-                            <div className="h-14 w-14 rounded-full bg-gray-100 flex items-center justify-center">
-                              <UserCircleIcon className="h-8 w-8 text-gray-400" />
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-semibold text-gray-900 truncate">
-                            {participant.firstName} {participant.lastName}
-                          </h3>
-                          {participant.jobTitle && (
-                            <p className="text-sm text-gray-600 truncate">
-                              {participant.jobTitle} {participant.company && `· ${participant.company}`}
-                            </p>
-                          )}
-                        </div>
-                        
-                        <div className="flex-shrink-0">
-                          {participant.checkedIn ? (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              <CheckCircleIcon className="h-4 w-4 mr-1" />
-                              Présent
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                              En attente
-                            </span>
-                          )}
+              ) : participants.length === 0 ? (
+                <div className="bg-gray-100 rounded-lg p-6 text-center text-gray-500">
+                  Aucun participant inscrit pour le moment.
+                </div>
+              ) : (
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="text-sm text-gray-500">
+                      {participants.length} participant{participants.length > 1 ? 's' : ''} 
+                      <span className="ml-2 text-[#81B441]">
+                        ({participants.filter(p => p.checkedIn).length} présent{participants.filter(p => p.checkedIn).length > 1 ? 's' : ''})
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        placeholder="Rechercher un participant..." 
+                        className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                      <svg className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {participantsToShow.map(participant => (
+                      <div key={participant.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 transition-all hover:shadow-md">
+                        <div className="flex items-center gap-4">
+                          <div className="flex-shrink-0">
+                            {participant.avatar ? (
+                              <img src={participant.avatar} alt={`${participant.firstName} ${participant.lastName}`} className="h-14 w-14 rounded-full object-cover" />
+                            ) : (
+                              <div className="h-14 w-14 rounded-full bg-gray-100 flex items-center justify-center">
+                                <UserCircleIcon className="h-8 w-8 text-gray-400" />
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base font-semibold text-gray-900 truncate">
+                              {participant.firstName} {participant.lastName}
+                            </h3>
+                            {participant.jobTitle && (
+                              <p className="text-sm text-gray-600 truncate">
+                                {participant.jobTitle} {participant.company && `· ${participant.company}`}
+                              </p>
+                            )}
+                          </div>
+                          
+                          <div className="flex-shrink-0">
+                            {participant.checkedIn ? (
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <CheckCircleIcon className="h-4 w-4 mr-1" />
+                                Présent
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                En attente
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {participantsToShow.length === 0 && searchTerm && (
-                  <div className="py-8 text-center text-gray-500">
-                    Aucun participant ne correspond à votre recherche.
+                    ))}
                   </div>
-                )}
-              </div>
-            )}
-          </section>
+                  
+                  {participantsToShow.length === 0 && searchTerm && (
+                    <div className="py-8 text-center text-gray-500">
+                      Aucun participant ne correspond à votre recherche.
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+          </ClientOnly>
           )}
           
           {activeTab === "speakers" && (
@@ -1319,7 +917,7 @@ export default function EventApercuPage() {
               <div className="text-center py-12">
                 <MicrophoneIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun intervenant défini pour le moment</h3>
-                <p className="text-gray-500">Les intervenants seront affichés une fois qu'ils seront ajoutés à l'événement.</p>
+                <p className="text-gray-500">Les intervenants seront affichés une fois qu&apos;ils seront ajoutés à l&apos;événement.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1352,6 +950,7 @@ export default function EventApercuPage() {
           </div>
           )}
         </div>
+        
         {/* Sidebar */}
         <aside className="w-full md:w-80 flex-shrink-0">
           <div className="bg-white rounded-lg shadow p-4 mb-6">
@@ -1401,7 +1000,6 @@ export default function EventApercuPage() {
                       alt={`${selectedSpeaker.firstName} ${selectedSpeaker.lastName}`} 
                       className="h-full w-full object-cover" 
                       onError={(e) => {
-                        // En cas d'erreur de chargement, utiliser l'avatar généré
                         e.currentTarget.src = generateAvatarUrl(selectedSpeaker.firstName || 'I', selectedSpeaker.lastName || '');
                       }}
                     />
@@ -1421,7 +1019,6 @@ export default function EventApercuPage() {
                     <p className="text-sm font-medium text-[#81B441]">{selectedSpeaker.company}</p>
                   )}
                   
-                  {/* Badges et statut */}
                   <div className="flex gap-2 mt-2">
                     <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                       Intervenant
@@ -1435,7 +1032,6 @@ export default function EventApercuPage() {
                 </div>
               </div>
               
-              {/* Biographie */}
               <div className="mt-6">
                 <h4 className="text-sm font-medium mb-2 text-gray-700">Biographie</h4>
                 <div className="text-sm text-gray-600 bg-gray-50 p-4 rounded-lg border border-gray-100">
@@ -1443,7 +1039,6 @@ export default function EventApercuPage() {
                 </div>
               </div>
               
-              {/* Compétences */}
               {selectedSpeaker.expertise && selectedSpeaker.expertise.length > 0 && (
                 <div className="mt-4">
                   <h4 className="text-sm font-medium mb-2 text-gray-700">Expertise</h4>
@@ -1457,7 +1052,6 @@ export default function EventApercuPage() {
                 </div>
               )}
               
-              {/* Liste des sessions de l'intervenant */}
               {selectedSpeaker.sessions && selectedSpeaker.sessions.length > 0 && (
                 <div className="mt-4">
                   <h4 className="text-sm font-medium mb-2 text-gray-700">Sessions</h4>
@@ -1466,10 +1060,8 @@ export default function EventApercuPage() {
                       <div key={session.id} 
                            className="p-3 bg-[#81B441] bg-opacity-5 rounded-md border border-[#81B441] border-opacity-20 hover:bg-opacity-10 transition-colors cursor-pointer"
                            onClick={() => {
-                             // Trouver la session dans la liste des sessions chargées
                              const sessionDetails = sessions.find(s => s.id === session.id);
                              if (sessionDetails) {
-                               // Fermer le modal de l'intervenant et ouvrir celui de la session
                                closeSpeakerProfile();
                                setTimeout(() => openSessionDetails(sessionDetails), 100);
                              }
@@ -1485,7 +1077,6 @@ export default function EventApercuPage() {
                 </div>
               )}
               
-              {/* Réseaux sociaux */}
               {selectedSpeaker.socialLinks && (
                 <div className="mt-4">
                   <h4 className="text-sm font-medium mb-2 text-gray-700">Réseaux sociaux</h4>
@@ -1535,4 +1126,4 @@ export default function EventApercuPage() {
       </footer>
     </div>
   );
-} 
+}
