@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CalendarIcon, MapPinIcon, UsersIcon, MicrophoneIcon, BuildingStorefrontIcon, CheckCircleIcon, UserCircleIcon, ClockIcon, ChevronRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState, useMemo } from "react";
+import { CalendarIcon, MapPinIcon, UsersIcon, MicrophoneIcon, BuildingStorefrontIcon, CheckCircleIcon, UserCircleIcon, ChevronRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useParams, useRouter } from "next/navigation";
@@ -83,14 +83,16 @@ export default function EventApercuPage() {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [isParticipating, setIsParticipating] = useState(false);
-  const participantsToShow = searchTerm 
-    ? participants.filter(p => 
-        `${p.firstName} ${p.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (p.company && p.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (p.jobTitle && p.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()))
-      ) 
-    : participants;
-
+  // Utiliser useMemo pour éviter les erreurs d'hydratation React #310
+  const participantsToShow = useMemo(() => {
+    if (!searchTerm) return participants;
+    
+    return participants.filter(p => 
+      `${p.firstName} ${p.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.company && p.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (p.jobTitle && p.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }, [participants, searchTerm]);
   // Ajout d'un nouvel état pour le profil intervenant sélectionné
   const [selectedSpeaker, setSelectedSpeaker] = useState<Participant | null>(null);
   const [isSpeakerModalOpen, setIsSpeakerModalOpen] = useState(false);
