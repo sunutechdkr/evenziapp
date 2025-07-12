@@ -84,10 +84,7 @@ export default function EventApercuPage() {
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [isParticipating, setIsParticipating] = useState(false);
   // Utiliser useMemo pour éviter les erreurs d'hydratation React #310
-  // Utiliser useMemo pour éviter les erreurs d'hydratation React #310
   const participantsToShow = useMemo(() => {
-    // Éviter le filtrage côté serveur pour prévenir les erreurs d'hydratation
-    if (typeof window === "undefined") return participants;
     if (!searchTerm) return participants;
     
     return participants.filter(p => 
@@ -95,7 +92,8 @@ export default function EventApercuPage() {
       (p.company && p.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (p.jobTitle && p.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-  }, [participants, searchTerm]);  // Ajout d'un nouvel état pour le profil intervenant sélectionné
+  }, [participants, searchTerm]);
+  // Ajout d'un nouvel état pour le profil intervenant sélectionné
   const [selectedSpeaker, setSelectedSpeaker] = useState<Participant | null>(null);
   const [isSpeakerModalOpen, setIsSpeakerModalOpen] = useState(false);
 
