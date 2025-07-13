@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { 
@@ -21,6 +21,8 @@ import {
   PencilIcon,
   BuildingOfficeIcon,
   BriefcaseIcon,
+  ChatBubbleLeftRightIcon,
+  CalendarDaysIcon,
   ArrowUpTrayIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
@@ -39,11 +41,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 // Types
 type Participant = {
@@ -260,7 +267,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
           }));
         }
       }
-    } catch (error) {
+      } catch (error) {
       console.error('Erreur lors du chargement des billets:', error);
     } finally {
       setLoadingTickets(false);
@@ -275,7 +282,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       fetchTickets();
     }
   }, [eventId]);
-
+  
   // Filtrer les participants
   const filteredParticipants = participants.filter(participant => {
     const matchesSearch = searchTerm === '' || 
@@ -296,7 +303,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
   const indexOfFirstParticipant = indexOfLastParticipant - participantsPerPage;
   const currentParticipants = filteredParticipants.slice(indexOfFirstParticipant, indexOfLastParticipant);
   const totalPages = Math.ceil(filteredParticipants.length / participantsPerPage);
-
+  
   // Handlers
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -305,7 +312,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       [name]: value
     }));
   };
-
+  
   const handleAddParticipant = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -322,13 +329,13 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       
       toast.success('Participant ajouté avec succès');
       setShowAddModal(false);
-      setNewParticipant({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        jobTitle: '',
-        company: '',
+    setNewParticipant({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      jobTitle: '',
+      company: '',
         type: 'PARTICIPANT',
         ticketId: tickets.length > 0 ? tickets[0].id : ''
       });
@@ -408,9 +415,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       
       if (!response.ok) {
         throw new Error('Erreur lors de l\'enregistrement');
-      }
-      
-      toast.success('Participant enregistré avec succès');
+        }
+        
+        toast.success('Participant enregistré avec succès');
       fetchParticipants();
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement:', error);
@@ -495,7 +502,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       </div>
     );
   }
-
+  
   return (
     <div className="participants-container bg-[#f9fafb] min-h-screen">
       <EventSidebar eventId={eventId} activeTab="participants" onExpandChange={setSidebarExpanded} />
@@ -507,8 +514,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
               Participants {event?.name && <span className="text-[#81B441]">• {event.name}</span>}
             </h1>
-          </div>
-          
+              </div>
+              
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             <Button
               variant="outline"
@@ -535,9 +542,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               <UserPlusIcon className="h-4 w-4 mr-2" />
               Ajouter un participant
             </Button>
+            </div>
           </div>
-        </div>
-        
+          
         {/* Cartes de statistiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <Card>
@@ -558,8 +565,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                 {participants.filter(p => p.checkedIn).length}
                 <span className="text-sm font-normal text-gray-500 ml-2">
                   ({participants.length > 0 ? `${Math.round((participants.filter(p => p.checkedIn).length / participants.length) * 100)}%` : '0%'})
-                </span>
-              </div>
+                  </span>
+            </div>
             </CardContent>
           </Card>
           
@@ -570,7 +577,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             <CardContent>
               <div className="text-3xl font-bold">
                 {participants.filter(p => p.type === 'SPEAKER').length}
-              </div>
+          </div>
             </CardContent>
           </Card>
           
@@ -581,7 +588,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             <CardContent>
               <div className="text-3xl font-bold">
                 {participants.filter(p => p.type === 'EXHIBITOR').length}
-              </div>
+                  </div>
             </CardContent>
           </Card>
         </div>
@@ -601,35 +608,35 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     className="pl-10"
                   />
                 </div>
-              </div>
+                  </div>
               
               <div className="flex gap-2">
-                <select
-                  value={participantType}
+                  <select
+                    value={participantType}
                   onChange={(e) => setParticipantType(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441]"
                 >
                   <option value="all">Tous les types</option>
-                  <option value="PARTICIPANT">Participants</option>
-                  <option value="SPEAKER">Intervenants</option>
+                    <option value="PARTICIPANT">Participants</option>
+                    <option value="SPEAKER">Intervenants</option>
                   <option value="EXHIBITOR">Exposants</option>
-                </select>
+                  </select>
                 
-                <select
-                  value={checkinStatus}
+                  <select
+                    value={checkinStatus}
                   onChange={(e) => setCheckinStatus(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441]"
                 >
                   <option value="all">Tous les statuts</option>
                   <option value="checked">Enregistrés</option>
                   <option value="unchecked">Non enregistrés</option>
-                </select>
-              </div>
-            </div>
+                  </select>
+                  </div>
+                </div>
           </CardContent>
         </Card>
-
-        {/* Tableau des participants */}
+            
+            {/* Tableau des participants */}
         <Card>
           <CardContent className="p-0">
             <ScrollArea className="h-[600px]"><Table>
@@ -647,7 +654,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               <TableBody>
                 {currentParticipants.map((participant) => (
                   <TableRow 
-                    key={participant.id} 
+                        key={participant.id} 
                     className="cursor-pointer hover:bg-gray-50"
                     onClick={() => openParticipantDetails(participant)}
                   >
@@ -656,8 +663,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                         variant="ghost" 
                         size="sm"
                         className="p-1 h-8 w-8"
-                        onClick={(e) => {
-                          e.stopPropagation();
+                            onClick={(e) => {
+                              e.stopPropagation();
                           openBadgeModal(participant);
                         }}
                       >
@@ -668,7 +675,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                       <div className="flex items-center gap-3">
                         <Avatar className="border-2 border-[#81B441]">
                           <AvatarFallback className="bg-white text-black border-[#81B441]">
-                            {participant.firstName.charAt(0)}{participant.lastName.charAt(0)}
+                              {participant.firstName.charAt(0)}{participant.lastName.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
@@ -676,14 +683,14 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                           {participant.jobTitle && (
                             <p className="text-sm text-gray-500">{participant.jobTitle}</p>
                           )}
-                        </div>
-                      </div>
+                            </div>
+                              </div>
                     </TableCell>
                     <TableCell>
                       <div className="text-sm">
                         <p>{participant.email}</p>
                         <p className="text-gray-500">{participant.phone}</p>
-                      </div>
+                            </div>
                     </TableCell>
                     <TableCell>{participant.company || '-'}</TableCell>
                     <TableCell>
@@ -770,7 +777,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                 ))}
               </TableBody>
             </Table></ScrollArea>
-
+            
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between px-4 py-3 border-t">
@@ -783,7 +790,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
+                        disabled={currentPage === 1}
                   >
                     <ChevronLeftIcon className="h-4 w-4" />
                   </Button>
@@ -817,7 +824,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages}
+                        disabled={currentPage === totalPages}
                   >
                     <ChevronRightIcon className="h-4 w-4" />
                   </Button>
@@ -826,7 +833,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             )}
           </CardContent>
         </Card>
-      </div>
+          </div>
 
       {/* Modal des détails du participant avec onglets */}
       <Dialog open={showParticipantModal} onOpenChange={setShowParticipantModal}>
@@ -841,14 +848,14 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               <div className="flex items-start gap-4 mb-6">
                 <Avatar className="h-20 w-20">
                   <AvatarFallback className="bg-[#81B441] text-white text-xl">
-                    {selectedParticipant.firstName.charAt(0)}{selectedParticipant.lastName.charAt(0)}
+                        {selectedParticipant.firstName.charAt(0)}{selectedParticipant.lastName.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold">
-                    {selectedParticipant.firstName} {selectedParticipant.lastName}
-                  </h3>
+                        {selectedParticipant.firstName} {selectedParticipant.lastName}
+                      </h3>
                   <p className="text-gray-600">{selectedParticipant.email}</p>
                   {selectedParticipant.jobTitle && (
                     <p className="text-sm text-gray-500">{selectedParticipant.jobTitle}</p>
@@ -870,10 +877,10 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                         Enregistré
                       </Badge>
                     )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-
+                  
               {/* Onglets */}
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-5 mb-4">
@@ -893,44 +900,44 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                           <PhoneIcon className="h-4 w-4 text-[#81B441]" />
                           {selectedParticipant.phone || 'Non renseigné'}
                         </p>
-                      </div>
+                          </div>
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Email</h4>
                         <p className="flex items-center gap-2">
                           <EnvelopeIcon className="h-4 w-4 text-[#81B441]" />
                           {selectedParticipant.email}
                         </p>
-                      </div>
+                        </div>
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Entreprise</h4>
                         <p className="flex items-center gap-2">
                           <BuildingOfficeIcon className="h-4 w-4 text-[#81B441]" />
                           {selectedParticipant.company || 'Non renseigné'}
                         </p>
-                      </div>
+                          </div>
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Fonction</h4>
                         <p className="flex items-center gap-2">
                           <BriefcaseIcon className="h-4 w-4 text-[#81B441]" />
                           {selectedParticipant.jobTitle || 'Non renseigné'}
                         </p>
-                      </div>
+                        </div>
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Date d&apos;inscription</h4>
                         <p className="flex items-center gap-2">
                           <CalendarIcon className="h-4 w-4 text-[#81B441]" />
-                          {format(selectedParticipant.registrationDate, "dd MMMM yyyy", { locale: fr })}
+                            {format(selectedParticipant.registrationDate, "dd MMMM yyyy", { locale: fr })}
                         </p>
-                      </div>
+                          </div>
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Code QR</h4>
                         <p className="flex items-center gap-2">
                           <QrCodeIcon className="h-4 w-4 text-[#81B441]" />
                           {selectedParticipant.shortCode || selectedParticipant.qrCode || 'Non défini'}
                         </p>
-                      </div>
                     </div>
-
+                  </div>
+                  
                     {/* Actions */}
                     <div className="flex gap-2 pt-4">
                       {!selectedParticipant.checkedIn && (
@@ -949,7 +956,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                           setNewParticipant({
                             firstName: selectedParticipant.firstName,
                             lastName: selectedParticipant.lastName,
-                            email: selectedParticipant.email,
+                                  email: selectedParticipant.email,
                             phone: selectedParticipant.phone,
                             jobTitle: selectedParticipant.jobTitle || '',
                             company: selectedParticipant.company || '',
@@ -975,7 +982,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                         <TrashIcon className="h-4 w-4 mr-2" />
                         Supprimer
                       </Button>
-                    </div>
+                          </div>
                   </TabsContent>
 
                   <TabsContent value="badge">
@@ -999,8 +1006,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                           <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
                           Télécharger
                         </Button>
-                      </div>
-                    </div>
+                            </div>
+                          </div>
                   </TabsContent>
 
                   <TabsContent value="sessions">
@@ -1008,8 +1015,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                       <p className="text-center text-gray-500 py-8">
                         <CalendarDaysIcon className="h-12 w-12 mx-auto mb-2 text-gray-300" />
                         Aucune session pour ce participant
-                      </p>
-                    </div>
+                              </p>
+                            </div>
                   </TabsContent>
 
                   <TabsContent value="appointments">
@@ -1018,7 +1025,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                         <ChatBubbleLeftRightIcon className="h-12 w-12 mx-auto mb-2 text-gray-300" />
                         Aucun rendez-vous programmé
                       </p>
-                    </div>
+                </div>
                   </TabsContent>
 
                   <TabsContent value="timeline">
@@ -1033,9 +1040,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                             <p className="text-xs text-gray-500">
                               {format(selectedParticipant.registrationDate, "dd MMMM yyyy à HH:mm", { locale: fr })}
                             </p>
-                          </div>
-                        </div>
-                        
+                      </div>
+                    </div>
+                    
                         {selectedParticipant.checkedIn && selectedParticipant.checkinTime && (
                           <div className="relative -ml-1.5 mt-6">
                             <div className="absolute top-2 left-0 w-3 h-3 bg-green-500 rounded-full"></div>
@@ -1044,11 +1051,11 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                               <p className="text-xs text-gray-500">
                                 {format(selectedParticipant.checkinTime, "dd MMMM yyyy à HH:mm", { locale: fr })}
                               </p>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
+                        )}
+                  </div>
+                </div>
                   </TabsContent>
                 </ScrollArea>
               </Tabs>
@@ -1067,47 +1074,47 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             </DialogDescription>
           </DialogHeader>
           
-          <form onSubmit={handleAddParticipant}>
+                  <form onSubmit={handleAddParticipant}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="firstName" className="text-sm font-medium">
-                    Prénom <span className="text-red-500">*</span>
-                  </label>
+                        Prénom <span className="text-red-500">*</span>
+                      </label>
                   <Input
-                    id="firstName"
-                    name="firstName"
+                        id="firstName"
+                        name="firstName"
                     required
-                    value={newParticipant.firstName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                
+                        value={newParticipant.firstName}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                    
                 <div>
                   <label htmlFor="lastName" className="text-sm font-medium">
-                    Nom <span className="text-red-500">*</span>
-                  </label>
+                        Nom <span className="text-red-500">*</span>
+                      </label>
                   <Input
-                    id="lastName"
-                    name="lastName"
+                        id="lastName"
+                        name="lastName"
                     required
-                    value={newParticipant.lastName}
-                    onChange={handleInputChange}
-                  />
+                        value={newParticipant.lastName}
+                        onChange={handleInputChange}
+                      />
                 </div>
-              </div>
-              
+                    </div>
+                    
               <div>
                 <label htmlFor="email" className="text-sm font-medium">
-                  Email <span className="text-red-500">*</span>
-                </label>
+                        Email <span className="text-red-500">*</span>
+                      </label>
                 <Input
-                  id="email"
-                  name="email"
+                        id="email"
+                        name="email"
                   type="email"
                   required
-                  value={newParticipant.email}
-                  onChange={handleInputChange}
+                        value={newParticipant.email}
+                        onChange={handleInputChange}
                 />
               </div>
               
@@ -1118,60 +1125,60 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                 <Input
                   id="phone"
                   name="phone"
-                  required
+                        required
                   value={newParticipant.phone}
                   onChange={handleInputChange}
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="jobTitle" className="text-sm font-medium">
-                    Fonction
-                  </label>
+                          Fonction
+                        </label>
                   <Input
-                    id="jobTitle"
-                    name="jobTitle"
-                    value={newParticipant.jobTitle}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                
+                          id="jobTitle"
+                          name="jobTitle"
+                          value={newParticipant.jobTitle}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      
                 <div>
                   <label htmlFor="company" className="text-sm font-medium">
                     Entreprise
-                  </label>
+                        </label>
                   <Input
-                    id="company"
-                    name="company"
-                    value={newParticipant.company}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              
+                          id="company"
+                          name="company"
+                          value={newParticipant.company}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    
               <div>
                 <label htmlFor="type" className="text-sm font-medium">
-                  Type <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="type"
-                  name="type"
+                          Type <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          id="type"
+                          name="type"
                   required
-                  value={newParticipant.type}
-                  onChange={handleInputChange}
+                          value={newParticipant.type}
+                          onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441]"
-                >
-                  <option value="PARTICIPANT">Participant</option>
-                  <option value="SPEAKER">Intervenant</option>
-                </select>
-              </div>
+                        >
+                          <option value="PARTICIPANT">Participant</option>
+                          <option value="SPEAKER">Intervenant</option>
+                        </select>
+                      </div>
 
               {loadingTickets ? (
                 <div className="text-center py-2">
                   <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[#81B441] border-t-transparent"></div>
                   <span className="ml-2 text-sm">Chargement des billets...</span>
-                </div>
+                    </div>
               ) : tickets.length > 0 && (
                 <div>
                   <label htmlFor="ticketId" className="text-sm font-medium">
@@ -1193,11 +1200,11 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   </select>
                 </div>
               )}
-            </div>
-            
+                </div>
+                
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setShowAddModal(false)}>
-                Annuler
+                    Annuler
               </Button>
               <Button type="submit" className="bg-[#81B441] hover:bg-[#72a339]">
                 Ajouter
@@ -1241,8 +1248,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     value={newParticipant.lastName}
                     onChange={handleInputChange}
                   />
-                </div>
               </div>
+            </div>
               
               <div>
                 <label htmlFor="edit-email" className="text-sm font-medium">
@@ -1256,8 +1263,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   value={newParticipant.email}
                   onChange={handleInputChange}
                 />
-              </div>
-              
+                </div>
+                
               <div>
                 <label htmlFor="edit-phone" className="text-sm font-medium">
                   Téléphone <span className="text-red-500">*</span>
@@ -1269,8 +1276,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   value={newParticipant.phone}
                   onChange={handleInputChange}
                 />
-              </div>
-              
+                    </div>
+                    
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="edit-jobTitle" className="text-sm font-medium">
@@ -1281,9 +1288,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     name="jobTitle"
                     value={newParticipant.jobTitle}
                     onChange={handleInputChange}
-                  />
-                </div>
-                
+                      />
+                    </div>
+                    
                 <div>
                   <label htmlFor="edit-company" className="text-sm font-medium">
                     Entreprise
@@ -1294,8 +1301,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     value={newParticipant.company}
                     onChange={handleInputChange}
                   />
-                </div>
-              </div>
+                      </div>
+                    </div>
               
               <div>
                 <label htmlFor="edit-type" className="text-sm font-medium">
@@ -1312,9 +1319,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   <option value="PARTICIPANT">Participant</option>
                   <option value="SPEAKER">Intervenant</option>
                 </select>
-              </div>
-            </div>
-            
+                  </div>
+                </div>
+                
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setShowEditModal(false)}>
                 Annuler
@@ -1381,7 +1388,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               <div className="flex gap-2 justify-center">
                 <Button variant="outline">
                   <ShareIcon className="h-4 w-4 mr-2" />
-                  Partager
+                    Partager
                 </Button>
                 <Button variant="outline">
                   <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
