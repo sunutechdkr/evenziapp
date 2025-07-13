@@ -22,7 +22,8 @@ import {
   BuildingOfficeIcon,
   BriefcaseIcon,
   ChatBubbleLeftRightIcon,
-  CalendarDaysIcon
+  CalendarDaysIcon,
+  ArrowUpTrayIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import { toast } from "react-hot-toast";
@@ -95,11 +96,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
   const [event, setEvent] = useState<Event | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [processing, setProcessing] = useState<{[key: string]: boolean}>({});
   const [participantType, setParticipantType] = useState('all');
@@ -114,6 +112,8 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loadingTickets, setLoadingTickets] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [badgeParticipant, setBadgeParticipant] = useState<Participant | null>(null);
 
   const [newParticipant, setNewParticipant] = useState({
     firstName: '',
@@ -173,7 +173,6 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
     if (!eventId) return;
     
     setLoading(true);
-    setError('');
     
     try {
       const response = await fetchWithRetry(
@@ -187,7 +186,21 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       
       const data = await response.json();
       
-      const formattedParticipants = data.registrations.map((reg: any) => ({
+      const formattedParticipants = data.registrations.map((reg: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone?: string;
+        jobTitle?: string;
+        company?: string;
+        type?: string;
+        createdAt: string;
+        checkedIn?: boolean;
+        checkedInAt?: string;
+        shortCode?: string;
+        qrCode?: string;
+      }) => ({
         id: reg.id,
         firstName: reg.firstName,
         lastName: reg.lastName,
@@ -207,7 +220,6 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       setParticipants(formattedParticipants);
     } catch (error) {
       console.error('Erreur:', error);
-      setError('Impossible de charger les participants');
       toast.error('Erreur lors du chargement des participants');
     } finally {
       setLoading(false);
@@ -328,8 +340,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
         ticketId: tickets.length > 0 ? tickets[0].id : ''
       });
       fetchParticipants();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de l\'ajout du participant');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur lors de l\'ajout du participant';
+      toast.error(errorMessage);
     }
   };
 
@@ -361,8 +374,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       setShowEditModal(false);
       setParticipantToEdit(null);
       fetchParticipants();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la mise à jour');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la mise à jour';
+      toast.error(errorMessage);
     }
   };
 
@@ -384,8 +398,9 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       setDeleteConfirmOpen(false);
       setParticipantToDelete(null);
       fetchParticipants();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la suppression');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la suppression';
+      toast.error(errorMessage);
     }
   };
 
@@ -405,6 +420,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
       toast.success('Participant enregistré avec succès');
       fetchParticipants();
     } catch (error) {
+      console.error('Erreur lors de l\'enregistrement:', error);
       toast.error('Erreur lors de l\'enregistrement');
     } finally {
       setProcessing({ ...processing, [participantId]: false });
@@ -415,6 +431,46 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
     setSelectedParticipant(participant);
     setActiveTab("details");
     setShowParticipantModal(true);
+  };
+
+  const openBadgeModal = (participant: Participant) => {
+    setBadgeParticipant(participant);
+    setShowBadgeModal(true);
+  };
+
+  const exportParticipants = () => {
+    const csvData = participants.map(participant => ({
+      firstName: participant.firstName,
+      lastName: participant.lastName,
+      email: participant.email,
+      phone: participant.phone,
+      jobTitle: participant.jobTitle || '',
+      company: participant.company || '',
+      type: participant.type,
+      checkedIn: participant.checkedIn ? 'Oui' : 'Non',
+      registrationDate: format(participant.registrationDate, "dd/MM/yyyy", { locale: fr }),
+      checkinTime: participant.checkinTime ? format(participant.checkinTime, "dd/MM/yyyy HH:mm", { locale: fr }) : ''
+    }));
+
+    const headers = [
+      'Prénom', 'Nom', 'Email', 'Téléphone', 'Fonction', 'Entreprise', 'Type', 
+      'Enregistré', 'Date d\'inscription', 'Heure d\'enregistrement'
+    ];
+
+    const csvContent = [
+      headers.join(','),
+      ...csvData.map(row => Object.values(row).map(value => `"${value}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `participants_${event?.name || 'evenement'}_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const downloadCsvTemplate = () => {
@@ -468,6 +524,15 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             >
               <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
               Modèle CSV
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="border-gray-300 text-gray-600 hover:text-[#81B441] hover:border-[#81B441]"
+              onClick={exportParticipants}
+            >
+              <ArrowUpTrayIcon className="h-4 w-4 mr-2" />
+              Exporter
             </Button>
             
             <Button
@@ -577,6 +642,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-12">Badge</TableHead>
                   <TableHead>Participant</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Entreprise</TableHead>
@@ -593,9 +659,22 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     onClick={() => openParticipantDetails(participant)}
                   >
                     <TableCell>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        className="p-1 h-8 w-8"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openBadgeModal(participant);
+                        }}
+                      >
+                        <QrCodeIcon className="h-4 w-4 text-[#81B441]" />
+                      </Button>
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center gap-3">
-                        <Avatar>
-                          <AvatarFallback className="bg-[#81B441] text-white">
+                        <Avatar className="border-2 border-[#81B441]">
+                          <AvatarFallback className="bg-white text-black border-[#81B441]">
                             {participant.firstName.charAt(0)}{participant.lastName.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
@@ -615,19 +694,24 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     </TableCell>
                     <TableCell>{participant.company || '-'}</TableCell>
                     <TableCell>
-                      <Badge variant={participant.type === 'PARTICIPANT' ? 'default' : 'secondary'}>
+                      <Badge 
+                        className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]"
+                        variant="outline"
+                      >
                         {participant.type === 'PARTICIPANT' ? 'Participant' : 
                          participant.type === 'SPEAKER' ? 'Intervenant' : 'Exposant'}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       {participant.checkedIn ? (
-                        <Badge className="bg-green-100 text-green-800">
+                        <Badge className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]">
                           <CheckBadgeIcon className="h-3 w-3 mr-1" />
                           Enregistré
                         </Badge>
                       ) : (
-                        <Badge variant="outline">Non enregistré</Badge>
+                        <Badge className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]" variant="outline">
+                          Non enregistré
+                        </Badge>
                       )}
                     </TableCell>
                     <TableCell className="text-right">
@@ -780,12 +864,15 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     <p className="text-sm text-gray-500">{selectedParticipant.company}</p>
                   )}
                   <div className="flex gap-2 mt-2">
-                    <Badge variant={selectedParticipant.type === 'PARTICIPANT' ? 'default' : 'secondary'}>
+                    <Badge 
+                      className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]"
+                      variant="outline"
+                    >
                       {selectedParticipant.type === 'PARTICIPANT' ? 'Participant' : 
                        selectedParticipant.type === 'SPEAKER' ? 'Intervenant' : 'Exposant'}
                     </Badge>
                     {selectedParticipant.checkedIn && (
-                      <Badge className="bg-green-100 text-green-800">
+                      <Badge className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]">
                         <CheckBadgeIcon className="h-3 w-3 mr-1" />
                         Enregistré
                       </Badge>
@@ -836,7 +923,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                         </p>
                       </div>
                       <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Date d'inscription</h4>
+                        <h4 className="text-sm font-medium text-gray-500 mb-1">Date d&apos;inscription</h4>
                         <p className="flex items-center gap-2">
                           <CalendarIcon className="h-4 w-4 text-[#81B441]" />
                           {format(selectedParticipant.registrationDate, "dd MMMM yyyy", { locale: fr })}
@@ -1276,6 +1363,40 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
               Supprimer
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal pour afficher le badge */}
+      <Dialog open={showBadgeModal} onOpenChange={setShowBadgeModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Badge du participant</DialogTitle>
+          </DialogHeader>
+          
+          {badgeParticipant && (
+            <div className="space-y-4">
+              <ParticipantBadge
+                firstName={badgeParticipant.firstName}
+                lastName={badgeParticipant.lastName}
+                jobTitle={badgeParticipant.jobTitle}
+                company={badgeParticipant.company}
+                qrCode={badgeParticipant.qrCode}
+                eventName={event?.name || 'Événement'}
+                eventBanner={event?.banner}
+              />
+              
+              <div className="flex gap-2 justify-center">
+                <Button variant="outline">
+                  <ShareIcon className="h-4 w-4 mr-2" />
+                  Partager
+                </Button>
+                <Button variant="outline">
+                  <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                  Télécharger
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
