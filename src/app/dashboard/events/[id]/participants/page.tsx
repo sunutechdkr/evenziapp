@@ -639,7 +639,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
         {/* Tableau des participants */}
         <Card>
           <CardContent className="p-0">
-            <Table>
+            <ScrollArea className="h-[600px]"><Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-12">Badge</TableHead>
@@ -695,7 +695,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     <TableCell>{participant.company || '-'}</TableCell>
                     <TableCell>
                       <Badge 
-                        className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]"
+                        className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]"
                         variant="outline"
                       >
                         {participant.type === 'PARTICIPANT' ? 'Participant' : 
@@ -704,12 +704,12 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                     </TableCell>
                     <TableCell>
                       {participant.checkedIn ? (
-                        <Badge className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]">
+                        <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
                           <CheckBadgeIcon className="h-3 w-3 mr-1" />
                           Enregistré
                         </Badge>
                       ) : (
-                        <Badge className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]" variant="outline">
+                        <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]" variant="outline">
                           Non enregistré
                         </Badge>
                       )}
@@ -776,7 +776,7 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+            </Table></ScrollArea>
 
             {/* Pagination */}
             {totalPages > 1 && (
@@ -865,14 +865,14 @@ export default function EventParticipantsPage({ params }: { params: Promise<{ id
                   )}
                   <div className="flex gap-2 mt-2">
                     <Badge 
-                      className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]"
+                      className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]"
                       variant="outline"
                     >
                       {selectedParticipant.type === 'PARTICIPANT' ? 'Participant' : 
                        selectedParticipant.type === 'SPEAKER' ? 'Intervenant' : 'Exposant'}
                     </Badge>
                     {selectedParticipant.checkedIn && (
-                      <Badge className="bg-[#D4FDB6] text-gray-800 hover:bg-[#D4FDB6] border-[#D4FDB6]">
+                      <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
                         <CheckBadgeIcon className="h-3 w-3 mr-1" />
                         Enregistré
                       </Badge>
