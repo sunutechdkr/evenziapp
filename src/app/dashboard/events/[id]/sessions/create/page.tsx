@@ -1,12 +1,25 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeftIcon, XMarkIcon, CalendarIcon, ClockIcon, MapPinIcon, UserIcon, UsersIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, XMarkIcon, MapPinIcon, UserIcon, UsersIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { MultiSelect, Option } from "@/components/ui/multi-select";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 // Types
 type Session = {
@@ -52,7 +65,7 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
     location: "",
     speaker: "",
     capacity: undefined,
-    format: "atelier"
+    format: "physique"
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -73,9 +86,13 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
 
   // Extraire les paramètres une fois au chargement du composant
   useEffect(() => {
-    if (params && params.id) {
-      setEventId(params.id);
-    }
+    const extractParams = async () => {
+      const resolvedParams = await params;
+      if (resolvedParams && resolvedParams.id) {
+        setEventId(resolvedParams.id);
+      }
+    };
+    extractParams();
   }, [params]);
 
   // Récupérer les dates de l'événement
@@ -114,6 +131,8 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
 
   // Add useEffect to fetch participants
   useEffect(() => {
+    if (!eventId) return;
+
     const fetchParticipants = async () => {
       setLoadingParticipants(true);
       try {
@@ -137,28 +156,36 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
     fetchParticipants();
   }, [eventId]);
 
-  // Gérer le changement dans les inputs du formulaire
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    
-    if (type === 'number') {
-      setFormData({
-        ...formData,
-        [name]: value ? parseInt(value) : undefined
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-    }
-    
-    // Effacer l'erreur pour ce champ si elle existe
+  // Gestion des changements de formulaire
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  // Gestion du changement de format
+  const handleFormatChange = (value: string) => {
+    setFormData(prev => ({ ...prev, format: value }));
+    if (errors.format) {
+      setErrors(prev => ({ ...prev, format: "" }));
+    }
+  };
+
+  // Gestion des changements de date
+  const handleDateChange = (field: 'start_date' | 'end_date', value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  // Gestion des changements d'heure
+  const handleTimeChange = (field: 'start_time' | 'end_time', value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: "" }));
     }
   };
 
@@ -311,15 +338,15 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
             <form onSubmit={handleSubmit}>
               {/* Titre */}
               <div className="mb-4">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                   Titre <span className="text-red-500">*</span>
-                </label>
-                <input
+                </Label>
+                <Input
                   type="text"
                   id="title"
                   name="title"
                   value={formData.title || ''}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   className={`w-full p-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="Nom de la session"
                 />
@@ -330,14 +357,14 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
               
               {/* Description */}
               <div className="mb-4">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                   Description
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="description"
                   name="description"
                   value={formData.description || ''}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   rows={3}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   placeholder="Description de la session (optionnel)"
@@ -347,92 +374,68 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
               {/* Dates et heures */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label htmlFor="start_date" className="block text-sm font-medium text-gray-700 mb-1">
+                  <Label htmlFor="start_date" className="block text-sm font-medium text-gray-700 mb-1">
                     Date de début <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CalendarIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="date"
-                      id="start_date"
-                      name="start_date"
-                      value={formData.start_date || ''}
-                      onChange={handleChange}
-                      min={eventDates?.startDate}
-                      max={eventDates?.endDate}
-                      className={`w-full pl-10 p-2 border rounded-md ${errors.start_date ? 'border-red-500' : 'border-gray-300'}`}
-                    />
-                  </div>
+                  </Label>
+                  <DatePicker
+                    id="start_date"
+                    name="start_date"
+                    value={formData.start_date || ''}
+                    onChange={(date) => handleDateChange('start_date', date)}
+                    minDate={eventDates?.startDate}
+                    maxDate={eventDates?.endDate}
+                    className="w-full"
+                  />
                   {errors.start_date && (
                     <p className="mt-1 text-sm text-red-600">{errors.start_date}</p>
                   )}
                 </div>
                 
                 <div>
-                  <label htmlFor="end_date" className="block text-sm font-medium text-gray-700 mb-1">
+                  <Label htmlFor="end_date" className="block text-sm font-medium text-gray-700 mb-1">
                     Date de fin <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CalendarIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="date"
-                      id="end_date"
-                      name="end_date"
-                      value={formData.end_date || ''}
-                      onChange={handleChange}
-                      min={formData.start_date || eventDates?.startDate}
-                      max={eventDates?.endDate}
-                      className={`w-full pl-10 p-2 border rounded-md ${errors.end_date ? 'border-red-500' : 'border-gray-300'}`}
-                    />
-                  </div>
+                  </Label>
+                  <DatePicker
+                    id="end_date"
+                    name="end_date"
+                    value={formData.end_date || ''}
+                    onChange={(date) => handleDateChange('end_date', date)}
+                    minDate={formData.start_date || eventDates?.startDate}
+                    maxDate={eventDates?.endDate}
+                    className="w-full"
+                  />
                   {errors.end_date && (
                     <p className="mt-1 text-sm text-red-600">{errors.end_date}</p>
                   )}
                 </div>
                 
                 <div>
-                  <label htmlFor="start_time" className="block text-sm font-medium text-gray-700 mb-1">
+                  <Label htmlFor="start_time" className="block text-sm font-medium text-gray-700 mb-1">
                     Heure de début <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <ClockIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="time"
-                      id="start_time"
-                      name="start_time"
-                      value={formData.start_time || ''}
-                      onChange={handleChange}
-                      className={`w-full pl-10 p-2 border rounded-md ${errors.start_time ? 'border-red-500' : 'border-gray-300'}`}
-                    />
-                  </div>
+                  </Label>
+                  <TimePicker
+                    id="start_time"
+                    name="start_time"
+                    value={formData.start_time || ''}
+                    onChange={(time) => handleTimeChange('start_time', time)}
+                    className="w-full"
+                  />
                   {errors.start_time && (
                     <p className="mt-1 text-sm text-red-600">{errors.start_time}</p>
                   )}
                 </div>
                 
                 <div>
-                  <label htmlFor="end_time" className="block text-sm font-medium text-gray-700 mb-1">
+                  <Label htmlFor="end_time" className="block text-sm font-medium text-gray-700 mb-1">
                     Heure de fin <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <ClockIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="time"
-                      id="end_time"
-                      name="end_time"
-                      value={formData.end_time || ''}
-                      onChange={handleChange}
-                      className={`w-full pl-10 p-2 border rounded-md ${errors.end_time ? 'border-red-500' : 'border-gray-300'}`}
-                    />
-                  </div>
+                  </Label>
+                  <TimePicker
+                    id="end_time"
+                    name="end_time"
+                    value={formData.end_time || ''}
+                    onChange={(time) => handleTimeChange('end_time', time)}
+                    className="w-full"
+                  />
                   {errors.end_time && (
                     <p className="mt-1 text-sm text-red-600">{errors.end_time}</p>
                   )}
@@ -441,93 +444,77 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
               
               {/* Location */}
               <div className="mb-4">
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
                   Lieu
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MapPinIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={formData.location || ''}
-                    onChange={handleChange}
-                    className="w-full pl-10 p-2 border border-gray-300 rounded-md"
-                    placeholder="Salle, amphithéâtre, etc."
-                  />
-                </div>
+                </Label>
+                <Input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location || ''}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="Salle, amphithéâtre, etc."
+                />
               </div>
               
               {/* Speaker */}
               <div className="mb-4">
-                <label htmlFor="speaker" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="speaker" className="block text-sm font-medium text-gray-700 mb-1">
                   Intervenant
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <UserIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <MultiSelect
-                    options={speakerOptions}
-                    selected={selectedSpeakers}
-                    onChange={setSelectedSpeakers}
-                    placeholder="Sélectionner un ou plusieurs intervenants"
-                    searchPlaceholder="Rechercher un participant..."
-                    loading={loadingParticipants}
-                    className="pl-10"
-                  />
-                </div>
+                </Label>
+                <MultiSelect
+                  options={speakerOptions}
+                  selected={selectedSpeakers}
+                  onChange={setSelectedSpeakers}
+                  placeholder="Sélectionner un ou plusieurs intervenants"
+                  searchPlaceholder="Rechercher un participant..."
+                  loading={loadingParticipants}
+                  className="pl-10"
+                />
               </div>
               
               {/* Capacity */}
               <div className="mb-4">
-                <label htmlFor="capacity" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="capacity" className="block text-sm font-medium text-gray-700 mb-1">
                   Capacité
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <UsersIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="number"
-                    id="capacity"
-                    name="capacity"
-                    value={formData.capacity || ''}
-                    onChange={handleChange}
-                    min="0"
-                    className="w-full pl-10 p-2 border border-gray-300 rounded-md"
-                    placeholder="Nombre de places disponibles"
-                  />
-                </div>
+                </Label>
+                <Input
+                  type="number"
+                  id="capacity"
+                  name="capacity"
+                  value={formData.capacity || ''}
+                  onChange={handleInputChange}
+                  min="0"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="Nombre de places disponibles"
+                />
               </div>
               
               {/* Format */}
               <div className="mb-4">
-                <label htmlFor="format" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="format" className="block text-sm font-medium text-gray-700 mb-1">
                   Format
-                </label>
-                <select
-                  id="format"
-                  name="format"
-                  value={formData.format || 'physique'}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                >
-                  {formatOptions.map(option => (
-                    <option key={option.value} value={option.value}>
-                      {option.label} - {option.description}
-                    </option>
-                  ))}
-                </select>
+                </Label>
+                <Select onValueChange={handleFormatChange} defaultValue={formData.format || 'physique'}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Sélectionner un format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {formatOptions.map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label} - {option.description}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               
               {/* Banner upload */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <Label className="block text-sm font-medium text-gray-700 mb-1">
                   Bannière
-                </label>
+                </Label>
                 <div 
                   className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:border-[#81B441] transition-colors"
                   onClick={() => bannerInputRef.current?.click()}
@@ -573,7 +560,7 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
                 >
                   Annuler
                 </Link>
-                <button
+                <Button
                   type="submit"
                   disabled={saving || success}
                   className="px-4 py-2 bg-[#81B441] text-white rounded-md hover:bg-[#72a139] flex items-center justify-center min-w-[100px]"
@@ -590,7 +577,7 @@ export default function CreateSessionPage({ params }: { params: Promise<{ id: st
                   ) : (
                     "Créer la session"
                   )}
-                </button>
+                </Button>
               </div>
             </form>
           </div>

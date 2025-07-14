@@ -1,111 +1,74 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-// Type pour les participants de session avec les informations supplémentaires
-interface SessionParticipantWithInfo {
-  id: string;
-  sessionId: string;
-  participantId: string;
-  registeredAt: Date;
-  attendedSession: boolean;
-  attendanceTime: Date | null;
-  participant: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    type: string;
-    jobTitle: string | null;
-    company: string | null;
-    qrCode: string;
-    shortCode: string | null;
-    checkedIn: boolean;
-    checkInTime: Date | null;
-  };
-}
-
-// GET /api/events/[id]/sessions/[sessionId]/participants
-// Récupère tous les participants d'une session
+// GET /api/events/[id]/sessions/[sessionId]/participants - Récupérer les participants d'une session
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string; sessionId: string }> }
 ) {
   try {
-    const { id, sessionId } = await params;
-
+    const session = await getServerSession(authOptions);
+    
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+    
+    const { id: eventId, sessionId } = await params;
+    
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
-      where: { id },
+      where: { id: eventId },
     });
     
     if (!event) {
       return NextResponse.json(
-        { error: "Événement non trouvé" },
+        { message: "Événement non trouvé" },
         { status: 404 }
       );
     }
 
     // Vérifier que la session existe
-    const sessionExists = await prisma.event_sessions.findUnique({
-      where: { 
-        id: sessionId,
-      },
-    });
-
-    if (!sessionExists) {
+    const sessionExists = await prisma.$queryRaw`
+      SELECT id FROM event_sessions 
+      WHERE id = ${sessionId} AND event_id = ${eventId}
+    `;
+    
+    if (!Array.isArray(sessionExists) || sessionExists.length === 0) {
       return NextResponse.json(
-        { error: "Session non trouvée" },
+        { message: "Session non trouvée" },
         { status: 404 }
       );
     }
 
-    // Récupérer tous les participants de la session avec leurs informations
-    const participants = await prisma.sessionParticipant.findMany({
-      where: {
-        sessionId,
-      },
-      include: {
-        participant: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true,
-            type: true,
-            jobTitle: true,
-            company: true,
-            qrCode: true,
-            shortCode: true,
-            checkedIn: true,
-            checkInTime: true,
-          },
-        },
-      },
-      orderBy: {
-        registeredAt: 'desc',
-      },
-    });
+    // Récupérer les participants de la session
+    const participants = await prisma.$queryRaw`
+      SELECT 
+        r.id,
+        r.first_name as "firstName",
+        r.last_name as "lastName",
+        r.email,
+        r.phone,
+        r.job_title as "jobTitle",
+        r.company,
+        r.type,
+        r.checked_in as "checkedIn",
+        r.avatar
+      FROM session_participants sp
+      JOIN registrations r ON sp.participant_id = r.id
+      WHERE sp.session_id = ${sessionId}
+      ORDER BY r.first_name, r.last_name
+    `;
 
-    // Formater les données pour le frontend
-    const formattedParticipants = participants.map((p: SessionParticipantWithInfo) => ({
-      id: p.id,
-      sessionId: p.sessionId,
-      participantId: p.participantId,
-      registeredAt: p.registeredAt,
-      attendedSession: p.attendedSession,
-      attendanceTime: p.attendanceTime,
-      participant: p.participant,
-    }));
-
-    return NextResponse.json(formattedParticipants);
+    return NextResponse.json(participants);
   } catch (error) {
-    console.error("Error fetching session participants:", error);
+    console.error("Erreur lors de la récupération des participants de la session:", error);
     return NextResponse.json(
-      { error: "Error fetching session participants", details: String(error) },
+      { message: "Erreur lors de la récupération des participants", error: String(error) },
       { status: 500 }
     );
   }

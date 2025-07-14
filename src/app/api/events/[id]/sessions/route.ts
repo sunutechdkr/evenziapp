@@ -9,7 +9,42 @@ type Speaker = {
   id: string;
   firstName: string;
   lastName: string;
-  [key: string]: any; // Pour permettre d'autres propriétés
+  email: string;
+  type: string;
+  checkedIn: boolean;
+};
+
+// Type pour les participants de session
+type SessionParticipant = {
+  participant: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    type: string;
+    checkedIn: boolean;
+  };
+};
+
+// Type pour une session avec participants
+type SessionWithParticipants = {
+  id: string;
+  title: string;
+  description: string | null;
+  start_date: Date;
+  end_date: Date;
+  start_time: string;
+  end_time: string;
+  location: string | null;
+  speaker: string | null;
+  capacity: number | null;
+  format: string | null;
+  banner: string | null;
+  video_url: string | null;
+  event_id: string;
+  created_at: Date;
+  updated_at: Date;
+  participants: SessionParticipant[];
 };
 
 // GET /api/events/[id]/sessions - Récupérer toutes les sessions d'un événement
@@ -42,171 +77,57 @@ export async function GET(
       );
     }
 
-    // Récupérer toutes les sessions de l'événement
-    const sessions = await prisma.$queryRaw`
-      SELECT 
-        id,
-        title,
-        description,
-        start_date,
-        end_date,
-        start_time,
-        end_time,
-        location,
-        speaker,
-        capacity,
-        format,
-        banner,
-        video_url,
-        created_at,
-        updated_at
-      FROM event_sessions
-      WHERE event_id = ${id}
-      ORDER BY start_date ASC, start_time ASC
-    `;
-
-    // Récupérer tous les intervenants de cet événement pour enrichir les données
-    const registrations = await prisma.$queryRaw`
-      SELECT 
-        id, 
-        first_name as "firstName", 
-        last_name as "lastName", 
-        email,
-        job_title as "jobTitle",
-        company,
-        type,
-        checked_in as "checkedIn",
-        avatar
-      FROM registrations
-      WHERE event_id = ${id} AND type = 'SPEAKER'
-    `;
-
-    // Créer un map des intervenants pour un accès rapide
-    const speakerMap = new Map();
-    (registrations as any[]).forEach((speaker: any) => {
-      speakerMap.set(speaker.id, speaker);
-    });
-
-    // Enrichir les sessions avec les informations complètes des intervenants
-    const enrichedSessions = await Promise.all(Array.from(sessions as any[]).map(async (session: any) => {
-      let sessionSpeakers: Speaker[] = [];
-
-      // Si le champ speaker n'est pas vide, traiter les différents formats
-      if (session.speaker) {
-        console.log(`Processing speaker field for session ${session.title}:`, session.speaker);
-        
-        // Si c'est déjà un tableau d'objets Speaker
-        if (Array.isArray(session.speaker)) {
-          sessionSpeakers = session.speaker.map((speaker: any) => ({
-            id: speaker.id,
-            firstName: speaker.firstName || speaker.first_name,
-            lastName: speaker.lastName || speaker.last_name,
-            email: speaker.email,
-            jobTitle: speaker.jobTitle || speaker.job_title,
-            company: speaker.company,
-            type: speaker.type || 'SPEAKER',
-            checkedIn: speaker.checkedIn || speaker.checked_in || false,
-            avatar: speaker.avatar
-          }));
-        }
-        // Si le champ contient des IDs séparés par des virgules
-        else if (session.speaker.includes(',')) {
-          const speakerIds = session.speaker.split(',').map((id: string) => id.trim());
-          sessionSpeakers = speakerIds
-            .map((id: string) => speakerMap.get(id))
-            .filter(Boolean)
-            .map((speaker: any) => ({
-              id: speaker.id,
-              firstName: speaker.firstName,
-              lastName: speaker.lastName,
-              email: speaker.email,
-              jobTitle: speaker.jobTitle,
-              company: speaker.company,
-              type: speaker.type,
-              checkedIn: speaker.checkedIn,
-              avatar: speaker.avatar
-            }));
-        }
-        // Si c'est un seul ID
-        else if (speakerMap.has(session.speaker)) {
-          const speaker = speakerMap.get(session.speaker);
-          sessionSpeakers = [{
-            id: speaker.id,
-            firstName: speaker.firstName,
-            lastName: speaker.lastName,
-            email: speaker.email,
-            jobTitle: speaker.jobTitle,
-            company: speaker.company,
-            type: speaker.type,
-            checkedIn: speaker.checkedIn,
-            avatar: speaker.avatar
-          }];
-        }
-        // Sinon, essayer de parser comme JSON
-        else if (session.speaker.startsWith('{') || session.speaker.startsWith('[')) {
-          try {
-            const parsed = JSON.parse(session.speaker);
-            if (Array.isArray(parsed)) {
-              sessionSpeakers = parsed.map((speaker: any) => ({
-                id: speaker.id || `speaker-${session.id}-${Date.now()}`,
-                firstName: speaker.firstName || speaker.first_name || "",
-                lastName: speaker.lastName || speaker.last_name || "",
-                email: speaker.email || "",
-                jobTitle: speaker.jobTitle || speaker.job_title || "",
-                company: speaker.company || "",
-                type: speaker.type || 'SPEAKER',
-                checkedIn: speaker.checkedIn || speaker.checked_in || false,
-                avatar: speaker.avatar || null
-              }));
-            } else {
-              sessionSpeakers = [{
-                id: parsed.id || `speaker-${session.id}`,
-                firstName: parsed.firstName || parsed.first_name || "",
-                lastName: parsed.lastName || parsed.last_name || "",
-                email: parsed.email || "",
-                jobTitle: parsed.jobTitle || parsed.job_title || "",
-                company: parsed.company || "",
-                type: parsed.type || 'SPEAKER',
-                checkedIn: parsed.checkedIn || parsed.checked_in || false,
-                avatar: parsed.avatar || null
-              }];
+    // Récupérer toutes les sessions de l'événement avec les participants
+    const sessions = await prisma.event_sessions.findMany({
+      where: { event_id: id },
+      include: {
+        participants: {
+          include: {
+            participant: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                type: true,
+                checkedIn: true,
+              }
             }
-          } catch (e) {
-            console.error("Erreur de parsing JSON pour la session", session.title, e);
           }
         }
-        // Si c'est juste une chaîne de caractères (nom simple)
-        else {
-          const nameParts = session.speaker.trim().split(' ');
-          sessionSpeakers = [{
-            id: `speaker-${session.id}`,
-            firstName: nameParts[0] || "Intervenant",
-            lastName: nameParts.slice(1).join(' ') || "",
-            email: "",
-            jobTitle: "",
-            company: "",
-            type: 'SPEAKER',
-            checkedIn: false,
-            avatar: null
-          }];
-        }
-      }
-      
-      // Compter les participants inscrits à cette session
-      const participantCount = await prisma.$queryRaw`
-        SELECT COUNT(*) as count
-        FROM session_participants
-        WHERE session_id = ${session.id}
-      `;
-      
-      return {
-        ...session,
-        speakers: sessionSpeakers,
-        participantCount: Number((participantCount as any[])[0]?.count || 0)
-      };
-    }));
+      },
+      orderBy: [
+        { start_date: 'asc' },
+        { start_time: 'asc' }
+      ]
+    }) as SessionWithParticipants[];
 
-    return NextResponse.json(enrichedSessions);
+    // Transformer les données pour inclure les informations des participants inscrits
+    const transformedSessions = sessions.map((sessionItem: SessionWithParticipants) => {
+      // Séparer les speakers des participants
+      const speakers: Speaker[] = [];
+      const participants = sessionItem.participants.map((p: SessionParticipant) => p.participant);
+      
+      // Si il y a des speakers dans le champ speaker (séparés par des virgules)
+      if (sessionItem.speaker) {
+        const speakerIds = sessionItem.speaker.split(',');
+        speakerIds.forEach((speakerId: string) => {
+          const speakerData = participants.find((p: Speaker) => p.id === speakerId.trim());
+          if (speakerData) {
+            speakers.push(speakerData);
+          }
+        });
+      }
+
+      return {
+        ...sessionItem,
+        speakers,
+        participants: participants.filter((p: Speaker) => !sessionItem.speaker?.includes(p.id)),
+        participantCount: sessionItem.participants.length,
+      };
+    });
+
+    return NextResponse.json(transformedSessions);
   } catch (error) {
     console.error("Erreur lors de la récupération des sessions:", error);
     return NextResponse.json(
@@ -290,60 +211,92 @@ export async function POST(
       );
     }
 
-    // Générer un ID unique pour la session
-    const sessionId = uuidv4();
-    const now = new Date();
-
-    // Créer la nouvelle session
-    await prisma.$executeRaw`
-      INSERT INTO event_sessions (
-        id,
+    // Créer la nouvelle session en utilisant le modèle Prisma
+    const createdSession = await prisma.event_sessions.create({
+      data: {
+        id: uuidv4(),
         title,
-        description,
-        start_date,
-        end_date,
+        description: description || null,
+        start_date: new Date(start_date),
+        end_date: end_date ? new Date(end_date) : new Date(start_date),
         start_time,
-        end_time,
-        location,
-        speaker,
-        capacity,
-        format,
-        banner,
-        video_url,
-        event_id,
-        created_at,
-        updated_at
-      ) VALUES (
-        ${sessionId},
-        ${title},
-        ${description || null},
-        ${new Date(start_date)},
-        ${end_date ? new Date(end_date) : new Date(start_date)},
-        ${start_time},
-        ${end_time || start_time},
-        ${location || null},
-        ${speaker || null},
-        ${capacity ? parseInt(capacity) : null},
-        ${format || null},
-        ${banner || null},
-        ${video_url || null},
-        ${id},
-        ${now},
-        ${now}
-      )
-    `;
+        end_time: end_time || start_time,
+        location: location || null,
+        speaker: speaker || null,
+        capacity: capacity ? parseInt(capacity.toString()) : null,
+        format: format || null,
+        banner: banner || null,
+        video_url: video_url || null,
+        event_id: id,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    });
 
-    // Récupérer la session créée
-    const createdSession = await prisma.$queryRaw`
-      SELECT * FROM event_sessions 
-      WHERE id = ${sessionId}
-    `;
-
-    return NextResponse.json(createdSession[0], { status: 201 });
+    console.log("✅ Session créée avec succès:", createdSession.id);
+    return NextResponse.json(createdSession, { status: 201 });
   } catch (error) {
-    console.error("Erreur lors de la création de la session:", error);
+    console.error("❌ Erreur lors de la création de la session:", error);
     return NextResponse.json(
       { message: "Erreur lors de la création de la session", error: String(error) },
+      { status: 500 }
+    );
+  }
+} 
+
+// DELETE /api/events/[id]/sessions - Supprimer une session
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session) {
+      return NextResponse.json(
+        { message: "Non autorisé" },
+        { status: 401 }
+      );
+    }
+
+    const { id } = await params;
+    const { sessionId } = await request.json();
+
+    if (!sessionId) {
+      return NextResponse.json(
+        { message: "ID de session requis" },
+        { status: 400 }
+      );
+    }
+
+    // Vérifier que la session existe et appartient à l'événement
+    const existingSession = await prisma.event_sessions.findFirst({
+      where: {
+        id: sessionId,
+        event_id: id,
+      },
+    });
+
+    if (!existingSession) {
+      return NextResponse.json(
+        { message: "Session non trouvée" },
+        { status: 404 }
+      );
+    }
+
+    // Supprimer la session
+    await prisma.event_sessions.delete({
+      where: { id: sessionId },
+    });
+
+    return NextResponse.json(
+      { message: "Session supprimée avec succès" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la session:", error);
+    return NextResponse.json(
+      { message: "Erreur lors de la suppression de la session", error: String(error) },
       { status: 500 }
     );
   }

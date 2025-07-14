@@ -67,35 +67,30 @@ export async function PUT(
 
     const now = new Date();
 
-    // Utiliser $executeRaw pour mettre à jour la session
-    await prisma.$executeRaw`
-      UPDATE event_sessions 
-      SET 
-        title = ${title},
-        description = ${description},
-        start_date = ${new Date(start_date)},
-        end_date = ${new Date(end_date)},
-        start_time = ${start_time},
-        end_time = ${end_time},
-        location = ${location},
-        speaker = ${speaker},
-        capacity = ${capacity ? parseInt(capacity) : null},
-        format = ${format},
-        banner = ${banner},
-        video_url = ${video_url},
-        updated_at = ${now}
-      WHERE 
-        id = ${sessionId} 
-        AND event_id = ${id}
-    `;
+    // Mettre à jour la session en utilisant le modèle Prisma
+    const updatedSession = await prisma.event_sessions.update({
+      where: { 
+        id: sessionId,
+        event_id: id 
+      },
+      data: {
+        title,
+        description,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
+        start_time,
+        end_time,
+        location,
+        speaker,
+        capacity: capacity ? parseInt(capacity.toString()) : null,
+        format,
+        banner,
+        video_url,
+        updated_at: now
+      }
+    });
 
-    // Récupérer la session mise à jour
-    const updatedSession = await prisma.$queryRaw`
-      SELECT * FROM event_sessions 
-      WHERE id = ${sessionId}
-    `;
-
-    return NextResponse.json(updatedSession[0]);
+    return NextResponse.json(updatedSession);
   } catch (error) {
     console.error("Error updating session:", error);
     return NextResponse.json(

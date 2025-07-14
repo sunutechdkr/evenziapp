@@ -8,13 +8,45 @@ import {
   ArrowPathIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  ArrowDownTrayIcon
+  ArrowDownTrayIcon,
+  Squares2X2Icon,
+  RectangleStackIcon,
+  ClockIcon,
+  MapPinIcon,
+  UserGroupIcon,
+  DocumentTextIcon,
+  UserIcon,
+  FolderIcon,
+  InformationCircleIcon,
+  CheckBadgeIcon,
+  EnvelopeIcon,
+  BuildingOfficeIcon,
+  BriefcaseIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+
+// Importer les composants Shadcn UI
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 // Types
 type Event = {
@@ -27,6 +59,31 @@ type Event = {
   slug?: string;
 };
 
+type Speaker = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  jobTitle?: string;
+  company?: string;
+  type: string;
+  checkedIn: boolean;
+  avatar?: string;
+};
+
+type Participant = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  jobTitle?: string;
+  company?: string;
+  type: string;
+  checkedIn: boolean;
+  avatar?: string;
+};
+
 type Session = {
   id: string;
   title: string;
@@ -37,15 +94,15 @@ type Session = {
   end_time: string;
   location?: string;
   speaker?: string;
+  speakers?: Speaker[];
   capacity?: number;
+  format?: string;
+  banner?: string;
+  video_url?: string;
+  participantCount: number;
 };
 
-// Type augmentation pour le champ speaker
-type Speaker = {
-  id?: string;
-  firstName?: string;
-  lastName?: string;
-};
+type ViewMode = 'cards' | 'grid';
 
 export default function EventSessionsPage({ params }: { params: Promise<{ id: string }> }) {
   const [eventId, setEventId] = useState<string>("");
@@ -55,13 +112,28 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [filterLocation, setFilterLocation] = useState<string>('');
   const [filterSpeaker, setFilterSpeaker] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('cards');
+  
+  // États pour le popup de détails
+  const [showSessionModal, setShowSessionModal] = useState(false);
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [activeTab, setActiveTab] = useState('details');
+  const [sessionParticipants, setSessionParticipants] = useState<Participant[]>([]);
+  const [sessionDocuments, setSessionDocuments] = useState<{
+    name: string;
+    size?: string;
+    type: string;
+  }[]>([]);
   
   // Extraire les paramètres une fois au chargement du composant
   useEffect(() => {
-    if (params && params.id) {
-      setEventId(params.id);
-    }
+    const extractParams = async () => {
+      const resolvedParams = await params;
+      setEventId(resolvedParams.id);
+    };
+    extractParams();
   }, [params]);
 
   // Récupérer les détails de l'événement et les sessions au chargement
@@ -121,46 +193,9 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
   // Obtenir les intervenants uniques pour le filtre
   const uniqueSpeakers = useMemo(() => {
     const speakers = sessions
-      .filter(s => s.speaker)
-      .map(s => {
-        const speaker = s.speaker;
-        
-        // Si c'est une chaîne
-        if (typeof speaker === 'string') {
-          return speaker;
-        } 
-        
-        // Si c'est un objet
-        if (speaker && typeof speaker === 'object') {
-          const speakerObj = speaker as Speaker;
-          
-          // Si c'est un objet avec firstName et lastName
-          if ('firstName' in speakerObj && 'lastName' in speakerObj) {
-            return `${speakerObj.firstName} ${speakerObj.lastName}`;
-          }
-          
-          // Si c'est un tableau
-          if (Array.isArray(speakerObj)) {
-            return speakerObj
-              .map(spk => {
-                if (spk && typeof spk === 'object' && 'firstName' in spk && 'lastName' in spk) {
-                  const typedSpeaker = spk as Speaker;
-                  return `${typedSpeaker.firstName} ${typedSpeaker.lastName}`;
-                }
-                return String(spk);
-              })
-              .join(', ');
-          }
-          
-          // Si c'est un autre type d'objet, le convertir en chaîne
-          return JSON.stringify(speakerObj);
-        }
-        
-        // Fallback pour tout autre type
-        return String(speaker);
-      });
-    
-    // Utiliser Set pour éliminer les doublons
+      .filter(s => s.speakers && s.speakers.length > 0)
+      .flatMap(s => s.speakers!)
+      .map(speaker => `${speaker.firstName} ${speaker.lastName}`);
     return [...new Set(speakers)];
   }, [sessions]);
 
@@ -169,18 +204,26 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
     return sessions.filter(session => {
       let matchesLocation = true;
       let matchesSpeaker = true;
+      let matchesSearch = true;
       
       if (filterLocation && session.location) {
         matchesLocation = session.location.includes(filterLocation);
       }
       
-      if (filterSpeaker && session.speaker) {
-        matchesSpeaker = session.speaker.includes(filterSpeaker);
+      if (filterSpeaker && session.speakers) {
+        matchesSpeaker = session.speakers.some(speaker => 
+          `${speaker.firstName} ${speaker.lastName}`.includes(filterSpeaker)
+        );
       }
       
-      return matchesLocation && matchesSpeaker;
+      if (searchTerm) {
+        matchesSearch = session.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      (session.description && session.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      }
+      
+      return matchesLocation && matchesSpeaker && matchesSearch;
     });
-  }, [sessions, filterLocation, filterSpeaker]);
+  }, [sessions, filterLocation, filterSpeaker, searchTerm]);
 
   // Organiser les sessions par jour
   const sessionsByDay = useMemo(() => {
@@ -212,17 +255,42 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
     }
   };
 
+  // Fonction pour ouvrir le popup de détails
+  const openSessionDetails = async (session: Session) => {
+    setSelectedSession(session);
+    setShowSessionModal(true);
+    setActiveTab('details');
+    
+    // Charger les participants de la session
+    try {
+      const participantsResponse = await fetch(`/api/events/${eventId}/sessions/${session.id}/participants`);
+      if (participantsResponse.ok) {
+        const participantsData = await participantsResponse.json();
+        setSessionParticipants(participantsData);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des participants:', error);
+    }
+    
+    // Charger les documents de la session
+    try {
+      const documentsResponse = await fetch(`/api/events/${eventId}/sessions/${session.id}/documents`);
+      if (documentsResponse.ok) {
+        const documentsData = await documentsResponse.json();
+        setSessionDocuments(documentsData);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des documents:', error);
+    }
+  };
+
   // Fonction pour exporter les sessions au format Excel
   const handleExportSessions = () => {
     if (!eventId) return;
     
-    // Préparation de l'URL de l'API d'exportation
     const exportUrl = `/api/events/${eventId}/export/sessions`;
-    
-    // Afficher un loading toast
     toast.loading('Exportation des sessions en cours...', { id: 'export-toast' });
 
-    // Ouvrir l'URL dans un nouvel onglet ou télécharger directement le fichier
     const downloadLink = document.createElement('a');
     downloadLink.href = exportUrl;
     downloadLink.target = '_blank';
@@ -231,11 +299,204 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
     downloadLink.click();
     document.body.removeChild(downloadLink);
     
-    // Mettre à jour le toast pour indiquer le succès
     setTimeout(() => {
       toast.success('Les sessions ont été exportées avec succès', { id: 'export-toast' });
     }, 1000);
   };
+
+  // Rendu de la vue cards
+  const renderCardsView = () => (
+    <div className="space-y-6 pb-20">
+      {Object.keys(sessionsByDay).sort().map((day) => (
+        <div key={day} className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+          <div 
+            className="bg-gray-50 px-4 py-3 border-b border-gray-200 cursor-pointer"
+            onClick={() => toggleDayExpansion(day)}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-[#81B441]">
+                {format(new Date(day), 'EEEE d MMMM yyyy', { locale: fr })}
+              </h3>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-500 mr-2">
+                  {sessionsByDay[day].length} session{sessionsByDay[day].length !== 1 ? 's' : ''}
+                </span>
+                {expandedDay === day ? (
+                  <ChevronUpIcon className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <ChevronDownIcon className="h-5 w-5 text-gray-400" />
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {(expandedDay === day || expandedDay === null) && (
+            <ul role="list" className="divide-y divide-gray-200">
+              {sessionsByDay[day].map((session) => (
+                <li key={session.id} className="p-4 sm:p-6 hover:bg-gray-50 transition-colors duration-150 relative">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                        <span className="text-lg font-medium text-gray-900">
+                          {session.title}
+                        </span>
+                        <div className="flex gap-2">
+                          <div className="px-2 py-1 bg-[#81B441]/10 text-[#81B441] text-xs font-medium rounded-full">
+                            {session.start_time} - {session.end_time}
+                          </div>
+                          {session.location && (
+                            <div className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                              {session.location}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {session.description && (
+                        <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                          {session.description}
+                        </p>
+                      )}
+                      
+                      <div className="flex items-center gap-4 text-sm text-gray-500">
+                        {session.speakers && session.speakers.length > 0 && (
+                          <div className="flex items-center gap-1">
+                            <UserIcon className="h-4 w-4" />
+                            <span>{session.speakers.map(s => `${s.firstName} ${s.lastName}`).join(', ')}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1">
+                          <UserGroupIcon className="h-4 w-4" />
+                          <span>{session.participantCount} participant{session.participantCount !== 1 ? 's' : ''}</span>
+                        </div>
+                        {session.capacity && (
+                          <div className="flex items-center gap-1">
+                            <span>Capacité: {session.capacity}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="self-center">
+                      <ChevronLeftIcon className="h-5 w-5 text-gray-400 transform rotate-180" />
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => openSessionDetails(session)}
+                    className="absolute inset-0 cursor-pointer z-10"
+                    aria-label={`Voir les détails de la session ${session.title}`}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  // Rendu de la vue grille
+  const renderGridView = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <CalendarIcon className="h-5 w-5" />
+          Sessions ({filteredSessions.length})
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Session</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Heure</TableHead>
+                <TableHead>Lieu</TableHead>
+                <TableHead>Intervenants</TableHead>
+                <TableHead>Participants</TableHead>
+                <TableHead>Capacité</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredSessions.map((session) => (
+                <TableRow key={session.id} className="hover:bg-gray-50">
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{session.title}</div>
+                      {session.description && (
+                        <div className="text-sm text-gray-500 line-clamp-1">
+                          {session.description}
+                        </div>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {format(new Date(session.start_date), 'dd/MM/yyyy')}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-xs">
+                      {session.start_time} - {session.end_time}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {session.location ? (
+                      <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                        {session.location}
+                      </Badge>
+                    ) : (
+                      <span className="text-gray-400">Non défini</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {session.speakers && session.speakers.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {session.speakers.slice(0, 2).map((speaker, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {speaker.firstName} {speaker.lastName}
+                          </Badge>
+                        ))}
+                        {session.speakers.length > 2 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{session.speakers.length - 2}
+                          </Badge>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">Aucun</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <UserGroupIcon className="h-4 w-4 text-gray-400" />
+                      <span>{session.participantCount}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {session.capacity ? (
+                      <span className="text-sm">{session.capacity}</span>
+                    ) : (
+                      <span className="text-gray-400">Illimitée</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => openSessionDetails(session)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <InformationCircleIcon className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -262,6 +523,32 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
             </div>
             
             <div className="mt-4 sm:mt-0 flex items-center space-x-2">
+              {/* Sélecteur de vue */}
+              <div className="flex items-center border border-gray-300 rounded-md">
+                <Button
+                  variant={viewMode === 'cards' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('cards')}
+                  className={cn(
+                    "rounded-r-none border-r",
+                    viewMode === 'cards' && "bg-[#81B441] hover:bg-[#72a139]"
+                  )}
+                >
+                  <RectangleStackIcon className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className={cn(
+                    "rounded-l-none",
+                    viewMode === 'grid' && "bg-[#81B441] hover:bg-[#72a139]"
+                  )}
+                >
+                  <Squares2X2Icon className="h-4 w-4" />
+                </Button>
+              </div>
+              
               <button
                 onClick={refreshSessions}
                 className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#81B441]"
@@ -288,10 +575,19 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
           
-          {/* Contrôles de filtre */}
+          {/* Contrôles de filtre et recherche */}
           <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
               <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <div className="relative">
+                  <Input
+                    placeholder="Rechercher une session..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full sm:w-64"
+                  />
+                </div>
+                
                 <div>
                   <label htmlFor="filterLocation" className="block text-sm font-medium text-gray-700 mb-1">Lieu</label>
                   <select
@@ -359,65 +655,279 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
               </Link>
             </div>
           ) : (
-            // Vue liste organisée par jour
-            <div className="space-y-6 pb-20">
-              {Object.keys(sessionsByDay).sort().map((day) => (
-                <div key={day} className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                  <div 
-                    className="bg-gray-50 px-4 py-3 border-b border-gray-200 cursor-pointer"
-                    onClick={() => toggleDayExpansion(day)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-[#81B441]">
-                        {format(new Date(day), 'EEEE d MMMM yyyy', { locale: fr })}
-                      </h3>
-                      <div className="flex items-center">
-                        <span className="text-sm text-gray-500 mr-2">
-                          {sessionsByDay[day].length} session{sessionsByDay[day].length !== 1 ? 's' : ''}
-                        </span>
-                        {expandedDay === day ? (
-                          <ChevronUpIcon className="h-5 w-5 text-gray-400" />
-                        ) : (
-                          <ChevronDownIcon className="h-5 w-5 text-gray-400" />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {(expandedDay === day || expandedDay === null) && (
-                    <ul role="list" className="divide-y divide-gray-200">
-                      {sessionsByDay[day].map((session) => (
-                        <li key={session.id} className="p-4 sm:p-6 hover:bg-gray-50 transition-colors duration-150 relative">
-                          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                            <div className="flex-1 min-w-0">
-                              <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                                <span className="text-lg font-medium text-gray-900">
-                                  {session.title}
-                                </span>
-                                <div className="px-2 py-1 bg-[#81B441]/10 text-[#81B441] text-xs font-medium rounded-full">
-                                  {session.start_time} - {session.end_time}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="self-center">
-                              <ChevronLeftIcon className="h-5 w-5 text-gray-400 transform rotate-180" />
-                            </div>
-                          </div>
-                          <Link
-                            href={`/dashboard/events/${eventId}/sessions/${session.id}`}
-                            className="absolute inset-0 cursor-pointer z-10"
-                            aria-label={`Voir les détails de la session ${session.title}`}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
+            // Rendu conditionnel selon le mode de vue
+            viewMode === 'cards' ? renderCardsView() : renderGridView()
           )}
         </div>
       </main>
+
+      {/* Modal des détails de la session avec onglets */}
+      <Dialog open={showSessionModal} onOpenChange={setShowSessionModal}>
+        <DialogContent className="max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>Détails de la session</DialogTitle>
+          </DialogHeader>
+          
+          {selectedSession && (
+            <div className="mt-4">
+              {/* En-tête avec infos principales */}
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-16 h-16 bg-[#81B441] rounded-lg flex items-center justify-center">
+                  <CalendarIcon className="h-8 w-8 text-white" />
+                </div>
+                
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold mb-2">{selectedSession.title}</h3>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    <Badge className="bg-[#81B441]/10 text-[#81B441] hover:bg-[#81B441]/20">
+                      <ClockIcon className="h-3 w-3 mr-1" />
+                      {selectedSession.start_time} - {selectedSession.end_time}
+                    </Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
+                      <CalendarIcon className="h-3 w-3 mr-1" />
+                      {format(new Date(selectedSession.start_date), 'dd MMMM yyyy', { locale: fr })}
+                    </Badge>
+                    {selectedSession.location && (
+                      <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
+                        <MapPinIcon className="h-3 w-3 mr-1" />
+                        {selectedSession.location}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <UserGroupIcon className="h-4 w-4" />
+                      <span>{selectedSession.participantCount} participant{selectedSession.participantCount !== 1 ? 's' : ''}</span>
+                    </div>
+                    {selectedSession.capacity && (
+                      <div className="flex items-center gap-1">
+                        <span>Capacité: {selectedSession.capacity}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Onglets */}
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className="grid w-full grid-cols-4 mb-4">
+                  <TabsTrigger value="details">Détails</TabsTrigger>
+                  <TabsTrigger value="participants">Participants</TabsTrigger>
+                  <TabsTrigger value="speakers">Intervenants</TabsTrigger>
+                  <TabsTrigger value="documents">Documents</TabsTrigger>
+                </TabsList>
+
+                <ScrollArea className="h-[400px] pr-4">
+                  <TabsContent value="details" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-2">Description</h4>
+                          <p className="text-sm text-gray-900">
+                            {selectedSession.description || 'Aucune description disponible'}
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-2">Format</h4>
+                          <p className="text-sm text-gray-900">
+                            {selectedSession.format || 'Non spécifié'}
+                          </p>
+                        </div>
+                        
+                        {selectedSession.video_url && (
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-500 mb-2">Lien vidéo</h4>
+                            <a 
+                              href={selectedSession.video_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-sm text-[#81B441] hover:underline"
+                            >
+                              {selectedSession.video_url}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-2">Horaires</h4>
+                          <div className="space-y-1">
+                            <p className="text-sm text-gray-900">
+                              Début: {selectedSession.start_time} le {format(new Date(selectedSession.start_date), 'dd/MM/yyyy')}
+                            </p>
+                            <p className="text-sm text-gray-900">
+                              Fin: {selectedSession.end_time} le {format(new Date(selectedSession.end_date), 'dd/MM/yyyy')}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-2">Lieu</h4>
+                          <p className="text-sm text-gray-900">
+                            {selectedSession.location || 'Non spécifié'}
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-2">Capacité</h4>
+                          <p className="text-sm text-gray-900">
+                            {selectedSession.capacity ? `${selectedSession.capacity} participants` : 'Illimitée'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="participants" className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-medium text-gray-900">
+                        Participants inscrits ({sessionParticipants.length})
+                      </h4>
+                    </div>
+                    
+                    {sessionParticipants.length === 0 ? (
+                      <div className="text-center py-8">
+                        <UserGroupIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500">Aucun participant inscrit à cette session</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {sessionParticipants.map((participant) => (
+                          <div key={participant.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage src={participant.avatar} />
+                              <AvatarFallback className="bg-[#81B441] text-white">
+                                {participant.firstName.charAt(0)}{participant.lastName.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">
+                                  {participant.firstName} {participant.lastName}
+                                </span>
+                                {participant.checkedIn && (
+                                  <Badge className="bg-green-100 text-green-800">
+                                    <CheckBadgeIcon className="h-3 w-3 mr-1" />
+                                    Présent
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                {participant.email}
+                              </div>
+                              {participant.company && (
+                                <div className="text-xs text-gray-400">
+                                  {participant.company}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="speakers" className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-medium text-gray-900">
+                        Intervenants ({selectedSession.speakers?.length || 0})
+                      </h4>
+                    </div>
+                    
+                    {!selectedSession.speakers || selectedSession.speakers.length === 0 ? (
+                      <div className="text-center py-8">
+                        <UserIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500">Aucun intervenant assigné à cette session</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {selectedSession.speakers.map((speaker) => (
+                          <div key={speaker.id} className="flex items-start gap-4 p-4 border rounded-lg">
+                            <Avatar className="h-12 w-12">
+                              <AvatarImage src={speaker.avatar} />
+                              <AvatarFallback className="bg-[#81B441] text-white">
+                                {speaker.firstName.charAt(0)}{speaker.lastName.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="font-medium">
+                                  {speaker.firstName} {speaker.lastName}
+                                </span>
+                                {speaker.checkedIn && (
+                                  <Badge className="bg-green-100 text-green-800">
+                                    <CheckBadgeIcon className="h-3 w-3 mr-1" />
+                                    Présent
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                                {speaker.email && (
+                                  <div className="flex items-center gap-2">
+                                    <EnvelopeIcon className="h-4 w-4 text-gray-400" />
+                                    <span>{speaker.email}</span>
+                                  </div>
+                                )}
+                                {speaker.company && (
+                                  <div className="flex items-center gap-2">
+                                    <BuildingOfficeIcon className="h-4 w-4 text-gray-400" />
+                                    <span>{speaker.company}</span>
+                                  </div>
+                                )}
+                                {speaker.jobTitle && (
+                                  <div className="flex items-center gap-2">
+                                    <BriefcaseIcon className="h-4 w-4 text-gray-400" />
+                                    <span>{speaker.jobTitle}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="documents" className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-medium text-gray-900">
+                        Documents de la session ({sessionDocuments.length})
+                      </h4>
+                    </div>
+                    
+                    {sessionDocuments.length === 0 ? (
+                      <div className="text-center py-8">
+                        <FolderIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500">Aucun document disponible pour cette session</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {sessionDocuments.map((document, index) => (
+                          <div key={index} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50">
+                            <DocumentTextIcon className="h-8 w-8 text-gray-400" />
+                            <div className="flex-1">
+                              <div className="font-medium">{document.name}</div>
+                              <div className="text-sm text-gray-500">
+                                {document.size && `${document.size} • `}
+                                {document.type}
+                              </div>
+                            </div>
+                            <Button variant="ghost" size="sm">
+                              <ArrowDownTrayIcon className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </TabsContent>
+                </ScrollArea>
+              </Tabs>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Styles pour le spinner */}
       <style jsx>{`
@@ -433,6 +943,20 @@ export default function EventSessionsPage({ params }: { params: Promise<{ id: st
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+        
+        .line-clamp-1 {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       `}</style>
     </div>
