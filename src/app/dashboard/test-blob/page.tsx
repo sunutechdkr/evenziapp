@@ -1,4 +1,15 @@
-import BlobUploadTest from '@/components/test/BlobUploadTest';
+"use client";
+
+import dynamic from 'next/dynamic';
+
+// Import dynamique pour éviter les erreurs de build
+const BlobUploadTest = dynamic(
+  () => import('@/components/test/BlobUploadTest'),
+  { 
+    ssr: false,
+    loading: () => <div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>
+  }
+);
 
 export default function TestBlobPage() {
   return (
@@ -44,12 +55,12 @@ export default function TestBlobPage() {
                   <li>Modifiez .env.local:</li>
                   <li className="ml-4">
                     <code className="bg-blue-100 px-1 rounded">
-                      NEXT_PUBLIC_USE_BLOB_STORAGE="true"
+                      NEXT_PUBLIC_USE_BLOB_STORAGE=&quot;true&quot;
                     </code>
                   </li>
                   <li>Redémarrez le serveur: <code className="bg-blue-100 px-1 rounded">npm run dev</code></li>
                   <li>Uploadez une image ci-contre</li>
-                  <li>Vérifiez l'URL générée (domaine Vercel Blob)</li>
+                  <li>Vérifiez l&apos;URL générée (domaine Vercel Blob)</li>
                 </ol>
               </div>
 
@@ -60,8 +71,8 @@ export default function TestBlobPage() {
                 <ul className="text-sm text-green-700 space-y-1">
                   <li>• Phase 1: Test avec avatars uniquement</li>
                   <li>• Phase 2: Migration des sponsors</li>
-                  <li>• Phase 3: Migration des images d'articles</li>
-                  <li>• Phase 4: Nettoyage de l'ancien système</li>
+                  <li>• Phase 3: Migration des images d&apos;articles</li>
+                  <li>• Phase 4: Nettoyage de l&apos;ancien système</li>
                 </ul>
               </div>
 
@@ -75,6 +86,22 @@ export default function TestBlobPage() {
                   <p className="mt-2 text-xs">
                     Rollback instantané possible en changeant ces variables !
                   </p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-red-50 rounded-md">
+                <h3 className="font-medium text-red-800 mb-2">
+                  ⚠️ Variables Vercel manquantes:
+                </h3>
+                <div className="text-sm text-red-700 space-y-1">
+                  <p>Pour que Vercel Blob fonctionne en production :</p>
+                  <ol className="list-decimal list-inside mt-2 space-y-1">
+                    <li>Allez dans Vercel Dashboard &gt; Settings &gt; Environment Variables</li>
+                    <li>Ajoutez : <code className="bg-red-100 px-1 rounded">BLOB_READ_WRITE_TOKEN</code></li>
+                    <li>Ajoutez : <code className="bg-red-100 px-1 rounded">NEXT_PUBLIC_USE_BLOB_STORAGE=true</code></li>
+                    <li>Ajoutez : <code className="bg-red-100 px-1 rounded">BLOB_MIGRATION_TYPES=avatar</code></li>
+                    <li>Redéployez l&apos;application</li>
+                  </ol>
                 </div>
               </div>
             </div>
