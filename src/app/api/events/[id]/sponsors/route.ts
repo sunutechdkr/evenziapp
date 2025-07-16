@@ -2,26 +2,60 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
-import { mkdir } from "fs/promises";
+import { put } from '@vercel/blob';
 
-// Définition temporaire du type Sponsor en attendant que Prisma Client soit régénéré
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
 
-type Sponsor = {
-  id: string;
-  name: string;
-  description?: string | null;
-  logo?: string | null;
-  website?: string | null;
-  level: SponsorLevel;
-  visible: boolean;
-  eventId: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+// Fonction utilitaire pour déterminer si utiliser Blob storage
+function shouldUseBlob(): boolean {
+  const useBlobStorage = process.env.NEXT_PUBLIC_USE_BLOB_STORAGE === 'true';
+  const migrationTypes = process.env.BLOB_MIGRATION_TYPES?.split(',') || [];
+  return useBlobStorage && migrationTypes.includes('sponsors');
+}
+
+// Fonction utilitaire pour uploader via Blob ou local
+async function uploadLogo(logoFile: File): Promise<string | null> {
+  try {
+    const useBlob = shouldUseBlob();
+    console.log(`📁 Upload logo sponsor via ${useBlob ? 'Vercel Blob' : 'stockage local'}`);
+
+    if (useBlob) {
+      // Upload vers Vercel Blob
+      const timestamp = Date.now();
+      const extension = logoFile.name.split('.').pop() || 'jpg';
+      const filename = `sponsor_${timestamp}.${extension}`;
+      const pathname = `sponsors/${filename}`;
+
+      const { url } = await put(pathname, logoFile, {
+        access: 'public',
+      });
+
+      console.log('✅ Logo uploadé vers Blob:', url);
+      return url;
+    } else {
+      // Upload local (ancien système)
+      const bytes = await logoFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      
+      const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
+      const relativePath = `/uploads/sponsors/${uniqueFilename}`;
+      const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
+      
+      await mkdir(uploadDir, { recursive: true });
+      const filePath = join(uploadDir, uniqueFilename);
+      await writeFile(filePath, buffer);
+      
+      console.log('✅ Logo uploadé localement:', relativePath);
+      return relativePath;
+    }
+  } catch (error) {
+    console.error('❌ Erreur lors de l\'upload du logo:', error);
+    return null;
+  }
+}
 
 // GET /api/events/[id]/sponsors - Récupérer tous les sponsors d'un événement
 export async function GET(
@@ -30,7 +64,7 @@ export async function GET(
 ) {
   try {
     const session = await getServerSession(authOptions);
-  
+    
     if (!session) {
       return NextResponse.json(
         { message: "Non autorisé" },
@@ -38,32 +72,14 @@ export async function GET(
       );
     }
     
-    // Attendre les paramètres avant d'y accéder
     const paramsData = await params;
     const id = paramsData.id;
     
-    // Vérifier que l'événement existe
-    const event = await prisma.event.findUnique({
-      where: { id },
+    const sponsors = await prisma.sponsor.findMany({
+      where: { eventId: id },
+      orderBy: { createdAt: 'desc' }
     });
     
-    if (!event) {
-      return NextResponse.json(
-        { message: "Événement non trouvé" },
-        { status: 404 }
-      );
-    }
-
-    // Récupérer tous les sponsors de l'événement
-    const sponsors = await prisma.sponsor.findMany({
-      where: {
-        eventId: id
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
-    });
-
     return NextResponse.json(sponsors);
   } catch (error) {
     console.error("Erreur lors de la récupération des sponsors:", error);
@@ -112,7 +128,7 @@ export async function POST(
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
     const website = formData.get("website")?.toString();
-    const level = formData.get("level")?.toString();
+    const level = formData.get("level")?.toString() as SponsorLevel;
     const visible = formData.get("visible") === "true";
     const logoFile = formData.get("logo") as File | null;
     
@@ -127,34 +143,13 @@ export async function POST(
 
     let logoPath = null;
 
-    // Si un logo a été envoyé, le sauvegarder
-    if (logoFile) {
-      try {
-        console.log("Traitement du logo:", logoFile.name);
-        const bytes = await logoFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        // Créer un nom de fichier unique
-        const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
-        const relativePath = `/uploads/sponsors/${uniqueFilename}`;
-        const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
-        
-        // S'assurer que le répertoire existe
-        try {
-          await mkdir(uploadDir, { recursive: true });
-        } catch (error) {
-          console.error("Erreur lors de la création du répertoire:", error);
-        }
-        
-        const filePath = join(uploadDir, uniqueFilename);
-        
-        await writeFile(filePath, buffer);
-        logoPath = relativePath;
-        console.log("Logo sauvegardé:", relativePath);
-      } catch (logoError) {
-        console.error("Erreur lors du traitement du logo:", logoError);
-        // Continuer sans logo plutôt que d'échouer complètement
-        logoPath = null;
+    // Si un logo a été envoyé, l'uploader
+    if (logoFile && logoFile.size > 0) {
+      console.log("Traitement du logo:", logoFile.name, "Taille:", logoFile.size);
+      logoPath = await uploadLogo(logoFile);
+      
+      if (!logoPath) {
+        console.warn("⚠️ Upload du logo échoué, création du sponsor sans logo");
       }
     }
 
@@ -165,18 +160,19 @@ export async function POST(
         description: description || undefined,
         logo: logoPath,
         website: website || undefined,
-        level: level as any || "GOLD",
+        level: level || "GOLD",
         visible,
         eventId: id,
       }
     });
     
-    console.log("Sponsor créé avec succès:", sponsor.id);
+    console.log("✅ Sponsor créé avec succès:", sponsor.id, "Logo:", logoPath);
     return NextResponse.json(sponsor, { status: 201 });
-  } catch (error: any) {
-    console.error("Erreur lors de la création du sponsor:", error);
+  } catch (error: unknown) {
+    console.error("❌ Erreur lors de la création du sponsor:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     return NextResponse.json(
-      { message: "Erreur lors de la création du sponsor", error: error.message },
+      { message: "Erreur lors de la création du sponsor", error: errorMessage },
       { status: 500 }
     );
   }

@@ -7,6 +7,80 @@ import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { mkdir } from "fs/promises";
 import { existsSync } from "fs";
+import { put, del } from '@vercel/blob';
+
+type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
+
+// Fonction utilitaire pour déterminer si utiliser Blob storage
+function shouldUseBlob(): boolean {
+  const useBlobStorage = process.env.NEXT_PUBLIC_USE_BLOB_STORAGE === 'true';
+  const migrationTypes = process.env.BLOB_MIGRATION_TYPES?.split(',') || [];
+  return useBlobStorage && migrationTypes.includes('sponsors');
+}
+
+// Fonction utilitaire pour uploader via Blob ou local
+async function uploadLogo(logoFile: File): Promise<string | null> {
+  try {
+    const useBlob = shouldUseBlob();
+    console.log(`📁 Upload logo sponsor via ${useBlob ? 'Vercel Blob' : 'stockage local'}`);
+
+    if (useBlob) {
+      // Upload vers Vercel Blob
+      const timestamp = Date.now();
+      const extension = logoFile.name.split('.').pop() || 'jpg';
+      const filename = `sponsor_${timestamp}.${extension}`;
+      const pathname = `sponsors/${filename}`;
+
+      const { url } = await put(pathname, logoFile, {
+        access: 'public',
+      });
+
+      console.log('✅ Logo uploadé vers Blob:', url);
+      return url;
+    } else {
+      // Upload local (ancien système)
+      const bytes = await logoFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      
+      const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
+      const relativePath = `/uploads/sponsors/${uniqueFilename}`;
+      const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
+      
+      await mkdir(uploadDir, { recursive: true });
+      const filePath = join(uploadDir, uniqueFilename);
+      await writeFile(filePath, buffer);
+      
+      console.log('✅ Logo uploadé localement:', relativePath);
+      return relativePath;
+    }
+  } catch (error) {
+    console.error('❌ Erreur lors de l\'upload du logo:', error);
+    return null;
+  }
+}
+
+// Fonction utilitaire pour supprimer un ancien logo
+async function deleteOldLogo(logoUrl: string): Promise<void> {
+  try {
+    const useBlob = shouldUseBlob();
+    
+    if (useBlob && logoUrl.includes('vercel-storage.com')) {
+      // Supprimer depuis Vercel Blob
+      await del(logoUrl);
+      console.log('✅ Ancien logo supprimé de Blob:', logoUrl);
+    } else if (!useBlob && logoUrl.startsWith('/uploads/')) {
+      // Supprimer du stockage local
+      const oldLogoPath = join(process.cwd(), 'public', logoUrl);
+      if (existsSync(oldLogoPath)) {
+        await unlink(oldLogoPath);
+        console.log('✅ Ancien logo supprimé localement:', logoUrl);
+      }
+    }
+  } catch (error) {
+    console.error('⚠️ Erreur lors de la suppression de l\'ancien logo:', error);
+    // Ne pas faire échouer la requête pour une erreur de suppression
+  }
+}
 
 // GET /api/events/[id]/sponsors/[sponsorId] - Récupérer un sponsor spécifique
 export async function GET(
@@ -89,7 +163,7 @@ export async function PUT(
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
     const website = formData.get("website")?.toString();
-    const level = formData.get("level")?.toString();
+    const level = formData.get("level")?.toString() as SponsorLevel;
     const visible = formData.get("visible") === "true";
     const logoFile = formData.get("logo") as File | null;
     
@@ -104,47 +178,20 @@ export async function PUT(
 
     let logoPath = existingSponsor.logo;
 
-    // Si un nouveau logo a été envoyé, le sauvegarder
-    if (logoFile) {
-      try {
-        console.log("Traitement du nouveau logo:", logoFile.name);
-        const bytes = await logoFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        // Créer un nom de fichier unique
-        const uniqueFilename = `${uuidv4()}-${logoFile.name.replace(/\s/g, '_')}`;
-        const relativePath = `/uploads/sponsors/${uniqueFilename}`;
-        const uploadDir = join(process.cwd(), 'public', 'uploads', 'sponsors');
-        
-        // S'assurer que le répertoire existe
-        try {
-          await mkdir(uploadDir, { recursive: true });
-        } catch (error) {
-          console.error("Erreur lors de la création du répertoire:", error);
-        }
-        
-        const filePath = join(uploadDir, uniqueFilename);
-        
-        await writeFile(filePath, buffer);
-        
-        // Supprimer l'ancien logo s'il existe
+    // Si un nouveau logo a été envoyé, l'uploader
+    if (logoFile && logoFile.size > 0) {
+      console.log("Traitement du nouveau logo:", logoFile.name, "Taille:", logoFile.size);
+      
+      const newLogoPath = await uploadLogo(logoFile);
+      
+      if (newLogoPath) {
+        // Supprimer l'ancien logo si un nouveau a été uploadé avec succès
         if (existingSponsor.logo) {
-          const oldLogoPath = join(process.cwd(), 'public', existingSponsor.logo);
-          if (existsSync(oldLogoPath)) {
-            try {
-              await unlink(oldLogoPath);
-              console.log("Ancien logo supprimé:", existingSponsor.logo);
-            } catch (unlinkError) {
-              console.error("Erreur lors de la suppression de l'ancien logo:", unlinkError);
-            }
-          }
+          await deleteOldLogo(existingSponsor.logo);
         }
-        
-        logoPath = relativePath;
-        console.log("Nouveau logo sauvegardé:", relativePath);
-      } catch (logoError) {
-        console.error("Erreur lors du traitement du logo:", logoError);
-        // Garder l'ancien logo plutôt que d'échouer
+        logoPath = newLogoPath;
+      } else {
+        console.warn("⚠️ Upload du nouveau logo échoué, conservation de l'ancien");
       }
     }
 
@@ -158,17 +205,18 @@ export async function PUT(
         description: description || undefined,
         logo: logoPath,
         website: website || undefined,
-        level: level as any || "GOLD",
+        level: level || "GOLD",
         visible
       }
     });
     
-    console.log("Sponsor mis à jour avec succès:", updatedSponsor.id);
+    console.log("✅ Sponsor mis à jour avec succès:", updatedSponsor.id, "Logo:", logoPath);
     return NextResponse.json(updatedSponsor);
-  } catch (error: any) {
-    console.error("Erreur lors de la mise à jour du sponsor:", error);
+  } catch (error: unknown) {
+    console.error("❌ Erreur lors de la mise à jour du sponsor:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     return NextResponse.json(
-      { message: "Erreur lors de la mise à jour du sponsor", error: error.message },
+      { message: "Erreur lors de la mise à jour du sponsor", error: errorMessage },
       { status: 500 }
     );
   }
@@ -208,15 +256,7 @@ export async function DELETE(
 
     // Supprimer le logo s'il existe
     if (existingSponsor.logo) {
-      const logoPath = join(process.cwd(), 'public', existingSponsor.logo);
-      if (existsSync(logoPath)) {
-        try {
-          await unlink(logoPath);
-          console.log("Logo supprimé:", existingSponsor.logo);
-        } catch (error) {
-          console.error("Erreur lors de la suppression du logo:", error);
-        }
-      }
+      await deleteOldLogo(existingSponsor.logo);
     }
 
     // Supprimer le sponsor avec Prisma Client
@@ -226,11 +266,13 @@ export async function DELETE(
       }
     });
 
+    console.log("✅ Sponsor supprimé avec succès:", sponsorId);
     return NextResponse.json({ message: "Sponsor supprimé avec succès" });
-  } catch (error: any) {
-    console.error("Erreur lors de la suppression du sponsor:", error);
+  } catch (error: unknown) {
+    console.error("❌ Erreur lors de la suppression du sponsor:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     return NextResponse.json(
-      { message: "Erreur lors de la suppression du sponsor", error: error.message },
+      { message: "Erreur lors de la suppression du sponsor", error: errorMessage },
       { status: 500 }
     );
   }
