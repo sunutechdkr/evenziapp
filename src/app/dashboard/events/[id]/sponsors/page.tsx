@@ -6,7 +6,6 @@ import { fr } from "date-fns/locale";
 import { 
   UserPlusIcon, 
   ChevronLeftIcon,
-  ChevronRightIcon,
   MagnifyingGlassIcon,
   PhotoIcon,
   PlusIcon,
@@ -17,8 +16,6 @@ import {
   TrashIcon,
   EyeIcon,
   EyeSlashIcon,
-  Squares2X2Icon,
-  TableCellsIcon,
   BuildingOfficeIcon,
   GlobeAltIcon
 } from "@heroicons/react/24/outline";
@@ -26,8 +23,6 @@ import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
-// Importer les composants Shadcn UI
 import { 
   Table, 
   TableBody, 
@@ -41,8 +36,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -79,8 +73,6 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
-  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
   const [showSponsorModal, setShowSponsorModal] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
@@ -196,12 +188,6 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
     sponsor.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (levelFilter ? sponsor.level === levelFilter : true)
   );
-
-  // Pagination pour la vue tableau
-  const indexOfLastSponsor = currentPage * sponsorsPerPage;
-  const indexOfFirstSponsor = indexOfLastSponsor - sponsorsPerPage;
-  const currentSponsors = filteredSponsors.slice(indexOfFirstSponsor, indexOfLastSponsor);
-  const totalPages = Math.ceil(filteredSponsors.length / sponsorsPerPage);
 
   /**
    * Rafraîchit la liste des sponsors
@@ -382,334 +368,221 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
           </Card>
         </div>
 
-        {/* Filtres et commutateur de vue */}
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-              <div className="flex flex-col md:flex-row gap-4 flex-1">
-                <div className="flex-1">
-                  <div className="relative">
-                    <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="text"
-                      placeholder="Rechercher par nom de sponsor..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex gap-2">
-                  <select
-                    value={levelFilter}
-                    onChange={(e) => setLevelFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#81B441]"
-                  >
-                    <option value="">Tous les niveaux</option>
-                    <option value="PLATINUM">Platinum</option>
-                    <option value="GOLD">Gold</option>
-                    <option value="SILVER">Silver</option>
-                    <option value="BRONZE">Bronze</option>
-                    <option value="PARTNER">Partenaire</option>
-                    <option value="MEDIA">Media</option>
-                    <option value="OTHER">Autre</option>
-                  </select>
-                </div>
-              </div>
-              
-              {/* Commutateur de vue */}
-              <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                <Button
-                  variant={viewMode === 'cards' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('cards')}
-                  className={viewMode === 'cards' ? 'bg-white shadow-sm' : ''}
-                >
-                  <Squares2X2Icon className="h-4 w-4 mr-1" />
-                  Cartes
-                </Button>
-                <Button
-                  variant={viewMode === 'table' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('table')}
-                  className={viewMode === 'table' ? 'bg-white shadow-sm' : ''}
-                >
-                  <TableCellsIcon className="h-4 w-4 mr-1" />
-                  Grille
-                </Button>
-              </div>
+        {/* Options de vue et recherche */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            {/* Barre de recherche */}
+            <div className="relative">
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Rechercher un sponsor..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-full sm:w-64"
+              />
             </div>
-          </CardContent>
-        </Card>
+            
+            {/* Filtre par niveau */}
+            <select
+              value={levelFilter}
+              onChange={(e) => setLevelFilter(e.target.value)}
+              className="rounded-md border border-gray-300 px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent"
+            >
+              <option value="">Tous les niveaux</option>
+              <option value="PLATINUM">Platinum</option>
+              <option value="GOLD">Gold</option>
+              <option value="SILVER">Silver</option>
+              <option value="BRONZE">Bronze</option>
+              <option value="PARTNER">Partenaire</option>
+              <option value="MEDIA">Media</option>
+              <option value="OTHER">Autre</option>
+            </select>
+          </div>
+        </div>
 
-        {/* Contenu selon le mode de vue */}
+        {/* Tableau des sponsors */}
         {sponsors.length > 0 ? (
-          <>
-            {viewMode === 'cards' ? (
-              /* Vue en cartes */
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {filteredSponsors.map(sponsor => (
-                  <Card
-                    key={sponsor.id}
-                    className={`group cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${!sponsor.visible ? 'opacity-60' : ''}`}
-                    onClick={() => openSponsorDetails(sponsor)}
-                  >
-                    <CardContent className="p-0">
-                      {/* Logo */}
-                      <div className="h-32 bg-gray-50 flex items-center justify-center p-4 relative">
-                        {/* Actions overlay */}
-                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
-                            }}
-                            className="p-1 bg-white rounded-full shadow-sm border hover:bg-gray-50 transition-colors"
-                            title="Modifier le sponsor"
-                          >
-                            <PencilIcon className="h-3 w-3 text-gray-600" />
-                          </button>
-                        </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BuildingOfficeIcon className="h-5 w-5" />
+                Sponsors et Partenaires ({filteredSponsors.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[80px]">Logo</TableHead>
+                      <TableHead className="min-w-[200px]">Sponsor</TableHead>
+                      <TableHead className="w-[120px]">Niveau</TableHead>
+                      <TableHead className="min-w-[200px]">Site web</TableHead>
+                      <TableHead className="w-[100px]">Statut</TableHead>
+                      <TableHead className="w-[140px]">Date d'ajout</TableHead>
+                      <TableHead className="w-[100px] text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredSponsors.map((sponsor) => (
+                      <TableRow 
+                        key={sponsor.id} 
+                        className="hover:bg-gray-50 cursor-pointer"
+                        onClick={() => openSponsorDetails(sponsor)}
+                      >
+                        {/* Logo */}
+                        <TableCell className="py-4">
+                          <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
+                            {sponsor.logo ? (
+                              <img 
+                                src={sponsor.logo} 
+                                alt={sponsor.name}
+                                className="w-10 h-10 object-contain rounded"
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center">
+                                <PhotoIcon className="h-5 w-5 text-gray-400" />
+                              </div>
+                            )}
+                          </div>
+                        </TableCell>
                         
-                        {sponsor.logo ? (
-                          <img 
-                            src={sponsor.logo} 
-                            alt={sponsor.name} 
-                            className="max-h-24 max-w-full object-contain"
-                          />
-                        ) : (
-                          <div className="flex flex-col items-center text-gray-400">
-                            <PhotoIcon className="h-10 w-10" />
-                            <span className="text-xs mt-1">Pas de logo</span>
-                            <button
+                        {/* Informations sponsor */}
+                        <TableCell className="py-4">
+                          <div className="space-y-1">
+                            <div className="font-medium text-gray-900">
+                              {sponsor.name}
+                            </div>
+                            {sponsor.description && (
+                              <div className="text-sm text-gray-600 line-clamp-2 max-w-xs">
+                                {sponsor.description}
+                              </div>
+                            )}
+                            {!sponsor.logo && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
+                                }}
+                                className="text-xs text-[#81B441] hover:text-[#72a139] underline"
+                              >
+                                Ajouter un logo
+                              </button>
+                            )}
+                          </div>
+                        </TableCell>
+                        
+                        {/* Niveau */}
+                        <TableCell className="py-4">
+                          <Badge className={`${getLevelBadgeClass(sponsor.level)} text-xs`}>
+                            {getLevelText(sponsor.level)}
+                          </Badge>
+                        </TableCell>
+                        
+                        {/* Site web */}
+                        <TableCell className="py-4">
+                          {sponsor.website ? (
+                            <div className="flex items-center gap-2">
+                              <GlobeAltIcon className="h-4 w-4 text-blue-600" />
+                              <a
+                                href={sponsor.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-blue-600 hover:text-blue-800 text-sm truncate max-w-[150px]"
+                              >
+                                {sponsor.website.replace(/^https?:\/\//, '')}
+                              </a>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-sm">-</span>
+                          )}
+                        </TableCell>
+                        
+                        {/* Statut */}
+                        <TableCell className="py-4">
+                          {sponsor.visible ? (
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                              <EyeIcon className="h-3 w-3 mr-1" />
+                              Visible
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="text-gray-600">
+                              <EyeSlashIcon className="h-3 w-3 mr-1" />
+                              Masqué
+                            </Badge>
+                          )}
+                        </TableCell>
+                        
+                        {/* Date d'ajout */}
+                        <TableCell className="py-4">
+                          <span className="text-sm text-gray-500">
+                            {format(sponsor.createdAt, "dd MMM yyyy", { locale: fr })}
+                          </span>
+                        </TableCell>
+                        
+                        {/* Actions */}
+                        <TableCell className="py-4 text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
                               }}
-                              className="text-xs text-[#81B441] hover:text-[#72a139] mt-1 underline"
+                              className="h-8 w-8 p-0"
+                              title="Modifier le sponsor"
                             >
-                              Ajouter un logo
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Informations */}
-                      <div className="p-3 text-center border-t">
-                        <h3 className="font-medium text-sm text-gray-900 mb-2 truncate">
-                          {sponsor.name}
-                        </h3>
-                        <Badge className={`text-xs ${getLevelBadgeClass(sponsor.level)}`}>
-                          {getLevelText(sponsor.level)}
-                        </Badge>
-                        {!sponsor.visible && (
-                          <div className="mt-1 text-xs text-gray-500 italic">
-                            Non visible
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              /* Vue en grille/tableau */
-              <Card>
-                <CardContent className="p-0">
-                  <ScrollArea className="h-[600px]">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Sponsor</TableHead>
-                          <TableHead>Niveau</TableHead>
-                          <TableHead>Site web</TableHead>
-                          <TableHead>Statut</TableHead>
-                          <TableHead>Date d&apos;ajout</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {currentSponsors.map((sponsor) => (
-                          <TableRow 
-                            key={sponsor.id} 
-                            className="cursor-pointer hover:bg-gray-50"
-                            onClick={() => openSponsorDetails(sponsor)}
-                          >
-                            <TableCell>
-                              <div className="flex items-center gap-3">
-                                <Avatar className="border-2 border-[#81B441] h-10 w-10">
-                                  {sponsor.logo ? (
-                                    <img 
-                                      src={sponsor.logo} 
-                                      alt={sponsor.name}
-                                      className="h-full w-full object-contain p-1"
-                                    />
-                                  ) : (
-                                    <AvatarFallback className="bg-white text-black border-[#81B441]">
-                                      <BuildingOfficeIcon className="h-5 w-5 text-gray-400" />
-                                    </AvatarFallback>
-                                  )}
-                                </Avatar>
-                                <div>
-                                  <p className="font-medium">{sponsor.name}</p>
-                                  {sponsor.description && (
-                                    <p className="text-sm text-gray-500 truncate max-w-xs">
-                                      {sponsor.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <Badge 
-                                className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]"
-                                variant="outline"
-                              >
-                                {getLevelText(sponsor.level)}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              {sponsor.website ? (
-                                <div className="flex items-center gap-1 text-blue-600">
-                                  <GlobeAltIcon className="h-4 w-4" />
-                                  <span className="text-sm truncate max-w-xs">
-                                    {sponsor.website.replace(/^https?:\/\//, '')}
-                                  </span>
-                                </div>
-                              ) : (
-                                <span className="text-gray-400">-</span>
-                              )}
-                            </TableCell>
-                            <TableCell>
-                              {sponsor.visible ? (
-                                <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
-                                  <EyeIcon className="h-3 w-3 mr-1" />
-                                  Visible
-                                </Badge>
-                              ) : (
-                                <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]" variant="outline">
-                                  <EyeSlashIcon className="h-3 w-3 mr-1" />
-                                  Masqué
-                                </Badge>
-                              )}
-                            </TableCell>
-                            <TableCell>
-                              <span className="text-sm text-gray-500">
-                                {format(sponsor.createdAt, "dd MMM yyyy", { locale: fr })}
-                              </span>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                                  <Button variant="ghost" size="sm">
-                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                    </svg>
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem onClick={(e) => {
-                                    e.stopPropagation();
-                                    openSponsorDetails(sponsor);
-                                  }}>
-                                    <EyeIcon className="h-4 w-4 mr-2" />
-                                    Voir les détails
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={(e) => {
-                                    e.stopPropagation();
-                                    router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
-                                  }}>
-                                    <PencilIcon className="h-4 w-4 mr-2" />
-                                    Modifier
-                                  </DropdownMenuItem>
-                                  {sponsor.website && (
-                                    <DropdownMenuItem onClick={(e) => {
-                                      e.stopPropagation();
-                                      window.open(sponsor.website, '_blank');
-                                    }}>
-                                      <LinkIcon className="h-4 w-4 mr-2" />
-                                      Visiter le site
-                                    </DropdownMenuItem>
-                                  )}
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem 
-                                    className="text-red-600"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSponsorToDelete(sponsor);
-                                      setDeleteConfirmOpen(true);
-                                    }}
-                                  >
-                                    <TrashIcon className="h-4 w-4 mr-2" />
-                                    Supprimer
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </ScrollArea>
-
-                  {/* Pagination pour la vue tableau */}
-                  {totalPages > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t">
-                      <div className="text-sm text-gray-700">
-                        Affichage de {indexOfFirstSponsor + 1} à {Math.min(indexOfLastSponsor, filteredSponsors.length)} sur {filteredSponsors.length} résultats
-                      </div>
-                      
-                      <div className="flex items-center space-x-1">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                          disabled={currentPage === 1}
-                        >
-                          <ChevronLeftIcon className="h-4 w-4" />
-                        </Button>
-                        
-                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                          let pageNumber;
-                          if (totalPages <= 5) {
-                            pageNumber = i + 1;
-                          } else if (currentPage <= 3) {
-                            pageNumber = i + 1;
-                          } else if (currentPage >= totalPages - 2) {
-                            pageNumber = totalPages - 4 + i;
-                          } else {
-                            pageNumber = currentPage - 2 + i;
-                          }
-                          
-                          return (
-                            <Button
-                              key={pageNumber}
-                              variant={currentPage === pageNumber ? "default" : "outline"}
-                              size="sm"
-                              onClick={() => setCurrentPage(pageNumber)}
-                              className={currentPage === pageNumber ? 'bg-[#81B441] hover:bg-[#72a339]' : ''}
-                            >
-                              {pageNumber}
+                              <PencilIcon className="h-4 w-4" />
                             </Button>
-                          );
-                        })}
-                        
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                          disabled={currentPage === totalPages}
-                        >
-                          <ChevronRightIcon className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-          </>
+                            
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="h-8 w-8 p-0"
+                                >
+                                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01" />
+                                  </svg>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => openSponsorDetails(sponsor)}>
+                                  <EyeIcon className="h-4 w-4 mr-2" />
+                                  Voir les détails
+                                </DropdownMenuItem>
+                                {sponsor.website && (
+                                  <DropdownMenuItem onClick={() => window.open(sponsor.website, '_blank')}>
+                                    <LinkIcon className="h-4 w-4 mr-2" />
+                                    Visiter le site
+                                  </DropdownMenuItem>
+                                )}
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setSponsorToDelete(sponsor);
+                                    setDeleteConfirmOpen(true);
+                                  }}
+                                  className="text-red-600"
+                                >
+                                  <TrashIcon className="h-4 w-4 mr-2" />
+                                  Supprimer
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
         ) : (
           /* État vide */
           <Card className="p-8 text-center">
