@@ -168,14 +168,14 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
    */
   const getLevelBadgeClass = (level: SponsorLevel) => {
     switch(level) {
-      case 'PLATINUM': return 'bg-purple-100 text-purple-800';
-      case 'GOLD': return 'bg-yellow-100 text-yellow-800';
-      case 'SILVER': return 'bg-gray-100 text-gray-800';
-      case 'BRONZE': return 'bg-amber-100 text-amber-800';
-      case 'PARTNER': return 'bg-blue-100 text-blue-800';
-      case 'MEDIA': return 'bg-green-100 text-green-800';
-      case 'OTHER': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'PLATINUM': return 'bg-purple-100 text-purple-800 hover:bg-purple-100';
+      case 'GOLD': return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100';
+      case 'SILVER': return 'bg-gray-100 text-gray-800 hover:bg-gray-100';
+      case 'BRONZE': return 'bg-amber-100 text-amber-800 hover:bg-amber-100';
+      case 'PARTNER': return 'bg-blue-100 text-blue-800 hover:bg-blue-100';
+      case 'MEDIA': return 'bg-green-100 text-green-800 hover:bg-green-100';
+      case 'OTHER': return 'bg-gray-100 text-gray-800 hover:bg-gray-100';
+      default: return 'bg-gray-100 text-gray-800 hover:bg-gray-100';
     }
   };
   
@@ -431,11 +431,40 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                         <TableHead className="w-[80px] sticky left-0 bg-white z-10">Logo</TableHead>
                         <TableHead className="min-w-[200px] sticky left-[80px] bg-white z-10">Sponsor</TableHead>
                         <TableHead className="w-[120px]">Niveau</TableHead>
-                        <TableHead className="w-[100px]">Membres</TableHead>
-                        <TableHead className="w-[100px]">Sessions</TableHead>
-                        <TableHead className="w-[110px]">Documents</TableHead>
-                        <TableHead className="w-[80px]">RDV</TableHead>
-                        <TableHead className="w-[100px]">Produits</TableHead>
+                        <TableHead className="w-[100px]">
+                          <div className="flex items-center gap-2">
+                            <UserIcon className="h-4 w-4 text-gray-400" />
+                            Membres
+                          </div>
+                        </TableHead>
+                        <TableHead className="w-[100px]">
+                          <div className="flex items-center gap-2">
+                            <CalendarIcon className="h-4 w-4 text-gray-400" />
+                            Sessions
+                          </div>
+                        </TableHead>
+                        <TableHead className="w-[110px]">
+                          <div className="flex items-center gap-2">
+                            <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Documents
+                          </div>
+                        </TableHead>
+                        <TableHead className="w-[80px]">
+                          <div className="flex items-center gap-2">
+                            <ClockIcon className="h-4 w-4 text-gray-400" />
+                            RDV
+                          </div>
+                        </TableHead>
+                        <TableHead className="w-[100px]">
+                          <div className="flex items-center gap-2">
+                            <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            Produits
+                          </div>
+                        </TableHead>
                         <TableHead className="min-w-[200px]">Site web</TableHead>
                         <TableHead className="w-[100px]">Statut</TableHead>
                         <TableHead className="w-[140px]">Date d'ajout</TableHead>
@@ -500,46 +529,27 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                           
                           {/* Membres */}
                           <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <UserIcon className="h-4 w-4 text-gray-400" />
-                              <span className="font-medium">{sponsor.stats?.members || 0}</span>
-                            </div>
+                            <span className="font-medium text-gray-900">{sponsor.stats?.members || 0}</span>
                           </TableCell>
                           
                           {/* Sessions */}
                           <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <CalendarIcon className="h-4 w-4 text-blue-500" />
-                              <span className="font-medium text-blue-600">{sponsor.stats?.sessions || 0}</span>
-                            </div>
+                            <span className="font-medium text-gray-900">{sponsor.stats?.sessions || 0}</span>
                           </TableCell>
                           
                           {/* Documents */}
                           <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <svg className="h-4 w-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                              </svg>
-                              <span className="font-medium text-green-600">{sponsor.stats?.documents || 0}</span>
-                            </div>
+                            <span className="font-medium text-gray-900">{sponsor.stats?.documents || 0}</span>
                           </TableCell>
                           
                           {/* RDV */}
                           <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <ClockIcon className="h-4 w-4 text-orange-500" />
-                              <span className="font-medium text-orange-600">{sponsor.stats?.appointments || 0}</span>
-                            </div>
+                            <span className="font-medium text-gray-900">{sponsor.stats?.appointments || 0}</span>
                           </TableCell>
                           
                           {/* Produits */}
                           <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <svg className="h-4 w-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                              </svg>
-                              <span className="font-medium text-purple-600">{sponsor.stats?.products || 0}</span>
-                            </div>
+                            <span className="font-medium text-gray-900">{sponsor.stats?.products || 0}</span>
                           </TableCell>
                           
                           {/* Site web */}
@@ -667,229 +677,214 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
         )}
       </div>
 
-      {/* Modal des détails du sponsor avec onglets */}
+      {/* Modal des détails du sponsor */}
       <Dialog open={showSponsorModal} onOpenChange={setShowSponsorModal}>
-        <DialogContent className="max-w-2xl max-h-[90vh]">
-          <DialogHeader>
-            <DialogTitle>Détails du sponsor</DialogTitle>
-          </DialogHeader>
-          
+        <DialogContent className="max-w-4xl h-[600px] flex flex-col">
           {selectedSponsor && (
-            <div className="mt-4">
-              {/* En-tête avec logo et infos principales */}
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-20 h-20 bg-gray-50 rounded-lg flex items-center justify-center border-2 border-[#81B441]">
-                  {selectedSponsor.logo ? (
-                    <img 
-                      src={selectedSponsor.logo} 
-                      alt={selectedSponsor.name}
-                      className="max-h-16 max-w-16 object-contain"
-                    />
-                  ) : (
-                    <BuildingOfficeIcon className="h-8 w-8 text-gray-400" />
-                  )}
-                </div>
-                
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold">
-                    {selectedSponsor.name}
-                  </h3>
-                  {selectedSponsor.website && (
-                    <p className="text-blue-600 text-sm">{selectedSponsor.website}</p>
-                  )}
-                  <div className="flex gap-2 mt-2">
-                    <Badge className={`text-xs ${getLevelBadgeClass(selectedSponsor.level)}`}>
-                      {getLevelText(selectedSponsor.level)}
-                    </Badge>
-                    {selectedSponsor.visible ? (
-                      <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
-                        <EyeIcon className="h-3 w-3 mr-1" />
-                        Visible
-                      </Badge>
+            <div className="flex flex-col h-full">
+              {/* En-tête fixe */}
+              <div className="flex-shrink-0 pb-4 border-b">
+                <div className="flex items-start gap-4">
+                  <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
+                    {selectedSponsor.logo ? (
+                      <img 
+                        src={selectedSponsor.logo} 
+                        alt={selectedSponsor.name}
+                        className="w-14 h-14 object-contain rounded"
+                      />
                     ) : (
-                      <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]" variant="outline">
-                        <EyeSlashIcon className="h-3 w-3 mr-1" />
-                        Masqué
-                      </Badge>
+                      <PhotoIcon className="h-8 w-8 text-gray-400" />
                     )}
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-xl font-bold text-gray-900">{selectedSponsor.name}</h2>
+                    <div className="flex gap-2 mt-2">
+                      <Badge className={`text-xs ${getLevelBadgeClass(selectedSponsor.level)}`}>
+                        {getLevelText(selectedSponsor.level)}
+                      </Badge>
+                      {selectedSponsor.visible ? (
+                        <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
+                          <EyeIcon className="h-3 w-3 mr-1" />
+                          Visible
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]" variant="outline">
+                          <EyeSlashIcon className="h-3 w-3 mr-1" />
+                          Masqué
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Onglets */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+                <TabsList className="grid w-full grid-cols-5 flex-shrink-0">
                   <TabsTrigger value="details">Détails</TabsTrigger>
-                  <TabsTrigger value="stats">Statistiques</TabsTrigger>
                   <TabsTrigger value="members">Membres</TabsTrigger>
                   <TabsTrigger value="sessions">Sessions</TabsTrigger>
+                  <TabsTrigger value="appointments">RDV</TabsTrigger>
                   <TabsTrigger value="contact">Contact</TabsTrigger>
                   <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="details" className="mt-6">
-                  <div className="space-y-4">
-                    {selectedSponsor.description && (
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Description</h4>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-gray-700 whitespace-pre-wrap">{selectedSponsor.description}</p>
+                <div className="flex-1 overflow-hidden">
+                  <ScrollArea className="h-full">
+                    <TabsContent value="details" className="mt-6 space-y-4">
+                      {selectedSponsor.description && (
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-1">Description</h4>
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <p className="text-gray-700 whitespace-pre-wrap">{selectedSponsor.description}</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-1">Niveau de sponsoring</h4>
+                          <Badge className={`${getLevelBadgeClass(selectedSponsor.level)}`}>
+                            {getLevelText(selectedSponsor.level)}
+                          </Badge>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-1">Visibilité</h4>
+                          <p className="flex items-center gap-2">
+                            {selectedSponsor.visible ? (
+                              <span className="flex items-center text-green-600">
+                                <EyeIcon className="h-4 w-4 mr-2" />
+                                Visible publiquement
+                              </span>
+                            ) : (
+                              <span className="flex items-center text-gray-500">
+                                <EyeSlashIcon className="h-4 w-4 mr-2" />
+                                Non visible
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-1">Date d&apos;ajout</h4>
+                          <p className="flex items-center gap-2">
+                            <span className="text-gray-700">
+                              {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
+                            </span>
+                          </p>
                         </div>
                       </div>
-                    )}
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Niveau de sponsoring</h4>
-                        <Badge className={`${getLevelBadgeClass(selectedSponsor.level)}`}>
-                          {getLevelText(selectedSponsor.level)}
-                        </Badge>
-                      </div>
-                      
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Visibilité</h4>
-                        <p className="flex items-center gap-2">
-                          {selectedSponsor.visible ? (
-                            <span className="flex items-center text-green-600">
-                              <EyeIcon className="h-4 w-4 mr-2" />
-                              Visible publiquement
-                            </span>
-                          ) : (
-                            <span className="flex items-center text-gray-500">
-                              <EyeSlashIcon className="h-4 w-4 mr-2" />
-                              Non visible
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Date d&apos;ajout</h4>
-                        <p className="flex items-center gap-2">
-                          <span className="text-gray-700">
-                            {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-2 pt-4">
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${selectedSponsor.id}`);
-                          setShowSponsorModal(false);
-                        }}
-                      >
-                        <PencilIcon className="h-4 w-4 mr-2" />
-                        Modifier
-                      </Button>
-                      {selectedSponsor.website && (
+                      {/* Actions */}
+                      <div className="flex gap-2 pt-4">
                         <Button
                           variant="outline"
-                          onClick={() => window.open(selectedSponsor.website, '_blank')}
+                          onClick={() => {
+                            router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${selectedSponsor.id}`);
+                            setShowSponsorModal(false);
+                          }}
                         >
-                          <LinkIcon className="h-4 w-4 mr-2" />
-                          Visiter le site
+                          <PencilIcon className="h-4 w-4 mr-2" />
+                          Modifier
                         </Button>
-                      )}
-                      <Button
-                        variant="outline"
-                        className="text-red-600 hover:text-red-700"
-                        onClick={() => {
-                          setSponsorToDelete(selectedSponsor);
-                          setDeleteConfirmOpen(true);
-                          setShowSponsorModal(false);
-                        }}
-                      >
-                        <TrashIcon className="h-4 w-4 mr-2" />
-                        Supprimer
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
+                        {selectedSponsor.website && (
+                          <Button
+                            variant="outline"
+                            onClick={() => window.open(selectedSponsor.website, '_blank')}
+                          >
+                            <LinkIcon className="h-4 w-4 mr-2" />
+                            Visiter le site
+                          </Button>
+                        )}
+                        <Button
+                          variant="outline"
+                          className="text-red-600 hover:text-red-700"
+                          onClick={() => {
+                            setSponsorToDelete(selectedSponsor);
+                            setDeleteConfirmOpen(true);
+                            setShowSponsorModal(false);
+                          }}
+                        >
+                          <TrashIcon className="h-4 w-4 mr-2" />
+                          Supprimer
+                        </Button>
+                      </div>
+                    </TabsContent>
 
-                <TabsContent value="stats" className="mt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <Card>
-                      <CardContent className="p-4 text-center">
-                        <UserIcon className="h-8 w-8 text-blue-500 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-blue-600">{selectedSponsor.stats?.members || 0}</div>
-                        <div className="text-sm text-gray-500">Membres</div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardContent className="p-4 text-center">
-                        <CalendarIcon className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-green-600">{selectedSponsor.stats?.sessions || 0}</div>
-                        <div className="text-sm text-gray-500">Sessions</div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardContent className="p-4 text-center">
-                        <svg className="h-8 w-8 text-purple-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <div className="text-2xl font-bold text-purple-600">{selectedSponsor.stats?.documents || 0}</div>
-                        <div className="text-sm text-gray-500">Documents</div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardContent className="p-4 text-center">
-                        <ClockIcon className="h-8 w-8 text-orange-500 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-orange-600">{selectedSponsor.stats?.appointments || 0}</div>
-                        <div className="text-sm text-gray-500">RDV en attente</div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardContent className="p-4 text-center">
-                        <svg className="h-8 w-8 text-indigo-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
-                        <div className="text-2xl font-bold text-indigo-600">{selectedSponsor.stats?.products || 0}</div>
-                        <div className="text-sm text-gray-500">Produits</div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </TabsContent>
+                    <TabsContent value="members" className="mt-6 space-y-4">
+                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                        Fonctionnalité à venir : Liste détaillée des membres
+                      </div>
+                    </TabsContent>
 
-                <TabsContent value="members" className="mt-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-lg font-medium">Membres associés</h4>
-                      <Badge variant="outline">{selectedSponsor.stats?.members || 0} membre(s)</Badge>
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Les participants de l&apos;événement qui travaillent chez {selectedSponsor.name}
-                    </div>
-                    {/* TODO: Liste des membres */}
-                    <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                      Fonctionnalité à venir : Liste détaillée des membres
-                    </div>
-                  </div>
-                </TabsContent>
+                    <TabsContent value="sessions" className="mt-6 space-y-4">
+                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                        Fonctionnalité à venir : Liste détaillée des sessions
+                      </div>
+                    </TabsContent>
 
-                <TabsContent value="sessions" className="mt-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-lg font-medium">Sessions liées</h4>
-                      <Badge variant="outline">{selectedSponsor.stats?.sessions || 0} session(s)</Badge>
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Les sessions où {selectedSponsor.name} intervient ou est mentionné
-                    </div>
-                    {/* TODO: Liste des sessions */}
-                    <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                      Fonctionnalité à venir : Liste détaillée des sessions
-                    </div>
-                  </div>
-                </TabsContent>
-                </Tabs>
+                    <TabsContent value="appointments" className="mt-6 space-y-4">
+                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                        Fonctionnalité à venir : Liste des rendez-vous demandés
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="contact" className="mt-6 space-y-4">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500 mb-1">Site web</h4>
+                          {selectedSponsor.website ? (
+                            <div className="flex items-center gap-2">
+                              <GlobeAltIcon className="h-4 w-4 text-blue-600" />
+                              <a
+                                href={selectedSponsor.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800"
+                              >
+                                {selectedSponsor.website}
+                              </a>
+                            </div>
+                          ) : (
+                            <p className="text-gray-500">Aucun site web renseigné</p>
+                          )}
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="timeline" className="mt-6 space-y-4">
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <CalendarIcon className="h-4 w-4 text-green-600" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-sm font-medium">Sponsor créé</div>
+                            <div className="text-xs text-gray-500">
+                              {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {selectedSponsor.updatedAt && selectedSponsor.updatedAt.getTime() !== selectedSponsor.createdAt.getTime() && (
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                              <PencilIcon className="h-4 w-4 text-blue-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="text-sm font-medium">Dernière modification</div>
+                              <div className="text-xs text-gray-500">
+                                {format(selectedSponsor.updatedAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </TabsContent>
+                  </ScrollArea>
+                </div>
+              </Tabs>
             </div>
           )}
         </DialogContent>
