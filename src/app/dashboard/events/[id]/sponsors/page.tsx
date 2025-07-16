@@ -17,7 +17,10 @@ import {
   EyeIcon,
   EyeSlashIcon,
   BuildingOfficeIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  UserIcon,
+  CalendarIcon,
+  ClockIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
@@ -43,6 +46,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
 
+type SponsorStats = {
+  members: number;
+  sessions: number;
+  documents: number;
+  appointments: number;
+  products: number;
+};
+
 type Sponsor = {
   id: string;
   name: string;
@@ -54,6 +65,7 @@ type Sponsor = {
   eventId: string;
   createdAt: Date;
   updatedAt: Date;
+  stats?: SponsorStats;
 };
 
 type Event = {
@@ -412,174 +424,225 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[80px]">Logo</TableHead>
-                      <TableHead className="min-w-[200px]">Sponsor</TableHead>
-                      <TableHead className="w-[120px]">Niveau</TableHead>
-                      <TableHead className="min-w-[200px]">Site web</TableHead>
-                      <TableHead className="w-[100px]">Statut</TableHead>
-                      <TableHead className="w-[140px]">Date d'ajout</TableHead>
-                      <TableHead className="w-[100px] text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredSponsors.map((sponsor) => (
-                      <TableRow 
-                        key={sponsor.id} 
-                        className="hover:bg-gray-50 cursor-pointer"
-                        onClick={() => openSponsorDetails(sponsor)}
-                      >
-                        {/* Logo */}
-                        <TableCell className="py-4">
-                          <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
-                            {sponsor.logo ? (
-                              <img 
-                                src={sponsor.logo} 
-                                alt={sponsor.name}
-                                className="w-10 h-10 object-contain rounded"
-                              />
-                            ) : (
-                              <div className="flex flex-col items-center">
-                                <PhotoIcon className="h-5 w-5 text-gray-400" />
-                              </div>
-                            )}
-                          </div>
-                        </TableCell>
-                        
-                        {/* Informations sponsor */}
-                        <TableCell className="py-4">
-                          <div className="space-y-1">
-                            <div className="font-medium text-gray-900">
-                              {sponsor.name}
+                <div className="min-w-[1200px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[80px] sticky left-0 bg-white z-10">Logo</TableHead>
+                        <TableHead className="min-w-[200px] sticky left-[80px] bg-white z-10">Sponsor</TableHead>
+                        <TableHead className="w-[120px]">Niveau</TableHead>
+                        <TableHead className="w-[100px]">Membres</TableHead>
+                        <TableHead className="w-[100px]">Sessions</TableHead>
+                        <TableHead className="w-[110px]">Documents</TableHead>
+                        <TableHead className="w-[80px]">RDV</TableHead>
+                        <TableHead className="w-[100px]">Produits</TableHead>
+                        <TableHead className="min-w-[200px]">Site web</TableHead>
+                        <TableHead className="w-[100px]">Statut</TableHead>
+                        <TableHead className="w-[140px]">Date d'ajout</TableHead>
+                        <TableHead className="w-[100px] text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredSponsors.map((sponsor) => (
+                        <TableRow 
+                          key={sponsor.id} 
+                          className="hover:bg-gray-50 cursor-pointer"
+                          onClick={() => openSponsorDetails(sponsor)}
+                        >
+                          {/* Logo */}
+                          <TableCell className="py-4 sticky left-0 bg-white z-10">
+                            <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
+                              {sponsor.logo ? (
+                                <img 
+                                  src={sponsor.logo} 
+                                  alt={sponsor.name}
+                                  className="w-10 h-10 object-contain rounded"
+                                />
+                              ) : (
+                                <div className="flex flex-col items-center">
+                                  <PhotoIcon className="h-5 w-5 text-gray-400" />
+                                </div>
+                              )}
                             </div>
-                            {sponsor.description && (
-                              <div className="text-sm text-gray-600 line-clamp-2 max-w-xs">
-                                {sponsor.description}
+                          </TableCell>
+                          
+                          {/* Informations sponsor */}
+                          <TableCell className="py-4 sticky left-[80px] bg-white z-10">
+                            <div className="space-y-1">
+                              <div className="font-medium text-gray-900">
+                                {sponsor.name}
                               </div>
+                              {sponsor.description && (
+                                <div className="text-sm text-gray-600 line-clamp-2 max-w-xs">
+                                  {sponsor.description}
+                                </div>
+                              )}
+                              {!sponsor.logo && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
+                                  }}
+                                  className="text-xs text-[#81B441] hover:text-[#72a139] underline"
+                                >
+                                  Ajouter un logo
+                                </button>
+                              )}
+                            </div>
+                          </TableCell>
+                          
+                          {/* Niveau */}
+                          <TableCell className="py-4">
+                            <Badge className={`${getLevelBadgeClass(sponsor.level)} text-xs`}>
+                              {getLevelText(sponsor.level)}
+                            </Badge>
+                          </TableCell>
+                          
+                          {/* Membres */}
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <UserIcon className="h-4 w-4 text-gray-400" />
+                              <span className="font-medium">{sponsor.stats?.members || 0}</span>
+                            </div>
+                          </TableCell>
+                          
+                          {/* Sessions */}
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <CalendarIcon className="h-4 w-4 text-blue-500" />
+                              <span className="font-medium text-blue-600">{sponsor.stats?.sessions || 0}</span>
+                            </div>
+                          </TableCell>
+                          
+                          {/* Documents */}
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <svg className="h-4 w-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                              <span className="font-medium text-green-600">{sponsor.stats?.documents || 0}</span>
+                            </div>
+                          </TableCell>
+                          
+                          {/* RDV */}
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <ClockIcon className="h-4 w-4 text-orange-500" />
+                              <span className="font-medium text-orange-600">{sponsor.stats?.appointments || 0}</span>
+                            </div>
+                          </TableCell>
+                          
+                          {/* Produits */}
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <svg className="h-4 w-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                              </svg>
+                              <span className="font-medium text-purple-600">{sponsor.stats?.products || 0}</span>
+                            </div>
+                          </TableCell>
+                          
+                          {/* Site web */}
+                          <TableCell className="py-4">
+                            {sponsor.website ? (
+                              <div className="flex items-center gap-2">
+                                <GlobeAltIcon className="h-4 w-4 text-blue-600" />
+                                <a
+                                  href={sponsor.website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-blue-600 hover:text-blue-800 text-sm truncate max-w-[150px]"
+                                >
+                                  {sponsor.website.replace(/^https?:\/\//, '')}
+                                </a>
+                              </div>
+                            ) : (
+                              <span className="text-gray-400 text-sm">-</span>
                             )}
-                            {!sponsor.logo && (
-                              <button
+                          </TableCell>
+                          
+                          {/* Statut */}
+                          <TableCell className="py-4">
+                            {sponsor.visible ? (
+                              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                                <EyeIcon className="h-3 w-3 mr-1" />
+                                Visible
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-gray-600">
+                                <EyeSlashIcon className="h-3 w-3 mr-1" />
+                                Masqué
+                              </Badge>
+                            )}
+                          </TableCell>
+                          
+                          {/* Date d'ajout */}
+                          <TableCell className="py-4">
+                            <span className="text-sm text-gray-500">
+                              {format(sponsor.createdAt, "dd MMM yyyy", { locale: fr })}
+                            </span>
+                          </TableCell>
+                          
+                          {/* Actions */}
+                          <TableCell className="py-4 text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
                                 }}
-                                className="text-xs text-[#81B441] hover:text-[#72a139] underline"
+                                className="h-8 w-8 p-0"
+                                title="Modifier le sponsor"
                               >
-                                Ajouter un logo
-                              </button>
-                            )}
-                          </div>
-                        </TableCell>
-                        
-                        {/* Niveau */}
-                        <TableCell className="py-4">
-                          <Badge className={`${getLevelBadgeClass(sponsor.level)} text-xs`}>
-                            {getLevelText(sponsor.level)}
-                          </Badge>
-                        </TableCell>
-                        
-                        {/* Site web */}
-                        <TableCell className="py-4">
-                          {sponsor.website ? (
-                            <div className="flex items-center gap-2">
-                              <GlobeAltIcon className="h-4 w-4 text-blue-600" />
-                              <a
-                                href={sponsor.website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="text-blue-600 hover:text-blue-800 text-sm truncate max-w-[150px]"
-                              >
-                                {sponsor.website.replace(/^https?:\/\//, '')}
-                              </a>
-                            </div>
-                          ) : (
-                            <span className="text-gray-400 text-sm">-</span>
-                          )}
-                        </TableCell>
-                        
-                        {/* Statut */}
-                        <TableCell className="py-4">
-                          {sponsor.visible ? (
-                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                              <EyeIcon className="h-3 w-3 mr-1" />
-                              Visible
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-600">
-                              <EyeSlashIcon className="h-3 w-3 mr-1" />
-                              Masqué
-                            </Badge>
-                          )}
-                        </TableCell>
-                        
-                        {/* Date d'ajout */}
-                        <TableCell className="py-4">
-                          <span className="text-sm text-gray-500">
-                            {format(sponsor.createdAt, "dd MMM yyyy", { locale: fr })}
-                          </span>
-                        </TableCell>
-                        
-                        {/* Actions */}
-                        <TableCell className="py-4 text-right">
-                          <div className="flex items-center justify-end gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
-                              }}
-                              className="h-8 w-8 p-0"
-                              title="Modifier le sponsor"
-                            >
-                              <PencilIcon className="h-4 w-4" />
-                            </Button>
-                            
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="h-8 w-8 p-0"
-                                >
-                                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01" />
-                                  </svg>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => openSponsorDetails(sponsor)}>
-                                  <EyeIcon className="h-4 w-4 mr-2" />
-                                  Voir les détails
-                                </DropdownMenuItem>
-                                {sponsor.website && (
-                                  <DropdownMenuItem onClick={() => window.open(sponsor.website, '_blank')}>
-                                    <LinkIcon className="h-4 w-4 mr-2" />
-                                    Visiter le site
+                                <PencilIcon className="h-4 w-4" />
+                              </Button>
+                              
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="h-8 w-8 p-0"
+                                  >
+                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01" />
+                                    </svg>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem onClick={() => openSponsorDetails(sponsor)}>
+                                    <EyeIcon className="h-4 w-4 mr-2" />
+                                    Voir les détails
                                   </DropdownMenuItem>
-                                )}
-                                <DropdownMenuItem
-                                  onClick={() => {
-                                    setSponsorToDelete(sponsor);
-                                    setDeleteConfirmOpen(true);
-                                  }}
-                                  className="text-red-600"
-                                >
-                                  <TrashIcon className="h-4 w-4 mr-2" />
-                                  Supprimer
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                                  {sponsor.website && (
+                                    <DropdownMenuItem onClick={() => window.open(sponsor.website, '_blank')}>
+                                      <LinkIcon className="h-4 w-4 mr-2" />
+                                      Visiter le site
+                                    </DropdownMenuItem>
+                                  )}
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      setSponsorToDelete(sponsor);
+                                      setDeleteConfirmOpen(true);
+                                    }}
+                                    className="text-red-600"
+                                  >
+                                    <TrashIcon className="h-4 w-4 mr-2" />
+                                    Supprimer
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -654,32 +717,33 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
               </div>
 
               {/* Onglets */}
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-3 mb-4">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-6">
                   <TabsTrigger value="details">Détails</TabsTrigger>
+                  <TabsTrigger value="stats">Statistiques</TabsTrigger>
+                  <TabsTrigger value="members">Membres</TabsTrigger>
+                  <TabsTrigger value="sessions">Sessions</TabsTrigger>
                   <TabsTrigger value="contact">Contact</TabsTrigger>
-                  <TabsTrigger value="timeline">Timeline</TabsTrigger>
+                  <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
 
-                <ScrollArea className="h-[400px] pr-4">
-                  <TabsContent value="details" className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4">
-                      {selectedSponsor.description && (
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-500 mb-2">Description</h4>
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-gray-700 whitespace-pre-wrap">{selectedSponsor.description}</p>
-                          </div>
+                <TabsContent value="details" className="mt-6">
+                  <div className="space-y-4">
+                    {selectedSponsor.description && (
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-500 mb-1">Description</h4>
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <p className="text-gray-700 whitespace-pre-wrap">{selectedSponsor.description}</p>
                         </div>
-                      )}
-                      
+                      </div>
+                    )}
+                    
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Niveau de sponsoring</h4>
-                        <p className="flex items-center gap-2">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getLevelBadgeClass(selectedSponsor.level)}`}>
-                            {getLevelText(selectedSponsor.level)}
-                          </span>
-                        </p>
+                        <Badge className={`${getLevelBadgeClass(selectedSponsor.level)}`}>
+                          {getLevelText(selectedSponsor.level)}
+                        </Badge>
                       </div>
                       
                       <div>
@@ -743,60 +807,89 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                         Supprimer
                       </Button>
                     </div>
-                  </TabsContent>
+                  </div>
+                </TabsContent>
 
-                  <TabsContent value="contact">
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Site web</h4>
-                        {selectedSponsor.website ? (
-                          <a 
-                            href={selectedSponsor.website} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-                          >
-                            <GlobeAltIcon className="h-4 w-4" />
-                            {selectedSponsor.website}
-                          </a>
-                        ) : (
-                          <p className="text-gray-500">Aucun site web renseigné</p>
-                        )}
-                      </div>
-                    </div>
-                  </TabsContent>
+                <TabsContent value="stats" className="mt-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <UserIcon className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-blue-600">{selectedSponsor.stats?.members || 0}</div>
+                        <div className="text-sm text-gray-500">Membres</div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <CalendarIcon className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-green-600">{selectedSponsor.stats?.sessions || 0}</div>
+                        <div className="text-sm text-gray-500">Sessions</div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <svg className="h-8 w-8 text-purple-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <div className="text-2xl font-bold text-purple-600">{selectedSponsor.stats?.documents || 0}</div>
+                        <div className="text-sm text-gray-500">Documents</div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <ClockIcon className="h-8 w-8 text-orange-500 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-orange-600">{selectedSponsor.stats?.appointments || 0}</div>
+                        <div className="text-sm text-gray-500">RDV en attente</div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <svg className="h-8 w-8 text-indigo-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                        <div className="text-2xl font-bold text-indigo-600">{selectedSponsor.stats?.products || 0}</div>
+                        <div className="text-sm text-gray-500">Produits</div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
 
-                  <TabsContent value="timeline">
-                    <div className="space-y-4">
-                      <div className="relative pl-8">
-                        <div className="absolute left-0 top-0 h-full w-0.5 bg-gray-200"></div>
-                        
-                        <div className="relative -ml-1.5">
-                          <div className="absolute top-2 left-0 w-3 h-3 bg-[#81B441] rounded-full"></div>
-                          <div className="ml-6">
-                            <p className="text-sm font-medium">Sponsor ajouté</p>
-                            <p className="text-xs text-gray-500">
-                              {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        {selectedSponsor.updatedAt.getTime() !== selectedSponsor.createdAt.getTime() && (
-                          <div className="relative -ml-1.5 mt-6">
-                            <div className="absolute top-2 left-0 w-3 h-3 bg-blue-500 rounded-full"></div>
-                            <div className="ml-6">
-                              <p className="text-sm font-medium">Dernière modification</p>
-                              <p className="text-xs text-gray-500">
-                                {format(selectedSponsor.updatedAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                <TabsContent value="members" className="mt-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-lg font-medium">Membres associés</h4>
+                      <Badge variant="outline">{selectedSponsor.stats?.members || 0} membre(s)</Badge>
                     </div>
-                  </TabsContent>
-                </ScrollArea>
-              </Tabs>
+                    <div className="text-sm text-gray-500">
+                      Les participants de l&apos;événement qui travaillent chez {selectedSponsor.name}
+                    </div>
+                    {/* TODO: Liste des membres */}
+                    <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                      Fonctionnalité à venir : Liste détaillée des membres
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="sessions" className="mt-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-lg font-medium">Sessions liées</h4>
+                      <Badge variant="outline">{selectedSponsor.stats?.sessions || 0} session(s)</Badge>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Les sessions où {selectedSponsor.name} intervient ou est mentionné
+                    </div>
+                    {/* TODO: Liste des sessions */}
+                    <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                      Fonctionnalité à venir : Liste détaillée des sessions
+                    </div>
+                  </div>
+                </TabsContent>
+                </Tabs>
             </div>
           )}
         </DialogContent>

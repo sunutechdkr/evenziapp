@@ -57,7 +57,7 @@ async function uploadLogo(logoFile: File): Promise<string | null> {
   }
 }
 
-// GET /api/events/[id]/sponsors - Récupérer tous les sponsors d'un événement
+// GET /api/events/[id]/sponsors - Récupérer la liste des sponsors
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -75,16 +75,113 @@ export async function GET(
     const paramsData = await params;
     const id = paramsData.id;
     
-    const sponsors = await prisma.sponsor.findMany({
-      where: { eventId: id },
-      orderBy: { createdAt: 'desc' }
+    // Vérifier que l'événement existe
+    const event = await prisma.event.findUnique({
+      where: { id },
     });
     
-    return NextResponse.json(sponsors);
-  } catch (error) {
-    console.error("Erreur lors de la récupération des sponsors:", error);
+    if (!event) {
+      return NextResponse.json(
+        { message: "Événement non trouvé" },
+        { status: 404 }
+      );
+    }
+
+    // Récupérer les sponsors avec leurs statistiques
+    const sponsors = await prisma.sponsor.findMany({
+      where: { eventId: id },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    // Pour chaque sponsor, calculer les statistiques
+    const sponsorsWithStats = await Promise.all(
+      sponsors.map(async (sponsor: any) => {
+        // Nombre de membres/participants associés au sponsor
+        // (Participants de la même entreprise que le sponsor)
+        const membersCount = await prisma.registration.count({
+          where: {
+            eventId: id,
+            company: {
+              contains: sponsor.name,
+              mode: 'insensitive'
+            }
+          }
+        });
+
+        // Nombre de sessions où le sponsor intervient
+        // (Sessions où le speaker contient le nom du sponsor)
+        const sessionsCount = await prisma.event_sessions.count({
+          where: {
+            event_id: id,
+            OR: [
+              {
+                speaker: {
+                  contains: sponsor.name,
+                  mode: 'insensitive'
+                }
+              },
+              {
+                description: {
+                  contains: sponsor.name,
+                  mode: 'insensitive'
+                }
+              }
+            ]
+          }
+        });
+
+        // Nombre de documents (à implémenter plus tard)
+        const documentsCount = 0; // TODO: Ajouter table documents
+
+        // Nombre de rendez-vous en attente liés au sponsor
+        // (RDV où un participant de l'entreprise du sponsor est impliqué)
+        const appointmentsCount = await prisma.appointment.count({
+          where: {
+            eventId: id,
+            status: 'PENDING',
+            OR: [
+              {
+                requester: {
+                  company: {
+                    contains: sponsor.name,
+                    mode: 'insensitive'
+                  }
+                }
+              },
+              {
+                recipient: {
+                  company: {
+                    contains: sponsor.name,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            ]
+          }
+        });
+
+        // Nombre de produits (à implémenter plus tard)
+        const productsCount = 0; // TODO: Ajouter table products
+
+        return {
+          ...sponsor,
+          stats: {
+            members: membersCount,
+            sessions: sessionsCount,
+            documents: documentsCount,
+            appointments: appointmentsCount,
+            products: productsCount
+          }
+        };
+      })
+    );
+    
+    return NextResponse.json(sponsorsWithStats);
+  } catch (error: unknown) {
+    console.error("❌ Erreur lors de la récupération des sponsors:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     return NextResponse.json(
-      { message: "Erreur lors de la récupération des sponsors" },
+      { message: "Erreur lors de la récupération des sponsors", error: errorMessage },
       { status: 500 }
     );
   }
