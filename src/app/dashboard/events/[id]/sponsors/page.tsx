@@ -452,12 +452,26 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                 {filteredSponsors.map(sponsor => (
                   <Card
                     key={sponsor.id}
-                    className={`cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${!sponsor.visible ? 'opacity-60' : ''}`}
+                    className={`group cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${!sponsor.visible ? 'opacity-60' : ''}`}
                     onClick={() => openSponsorDetails(sponsor)}
                   >
                     <CardContent className="p-0">
                       {/* Logo */}
-                      <div className="h-32 bg-gray-50 flex items-center justify-center p-4">
+                      <div className="h-32 bg-gray-50 flex items-center justify-center p-4 relative">
+                        {/* Actions overlay */}
+                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
+                            }}
+                            className="p-1 bg-white rounded-full shadow-sm border hover:bg-gray-50 transition-colors"
+                            title="Modifier le sponsor"
+                          >
+                            <PencilIcon className="h-3 w-3 text-gray-600" />
+                          </button>
+                        </div>
+                        
                         {sponsor.logo ? (
                           <img 
                             src={sponsor.logo} 
@@ -468,6 +482,15 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                           <div className="flex flex-col items-center text-gray-400">
                             <PhotoIcon className="h-10 w-10" />
                             <span className="text-xs mt-1">Pas de logo</span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
+                              }}
+                              className="text-xs text-[#81B441] hover:text-[#72a139] mt-1 underline"
+                            >
+                              Ajouter un logo
+                            </button>
                           </div>
                         )}
                       </div>
