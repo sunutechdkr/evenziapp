@@ -21,6 +21,7 @@ import {
   ClockIcon,
   EnvelopeIcon,
   TicketIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/components/ui/Logo";
 import { UserProfile } from "@/components/dashboard/UserProfile";
@@ -251,6 +252,11 @@ export function EventSidebar({
       name: "Sessions", 
       href: `${baseUrl}/sessions`, 
       icon: CalendarIcon,
+    },
+    { 
+      name: "Game", 
+      href: `${baseUrl}/game`, 
+      icon: TrophyIcon,
     },
     { 
       name: "Réglages", 

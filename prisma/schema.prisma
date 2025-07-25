@@ -101,6 +101,8 @@ model Event {
   registrations     Registration[]
   sponsors          Sponsor[]
   tickets           Ticket[]
+  games             Game[]
+  userEventScores   UserEventScore[]
 
   @@map("events")
 }
@@ -128,6 +130,8 @@ model Registration {
   event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
   ticket               Ticket?              @relation(fields: [ticketId], references: [id])
   sessions             SessionParticipant[]
+  games                Game[]
+  userEventScores      UserEventScore[]
 
   @@map("registrations")
 }
@@ -349,6 +353,35 @@ model EmailLog {
   @@map("email_logs")
 }
 
+model Game {
+  id               String       @id @default(cuid())
+  eventId          String       @map("event_id")
+  participantId    String       @map("participant_id")
+  action           GameAction
+  points           Int
+  actionDetails    String?      @map("action_details") // JSON pour stocker des détails spécifiques
+  relatedEntityId  String?      @map("related_entity_id") // ID de la session, du participant scanné, etc.
+  createdAt        DateTime     @default(now()) @map("created_at")
+  event            Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participant      Registration @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@map("games")
+}
+
+model UserEventScore {
+  id            String       @id @default(cuid())
+  eventId       String       @map("event_id")
+  participantId String       @map("participant_id")
+  totalPoints   Int          @default(0) @map("total_points")
+  lastUpdated   DateTime     @default(now()) @map("last_updated")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participant   Registration @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, participantId])
+  @@map("user_event_scores")
+}
+
 enum UserRole {
   USER
   STAFF
@@ -446,4 +479,13 @@ enum EmailStatus {
   BOUNCED
   OPENED
   CLICKED
+}
+
+enum GameAction {
+  CHECK_IN
+  SESSION_ENTRY
+  SESSION_PARTICIPATION
+  PARTICIPANT_SCAN
+  APPOINTMENT_REQUEST
+  APPOINTMENT_CONFIRMED
 }
