@@ -16,8 +16,6 @@ import {
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 
 // Importer les composants Shadcn UI
 import { 
@@ -29,7 +27,6 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -96,7 +93,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
       description: "Se présenter à l'accueil et enregistrer sa présence",
       points: 50,
       icon: CheckIcon,
-      color: "bg-green-100 text-green-800",
+      color: "bg-[#81B441]/10 text-[#81B441]",
       action: "CHECK_IN"
     },
     {
@@ -105,7 +102,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
       description: "Participer à une session du programme",
       points: 20,
       icon: CalendarIcon,
-      color: "bg-blue-100 text-blue-800",
+      color: "bg-[#81B441]/10 text-[#81B441]",
       action: "SESSION_ENTRY"
     },
     {
@@ -114,7 +111,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
       description: "Être présent durant toute la session",
       points: 30,
       icon: StarIcon,
-      color: "bg-yellow-100 text-yellow-800",
+      color: "bg-[#81B441]/10 text-[#81B441]",
       action: "SESSION_PARTICIPATION"
     },
     {
@@ -123,7 +120,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
       description: "Scanner le QR code d'un autre participant",
       points: 10,
       icon: UserIcon,
-      color: "bg-purple-100 text-purple-800",
+      color: "bg-[#81B441]/10 text-[#81B441]",
       action: "PARTICIPANT_SCAN"
     },
     {
@@ -132,7 +129,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
       description: "Envoyer une demande de rendez-vous",
       points: 15,
       icon: ClockIcon,
-      color: "bg-orange-100 text-orange-800",
+      color: "bg-[#81B441]/10 text-[#81B441]",
       action: "APPOINTMENT_REQUEST"
     },
     {
@@ -141,7 +138,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
       description: "Avoir un rendez-vous accepté et confirmé",
       points: 30,
       icon: FlagIcon,
-      color: "bg-red-100 text-red-800",
+      color: "bg-[#81B441]/10 text-[#81B441]",
       action: "APPOINTMENT_CONFIRMED"
     }
   ];
@@ -394,16 +391,9 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
                                   <p className="text-xs text-gray-500 mt-1">{participant.company}</p>
                                 )}
                                 <div className="mt-2">
-                                  <Badge 
-                                    className={cn(
-                                      "text-white",
-                                      participant.rank === 1 ? "bg-yellow-600" :
-                                      participant.rank === 2 ? "bg-gray-600" :
-                                      "bg-orange-600"
-                                    )}
-                                  >
-                                    {participant.totalPoints} pts
-                                  </Badge>
+                                  <span className="text-lg font-bold text-[#81B441]">
+                                    {participant.totalPoints} points
+                                  </span>
                                 </div>
                               </div>
                             ))}
@@ -458,9 +448,9 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
                                       </div>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                      <Badge variant="secondary">
-                                        {participant.totalPoints} pts
-                                      </Badge>
+                                      <span className="font-semibold text-[#81B441]">
+                                        {participant.totalPoints} points
+                                      </span>
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -480,7 +470,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <StarIcon className="w-6 h-6 mr-2 text-yellow-600" />
+                    <TrophyIcon className="w-6 h-6 mr-2 text-[#81B441]" />
                     Challenges & Points
                   </CardTitle>
                 </CardHeader>
@@ -503,9 +493,9 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
                               {challenge.description}
                             </p>
                             <div className="mt-2">
-                              <Badge className="bg-[#81B441] text-white">
-                                +{challenge.points} pts
-                              </Badge>
+                              <span className="text-sm font-bold text-[#81B441]">
+                                +{challenge.points} points
+                              </span>
                             </div>
                           </div>
                         </div>
