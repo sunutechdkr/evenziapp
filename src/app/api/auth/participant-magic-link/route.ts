@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     console.log('Tentative d\'envoi d\'email avec Resend...');
     
     const emailResult = await sendEmail({
-      from: "InEvent <noreply@ineventapp.com>", // Utilise le domaine vérifié
+      from: "InEvent <noreply@evenzi.io>", // Utilise le domaine vérifié
       to: [email],
       subject: `🔐 Code de connexion - ${participant.event.name}`,
       html: emailHtml,

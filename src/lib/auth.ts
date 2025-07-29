@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
-      from: process.env.EMAIL_FROM || 'no-reply@ineventapp.com',
+      from: process.env.EMAIL_FROM || 'no-reply@evenzi.io',
       
       // Personnaliser l'envoi d'emails avec Resend
       async sendVerificationRequest({ identifier: email, url }) {
@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const { data, error } = await resend.emails.send({
-            from: 'InEvent <no-reply@ineventapp.com>',
+            from: 'InEvent <no-reply@evenzi.io>',
             to: email,
             subject: 'Connexion à votre compte InEvent',
             html: `

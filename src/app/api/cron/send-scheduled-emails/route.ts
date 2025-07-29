@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
               .replace(/\{\{eventTime\}\}/g, '14h00')
               .replace(/\{\{eventLocation\}\}/g, campaign.event.location)
               .replace(/\{\{organizerName\}\}/g, 'Organisateur')
-              .replace(/\{\{supportEmail\}\}/g, 'support@ineventapp.com');
+              .replace(/\{\{supportEmail\}\}/g, 'support@evenzi.io');
 
             const processedSubject = campaign.subject
               .replace(/\{\{eventName\}\}/g, campaign.event.name)
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
               .replace(/\{\{eventDate\}\}/g, new Date(campaign.event.startDate).toLocaleDateString());
 
             await sendEmail({
-              from: 'noreply@ineventapp.com',
+              from: 'noreply@evenzi.io',
               to: emailLog.recipientEmail,
               subject: processedSubject,
               html: processedContent,

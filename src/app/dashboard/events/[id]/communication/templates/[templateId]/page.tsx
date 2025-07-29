@@ -119,7 +119,7 @@ export default function TemplateViewPage() {
       .replace(/\{\{eventTime\}\}/g, '14h00')
       .replace(/\{\{eventLocation\}\}/g, event.location)
       .replace(/\{\{organizerName\}\}/g, 'Organisateur')
-      .replace(/\{\{supportEmail\}\}/g, 'support@ineventapp.com');
+                  .replace(/\{\{supportEmail\}\}/g, 'support@evenzi.io');
   };
 
   const handleSendTestEmail = async () => {

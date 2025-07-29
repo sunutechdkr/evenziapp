@@ -59,7 +59,7 @@ export async function POST(
       .replace(/\{\{eventTime\}\}/g, '14h00')
       .replace(/\{\{eventLocation\}\}/g, event.location)
       .replace(/\{\{organizerName\}\}/g, 'Organisateur')
-      .replace(/\{\{supportEmail\}\}/g, 'support@ineventapp.com');
+      .replace(/\{\{supportEmail\}\}/g, 'support@evenzi.io');
 
     const processedSubject = subject
       .replace(/\{\{eventName\}\}/g, event.name)
@@ -68,11 +68,11 @@ export async function POST(
       .replace(/\{\{eventTime\}\}/g, '14h00')
       .replace(/\{\{eventLocation\}\}/g, event.location)
       .replace(/\{\{organizerName\}\}/g, 'Organisateur')
-      .replace(/\{\{supportEmail\}\}/g, 'support@ineventapp.com');
+      .replace(/\{\{supportEmail\}\}/g, 'support@evenzi.io');
 
     // Envoyer l'email de test
     await sendEmail({
-      from: 'InEvent <noreply@ineventapp.com>',
+      from: 'InEvent <noreply@evenzi.io>',
       to: testEmail,
       subject: `[TEST] ${processedSubject}`,
       html: `

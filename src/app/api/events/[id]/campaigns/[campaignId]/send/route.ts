@@ -132,8 +132,8 @@ export async function POST(
     // Envoyer les emails
     for (const recipient of recipients) {
       try {
-        await sendEmail({
-          from: 'InEvent <noreply@ineventapp.com>',
+                  await sendEmail({
+            from: 'InEvent <noreply@evenzi.io>',
           to: recipient.email,
           subject: campaign.subject,
           html: campaign.htmlContent.replace(/{{name}}/g, recipient.name),
