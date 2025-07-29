@@ -42,13 +42,16 @@ type Speaker = {
   firstName: string;
   lastName: string;
   email: string;
+  phone?: string;
+  jobTitle?: string;
   company?: string;
-  position?: string;
   avatar?: string;
   bio?: string;
   website?: string;
   linkedin?: string;
   twitter?: string;
+  type: string;
+  checkedIn: boolean;
   sessions?: {
     id: string;
     title: string;
@@ -146,7 +149,7 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
     const matchesSearch = speaker.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          speaker.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          speaker.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         speaker.position?.toLowerCase().includes(searchTerm.toLowerCase());
+                         speaker.jobTitle?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesSession = !companyFilter || (speaker.sessions && speaker.sessions.some(s => s.title === companyFilter));
     
@@ -278,9 +281,9 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                             {speaker.firstName} {speaker.lastName}
                           </h3>
                           
-                          {speaker.position && (
+                          {speaker.jobTitle && (
                             <p className="text-sm text-gray-600 line-clamp-2">
-                              {speaker.position}
+                              {speaker.jobTitle}
                             </p>
                           )}
                           
@@ -331,9 +334,9 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                       {selectedSpeaker.firstName} {selectedSpeaker.lastName}
                     </h2>
                     <div className="flex gap-2 mt-2">
-                      {selectedSpeaker.position && (
+                      {selectedSpeaker.jobTitle && (
                         <Badge variant="outline" className="text-xs">
-                          {selectedSpeaker.position}
+                          {selectedSpeaker.jobTitle}
                         </Badge>
                       )}
                       {selectedSpeaker.company && (
@@ -373,12 +376,12 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-4">Informations professionnelles</h3>
                           <div className="space-y-3">
-                            {selectedSpeaker.position && (
+                            {selectedSpeaker.jobTitle && (
                               <div className="flex items-center">
                                 <BriefcaseIcon className="h-5 w-5 text-gray-400 mr-3" />
                                 <div>
-                                  <p className="text-sm text-gray-600">Poste</p>
-                                  <p className="font-medium">{selectedSpeaker.position}</p>
+                                  <p className="text-sm text-gray-600">Fonction</p>
+                                  <p className="font-medium">{selectedSpeaker.jobTitle}</p>
                                 </div>
                               </div>
                             )}
@@ -467,6 +470,24 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                             </div>
                           </div>
 
+                          {/* Téléphone */}
+                          {selectedSpeaker.phone && (
+                            <div className="flex items-center">
+                              <svg className="h-5 w-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                              </svg>
+                              <div>
+                                <p className="text-sm text-gray-600">Téléphone</p>
+                                <a 
+                                  href={`tel:${selectedSpeaker.phone}`}
+                                  className="font-medium text-[#81B441] hover:text-[#72a139]"
+                                >
+                                  {selectedSpeaker.phone}
+                                </a>
+                              </div>
+                            </div>
+                          )}
+
                           {/* Site web */}
                           {selectedSpeaker.website && (
                             <div className="flex items-center">
@@ -524,6 +545,17 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                               </div>
                             </div>
                           )}
+
+                          {/* Statut de check-in */}
+                          <div className="flex items-center">
+                            <div className={`h-5 w-5 rounded-full mr-3 ${selectedSpeaker.checkedIn ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                            <div>
+                              <p className="text-sm text-gray-600">Statut</p>
+                              <p className="font-medium">
+                                {selectedSpeaker.checkedIn ? 'Présent' : 'Non présent'}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </ScrollArea>

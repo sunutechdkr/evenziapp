@@ -9,6 +9,7 @@ export async function GET(
     const { id } = await params;
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query") || "";
+    const type = searchParams.get("type") || "";
     
     if (!id) {
       return NextResponse.json(
@@ -32,14 +33,21 @@ export async function GET(
       );
     }
 
+    // Construire la requête avec filtre par type si spécifié
+    let whereClause = `event_id = ${id}`;
+    if (type) {
+      whereClause += ` AND type = '${type}'`;
+    }
+    
     // Récupérer les participants qui correspondent au filtre avec SQL direct
     const participantsQuery = await prisma.$queryRaw`
       SELECT 
-        id, first_name, last_name, email, type, checked_in, check_in_time, short_code
+        id, first_name, last_name, email, phone, job_title, company, type, 
+        checked_in, check_in_time, short_code, registration_date
       FROM 
         registrations
       WHERE 
-        event_id = ${id}
+        ${whereClause}
         AND (
           LOWER(first_name) LIKE LOWER(${'%' + query + '%'})
           OR LOWER(last_name) LIKE LOWER(${'%' + query + '%'})
@@ -58,10 +66,14 @@ export async function GET(
           firstName: p.first_name,
           lastName: p.last_name,
           email: p.email,
+          phone: p.phone,
+          jobTitle: p.job_title,
+          company: p.company,
           type: p.type,
           checkedIn: p.checked_in,
           checkInTime: p.check_in_time,
-          shortCode: p.short_code
+          shortCode: p.short_code,
+          registrationDate: p.registration_date
         }))
       : [];
 
@@ -69,7 +81,7 @@ export async function GET(
   } catch (error) {
     console.error("Erreur lors de la récupération des participants:", error);
     return NextResponse.json(
-      { message: "Une erreur est survenue lors de la récupération des participants" },
+      { message: "Erreur lors de la récupération des participants" },
       { status: 500 }
     );
   }
