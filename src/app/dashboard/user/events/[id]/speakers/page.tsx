@@ -115,29 +115,30 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
   };
 
   /**
-   * Récupère la liste des speakers
+   * Récupère la liste des participants de type SPEAKER
    */
   const fetchSpeakers = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/events/${eventId}/speakers`);
-      if (!response.ok) throw new Error('Erreur lors de la récupération des speakers');
+      const response = await fetch(`/api/events/${eventId}/participants?type=SPEAKER`);
+      if (!response.ok) throw new Error('Erreur lors de la récupération des intervenants');
       
       const data = await response.json();
       setSpeakers(data);
     } catch (error) {
       console.error('Erreur:', error);
-      toast.error('Impossible de charger les speakers');
+      toast.error('Impossible de charger les intervenants');
     } finally {
       setLoading(false);
     }
   };
 
-  // Obtenir les entreprises uniques pour le filtre
-  const uniqueCompanies = Array.from(new Set(
+  // Obtenir les sessions uniques pour le tri
+  const uniqueSessions = Array.from(new Set(
     speakers
-      .filter(s => s.company)
-      .map(s => s.company!)
+      .filter(s => s.sessions && s.sessions.length > 0)
+      .flatMap(s => s.sessions!)
+      .map(session => session.title)
   ));
 
   // Filtrer les speakers
@@ -147,9 +148,9 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                          speaker.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          speaker.position?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCompany = !companyFilter || speaker.company === companyFilter;
+    const matchesSession = !companyFilter || (speaker.sessions && speaker.sessions.some(s => s.title === companyFilter));
     
-    return matchesSearch && matchesCompany;
+    return matchesSearch && matchesSession;
   });
 
   const openSpeakerDetails = (speaker: Speaker) => {
@@ -236,16 +237,16 @@ export default function UserEventSpeakersPage({ params }: { params: Promise<{ id
                   />
                 </div>
                 
-                {/* Filtre par entreprise */}
+                {/* Tri par session */}
                 <select
                   value={companyFilter}
                   onChange={(e) => setCompanyFilter(e.target.value)}
                   className="rounded-md border border-gray-300 px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#81B441] focus:border-transparent"
                 >
-                  <option value="">Toutes les entreprises</option>
-                  {uniqueCompanies.map((company) => (
-                    <option key={company} value={company}>
-                      {company}
+                  <option value="">Toutes les sessions</option>
+                  {uniqueSessions.map((session) => (
+                    <option key={session} value={session}>
+                      {session}
                     </option>
                   ))}
                 </select>

@@ -618,8 +618,97 @@ export default function UserEventSessionsPage({ params }: { params: Promise<{ id
                 </p>
               </div>
             ) : (
-              // Rendu conditionnel selon le mode de vue
-              renderCardsView()
+              // Affichage direct des sessions sans regroupement par jour
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredSessions.map((session) => (
+                  <Card 
+                    key={session.id} 
+                    className="cursor-pointer hover:shadow-md transition-shadow duration-200"
+                    onClick={() => openSessionDetails(session)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        {/* En-tête avec titre et badge de format */}
+                        <div className="flex items-start justify-between">
+                          <h4 className="font-semibold text-gray-900 line-clamp-2 flex-1">
+                            {session.title}
+                          </h4>
+                          {session.format && (
+                            <Badge variant="outline" className="text-xs ml-2 flex-shrink-0">
+                              {session.format}
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        {/* Description */}
+                        {session.description && (
+                          <p className="text-sm text-gray-600 line-clamp-2">
+                            {session.description}
+                          </p>
+                        )}
+                        
+                        {/* Informations de temps et lieu */}
+                        <div className="space-y-2">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <CalendarIcon className="h-4 w-4 mr-2" />
+                            <span>
+                              {format(new Date(session.start_date), 'dd/MM/yyyy')}
+                            </span>
+                          </div>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <ClockIcon className="h-4 w-4 mr-2" />
+                            <span>
+                              {session.start_time} - {session.end_time}
+                            </span>
+                          </div>
+                          
+                          {session.location && (
+                            <div className="flex items-center text-sm text-gray-500">
+                              <MapPinIcon className="h-4 w-4 mr-2" />
+                              <span>{session.location}</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Intervenants */}
+                        {session.speakers && session.speakers.length > 0 && (
+                          <div className="space-y-2">
+                            <div className="flex items-center text-sm text-gray-500">
+                              <UserIcon className="h-4 w-4 mr-2" />
+                              <span>Intervenants</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                              {session.speakers.slice(0, 3).map((speaker, index) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {speaker.firstName} {speaker.lastName}
+                                </Badge>
+                              ))}
+                              {session.speakers.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{session.speakers.length - 3}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Participants et capacité */}
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <UserGroupIcon className="h-4 w-4 mr-1" />
+                            <span>{session.participantCount} participant{session.participantCount !== 1 ? 's' : ''}</span>
+                          </div>
+                          {session.capacity && (
+                            <span className="text-xs text-gray-400">
+                              Capacité: {session.capacity}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             )}
           </div>
         </main>

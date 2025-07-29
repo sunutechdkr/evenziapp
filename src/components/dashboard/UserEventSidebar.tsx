@@ -190,8 +190,8 @@ export function UserEventSidebar({
       icon: ClockIcon,
     },
     { 
-      name: "Exposants", 
-      href: `${baseUrl}/exposants`, 
+      name: "Sponsors", 
+      href: `${baseUrl}/sponsors`, 
       icon: BuildingOfficeIcon,
     },
     { 
