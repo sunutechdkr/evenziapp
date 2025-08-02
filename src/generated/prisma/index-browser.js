@@ -381,6 +381,48 @@ exports.Prisma.EmailLogScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.GameScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  participantId: 'participantId',
+  action: 'action',
+  points: 'points',
+  actionDetails: 'actionDetails',
+  relatedEntityId: 'relatedEntityId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserEventScoreScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  participantId: 'participantId',
+  totalPoints: 'totalPoints',
+  lastUpdated: 'lastUpdated',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserMatchProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  headline: 'headline',
+  bio: 'bio',
+  interests: 'interests',
+  goals: 'goals',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MatchSuggestionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  suggestedId: 'suggestedId',
+  eventId: 'eventId',
+  score: 'score',
+  reason: 'reason',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -494,6 +536,15 @@ exports.EmailStatus = exports.$Enums.EmailStatus = {
   CLICKED: 'CLICKED'
 };
 
+exports.GameAction = exports.$Enums.GameAction = {
+  CHECK_IN: 'CHECK_IN',
+  SESSION_ENTRY: 'SESSION_ENTRY',
+  SESSION_PARTICIPATION: 'SESSION_PARTICIPATION',
+  PARTICIPANT_SCAN: 'PARTICIPANT_SCAN',
+  APPOINTMENT_REQUEST: 'APPOINTMENT_REQUEST',
+  APPOINTMENT_CONFIRMED: 'APPOINTMENT_CONFIRMED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
@@ -512,7 +563,11 @@ exports.Prisma.ModelName = {
   ParticipantBadge: 'ParticipantBadge',
   EmailCampaign: 'EmailCampaign',
   EmailTemplate: 'EmailTemplate',
-  EmailLog: 'EmailLog'
+  EmailLog: 'EmailLog',
+  Game: 'Game',
+  UserEventScore: 'UserEventScore',
+  UserMatchProfile: 'UserMatchProfile',
+  MatchSuggestion: 'MatchSuggestion'
 };
 
 /**

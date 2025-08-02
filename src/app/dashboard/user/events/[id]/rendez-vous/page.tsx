@@ -54,6 +54,9 @@ import {
 } from "@/components/ui/tabs";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import MatchProfileForm from "@/components/matchmaking/MatchProfileForm";
+import MatchSuggestions from "@/components/matchmaking/MatchSuggestions";
+import AppointmentRequestForm from "@/components/appointments/AppointmentRequestForm";
 
 // Types pour les rendez-vous
 type Participant = {
@@ -97,6 +100,10 @@ export default function UserRendezVousPage() {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [currentUserRegistrationId, setCurrentUserRegistrationId] = useState<string | null>(null);
+  const [showRequestForm, setShowRequestForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<{id: string, name: string} | null>(null);
+  const [showProfileForm, setShowProfileForm] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState<any>(null);
 
   // Récupérer les rendez-vous depuis l'API
   const fetchAppointments = async () => {
@@ -302,7 +309,37 @@ export default function UserRendezVousPage() {
           </div>
 
           {/* Contenu principal */}
-          <div className="p-6">
+          <div className="p-6 space-y-6">
+            {/* Section Matchmaking */}
+            <div className="space-y-6">
+              <MatchSuggestions 
+                eventId={id as string}
+                onRequestMeeting={(userId, userName) => {
+                  setSelectedUser({id: userId, name: userName});
+                  setShowRequestForm(true);
+                }}
+              />
+              
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Configuration du matchmaking</h2>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowProfileForm(!showProfileForm)}
+                >
+                  {showProfileForm ? "Masquer" : "Configurer mon profil"}
+                </Button>
+              </div>
+              
+              {showProfileForm && (
+                <MatchProfileForm 
+                  eventId={id as string}
+                  onProfileUpdated={() => setShowProfileForm(false)}
+                />
+              )}
+            </div>
+
+            <Separator />
+
             {/* Statistiques */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-white rounded-xl shadow-sm p-4">
@@ -690,6 +727,32 @@ export default function UserRendezVousPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Modal de demande de rendez-vous */}
+      {showRequestForm && selectedUser && (
+        <AppointmentRequestForm
+          isOpen={showRequestForm}
+          onClose={() => {
+            setShowRequestForm(false);
+            setSelectedUser(null);
+          }}
+          recipient={{
+            id: selectedUser.id,
+            firstName: selectedUser.name.split(' ')[0] || '',
+            lastName: selectedUser.name.split(' ').slice(1).join(' ') || '',
+            email: '',
+            company: '',
+            jobTitle: ''
+          }}
+          event={currentEvent}
+          currentUserRegistrationId={currentUserRegistrationId!}
+          onSuccess={() => {
+            setShowRequestForm(false);
+            setSelectedUser(null);
+            fetchAppointments();
+          }}
+        />
+      )}
     </div>
   );
 } 
