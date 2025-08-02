@@ -103,7 +103,13 @@ export default function UserRendezVousPage() {
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{id: string, name: string} | null>(null);
   const [showProfileForm, setShowProfileForm] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<any>(null);
+  const [currentEvent, setCurrentEvent] = useState<{
+    id: string;
+    name: string;
+    startDate: string;
+    endDate?: string;
+    location: string;
+  } | null>(null);
 
   // Récupérer les rendez-vous depuis l'API
   const fetchAppointments = async () => {

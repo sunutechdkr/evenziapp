@@ -3,10 +3,22 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface UserMatchProfile {
+  id: string;
+  userId: string;
+  eventId: string;
+  headline?: string;
+  bio?: string;
+  interests: string[];
+  goals: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Fonction pour calculer la similarité entre deux profils
-function calculateSimilarity(profile1: any, profile2: any): { score: number; reason: string } {
+function calculateSimilarity(profile1: UserMatchProfile, profile2: UserMatchProfile): { score: number; reason: string } {
   let score = 0;
-  let reasons: string[] = [];
+  const reasons: string[] = [];
 
   // Similarité basée sur les intérêts communs
   const commonInterests = profile1.interests.filter((interest: string) => 
@@ -80,7 +92,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Récupérer ou créer le profil de matchmaking de l'utilisateur
-    let userProfile = await prisma.userMatchProfile.findUnique({
+    const userProfile = await prisma.userMatchProfile.findUnique({
       where: {
         userId_eventId: {
           userId: session.user.id,
