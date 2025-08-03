@@ -407,8 +407,11 @@ exports.Prisma.UserMatchProfileScalarFieldEnum = {
   eventId: 'eventId',
   headline: 'headline',
   bio: 'bio',
+  jobTitle: 'jobTitle',
+  company: 'company',
   interests: 'interests',
   goals: 'goals',
+  availability: 'availability',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

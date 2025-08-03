@@ -27203,6 +27203,8 @@ export namespace Prisma {
     eventId: string | null
     headline: string | null
     bio: string | null
+    jobTitle: string | null
+    company: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27213,6 +27215,8 @@ export namespace Prisma {
     eventId: string | null
     headline: string | null
     bio: string | null
+    jobTitle: string | null
+    company: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27223,8 +27227,11 @@ export namespace Prisma {
     eventId: number
     headline: number
     bio: number
+    jobTitle: number
+    company: number
     interests: number
     goals: number
+    availability: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -27237,6 +27244,8 @@ export namespace Prisma {
     eventId?: true
     headline?: true
     bio?: true
+    jobTitle?: true
+    company?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27247,6 +27256,8 @@ export namespace Prisma {
     eventId?: true
     headline?: true
     bio?: true
+    jobTitle?: true
+    company?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27257,8 +27268,11 @@ export namespace Prisma {
     eventId?: true
     headline?: true
     bio?: true
+    jobTitle?: true
+    company?: true
     interests?: true
     goals?: true
+    availability?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -27342,8 +27356,11 @@ export namespace Prisma {
     eventId: string
     headline: string | null
     bio: string | null
+    jobTitle: string | null
+    company: string | null
     interests: string[]
     goals: string[]
+    availability: string[]
     createdAt: Date
     updatedAt: Date
     _count: UserMatchProfileCountAggregateOutputType | null
@@ -27371,8 +27388,11 @@ export namespace Prisma {
     eventId?: boolean
     headline?: boolean
     bio?: boolean
+    jobTitle?: boolean
+    company?: boolean
     interests?: boolean
     goals?: boolean
+    availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27385,8 +27405,11 @@ export namespace Prisma {
     eventId?: boolean
     headline?: boolean
     bio?: boolean
+    jobTitle?: boolean
+    company?: boolean
     interests?: boolean
     goals?: boolean
+    availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27399,8 +27422,11 @@ export namespace Prisma {
     eventId?: boolean
     headline?: boolean
     bio?: boolean
+    jobTitle?: boolean
+    company?: boolean
     interests?: boolean
     goals?: boolean
+    availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27413,13 +27439,16 @@ export namespace Prisma {
     eventId?: boolean
     headline?: boolean
     bio?: boolean
+    jobTitle?: boolean
+    company?: boolean
     interests?: boolean
     goals?: boolean
+    availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserMatchProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "headline" | "bio" | "interests" | "goals" | "createdAt" | "updatedAt", ExtArgs["result"]["userMatchProfile"]>
+  export type UserMatchProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "headline" | "bio" | "jobTitle" | "company" | "interests" | "goals" | "availability" | "createdAt" | "updatedAt", ExtArgs["result"]["userMatchProfile"]>
   export type UserMatchProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -27445,8 +27474,11 @@ export namespace Prisma {
       eventId: string
       headline: string | null
       bio: string | null
+      jobTitle: string | null
+      company: string | null
       interests: string[]
       goals: string[]
+      availability: string[]
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["userMatchProfile"]>
@@ -27879,8 +27911,11 @@ export namespace Prisma {
     readonly eventId: FieldRef<"UserMatchProfile", 'String'>
     readonly headline: FieldRef<"UserMatchProfile", 'String'>
     readonly bio: FieldRef<"UserMatchProfile", 'String'>
+    readonly jobTitle: FieldRef<"UserMatchProfile", 'String'>
+    readonly company: FieldRef<"UserMatchProfile", 'String'>
     readonly interests: FieldRef<"UserMatchProfile", 'String[]'>
     readonly goals: FieldRef<"UserMatchProfile", 'String[]'>
+    readonly availability: FieldRef<"UserMatchProfile", 'String[]'>
     readonly createdAt: FieldRef<"UserMatchProfile", 'DateTime'>
     readonly updatedAt: FieldRef<"UserMatchProfile", 'DateTime'>
   }
@@ -29792,8 +29827,11 @@ export namespace Prisma {
     eventId: 'eventId',
     headline: 'headline',
     bio: 'bio',
+    jobTitle: 'jobTitle',
+    company: 'company',
     interests: 'interests',
     goals: 'goals',
+    availability: 'availability',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -31941,8 +31979,11 @@ export namespace Prisma {
     eventId?: StringFilter<"UserMatchProfile"> | string
     headline?: StringNullableFilter<"UserMatchProfile"> | string | null
     bio?: StringNullableFilter<"UserMatchProfile"> | string | null
+    jobTitle?: StringNullableFilter<"UserMatchProfile"> | string | null
+    company?: StringNullableFilter<"UserMatchProfile"> | string | null
     interests?: StringNullableListFilter<"UserMatchProfile">
     goals?: StringNullableListFilter<"UserMatchProfile">
+    availability?: StringNullableListFilter<"UserMatchProfile">
     createdAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     updatedAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -31955,8 +31996,11 @@ export namespace Prisma {
     eventId?: SortOrder
     headline?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
+    jobTitle?: SortOrderInput | SortOrder
+    company?: SortOrderInput | SortOrder
     interests?: SortOrder
     goals?: SortOrder
+    availability?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -31973,8 +32017,11 @@ export namespace Prisma {
     eventId?: StringFilter<"UserMatchProfile"> | string
     headline?: StringNullableFilter<"UserMatchProfile"> | string | null
     bio?: StringNullableFilter<"UserMatchProfile"> | string | null
+    jobTitle?: StringNullableFilter<"UserMatchProfile"> | string | null
+    company?: StringNullableFilter<"UserMatchProfile"> | string | null
     interests?: StringNullableListFilter<"UserMatchProfile">
     goals?: StringNullableListFilter<"UserMatchProfile">
+    availability?: StringNullableListFilter<"UserMatchProfile">
     createdAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     updatedAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -31987,8 +32034,11 @@ export namespace Prisma {
     eventId?: SortOrder
     headline?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
+    jobTitle?: SortOrderInput | SortOrder
+    company?: SortOrderInput | SortOrder
     interests?: SortOrder
     goals?: SortOrder
+    availability?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserMatchProfileCountOrderByAggregateInput
@@ -32005,8 +32055,11 @@ export namespace Prisma {
     eventId?: StringWithAggregatesFilter<"UserMatchProfile"> | string
     headline?: StringNullableWithAggregatesFilter<"UserMatchProfile"> | string | null
     bio?: StringNullableWithAggregatesFilter<"UserMatchProfile"> | string | null
+    jobTitle?: StringNullableWithAggregatesFilter<"UserMatchProfile"> | string | null
+    company?: StringNullableWithAggregatesFilter<"UserMatchProfile"> | string | null
     interests?: StringNullableListFilter<"UserMatchProfile">
     goals?: StringNullableListFilter<"UserMatchProfile">
+    availability?: StringNullableListFilter<"UserMatchProfile">
     createdAt?: DateTimeWithAggregatesFilter<"UserMatchProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserMatchProfile"> | Date | string
   }
@@ -34151,8 +34204,11 @@ export namespace Prisma {
     id?: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMatchProfilesInput
@@ -34165,8 +34221,11 @@ export namespace Prisma {
     eventId: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34175,8 +34234,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutMatchProfilesNestedInput
@@ -34189,8 +34251,11 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34201,8 +34266,11 @@ export namespace Prisma {
     eventId: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34211,8 +34279,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34223,8 +34294,11 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35903,8 +35977,11 @@ export namespace Prisma {
     eventId?: SortOrder
     headline?: SortOrder
     bio?: SortOrder
+    jobTitle?: SortOrder
+    company?: SortOrder
     interests?: SortOrder
     goals?: SortOrder
+    availability?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35915,6 +35992,8 @@ export namespace Prisma {
     eventId?: SortOrder
     headline?: SortOrder
     bio?: SortOrder
+    jobTitle?: SortOrder
+    company?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35925,6 +36004,8 @@ export namespace Prisma {
     eventId?: SortOrder
     headline?: SortOrder
     bio?: SortOrder
+    jobTitle?: SortOrder
+    company?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -37729,6 +37810,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type UserMatchProfileCreateavailabilityInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutMatchProfilesInput = {
     create?: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
     connectOrCreate?: UserCreateOrConnectWithoutMatchProfilesInput
@@ -37747,6 +37832,11 @@ export namespace Prisma {
   }
 
   export type UserMatchProfileUpdategoalsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserMatchProfileUpdateavailabilityInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -38432,8 +38522,11 @@ export namespace Prisma {
     id?: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutMatchProfilesInput
@@ -38444,8 +38537,11 @@ export namespace Prisma {
     eventId: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -38645,8 +38741,11 @@ export namespace Prisma {
     eventId?: StringFilter<"UserMatchProfile"> | string
     headline?: StringNullableFilter<"UserMatchProfile"> | string | null
     bio?: StringNullableFilter<"UserMatchProfile"> | string | null
+    jobTitle?: StringNullableFilter<"UserMatchProfile"> | string | null
+    company?: StringNullableFilter<"UserMatchProfile"> | string | null
     interests?: StringNullableListFilter<"UserMatchProfile">
     goals?: StringNullableListFilter<"UserMatchProfile">
+    availability?: StringNullableListFilter<"UserMatchProfile">
     createdAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     updatedAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
   }
@@ -39419,8 +39518,11 @@ export namespace Prisma {
     id?: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMatchProfilesInput
@@ -39431,8 +39533,11 @@ export namespace Prisma {
     userId: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -44225,8 +44330,11 @@ export namespace Prisma {
     eventId: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -44413,8 +44521,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutMatchProfilesNestedInput
@@ -44425,8 +44536,11 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -44436,8 +44550,11 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -44667,8 +44784,11 @@ export namespace Prisma {
     userId: string
     headline?: string | null
     bio?: string | null
+    jobTitle?: string | null
+    company?: string | null
     interests?: UserMatchProfileCreateinterestsInput | string[]
     goals?: UserMatchProfileCreategoalsInput | string[]
+    availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -45204,8 +45324,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutMatchProfilesNestedInput
@@ -45216,8 +45339,11 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -45227,8 +45353,11 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     headline?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
     interests?: UserMatchProfileUpdateinterestsInput | string[]
     goals?: UserMatchProfileUpdategoalsInput | string[]
+    availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

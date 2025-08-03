@@ -57,6 +57,7 @@ import Link from "next/link";
 import MatchProfileForm from "@/components/matchmaking/MatchProfileForm";
 import MatchSuggestions from "@/components/matchmaking/MatchSuggestions";
 import AppointmentRequestForm from "@/components/appointments/AppointmentRequestForm";
+import MatchmakingWizard from "@/components/matchmaking/MatchmakingWizard";
 
 // Types pour les rendez-vous
 type Participant = {
@@ -103,12 +104,14 @@ export default function UserRendezVousPage() {
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{id: string, name: string} | null>(null);
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [showMatchmakingWizard, setShowMatchmakingWizard] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<{
     id: string;
     name: string;
     startDate: string;
     endDate?: string;
     location: string;
+    sector?: string;
   } | null>(null);
 
   // Récupérer les rendez-vous depuis l'API
@@ -330,18 +333,12 @@ export default function UserRendezVousPage() {
                 <h2 className="text-lg font-semibold">Configuration du matchmaking</h2>
                 <Button 
                   variant="outline" 
-                  onClick={() => setShowProfileForm(!showProfileForm)}
+                  onClick={() => setShowMatchmakingWizard(true)}
+                  className="bg-[#81B441] text-white hover:bg-[#71A431]"
                 >
-                  {showProfileForm ? "Masquer" : "Configurer mon profil"}
+                  Configurer mon profil
                 </Button>
               </div>
-              
-              {showProfileForm && (
-                <MatchProfileForm 
-                  eventId={id as string}
-                  onProfileUpdated={() => setShowProfileForm(false)}
-                />
-              )}
             </div>
 
             <Separator />
@@ -757,8 +754,19 @@ export default function UserRendezVousPage() {
             setSelectedUser(null);
             fetchAppointments();
           }}
-        />
-      )}
-    </div>
-  );
+                    />
+          )}
+
+          {/* Wizard de configuration du matchmaking */}
+          {showMatchmakingWizard && currentEvent && (
+            <MatchmakingWizard
+              isOpen={showMatchmakingWizard}
+              onClose={() => setShowMatchmakingWizard(false)}
+              eventId={id as string}
+              eventName={currentEvent.name}
+              eventSector={currentEvent.sector}
+            />
+          )}
+        </div>
+      );
 } 

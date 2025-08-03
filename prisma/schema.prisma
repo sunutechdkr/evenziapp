@@ -501,8 +501,11 @@ model UserMatchProfile {
   eventId     String   @map("event_id")
   headline    String?
   bio         String?
+  jobTitle    String?  @map("job_title")
+  company     String?
   interests   String[] @default([])
   goals       String[] @default([])
+  availability String[] @default([]) // Créneaux horaires de disponibilité
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
