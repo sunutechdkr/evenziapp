@@ -136,6 +136,18 @@ export default function UserRendezVousPage() {
     }
   };
 
+  // Fetch event details
+  const fetchEventDetails = async () => {
+    if (!id) return;
+    try {
+      const response = await fetch(`/api/events/${id}`);
+      const data = await response.json();
+      setCurrentEvent(data);
+    } catch (error) {
+      console.error("Error fetching event details:", error);
+    }
+  };
+
   // Obtenir l'ID de registration de l'utilisateur courant
   const fetchCurrentUserRegistration = async () => {
     try {
@@ -157,6 +169,7 @@ export default function UserRendezVousPage() {
   };
 
   useEffect(() => {
+    fetchEventDetails();
     fetchCurrentUserRegistration();
     fetchAppointments();
 
@@ -334,7 +347,7 @@ export default function UserRendezVousPage() {
                 <Button 
                   variant="outline" 
                   onClick={() => setShowMatchmakingWizard(true)}
-                  className="bg-[#81B441] text-white hover:bg-[#71A431]"
+                  className="bg-[#81B441] text-white"
                 >
                   Configurer mon profil
                 </Button>
