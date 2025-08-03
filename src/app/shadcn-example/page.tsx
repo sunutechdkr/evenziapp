@@ -52,9 +52,9 @@ export default function ShadcnExample() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <h1 className="text-4xl font-bold mb-2">InEvent UI avec Shadcn</h1>
+      <h1 className="text-4xl font-bold mb-2">Evenzi UI avec Shadcn</h1>
       <p className="text-gray-500 mb-8">
-        Exemple d'intégration des composants Shadcn/UI dans l'application InEvent
+                  Exemple d&apos;intégration des composants Shadcn/UI dans l&apos;application Evenzi
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">

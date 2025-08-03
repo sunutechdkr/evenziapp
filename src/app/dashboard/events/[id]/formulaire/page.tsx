@@ -39,7 +39,7 @@ import {
 } from "@/components/ui/form";
 
 // Type pour le mode d'inscription
-type RegistrationMode = 'inevent' | 'manual';
+type RegistrationMode = 'evenzi' | 'manual';
 
 // Schéma de validation du formulaire d'inscription
 const registrationSchema = z.object({
@@ -65,7 +65,7 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
   const [previewMode, setPreviewMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [registrationMode, setRegistrationMode] = useState<RegistrationMode>('inevent');
+  const [registrationMode, setRegistrationMode] = useState<RegistrationMode>('evenzi');
   const [tickets, setTickets] = useState<any[]>([]);
   const [loadingTickets, setLoadingTickets] = useState(false);
   
@@ -345,9 +345,9 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
                 className="space-y-4"
               >
                 <div className="flex items-start space-x-2">
-                  <RadioGroupItem value="inevent" id="inevent-registration" className="mt-1" />
+                  <RadioGroupItem value="evenzi" id="evenzi-registration" className="mt-1" />
                   <div>
-                    <Label htmlFor="inevent-registration" className="font-medium text-gray-700 dark:text-gray-300">
+                    <Label htmlFor="evenzi-registration" className="font-medium text-gray-700 dark:text-gray-300">
                       Inscription Inevent
                     </Label>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -371,7 +371,7 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
                 </div>
               </RadioGroup>
               
-              {registrationMode === 'inevent' && (
+              {registrationMode === 'evenzi' && (
                 <>
                   <div className="mt-6">
                     <Label htmlFor="share-url" className="text-sm font-medium mb-2">
@@ -486,7 +486,7 @@ export default function RegistrationFormPage({ params }: { params: Promise<{ id:
         
         {/* Colonne de droite - Prévisualisation du formulaire */}
         <div className="w-full md:w-2/3">
-          {registrationMode === 'inevent' ? (
+          {registrationMode === 'evenzi' ? (
             <Card>
               <CardHeader>
                 <CardTitle>Prévisualisation du formulaire</CardTitle>

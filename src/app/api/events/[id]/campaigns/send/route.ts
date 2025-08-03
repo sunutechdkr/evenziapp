@@ -51,7 +51,7 @@ export async function POST(
     }
 
     // Traiter le contenu avec les variables d'événement
-    const logoBase64 = `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100"><rect width="400" height="100" fill="#81B441"/><text x="200" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white">InEvent App</text></svg>`).toString('base64')}`;
+    const logoBase64 = `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100"><rect width="400" height="100" fill="#81B441"/><text x="200" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white">Evenzi App</text></svg>`).toString('base64')}`;
 
     // Créer la campagne
     const campaign = await prisma.emailCampaign.create({

@@ -52,7 +52,7 @@ const getPlanFeatures = (plan: string) => {
       { name: "Événements illimités", description: "Aucune limite sur le nombre d'événements" },
       { name: "Participants illimités", description: "Aucune limite d'inscriptions" },
       { name: "Support VIP 24/7", description: "Assistance prioritaire par téléphone et email" },
-      { name: "API complète", description: "Accès total à l'API InEvent" },
+      { name: "API complète", description: "Accès total à l'API Evenzi" },
       { name: "Analytics premium", description: "Rapports avancés et exports personnalisés" },
       { name: "White label", description: "Interface complètement personnalisée" },
       { name: "Intégrations avancées", description: "Connecteurs CRM et outils marketing" },
@@ -804,7 +804,7 @@ export default function ProfilePage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-center text-sm text-gray-500">
             <span>Sécurisé par</span>
-            <span className="ml-2 font-semibold text-[#81B441]">InEvent</span>
+            <span className="ml-2 font-semibold text-[#81B441]">Evenzi</span>
           </div>
         </div>
       </footer>

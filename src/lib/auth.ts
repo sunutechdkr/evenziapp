@@ -61,17 +61,17 @@ export const authOptions: NextAuthOptions = {
           }
 
           const { data, error } = await resend.emails.send({
-            from: 'InEvent <no-reply@evenzi.io>',
+            from: 'Evenzi <no-reply@evenzi.io>',
             to: email,
-            subject: 'Connexion à votre compte InEvent',
+            subject: 'Connexion à votre compte Evenzi',
             html: `
               <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: 'Arial', sans-serif;">
                 <div style="background-color: #81B441; padding: 15px; text-align: center; border-radius: 5px 5px 0 0;">
-                  <h1 style="color: white; margin: 0;">InEvent</h1>
+                  <h1 style="color: white; margin: 0;">Evenzi</h1>
                 </div>
                 <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; border: 1px solid #e0e0e0; border-top: none;">
                   <p style="font-size: 16px; line-height: 1.5;">Bonjour,</p>
-                  <p style="font-size: 16px; line-height: 1.5;">Cliquez sur le lien ci-dessous pour vous connecter à votre compte InEvent :</p>
+                  <p style="font-size: 16px; line-height: 1.5;">Cliquez sur le lien ci-dessous pour vous connecter à votre compte Evenzi :</p>
                   <div style="text-align: center; margin: 30px 0;">
                     <a href="${url}" style="background-color: #81B441; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Se connecter</a>
                   </div>
@@ -79,7 +79,7 @@ export const authOptions: NextAuthOptions = {
                   <p style="font-size: 14px; color: #666; margin-top: 30px;">Ce lien est valable pendant 10 minutes et ne peut être utilisé qu'une seule fois.</p>
                 </div>
                 <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
-                  <p>&copy; 2024 InEvent. Tous droits réservés.</p>
+                  <p>&copy; 2024 Evenzi. Tous droits réservés.</p>
                 </div>
               </div>
             `,

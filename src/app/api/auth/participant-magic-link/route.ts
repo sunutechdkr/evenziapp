@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
           
           <div style="text-align: center; margin-top: 20px;">
             <p style="font-size: 12px; color: #adb5bd;">
-              © 2024 InEvent - Système de gestion d'événements
+              © 2024 Evenzi - Système de gestion d'événements
             </p>
           </div>
         </body>
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     console.log('Tentative d\'envoi d\'email avec Resend...');
     
     const emailResult = await sendEmail({
-      from: "InEvent <noreply@evenzi.io>", // Utilise le domaine vérifié
+      from: "Evenzi <noreply@evenzi.io>", // Utilise le domaine vérifié
       to: [email],
       subject: `🔐 Code de connexion - ${participant.event.name}`,
       html: emailHtml,

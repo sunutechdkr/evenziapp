@@ -66,7 +66,7 @@ export default function UserDashboard() {
     upcomingEvents: 0,
     ongoingEvents: 0,
     pastEvents: 0,
-    checkedInEvents: 0,
+    checkedEvenzis: 0,
   });
   const [recentEvents, setRecentEvents] = useState<Registration[]>([]);
 
@@ -141,7 +141,7 @@ export default function UserDashboard() {
             upcomingEvents: upcomingEvents.length,
             ongoingEvents: ongoing.length,
             pastEvents: past.length,
-            checkedInEvents: checkedIn.length,
+            checkedEvenzis: checkedIn.length,
           });
           
           // Trier par date de début (plus récents en premier)

@@ -1,4 +1,4 @@
-# 🎮 InEvent - Plateforme d'Événements avec Système de Scoring
+# 🎮 Evenzi - Plateforme d'Événements avec Système de Scoring
 
 > **Plateforme complète de gestion d'événements avec système de gamification**
 
@@ -94,8 +94,8 @@ GET  /api/events/[id]/game/leaderboard - Récupérer le classement
 
 ```bash
 # Cloner le projet
-git clone https://github.com/sunutech/inevent.git
-cd inevent
+git clone https://github.com/sunutech/evenzi.git
+cd evenzi
 
 # Installer les dépendances
 npm install --legacy-peer-deps
@@ -203,7 +203,7 @@ BLOB_READ_WRITE_TOKEN=vercel-blob-token
 1. **Connecter GitHub** :
    ```bash
    # Créer le repository sur github.com/new
-   git remote add origin https://github.com/USERNAME/inevent.git
+   git remote add origin https://github.com/USERNAME/evenzi.git
    git push -u origin main
    ```
 

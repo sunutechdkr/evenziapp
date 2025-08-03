@@ -2,7 +2,7 @@
 
 ## 📋 Résumé
 
-Le système de **Game** pour les événements a été entièrement implémenté et intégré dans l'application InEvent. Ce système permet de scorer les participants selon leurs interactions pendant un événement, créant une expérience gamifiée engageante.
+Le système de **Game** pour les événements a été entièrement implémenté et intégré dans l'application Evenzi. Ce système permet de scorer les participants selon leurs interactions pendant un événement, créant une expérience gamifiée engageante.
 
 ## 🏗️ Architecture Implémentée
 

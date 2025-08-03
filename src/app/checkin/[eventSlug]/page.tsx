@@ -596,7 +596,7 @@ export default function CheckInPage() {
                 </div>
                 
                 <div class="badge-footer">
-                  powered by inevent
+                  powered by evenzi
                 </div>
               </div>
               
@@ -1127,7 +1127,7 @@ export default function CheckInPage() {
       
       <div className="checkin-footer">
         <div className="checkin-powered-by">
-          Propulsé par InEvent
+          Propulsé par Evenzi
       </div>
     </div>
 

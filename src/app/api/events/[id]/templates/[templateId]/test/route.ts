@@ -49,7 +49,7 @@ export async function POST(
 
     // Traiter le contenu avec les variables d'événement
     // Utiliser une image SVG simple et compacte pour assurer l'affichage dans les emails
-    const logoBase64 = `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100"><rect width="400" height="100" fill="#81B441"/><text x="200" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white">InEvent App</text></svg>`).toString('base64')}`;
+    const logoBase64 = `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100"><rect width="400" height="100" fill="#81B441"/><text x="200" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white">Evenzi App</text></svg>`).toString('base64')}`;
     
     const processedHtmlContent = previewContent
       .replace(/\{\{eventBanner\}\}/g, logoBase64)
@@ -72,7 +72,7 @@ export async function POST(
 
     // Envoyer l'email de test
     await sendEmail({
-      from: 'InEvent <noreply@evenzi.io>',
+      from: 'Evenzi <noreply@evenzi.io>',
       to: testEmail,
       subject: `[TEST] ${processedSubject}`,
       html: `
@@ -85,7 +85,7 @@ export async function POST(
           </div>
           ${processedHtmlContent}
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;">
-            <p>Cet email de test a été envoyé via la plateforme InEvent.</p>
+            <p>Cet email de test a été envoyé via la plateforme Evenzi.</p>
           </div>
         </div>
       `,

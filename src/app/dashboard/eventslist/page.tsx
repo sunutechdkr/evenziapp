@@ -223,7 +223,7 @@ function EventsListComponent() {
 
       <main className="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
         <div className="text-center mb-12">
-          <h1 className="check-in-title">Bienvenue à InEvent!</h1>
+          <h1 className="check-in-title">Bienvenue à Evenzi!</h1>
           <p className="check-in-subtitle">Veuillez vous enregistrer pour imprimer votre badge d&apos;événement</p>
         </div>
 

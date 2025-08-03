@@ -7,8 +7,8 @@ Votre système Game est entièrement implémenté et committé localement !
 
 ### 1.1 Créer le repository
 1. Allez sur **https://github.com/new**
-2. **Nom** : `inevent` (ou votre choix)
-3. **Description** : "Plateforme InEvent avec système de scoring gamifié"
+2. **Nom** : `evenzi` (ou votre choix)
+3. **Description** : "Plateforme Evenzi avec système de scoring gamifié"
 4. **Visibilité** : Public ou Private
 5. ⚠️ **IMPORTANT** : Ne cochez PAS "Add a README file"
 6. Cliquez **"Create repository"**
@@ -16,7 +16,7 @@ Votre système Game est entièrement implémenté et committé localement !
 ### 1.2 Configurer l'URL remote
 ```bash
 # Remplacez VOTRE_USERNAME par votre nom GitHub
-git remote set-url origin https://github.com/VOTRE_USERNAME/inevent.git
+git remote set-url origin https://github.com/VOTRE_USERNAME/evenzi.git
 
 # Vérifier la nouvelle URL
 git remote -v
@@ -31,7 +31,7 @@ git push -u origin main
 1. Allez sur **https://vercel.com**
 2. Connectez-vous avec votre compte GitHub
 3. Cliquez **"New Project"**
-4. Importez votre repository `inevent`
+4. Importez votre repository `evenzi`
 
 ### 2.2 Configuration du projet
 ```

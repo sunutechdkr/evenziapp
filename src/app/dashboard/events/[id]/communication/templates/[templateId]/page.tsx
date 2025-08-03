@@ -108,8 +108,8 @@ export default function TemplateViewPage() {
   const getPreviewContent = (content: string) => {
     if (!event) return content;
     
-    // Utiliser le logo ineventapp_logo comme bannière par défaut
-    const bannerUrl = `${window.location.origin}/ineventapp_logo.png`;
+    // Utiliser le logo evenzi comme bannière par défaut
+    const bannerUrl = `${window.location.origin}/evenzi_logo.png`;
     
     return content
       .replace(/\{\{eventBanner\}\}/g, bannerUrl)

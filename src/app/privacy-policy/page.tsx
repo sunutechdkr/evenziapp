@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-bold text-gray-900">Politique de Confidentialité</CardTitle>
             <CardDescription className="text-lg text-gray-500">
-              Chez InEvent, la sécurité et la confidentialité de vos données sont notre priorité
+              Chez Evenzi, la sécurité et la confidentialité de vos données sont notre priorité
             </CardDescription>
           </CardHeader>
           
@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
             <section className="mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
               <p className="mb-4 text-gray-600">
-                InEvent s'engage à protéger la vie privée et les informations personnelles des utilisateurs 
+                Evenzi s'engage à protéger la vie privée et les informations personnelles des utilisateurs 
                 conformément aux réglementations en vigueur en Afrique de l'Ouest, notamment la loi sur la 
                 protection des données personnelles de la CEDEAO et les législations nationales applicables.
               </p>
@@ -149,7 +149,7 @@ export default function PrivacyPolicyPage() {
                 <li>Droit de retirer votre consentement à tout moment</li>
               </ul>
               <p className="text-gray-600">
-                Pour exercer ces droits, contactez-nous à l'adresse email : privacy@inevent.com
+                Pour exercer ces droits, contactez-nous à l'adresse email : privacy@evenzi.com
               </p>
             </section>
             
@@ -185,8 +185,8 @@ export default function PrivacyPolicyPage() {
               </p>
               <Card className="bg-gray-50 border-none">
                 <CardContent className="p-4">
-                  <p className="text-gray-700 font-medium">InEvent - Responsable de la Protection des Données</p>
-                  <p className="text-gray-600">Email: privacy@inevent.com</p>
+                  <p className="text-gray-700 font-medium">Evenzi - Responsable de la Protection des Données</p>
+                  <p className="text-gray-600">Email: privacy@evenzi.com</p>
                   <p className="text-gray-600">Téléphone: +221 XX XXX XX XX</p>
                   <p className="text-gray-600">Adresse: Dakar, Sénégal</p>
                 </CardContent>

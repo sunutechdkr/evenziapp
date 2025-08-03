@@ -18,7 +18,7 @@ NEXTAUTH_URL=https://evenzi-1yzgfg8vb-sunutech.vercel.app
 ### 3. Email (REQUIS)
 ```
 RESEND_API_KEY=re_2Jrgrb7b_KqwFXYiZ6YjBphipxRAFpntG
-EMAIL_FROM=noreply@inevent.app
+EMAIL_FROM=noreply@evenzi.app
 ```
 
 ### 4. Environnement

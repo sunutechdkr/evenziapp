@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     // Test 4: Test envoi email simple
     console.log('4. Test envoi email...');
     const emailResult = await sendEmail({
-      from: 'InEvent <noreply@evenzi.io>',
+      from: 'Evenzi <noreply@evenzi.io>',
       to: ['bouba@evenzi.io'],
       subject: 'Test API OTP',
       html: '<h1>Test API OTP - Tout fonctionne !</h1>',

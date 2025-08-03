@@ -200,7 +200,7 @@ export default function AidePage() {
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">Centre d&apos;aide</h1>
                 <p className="text-muted-foreground">
-                  Trouvez des réponses à vos questions et des guides pour utiliser InEvent
+                  Trouvez des réponses à vos questions et des guides pour utiliser Evenzi
                 </p>
               </div>
             </div>
@@ -431,7 +431,7 @@ export default function AidePage() {
                   </CardHeader>
                   <CardContent>
                     <Button asChild className="w-full">
-                      <a href="mailto:support@inevent.com">
+                      <a href="mailto:support@evenzi.io">
                         Contacter le support
                       </a>
                     </Button>
@@ -471,7 +471,7 @@ export default function AidePage() {
                   </CardHeader>
                   <CardContent>
                     <Button asChild variant="outline" className="w-full">
-                      <a href="https://calendly.com/inevent-support" target="_blank" rel="noopener noreferrer">
+                      <a href="https://calendly.com/evenzi-support" target="_blank" rel="noopener noreferrer">
                         Planifier un appel
                       </a>
                     </Button>
@@ -491,7 +491,7 @@ export default function AidePage() {
                   </CardHeader>
                   <CardContent>
                     <Button asChild variant="outline" className="w-full">
-                      <a href="https://docs.inevent.com" target="_blank" rel="noopener noreferrer">
+                      <a href="https://docs.evenzi.com" target="_blank" rel="noopener noreferrer">
                         Voir la documentation
                       </a>
                     </Button>
@@ -509,7 +509,7 @@ export default function AidePage() {
                     <div>
                       <h4 className="font-medium mb-2">Adresse postale</h4>
                       <p className="text-sm text-muted-foreground">
-                        InEvent SAS<br />
+                        Evenzi SAS<br />
                         123 Avenue des Champs-Élysées<br />
                         75008 Paris, France
                       </p>

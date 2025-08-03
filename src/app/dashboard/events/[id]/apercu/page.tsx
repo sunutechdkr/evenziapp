@@ -1034,7 +1034,7 @@ export default function EventApercuPage() {
 
       {/* Footer */}
       <footer className="mt-12 py-6 text-center text-xs text-gray-400">
-        powered by ineventapp
+        powered by evenziapp
       </footer>
     </div>
   );

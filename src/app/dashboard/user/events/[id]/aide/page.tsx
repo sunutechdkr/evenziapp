@@ -510,7 +510,7 @@ export default function UserAidePage() {
                   </CardHeader>
                   <CardContent>
                     <Button asChild variant="outline" className="w-full">
-                      <a href="mailto:support@inevent.com">
+                      <a href="mailto:support@evenzi.io">
                         Support technique
                       </a>
                     </Button>

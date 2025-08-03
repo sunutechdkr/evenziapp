@@ -273,7 +273,7 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
                 <span className="font-bold text-white">iN</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-white font-bold text-sm">InEvent</span>
+                <span className="text-white font-bold text-sm">Evenzi</span>
                 <span className="text-gray-400 text-xs">Dashboard</span>
               </div>
             </div>
@@ -330,8 +330,8 @@ export default function Sidebar({ onExpandChange }: { onExpandChange?: (expanded
             <div className="mt-auto px-3 pb-4">
               <div className="bg-gray-700/50 rounded-lg p-3 text-xs text-gray-300">
                 <p className="font-medium mb-1">Besoin d&apos;aide?</p>
-                <a href="mailto:support@inevent.com" className="text-[#81B441] hover:underline">
-                  support@inevent.com
+                <a href="mailto:support@evenzi.io" className="text-[#81B441] hover:underline">
+                  support@evenzi.io
                 </a>
               </div>
             </div>

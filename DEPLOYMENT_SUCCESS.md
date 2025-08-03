@@ -189,7 +189,7 @@ BLOB_MIGRATION_TYPES="avatar"         # Rollback partiel
 
 ## ✨ Résumé Final
 
-🎉 **SUCCÈS COMPLET** : Vercel Blob Storage est maintenant actif en production pour InEvent !
+🎉 **SUCCÈS COMPLET** : Vercel Blob Storage est maintenant actif en production pour Evenzi !
 
 **Bénéfices obtenus :**
 - 📈 Performance upload améliorée (CDN mondial)

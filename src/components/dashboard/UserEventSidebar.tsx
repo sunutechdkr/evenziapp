@@ -360,10 +360,10 @@ export function UserEventSidebar({
                 <div className="ml-3">
                   <p className="text-xs text-white font-medium">Besoin d&apos;aide?</p>
                   <a 
-                    href="mailto:support@inevent.com" 
+                    href="mailto:support@evenzi.io" 
                     className="text-xs text-[#81B441] hover:underline"
                   >
-                    support@inevent.com
+                    support@evenzi.io
                   </a>
                 </div>
               </div>

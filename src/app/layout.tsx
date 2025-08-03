@@ -13,18 +13,18 @@ const inter = Inter({
 // Métadonnées générales de l'application pour le SEO
 export const metadata: Metadata = {
   title: {
-    template: '%s | InEvent',
-    default: 'InEvent - Gestion d\'événements',
+    template: '%s | Evenzi',
+    default: 'Evenzi - Gestion d\'événements',
   },
   description: "Plateforme de gestion d'événements",
   keywords: "event management, qr code, check-in, event registration, event organization",
-  authors: [{ name: "InEvent Team" }],
-  creator: "InEvent",
-  publisher: "InEvent",
+  authors: [{ name: "Evenzi Team" }],
+  creator: "Evenzi",
+  publisher: "Evenzi",
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 };
 

@@ -1,4 +1,4 @@
-# 📋 Résumé Migration Vercel Blob - InEvent
+# 📋 Résumé Migration Vercel Blob - Evenzi
 
 ## ✅ État Actuel (Phase 1 Terminée)
 

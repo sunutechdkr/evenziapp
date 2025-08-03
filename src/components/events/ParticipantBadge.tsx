@@ -223,7 +223,7 @@ const ParticipantBadge = ({
               </div>
               
               <div class="badge-footer">
-                <p class="powered-by">Powered by InEvent</p>
+                <p class="powered-by">Powered by Evenzi</p>
               </div>
             </div>
           </body>
@@ -301,7 +301,7 @@ const ParticipantBadge = ({
           </div>
           
           <div className="text-center mt-2 pt-2 w-full border-t border-gray-200/50">
-            <p className="text-xs text-gray-400 font-light">Powered by InEvent</p>
+            <p className="text-xs text-gray-400 font-light">Powered by Evenzi</p>
           </div>
         </div>
       </div>

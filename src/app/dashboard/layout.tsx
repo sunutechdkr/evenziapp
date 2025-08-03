@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 // Métadonnées pour le SEO de la section dashboard
 export const metadata: Metadata = {
-  title: "Dashboard | Inevent",
-  description: "Gérez vos événements avec Inevent - Tableaux de bord, statistiques et gestion des participants",
+  title: "Dashboard | Evenzi",
+  description: "Gérez vos événements avec Evenzi - Tableaux de bord, statistiques et gestion des participants",
 };
 
 /**

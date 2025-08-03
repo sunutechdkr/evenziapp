@@ -133,7 +133,7 @@ export async function POST(
     for (const recipient of recipients) {
       try {
                   await sendEmail({
-            from: 'InEvent <noreply@evenzi.io>',
+            from: 'Evenzi <noreply@evenzi.io>',
           to: recipient.email,
           subject: campaign.subject,
           html: campaign.htmlContent.replace(/{{name}}/g, recipient.name),
