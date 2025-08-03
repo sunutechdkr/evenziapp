@@ -18,6 +18,7 @@ interface MatchmakingWizardProps {
   eventId: string;
   eventName: string;
   eventSector?: string;
+  eventDescription?: string;
 }
 
 interface WizardProfile {
@@ -30,15 +31,52 @@ interface WizardProfile {
   availability: string[];
 }
 
-// Suggestions d'intérêts par secteur
+// Suggestions d'intérêts par secteur (étendu)
 const INTERESTS_BY_SECTOR: Record<string, string[]> = {
-  tech: ["IA", "Blockchain", "Cloud", "Cybersécurité", "IoT", "Data Science", "DevOps", "Mobile", "Web3", "Fintech"],
-  finance: ["Banque", "Assurance", "Investissement", "Crypto", "Fintech", "Trading", "Risk Management", "Compliance"],
-  sante: ["Santé digitale", "Télémédecine", "Biotechnologie", "Dispositifs médicaux", "e-santé", "Pharmaceutique"],
-  education: ["EdTech", "Formation", "E-learning", "Université", "Innovation pédagogique", "Digital learning"],
-  agriculture: ["AgTech", "Développement durable", "Innovation agricole", "Biotechnologie", "Écologie"],
-  default: ["Innovation", "Digital", "Startup", "Entrepreneuriat", "Business", "Marketing", "Vente", "Partenariat"]
+  tech: ["IA", "Blockchain", "Cloud", "Cybersécurité", "IoT", "Data Science", "DevOps", "Mobile", "Web3", "Fintech", "SaaS", "API", "Big Data"],
+  technologie: ["IA", "Blockchain", "Cloud", "Cybersécurité", "IoT", "Data Science", "DevOps", "Mobile", "Web3", "Fintech", "SaaS", "API", "Big Data"],
+  finance: ["Banque", "Assurance", "Investissement", "Crypto", "Fintech", "Trading", "Risk Management", "Compliance", "RegTech", "InsurTech"],
+  financier: ["Banque", "Assurance", "Investissement", "Crypto", "Fintech", "Trading", "Risk Management", "Compliance", "RegTech", "InsurTech"],
+  sante: ["Santé digitale", "Télémédecine", "Biotechnologie", "Dispositifs médicaux", "e-santé", "Pharmaceutique", "HealthTech", "MedTech"],
+  medical: ["Santé digitale", "Télémédecine", "Biotechnologie", "Dispositifs médicaux", "e-santé", "Pharmaceutique", "HealthTech", "MedTech"],
+  education: ["EdTech", "Formation", "E-learning", "Université", "Innovation pédagogique", "Digital learning", "MOOC", "LMS"],
+  educatif: ["EdTech", "Formation", "E-learning", "Université", "Innovation pédagogique", "Digital learning", "MOOC", "LMS"],
+  agriculture: ["AgTech", "Développement durable", "Innovation agricole", "Biotechnologie", "Écologie", "Smart farming", "Precision agriculture"],
+  agricole: ["AgTech", "Développement durable", "Innovation agricole", "Biotechnologie", "Écologie", "Smart farming", "Precision agriculture"],
+  retail: ["E-commerce", "Retail Tech", "Omnichannel", "Customer Experience", "Supply Chain", "Logistique", "MarketPlace"],
+  commerce: ["E-commerce", "Retail Tech", "Omnichannel", "Customer Experience", "Supply Chain", "Logistique", "MarketPlace"],
+  immobilier: ["PropTech", "Smart Building", "Construction Tech", "Real Estate", "BIM", "Facilities Management"],
+  energie: ["CleanTech", "Énergies renouvelables", "Smart Grid", "Efficacité énergétique", "GreenTech", "Sustainability"],
+  transport: ["MobilityTech", "Logistique", "Smart Transport", "Autonomous Vehicles", "Supply Chain", "Delivery"],
+  media: ["MediaTech", "Streaming", "Content Creation", "Digital Publishing", "AdTech", "Social Media"],
+  startup: ["Innovation", "Entrepreneuriat", "Lean Startup", "MVP", "Growth Hacking", "Business Model", "Pitch", "Incubation"],
+  default: ["Innovation", "Digital", "Startup", "Entrepreneuriat", "Business", "Marketing", "Vente", "Partenariat", "Networking", "Leadership"]
 };
+
+// Fonction pour extraire des intérêts depuis la description
+function extractInterestsFromDescription(description: string): string[] {
+  const keywords = description.toLowerCase();
+  const extracted: string[] = [];
+  
+  // Mots-clés techniques
+  if (keywords.includes('ia') || keywords.includes('intelligence artificielle')) extracted.push('IA');
+  if (keywords.includes('blockchain')) extracted.push('Blockchain');
+  if (keywords.includes('cloud')) extracted.push('Cloud');
+  if (keywords.includes('data') || keywords.includes('données')) extracted.push('Data Science');
+  if (keywords.includes('fintech')) extracted.push('Fintech');
+  if (keywords.includes('startup')) extracted.push('Startup');
+  if (keywords.includes('innovation')) extracted.push('Innovation');
+  if (keywords.includes('digital') || keywords.includes('numérique')) extracted.push('Digital');
+  if (keywords.includes('marketing')) extracted.push('Marketing');
+  if (keywords.includes('iot') || keywords.includes('internet of things') || keywords.includes('objets connectés')) extracted.push('IoT');
+  if (keywords.includes('cybersécurité') || keywords.includes('sécurité')) extracted.push('Cybersécurité');
+  if (keywords.includes('mobile')) extracted.push('Mobile');
+  if (keywords.includes('web3')) extracted.push('Web3');
+  if (keywords.includes('e-commerce') || keywords.includes('commerce électronique')) extracted.push('E-commerce');
+  if (keywords.includes('saas') || keywords.includes('software as a service')) extracted.push('SaaS');
+  
+  return extracted;
+}
 
 const GOAL_SUGGESTIONS = [
   "Networking", "Recrutement", "Vente", "Achat", "Partenariat", 
@@ -58,7 +96,8 @@ export default function MatchmakingWizard({
   onClose, 
   eventId, 
   eventName, 
-  eventSector = "default" 
+  eventSector = "default",
+  eventDescription = ""
 }: MatchmakingWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [profile, setProfile] = useState<WizardProfile>({
@@ -74,6 +113,8 @@ export default function MatchmakingWizard({
   const [newInterest, setNewInterest] = useState("");
   const [newGoal, setNewGoal] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hasExistingProfile, setHasExistingProfile] = useState(false);
+  const [showReconfigWarning, setShowReconfigWarning] = useState(false);
 
   // Charger le profil existant au montage
   useEffect(() => {
@@ -88,7 +129,7 @@ export default function MatchmakingWizard({
       if (response.ok) {
         const data = await response.json();
         if (data) {
-          setProfile({
+          const existingProfile = {
             headline: data.headline || "",
             bio: data.bio || "",
             jobTitle: data.jobTitle || "",
@@ -96,7 +137,16 @@ export default function MatchmakingWizard({
             interests: data.interests || [],
             goals: data.goals || [],
             availability: data.availability || []
-          });
+          };
+          setProfile(existingProfile);
+          
+          // Vérifier si le profil a des données (est configuré)
+          const isConfigured = data.interests?.length > 0 || data.goals?.length > 0 || data.headline;
+          setHasExistingProfile(isConfigured);
+          
+          if (isConfigured) {
+            setShowReconfigWarning(true);
+          }
         }
       }
     } catch (error) {
@@ -105,7 +155,16 @@ export default function MatchmakingWizard({
   };
 
   const getSuggestedInterests = () => {
-    return INTERESTS_BY_SECTOR[eventSector.toLowerCase()] || INTERESTS_BY_SECTOR.default;
+    // Intérêts basés sur le secteur
+    const sectorInterests = INTERESTS_BY_SECTOR[eventSector.toLowerCase()] || INTERESTS_BY_SECTOR.default;
+    
+    // Intérêts extraits de la description
+    const descriptionInterests = eventDescription ? extractInterestsFromDescription(eventDescription) : [];
+    
+    // Combiner et dédupliquer
+    const allInterests = [...new Set([...sectorInterests, ...descriptionInterests])];
+    
+    return allInterests;
   };
 
   const addInterest = (interest: string) => {
@@ -194,25 +253,70 @@ export default function MatchmakingWizard({
         return (
           <div className="space-y-6 text-center">
             <div className="space-y-4">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-[#81B441] to-[#9BC53D] rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-[#81B441] via-[#9BC53D] to-[#8B5CF6] rounded-full flex items-center justify-center shadow-lg">
                 <Sparkles className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold">Bienvenue dans le Matchmaking Intelligent</h3>
               <p className="text-gray-600 max-w-md mx-auto">
                 Découvrez et rencontrez les participants qui correspondent à vos intérêts et objectifs 
-                pour <span className="font-semibold text-[#81B441]">{eventName}</span>.
+                pour <span className="font-semibold bg-gradient-to-r from-[#81B441] to-[#8B5CF6] bg-clip-text text-transparent">{eventName}</span>.
               </p>
             </div>
+
+            {/* Avertissement de reconfiguration */}
+            {showReconfigWarning && hasExistingProfile && (
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4 rounded-lg text-left">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm">⚠</span>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-amber-900 mb-2">Profil déjà configuré</h4>
+                    <p className="text-sm text-amber-800 mb-3">
+                      Vous avez déjà configuré votre profil de matchmaking pour cet événement. 
+                      L&apos;algorithme de recommandation est en cours d&apos;exécution.
+                    </p>
+                    <p className="text-sm text-amber-700">
+                      <strong>⚠️ Important :</strong> Modifier votre profil maintenant pourrait perturber 
+                      vos suggestions actuelles et impacter votre expérience de networking pendant l&apos;événement.
+                    </p>
+                    <div className="mt-3 flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setShowReconfigWarning(false);
+                          setCurrentStep(2);
+                        }}
+                        className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white border-none hover:opacity-90"
+                      >
+                        Continuer quand même
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onClose}
+                        className="text-amber-700 hover:bg-amber-100"
+                      >
+                        Garder mon profil actuel
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">Comment ça marche ?</h4>
-              <ul className="text-sm text-blue-800 space-y-1 text-left">
-                <li>• Complétez votre profil en 4 étapes simples</li>
-                <li>• Recevez des suggestions de participants compatibles</li>
-                <li>• Planifiez vos rendez-vous directement via la plateforme</li>
-                <li>• Maximisez vos opportunités de networking</li>
-              </ul>
-            </div>
+            {!showReconfigWarning && (
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
+                <h4 className="font-medium text-blue-900 mb-2">Comment ça marche ?</h4>
+                <ul className="text-sm text-blue-800 space-y-1 text-left">
+                  <li>• Complétez votre profil en 4 étapes simples</li>
+                  <li>• Recevez des suggestions de participants compatibles</li>
+                  <li>• Planifiez vos rendez-vous directement via la plateforme</li>
+                  <li>• Maximisez vos opportunités de networking</li>
+                </ul>
+              </div>
+            )}
           </div>
         );
 
@@ -510,7 +614,7 @@ export default function MatchmakingWizard({
               <div className={`
                 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
                 ${currentStep >= step 
-                  ? 'bg-[#81B441] text-white' 
+                  ? 'bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white shadow-md' 
                   : 'bg-gray-200 text-gray-600'
                 }
               `}>
@@ -546,7 +650,7 @@ export default function MatchmakingWizard({
           {currentStep < 5 ? (
             <Button
               onClick={handleNext}
-              className="flex items-center gap-2 bg-[#81B441] hover:bg-[#71A431]"
+              className="flex items-center gap-2 bg-gradient-to-r from-[#81B441] to-[#8B5CF6] hover:opacity-90 text-white border-none shadow-md"
             >
               Suivant
               <ChevronRight className="h-4 w-4" />
@@ -555,7 +659,7 @@ export default function MatchmakingWizard({
             <Button
               onClick={handleSubmit}
               disabled={loading}
-              className="flex items-center gap-2 bg-[#81B441] hover:bg-[#71A431]"
+              className="flex items-center gap-2 bg-gradient-to-r from-[#81B441] to-[#8B5CF6] hover:opacity-90 text-white border-none shadow-md"
             >
               {loading ? "Sauvegarde..." : "Valider le profil"}
               <CheckCircle className="h-4 w-4" />

@@ -92,20 +92,20 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
   const getScoreBadge = (score: number) => {
     if (score >= 0.8) {
       return (
-        <Badge className="bg-green-500 hover:bg-green-600">
+        <Badge className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white border-none shadow-md">
           <Sparkles className="h-3 w-3 mr-1" />
           Match fort
         </Badge>
       );
     } else if (score >= 0.5) {
       return (
-        <Badge className="bg-blue-500 hover:bg-blue-600">
+        <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-none">
           Match moyen
         </Badge>
       );
     } else {
       return (
-        <Badge variant="outline">
+        <Badge variant="outline" className="border-gray-300">
           Match faible
         </Badge>
       );
@@ -170,9 +170,9 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
         ) : (
           <div className="space-y-4">
             {suggestions.map((suggestion) => (
-              <div key={suggestion.id} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+              <div key={suggestion.id} className="p-4 border-2 border-transparent bg-gradient-to-r from-[#81B441]/10 via-transparent to-[#8B5CF6]/10 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-md">
                 <div className="flex items-start space-x-4">
-                  <Avatar className="h-12 w-12">
+                  <Avatar className="h-12 w-12 ring-2 ring-gradient-to-r from-[#81B441] to-[#8B5CF6] ring-offset-2">
                     <AvatarImage src={suggestion.user.image} />
                     <AvatarFallback>
                       {getInitials(suggestion.user.name)}
@@ -251,6 +251,7 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
                       <Button 
                         size="sm"
                         onClick={() => onRequestMeeting?.(suggestion.user.id, suggestion.user.name)}
+                        className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] hover:opacity-90 text-white border-none shadow-md"
                       >
                         <MessageCircle className="h-4 w-4 mr-2" />
                         Demander un RDV

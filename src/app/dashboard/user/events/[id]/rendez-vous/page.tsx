@@ -112,6 +112,7 @@ export default function UserRendezVousPage() {
     endDate?: string;
     location: string;
     sector?: string;
+    description?: string;
   } | null>(null);
 
   // Récupérer les rendez-vous depuis l'API
@@ -347,7 +348,7 @@ export default function UserRendezVousPage() {
                 <Button 
                   variant="outline" 
                   onClick={() => setShowMatchmakingWizard(true)}
-                  className="bg-[#81B441] text-white"
+                  className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white border-none shadow-md"
                 >
                   Configurer mon profil
                 </Button>
@@ -778,6 +779,7 @@ export default function UserRendezVousPage() {
               eventId={id as string}
               eventName={currentEvent.name}
               eventSector={currentEvent.sector}
+              eventDescription={currentEvent.description}
             />
           )}
         </div>
