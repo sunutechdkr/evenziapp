@@ -92,20 +92,20 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
   const getScoreBadge = (score: number) => {
     if (score >= 0.8) {
       return (
-        <Badge className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white border-none shadow-md">
+        <Badge className="bg-[#81B441] text-white border-none">
           <Sparkles className="h-3 w-3 mr-1" />
           Match fort
         </Badge>
       );
     } else if (score >= 0.5) {
       return (
-        <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-none">
+        <Badge className="bg-[#81B441]/70 text-white border-none">
           Match moyen
         </Badge>
       );
     } else {
       return (
-        <Badge variant="outline" className="border-gray-300">
+        <Badge variant="outline" className="border-[#81B441] text-[#81B441]">
           Match faible
         </Badge>
       );
@@ -168,99 +168,63 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
             </Button>
           </div>
         ) : (
-          <div className="space-y-4">
-            {suggestions.map((suggestion) => (
-              <div key={suggestion.id} className="p-4 border-2 border-transparent bg-gradient-to-r from-[#81B441]/10 via-transparent to-[#8B5CF6]/10 rounded-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-md">
-                <div className="flex items-start space-x-4">
-                  <Avatar className="h-12 w-12 ring-2 ring-gradient-to-r from-[#81B441] to-[#8B5CF6] ring-offset-2">
-                    <AvatarImage src={suggestion.user.image} />
-                    <AvatarFallback>
-                      {getInitials(suggestion.user.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-2">
+          <div className="overflow-x-auto">
+            <div className="flex space-x-4 pb-4" style={{ minWidth: 'fit-content' }}>
+              {suggestions.map((suggestion) => (
+                <div key={suggestion.id} className="flex-shrink-0 w-72 bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                  {/* Header avec avatar et badge */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <Avatar className="h-12 w-12 ring-2 ring-[#81B441] ring-offset-2">
+                        <AvatarImage src={suggestion.user.image} />
+                        <AvatarFallback className="bg-[#81B441] text-white">
+                          {getInitials(suggestion.user.name)}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
-                        <h4 className="text-lg font-medium text-gray-900">
+                        <h4 className="font-semibold text-gray-900 text-sm">
                           {suggestion.user.name}
                         </h4>
                         {suggestion.profile.headline && (
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs text-gray-600 truncate max-w-32">
                             {suggestion.profile.headline}
                           </p>
                         )}
                       </div>
-                      {getScoreBadge(suggestion.score)}
                     </div>
-
-                    {suggestion.profile.bio && (
-                      <p className="text-sm text-gray-700 mb-3 line-clamp-2">
-                        {suggestion.profile.bio}
-                      </p>
-                    )}
-
-                    <div className="space-y-2 mb-3">
-                      {suggestion.profile.interests.length > 0 && (
-                        <div>
-                          <span className="text-xs text-gray-500 font-medium">Intérêts : </span>
-                          <div className="inline-flex flex-wrap gap-1">
-                            {suggestion.profile.interests.slice(0, 5).map((interest, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {interest}
-                              </Badge>
-                            ))}
-                            {suggestion.profile.interests.length > 5 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{suggestion.profile.interests.length - 5}
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      {suggestion.profile.goals.length > 0 && (
-                        <div>
-                          <span className="text-xs text-gray-500 font-medium">Objectifs : </span>
-                          <div className="inline-flex flex-wrap gap-1">
-                            {suggestion.profile.goals.slice(0, 3).map((goal, index) => (
-                              <Badge key={index} className="bg-blue-100 text-blue-800 text-xs">
-                                {goal}
-                              </Badge>
-                            ))}
-                            {suggestion.profile.goals.length > 3 && (
-                              <Badge className="bg-blue-100 text-blue-800 text-xs">
-                                +{suggestion.profile.goals.length - 3}
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {suggestion.reason && (
-                      <p className="text-xs text-gray-500 mb-3">
-                        <strong>Raison du match :</strong> {suggestion.reason}
-                      </p>
-                    )}
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-400">
-                        Score : {Math.round(suggestion.score * 100)}%
-                      </span>
-                      <Button 
-                        size="sm"
-                        onClick={() => onRequestMeeting?.(suggestion.user.id, suggestion.user.name)}
-                        className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] hover:opacity-90 text-white border-none shadow-md"
-                      >
-                        <MessageCircle className="h-4 w-4 mr-2" />
-                        Demander un RDV
-                      </Button>
-                    </div>
+                    {getScoreBadge(suggestion.score)}
                   </div>
+
+                  {/* Objectifs */}
+                  {suggestion.profile.goals.length > 0 && (
+                    <div className="mb-3">
+                      <div className="flex flex-wrap gap-1">
+                        {suggestion.profile.goals.slice(0, 3).map((goal, index) => (
+                          <Badge key={index} className="bg-[#81B441]/20 text-[#81B441] text-xs border-none">
+                            {goal}
+                          </Badge>
+                        ))}
+                        {suggestion.profile.goals.length > 3 && (
+                          <Badge className="bg-[#81B441]/20 text-[#81B441] text-xs border-none">
+                            +{suggestion.profile.goals.length - 3}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Bouton d'action */}
+                  <Button 
+                    size="sm"
+                    onClick={() => onRequestMeeting?.(suggestion.user.id, suggestion.user.name)}
+                    className="w-full bg-[#81B441] text-white border-none"
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Demander un RDV
+                  </Button>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
       </CardContent>

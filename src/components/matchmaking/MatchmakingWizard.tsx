@@ -253,13 +253,13 @@ export default function MatchmakingWizard({
         return (
           <div className="space-y-6 text-center">
             <div className="space-y-4">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-[#81B441] via-[#9BC53D] to-[#8B5CF6] rounded-full flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 mx-auto bg-[#81B441] rounded-full flex items-center justify-center shadow-lg">
                 <Sparkles className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold">Bienvenue dans le Matchmaking Intelligent</h3>
               <p className="text-gray-600 max-w-md mx-auto">
                 Découvrez et rencontrez les participants qui correspondent à vos intérêts et objectifs 
-                pour <span className="font-semibold bg-gradient-to-r from-[#81B441] to-[#8B5CF6] bg-clip-text text-transparent">{eventName}</span>.
+                pour <span className="font-semibold text-[#81B441]">{eventName}</span>.
               </p>
             </div>
 
@@ -288,7 +288,7 @@ export default function MatchmakingWizard({
                           setShowReconfigWarning(false);
                           setCurrentStep(2);
                         }}
-                        className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white border-none hover:opacity-90"
+                        className="bg-[#81B441] text-white border-none"
                       >
                         Continuer quand même
                       </Button>
@@ -614,7 +614,7 @@ export default function MatchmakingWizard({
               <div className={`
                 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
                 ${currentStep >= step 
-                  ? 'bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white shadow-md' 
+                  ? 'bg-[#81B441] text-white shadow-md' 
                   : 'bg-gray-200 text-gray-600'
                 }
               `}>
@@ -650,7 +650,7 @@ export default function MatchmakingWizard({
           {currentStep < 5 ? (
             <Button
               onClick={handleNext}
-              className="flex items-center gap-2 bg-gradient-to-r from-[#81B441] to-[#8B5CF6] hover:opacity-90 text-white border-none shadow-md"
+              className="flex items-center gap-2 bg-[#81B441] text-white border-none shadow-md"
             >
               Suivant
               <ChevronRight className="h-4 w-4" />
@@ -659,7 +659,7 @@ export default function MatchmakingWizard({
             <Button
               onClick={handleSubmit}
               disabled={loading}
-              className="flex items-center gap-2 bg-gradient-to-r from-[#81B441] to-[#8B5CF6] hover:opacity-90 text-white border-none shadow-md"
+              className="flex items-center gap-2 bg-[#81B441] text-white border-none shadow-md"
             >
               {loading ? "Sauvegarde..." : "Valider le profil"}
               <CheckCircle className="h-4 w-4" />

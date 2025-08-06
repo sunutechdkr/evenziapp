@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Calculer les suggestions
-    const suggestions = otherProfiles.map(profile => {
+    let suggestions = otherProfiles.map(profile => {
       const similarity = calculateSimilarity(userProfile, profile);
       return {
         userId: session.user.id,
@@ -139,9 +139,29 @@ export async function POST(request: NextRequest) {
         user: profile.user
       };
     })
-    .filter(s => s.score > 0.1) // Seuil minimum
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 10); // Top 10
+    .filter(s => s.score > 0.05) // Seuil réduit pour plus de suggestions
+    .sort((a, b) => b.score - a.score);
+
+    // Assurer minimum 5 suggestions
+    if (suggestions.length < 5 && otherProfiles.length >= 5) {
+      // Prendre les 5 meilleurs sans filtre strict
+      suggestions = otherProfiles.map(profile => {
+        const similarity = calculateSimilarity(userProfile, profile);
+        return {
+          userId: session.user.id,
+          suggestedId: profile.userId,
+          eventId,
+          score: similarity.score,
+          reason: similarity.reason,
+          profile: profile,
+          user: profile.user
+        };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, Math.max(5, Math.min(8, otherProfiles.length)));
+    } else {
+      suggestions = suggestions.slice(0, 8); // Limite à 8 suggestions max
+    }
 
     // Supprimer les anciennes suggestions pour cet utilisateur/événement
     await prisma.matchSuggestion.deleteMany({
