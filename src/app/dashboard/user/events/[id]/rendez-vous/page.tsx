@@ -343,15 +343,17 @@ export default function UserRendezVousPage() {
                 }}
               />
               
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Configuration du matchmaking</h2>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowMatchmakingWizard(true)}
-                  className="bg-gradient-to-r from-[#81B441] to-[#8B5CF6] text-white border-none shadow-md"
-                >
-                  Configurer mon profil
-                </Button>
+              <div className="bg-gradient-to-r from-[#DBAEEE] to-[#94C3E9] p-4 rounded-lg shadow-sm">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold text-white">Configuration du matchmaking</h2>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowMatchmakingWizard(true)}
+                    className="bg-[#81B441] text-white border-none"
+                  >
+                    Configurer mon profil
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -577,7 +579,7 @@ export default function UserRendezVousPage() {
                                         <Button
                                           variant="outline"
                                           size="sm"
-                                          className="bg-[#81B441] hover:bg-[#6a9636] text-white border-[#81B441]"
+                                          className="bg-[#81B441] text-white border-[#81B441]"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             updateAppointmentStatus(appointment.id, "ACCEPTED");
