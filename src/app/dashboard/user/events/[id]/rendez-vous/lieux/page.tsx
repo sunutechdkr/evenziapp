@@ -1,283 +1,248 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import UserEventSidebar from "@/components/dashboard/UserEventSidebar";
+import { 
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle 
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  MapPinIcon,
+  ChevronLeftIcon,
+  PlusIcon,
+  PencilIcon,
+  TrashIcon,
+  BuildingOfficeIcon
+} from "@heroicons/react/24/outline";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import {
-  ChevronLeftIcon,
-  MapPinIcon,
-  PlusIcon,
-  PencilIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
-// Types
+// Types pour les lieux
 type MeetingLocation = {
   id: string;
   name: string;
-  type: 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other';
   address?: string;
   description?: string;
   capacity?: number;
-  isAvailable: boolean;
-  amenities: string[];
+  isActive: boolean;
+  type: "CONFERENCE_ROOM" | "CAFE" | "OUTDOOR" | "VIRTUAL" | "OTHER";
+  equipment?: string[];
   createdAt: string;
 };
 
 export default function LieuxPage() {
   const { id } = useParams();
+  const router = useRouter();
+  const [locations, setLocations] = useState<MeetingLocation[]>([]);
+  const [loading, setLoading] = useState(true);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [locations, setLocations] = useState<MeetingLocation[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingLocation, setEditingLocation] = useState<MeetingLocation | null>(null);
-  
-  // Form state
   const [formData, setFormData] = useState({
-    name: '',
-    type: 'conference_room' as 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other',
-    address: '',
-    description: '',
-    capacity: '',
-    isAvailable: true,
-    amenities: [] as string[]
+    name: "",
+    address: "",
+    description: "",
+    capacity: "",
+    type: "CONFERENCE_ROOM" as MeetingLocation["type"],
+    equipment: [] as string[],
+    isActive: true
   });
 
-  const locationTypes = [
-    { value: 'conference_room', label: 'Salle de conférence', icon: '🏢' },
-    { value: 'cafe', label: 'Café / Restaurant', icon: '☕' },
-    { value: 'office', label: 'Bureau', icon: '🏢' },
-    { value: 'outdoor', label: 'Extérieur', icon: '🌳' },
-    { value: 'virtual', label: 'Virtuel', icon: '💻' },
-    { value: 'other', label: 'Autre', icon: '📍' }
-  ];
-
-  const amenitiesOptions = [
-    'WiFi',
-    'Projecteur',
-    'Tableau blanc',
-    'Climatisation',
-    'Café/Thé',
-    'Parking',
-    'Accessibilité PMR',
-    'Écran TV',
-    'Système audio',
-    'Espace fumeur'
-  ];
-
-  // Fetch locations
+  // Fetch meeting locations
   const fetchLocations = async () => {
     try {
       setLoading(true);
-      // Pour l'instant, on utilise des données mockées
-      const mockData: MeetingLocation[] = [
+      const response = await fetch(`/api/events/${id}/meeting-locations`);
+      
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des lieux");
+      }
+      
+      const data = await response.json();
+      setLocations(data || []);
+    } catch (err) {
+      console.error("Erreur:", err);
+      toast.error("Erreur lors du chargement des lieux");
+      // Si l'API n'existe pas encore, on utilise des données de démonstration
+      setLocations([
         {
-          id: '1',
-          name: 'Salle de conférence A',
-          type: 'conference_room',
-          address: '123 Rue de la Paix, Paris',
-          description: 'Grande salle équipée pour les réunions importantes',
-          capacity: 20,
-          isAvailable: true,
-          amenities: ['WiFi', 'Projecteur', 'Climatisation', 'Café/Thé'],
+          id: "1",
+          name: "Salle de réunion A",
+          address: "1er étage, Aile Est",
+          description: "Salle climatisée avec équipement audiovisuel",
+          capacity: 8,
+          type: "CONFERENCE_ROOM",
+          equipment: ["Projecteur", "Écran", "Wi-Fi"],
+          isActive: true,
           createdAt: new Date().toISOString()
         },
         {
-          id: '2',
-          name: 'Café Central',
-          type: 'cafe',
-          address: '456 Avenue des Champs, Paris',
-          description: 'Ambiance décontractée pour des rencontres informelles',
+          id: "2", 
+          name: "Espace café",
+          address: "Rez-de-chaussée, Hall principal",
+          description: "Espace décontracté pour échanges informels",
           capacity: 4,
-          isAvailable: true,
-          amenities: ['WiFi', 'Café/Thé'],
+          type: "CAFE",
+          equipment: ["Wi-Fi"],
+          isActive: true,
           createdAt: new Date().toISOString()
         },
         {
-          id: '3',
-          name: 'Visioconférence Teams',
-          type: 'virtual',
-          description: 'Réunion en ligne via Microsoft Teams',
-          isAvailable: true,
-          amenities: ['Système audio'],
+          id: "3",
+          name: "Visioconférence",
+          description: "Rendez-vous virtuel via la plateforme",
+          type: "VIRTUAL",
+          equipment: ["Zoom", "Teams"],
+          isActive: true,
           createdAt: new Date().toISOString()
         }
-      ];
-      setLocations(mockData);
-    } catch (error) {
-      console.error("Error fetching locations:", error);
-      toast.error("Erreur lors du chargement des lieux");
+      ]);
     } finally {
       setLoading(false);
     }
-  };
-
-  // Create location
-  const createLocation = async () => {
-    try {
-      setLoading(true);
-      
-      // Validation
-      if (!formData.name || !formData.type) {
-        toast.error("Veuillez remplir tous les champs obligatoires");
-        return;
-      }
-
-      // Mock création - remplacer par un appel API réel
-      const newLocation: MeetingLocation = {
-        id: Date.now().toString(),
-        name: formData.name,
-        type: formData.type,
-        address: formData.address,
-        description: formData.description,
-        capacity: formData.capacity ? parseInt(formData.capacity) : undefined,
-        isAvailable: formData.isAvailable,
-        amenities: formData.amenities,
-        createdAt: new Date().toISOString()
-      };
-
-      setLocations(prev => [...prev, newLocation]);
-      toast.success("Lieu créé avec succès !");
-      
-      // Reset form
-      setFormData({
-        name: '',
-        type: 'conference_room' as 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other',
-        address: '',
-        description: '',
-        capacity: '',
-        isAvailable: true,
-        amenities: []
-      });
-      setShowCreateDialog(false);
-    } catch (error) {
-      console.error("Error creating location:", error);
-      toast.error("Erreur lors de la création du lieu");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Update location
-  const updateLocation = async () => {
-    if (!editingLocation) return;
-
-    try {
-      setLoading(true);
-      
-      // Mock mise à jour - remplacer par un appel API réel
-      setLocations(prev => prev.map(location => 
-        location.id === editingLocation.id 
-          ? { 
-              ...location, 
-              ...formData,
-              capacity: formData.capacity ? parseInt(formData.capacity) : undefined
-            }
-          : location
-      ));
-
-      toast.success("Lieu mis à jour avec succès !");
-      setEditingLocation(null);
-      setFormData({
-        name: '',
-        type: 'conference_room' as 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other',
-        address: '',
-        description: '',
-        capacity: '',
-        isAvailable: true,
-        amenities: []
-      });
-    } catch (error) {
-      console.error("Error updating location:", error);
-      toast.error("Erreur lors de la mise à jour du lieu");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Delete location
-  const deleteLocation = async (locationId: string) => {
-    try {
-      // Mock suppression - remplacer par un appel API réel
-      setLocations(prev => prev.filter(location => location.id !== locationId));
-      toast.success("Lieu supprimé avec succès !");
-    } catch (error) {
-      console.error("Error deleting location:", error);
-      toast.error("Erreur lors de la suppression du lieu");
-    }
-  };
-
-  // Open edit dialog
-  const openEditDialog = (location: MeetingLocation) => {
-    setEditingLocation(location);
-    setFormData({
-      name: location.name,
-      type: location.type,
-      address: location.address || '',
-      description: location.description || '',
-      capacity: location.capacity?.toString() || '',
-      isAvailable: location.isAvailable,
-      amenities: location.amenities
-    });
-  };
-
-  // Get location type info
-  const getLocationTypeInfo = (type: string) => {
-    const typeInfo = locationTypes.find(t => t.value === type);
-    return typeInfo || { label: type, icon: '📍' };
-  };
-
-  // Toggle amenity
-  const toggleAmenity = (amenity: string) => {
-    setFormData(prev => ({
-      ...prev,
-      amenities: prev.amenities.includes(amenity)
-        ? prev.amenities.filter(a => a !== amenity)
-        : [...prev.amenities, amenity]
-    }));
   };
 
   useEffect(() => {
     fetchLocations();
 
-    // Check mobile
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    // Vérifier si l'écran est mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, [id]);
+
+  const handleCreate = () => {
+    setEditingLocation(null);
+    setFormData({
+      name: "",
+      address: "",
+      description: "",
+      capacity: "",
+      type: "CONFERENCE_ROOM",
+      equipment: [],
+      isActive: true
+    });
+    setShowCreateModal(true);
+  };
+
+  const handleEdit = (location: MeetingLocation) => {
+    setEditingLocation(location);
+    setFormData({
+      name: location.name,
+      address: location.address || "",
+      description: location.description || "",
+      capacity: location.capacity ? location.capacity.toString() : "",
+      type: location.type,
+      equipment: location.equipment || [],
+      isActive: location.isActive
+    });
+    setShowCreateModal(true);
+  };
+
+  const handleSave = async () => {
+    try {
+      const url = editingLocation 
+        ? `/api/events/${id}/meeting-locations/${editingLocation.id}`
+        : `/api/events/${id}/meeting-locations`;
+      
+      const method = editingLocation ? "PUT" : "POST";
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          capacity: formData.capacity ? parseInt(formData.capacity) : null
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la sauvegarde");
+      }
+
+      toast.success(editingLocation ? "Lieu modifié" : "Lieu créé");
+      setShowCreateModal(false);
+      fetchLocations();
+    } catch (err) {
+      console.error("Erreur:", err);
+      toast.error("Impossible de sauvegarder le lieu");
+    }
+  };
+
+  const handleDelete = async (locationId: string) => {
+    if (!confirm("Êtes-vous sûr de vouloir supprimer ce lieu ?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/events/${id}/meeting-locations/${locationId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la suppression");
+      }
+
+      toast.success("Lieu supprimé");
+      fetchLocations();
+    } catch (err) {
+      console.error("Erreur:", err);
+      toast.error("Impossible de supprimer le lieu");
+    }
+  };
+
+  const getLocationTypeLabel = (type: MeetingLocation["type"]) => {
+    const types = {
+      CONFERENCE_ROOM: "Salle de réunion",
+      CAFE: "Espace café",
+      OUTDOOR: "Extérieur",
+      VIRTUAL: "Virtuel",
+      OTHER: "Autre"
+    };
+    return types[type] || type;
+  };
+
+  const getLocationIcon = (type: MeetingLocation["type"]) => {
+    switch (type) {
+      case "CONFERENCE_ROOM":
+        return <BuildingOfficeIcon className="h-4 w-4" />;
+      case "VIRTUAL":
+        return <span className="text-sm">💻</span>;
+      case "CAFE":
+        return <span className="text-sm">☕</span>;
+      case "OUTDOOR":
+        return <span className="text-sm">🌳</span>;
+      default:
+        return <MapPinIcon className="h-4 w-4" />;
+    }
+  };
 
   return (
     <div className="dashboard-container min-h-screen overflow-hidden">
@@ -295,7 +260,7 @@ export default function LieuxPage() {
         }}
       >
         <main className="dashboard-main flex-1">
-          {/* Header */}
+          {/* En-tête */}
           <div className="p-4 bg-white border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -310,115 +275,117 @@ export default function LieuxPage() {
                   Gestion des Lieux
                 </h1>
               </div>
+              
               <Button 
-                onClick={() => setShowCreateDialog(true)}
-                className="bg-[#81B441] text-white"
+                onClick={handleCreate}
+                className="bg-[#81B441] text-white border-none"
               >
-                <PlusIcon className="h-4 w-4 mr-2" />
+                <PlusIcon className="w-4 h-4 mr-2" />
                 Nouveau lieu
               </Button>
             </div>
           </div>
 
-          {/* Main Content */}
+          {/* Contenu principal */}
           <div className="p-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <MapPinIcon className="h-5 w-5 mr-2 text-[#81B441]" />
-                  Lieux de rendez-vous
+                <CardTitle className="flex items-center gap-2">
+                  <MapPinIcon className="h-5 w-5 text-[#81B441]" />
+                  Lieux de rendez-vous disponibles
                 </CardTitle>
+                <CardDescription>
+                  Gérez les lieux disponibles pour organiser les rendez-vous
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {loading ? (
                   <div className="flex justify-center items-center h-32">
-                    <p>Chargement...</p>
+                    <p>Chargement des lieux...</p>
+                  </div>
+                ) : locations.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {locations.map((location) => (
+                      <div key={location.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex items-center gap-2">
+                            {getLocationIcon(location.type)}
+                            <h3 className="font-medium text-gray-900">{location.name}</h3>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge 
+                              variant={location.isActive ? "default" : "secondary"}
+                              className={location.isActive ? "bg-[#81B441] text-white" : ""}
+                            >
+                              {location.isActive ? "Actif" : "Inactif"}
+                            </Badge>
+                            <div className="flex gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEdit(location)}
+                              >
+                                <PencilIcon className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-red-600 hover:text-red-700"
+                                onClick={() => handleDelete(location.id)}
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Badge variant="outline" className="text-xs">
+                            {getLocationTypeLabel(location.type)}
+                          </Badge>
+                          
+                          {location.address && (
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <MapPinIcon className="h-4 w-4" />
+                              <span>{location.address}</span>
+                            </div>
+                          )}
+                          
+                          {location.capacity && (
+                            <div className="text-sm text-gray-600">
+                              <span>Capacité: {location.capacity} personnes</span>
+                            </div>
+                          )}
+                          
+                          {location.description && (
+                            <p className="text-xs text-gray-500">{location.description}</p>
+                          )}
+                          
+                          {location.equipment && location.equipment.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {location.equipment.map((eq, index) => (
+                                <Badge key={index} variant="outline" className="text-xs bg-gray-50">
+                                  {eq}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Nom</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Adresse</TableHead>
-                        <TableHead>Capacité</TableHead>
-                        <TableHead>Équipements</TableHead>
-                        <TableHead>Statut</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {locations.length > 0 ? (
-                        locations.map((location) => {
-                          const typeInfo = getLocationTypeInfo(location.type);
-                          return (
-                            <TableRow key={location.id}>
-                              <TableCell className="font-medium">
-                                <div className="flex items-center">
-                                  <span className="mr-2">{typeInfo.icon}</span>
-                                  {location.name}
-                                </div>
-                              </TableCell>
-                              <TableCell>{typeInfo.label}</TableCell>
-                              <TableCell className="max-w-xs truncate">
-                                {location.address || '-'}
-                              </TableCell>
-                              <TableCell>
-                                {location.capacity ? `${location.capacity} pers.` : '-'}
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex flex-wrap gap-1">
-                                  {location.amenities.slice(0, 2).map((amenity) => (
-                                    <Badge key={amenity} variant="outline" className="text-xs">
-                                      {amenity}
-                                    </Badge>
-                                  ))}
-                                  {location.amenities.length > 2 && (
-                                    <Badge variant="outline" className="text-xs">
-                                      +{location.amenities.length - 2}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge 
-                                  variant={location.isAvailable ? "default" : "secondary"}
-                                  className={location.isAvailable ? "bg-[#81B441] text-white" : ""}
-                                >
-                                  {location.isAvailable ? 'Disponible' : 'Indisponible'}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="text-right">
-                                <div className="flex justify-end space-x-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => openEditDialog(location)}
-                                  >
-                                    <PencilIcon className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => deleteLocation(location.id)}
-                                    className="text-red-600 hover:text-red-800"
-                                  >
-                                    <TrashIcon className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={7} className="h-24 text-center">
-                            Aucun lieu configuré
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
+                  <div className="text-center py-8">
+                    <MapPinIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500 mb-4">Aucun lieu configuré</p>
+                    <Button 
+                      onClick={handleCreate}
+                      className="bg-[#81B441] text-white border-none"
+                    >
+                      <PlusIcon className="w-4 h-4 mr-2" />
+                      Créer le premier lieu
+                    </Button>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -426,151 +393,102 @@ export default function LieuxPage() {
         </main>
       </div>
 
-      {/* Create/Edit Dialog */}
-      <Dialog open={showCreateDialog || !!editingLocation} onOpenChange={(open) => {
-        if (!open) {
-          setShowCreateDialog(false);
-          setEditingLocation(null);
-          setFormData({
-            name: '',
-            type: 'conference_room' as 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other',
-            address: '',
-            description: '',
-            capacity: '',
-            isAvailable: true,
-            amenities: []
-          });
-        }
-      }}>
-        <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      {/* Modal de création/modification */}
+      <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+        <DialogContent className="sm:max-w-[525px]">
           <DialogHeader>
             <DialogTitle>
-              {editingLocation ? 'Modifier le lieu' : 'Nouveau lieu'}
+              {editingLocation ? "Modifier le lieu" : "Nouveau lieu de rendez-vous"}
             </DialogTitle>
             <DialogDescription>
-              {editingLocation ? 'Modifiez les informations du lieu' : 'Ajoutez un nouveau lieu de rendez-vous'}
+              {editingLocation 
+                ? "Modifiez les informations du lieu de rendez-vous"
+                : "Créez un nouveau lieu pour organiser les rendez-vous"
+              }
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Nom du lieu *</Label>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="name">Nom du lieu</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Ex: Salle de conférence A"
+                placeholder="Ex: Salle de réunion A, Espace café..."
               />
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="type">Type de lieu *</Label>
-              <Select value={formData.type} onValueChange={(value: 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other') => setFormData(prev => ({ ...prev, type: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner un type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {locationTypes.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      <span className="flex items-center">
-                        <span className="mr-2">{type.icon}</span>
-                        {type.label}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div>
+              <Label htmlFor="type">Type de lieu</Label>
+              <select
+                id="type"
+                value={formData.type}
+                onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as MeetingLocation["type"] }))}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              >
+                <option value="CONFERENCE_ROOM">Salle de réunion</option>
+                <option value="CAFE">Espace café</option>
+                <option value="OUTDOOR">Extérieur</option>
+                <option value="VIRTUAL">Virtuel</option>
+                <option value="OTHER">Autre</option>
+              </select>
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="address">Adresse</Label>
+            <div>
+              <Label htmlFor="address">Adresse/Localisation</Label>
               <Input
                 id="address"
                 value={formData.address}
                 onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="Adresse complète du lieu"
+                placeholder="Ex: 1er étage, Aile Est"
               />
             </div>
 
-            <div className="grid gap-2">
+            <div>
               <Label htmlFor="capacity">Capacité (nombre de personnes)</Label>
               <Input
                 id="capacity"
                 type="number"
                 value={formData.capacity}
                 onChange={(e) => setFormData(prev => ({ ...prev, capacity: e.target.value }))}
-                placeholder="Ex: 10"
-                min="1"
+                placeholder="Ex: 8"
               />
             </div>
 
-            <div className="grid gap-2">
+            <div>
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Description du lieu, ambiance, particularités..."
+                placeholder="Description du lieu, équipements disponibles..."
                 rows={3}
               />
             </div>
 
-            <div className="grid gap-2">
-              <Label>Équipements disponibles</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {amenitiesOptions.map(amenity => (
-                  <label key={amenity} className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.amenities.includes(amenity)}
-                      onChange={() => toggleAmenity(amenity)}
-                      className="rounded border-gray-300 text-[#81B441] focus:ring-[#81B441]"
-                    />
-                    <span className="text-sm">{amenity}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="availability">Disponibilité</Label>
-              <Select 
-                value={formData.isAvailable.toString()} 
-                onValueChange={(value) => setFormData(prev => ({ ...prev, isAvailable: value === 'true' }))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="true">Disponible</SelectItem>
-                  <SelectItem value="false">Indisponible</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="isActive"
+                checked={formData.isActive}
+                onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                className="rounded border-gray-300"
+              />
+              <Label htmlFor="isActive">Lieu actif</Label>
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setShowCreateDialog(false);
-              setEditingLocation(null);
-              setFormData({
-                name: '',
-                type: 'conference_room' as 'conference_room' | 'cafe' | 'office' | 'outdoor' | 'virtual' | 'other',
-                address: '',
-                description: '',
-                capacity: '',
-                isAvailable: true,
-                amenities: []
-              });
-            }}>
+            <Button variant="outline" onClick={() => setShowCreateModal(false)}>
               Annuler
             </Button>
             <Button 
-              onClick={editingLocation ? updateLocation : createLocation}
-              disabled={loading}
-              className="bg-[#81B441] text-white"
+              onClick={handleSave}
+              className="bg-[#81B441] text-white border-none"
+              disabled={!formData.name}
             >
-              {loading ? 'Sauvegarde...' : editingLocation ? 'Modifier' : 'Créer'}
+              {editingLocation ? "Modifier" : "Créer"}
             </Button>
           </DialogFooter>
         </DialogContent>
