@@ -1,144 +1,67 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import UserEventSidebar from "@/components/dashboard/UserEventSidebar";
-import { 
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle 
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
 import {
-  CalendarIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  XCircleIcon,
-  EyeIcon,
-  ChevronLeftIcon,
+  MapPinIcon,
+  ArrowPathIcon,
+  Cog6ToothIcon,
+  UserGroupIcon,
+  ClockIcon
 } from "@heroicons/react/24/outline";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger
-} from "@/components/ui/tabs";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-import MatchProfileForm from "@/components/matchmaking/MatchProfileForm";
-import MatchSuggestions from "@/components/matchmaking/MatchSuggestions";
-import AppointmentRequestForm from "@/components/appointments/AppointmentRequestForm";
 import MatchmakingWizard from "@/components/matchmaking/MatchmakingWizard";
+import AppointmentRequestForm from "@/components/appointments/AppointmentRequestForm";
 
-// Types pour les rendez-vous
-type Participant = {
+// Types
+type MatchSuggestion = {
   id: string;
-  firstName: string;
-  lastName: string;
+  user: {
+    id: string;
+    name: string;
   email: string;
+    image?: string;
+  };
+  profile: {
+    headline?: string;
+    jobTitle?: string;
   company?: string;
-  jobTitle?: string;
+    goals: string[];
+  };
+  score: number;
 };
 
-type AppointmentStatus = "PENDING" | "ACCEPTED" | "DECLINED" | "COMPLETED";
-
-type Appointment = {
+type Event = {
   id: string;
-  eventId: string;
-  requesterId: string;
-  requester: Participant;
-  recipientId: string;
-  recipient: Participant;
-  status: AppointmentStatus;
-  message?: string;
-  proposedTime?: string;
-  confirmedTime?: string;
-  location?: string;
-  notes?: string;
-  createdAt: string;
-  updatedAt: string;
+  name: string;
+  startDate: string;
+  endDate?: string;
+  location: string;
+  sector?: string;
+  description?: string;
 };
 
 export default function UserRendezVousPage() {
   const { id } = useParams();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState("pending"); // Par défaut sur "À traiter"
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentUserRegistrationId, setCurrentUserRegistrationId] = useState<string | null>(null);
+  const [showMatchmakingWizard, setShowMatchmakingWizard] = useState(false);
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{id: string, name: string} | null>(null);
-  const [showProfileForm, setShowProfileForm] = useState(false);
-  const [showMatchmakingWizard, setShowMatchmakingWizard] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<{
-    id: string;
-    name: string;
-    startDate: string;
-    endDate?: string;
-    location: string;
-    sector?: string;
-    description?: string;
-  } | null>(null);
-
-  // Récupérer les rendez-vous depuis l'API
-  const fetchAppointments = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/events/${id}/appointments`);
-      
-      if (!response.ok) {
-        throw new Error("Erreur lors de la récupération des rendez-vous");
-      }
-      
-      const data = await response.json();
-      setAppointments(data);
-      setError(null);
-    } catch (err) {
-      console.error("Erreur:", err);
-      setError("Impossible de charger les rendez-vous");
-      toast.error("Erreur lors du chargement des rendez-vous");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [suggestions, setSuggestions] = useState<MatchSuggestion[]>([]);
+  const [otherParticipants, setOtherParticipants] = useState<MatchSuggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
 
   // Fetch event details
-  const fetchEventDetails = async () => {
+  const fetchEventDetails = useCallback(async () => {
     if (!id) return;
     try {
       const response = await fetch(`/api/events/${id}`);
@@ -147,155 +70,119 @@ export default function UserRendezVousPage() {
     } catch (error) {
       console.error("Error fetching event details:", error);
     }
-  };
+  }, [id]);
 
-  // Obtenir l'ID de registration de l'utilisateur courant
-  const fetchCurrentUserRegistration = async () => {
+  // Fetch matchmaking suggestions
+  const fetchSuggestions = useCallback(async () => {
     try {
-      const sessionResponse = await fetch("/api/auth/session");
-      const sessionData = await sessionResponse.json();
+      setLoading(true);
       
-      if (sessionData && sessionData.user && sessionData.user.email) {
-        // Récupérer l'ID de registration de l'utilisateur pour cet événement
-        const registrationResponse = await fetch(`/api/events/${id}/registrations?userEmail=${sessionData.user.email}`);
-        const registrationData = await registrationResponse.json();
-        
-        if (registrationData && registrationData.registration) {
-          setCurrentUserRegistrationId(registrationData.registration.id);
-        }
+      // Fetch targeted suggestions
+      const suggestionsResponse = await fetch(`/api/matchmaking/suggest?eventId=${id}`);
+      if (suggestionsResponse.ok) {
+        const suggestionsData = await suggestionsResponse.json();
+        setSuggestions(suggestionsData.suggestions || []);
       }
-    } catch (err) {
-      console.error("Erreur lors de la récupération de l'enregistrement utilisateur:", err);
+
+      // Fetch other participants
+      const participantsResponse = await fetch(`/api/events/${id}/participants`);
+      if (participantsResponse.ok) {
+        const participantsData = await participantsResponse.json();
+        
+        // Convert participants to match suggestion format
+        const formattedParticipants: MatchSuggestion[] = participantsData.participants
+          .slice(0, 6) // Limite à 6 pour la grille 3x2
+          .map((participant: {
+            id: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            avatar?: string;
+            headline?: string;
+            jobTitle?: string;
+            company?: string;
+          }) => ({
+            id: participant.id,
+            user: {
+              id: participant.id,
+              name: `${participant.firstName} ${participant.lastName}`,
+              email: participant.email,
+              image: participant.avatar || undefined
+            },
+            profile: {
+              headline: participant.headline,
+              jobTitle: participant.jobTitle,
+              company: participant.company,
+              goals: []
+            },
+            score: 0.5 // Score neutre pour les autres participants
+          }));
+        
+        setOtherParticipants(formattedParticipants);
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      toast.error("Erreur lors du chargement des suggestions");
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  // Generate suggestions
+  const generateSuggestions = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/matchmaking/suggest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: id })
+      });
+
+      if (response.ok) {
+        toast.success("Suggestions mises à jour !");
+        fetchSuggestions();
+      } else {
+        const error = await response.json();
+        toast.error(error.error || "Erreur lors de la génération des suggestions");
+      }
+    } catch (error) {
+      console.error("Error generating suggestions:", error);
+      toast.error("Erreur lors de la génération des suggestions");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchEventDetails();
-    fetchCurrentUserRegistration();
-    fetchAppointments();
-
-    // Vérifier si l'écran est mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const fetchData = async () => {
+      await fetchEventDetails();
+      await fetchSuggestions();
     };
     
+    fetchData();
+
+    // Check mobile
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, [id]);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [id, fetchEventDetails, fetchSuggestions]);
 
-  // Fonction pour mettre à jour le statut d'un rendez-vous
-  const updateAppointmentStatus = async (appointmentId: string, newStatus: AppointmentStatus) => {
-    try {
-      const response = await fetch(`/api/events/${id}/appointments/${appointmentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
+  // Get initials from name
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  };
 
-      if (!response.ok) {
-        throw new Error("Erreur lors de la mise à jour du rendez-vous");
-      }
-
-      const updatedAppointment = await response.json();
-      
-      setAppointments(prev => 
-        prev.map(appointment => 
-          appointment.id === appointmentId ? updatedAppointment : appointment
-        )
-      );
-      
-      toast.success(`Rendez-vous ${
-        newStatus === "ACCEPTED" ? "accepté" : 
-        newStatus === "DECLINED" ? "refusé" : 
-        "marqué comme terminé"
-      } avec succès`);
-
-      setDialogOpen(false);
-      
-      // Actualiser la liste après la mise à jour
-      fetchAppointments();
-    } catch (err) {
-      console.error("Erreur:", err);
-      toast.error("Impossible de mettre à jour le rendez-vous");
+  // Get match level badge
+  const getMatchBadge = (score: number) => {
+    if (score >= 0.8) {
+      return <Badge className="bg-[#81B441] text-white text-xs">Match fort</Badge>;
+    } else if (score >= 0.5) {
+      return <Badge className="bg-[#81B441]/70 text-white text-xs">Match moyen</Badge>;
+    } else {
+      return <Badge className="bg-[#81B441]/40 text-white text-xs">Match faible</Badge>;
     }
   };
-
-  // Fonction pour filtrer les rendez-vous
-  const filteredAppointments = appointments.filter(appointment => {
-    const requesterName = `${appointment.requester.firstName} ${appointment.requester.lastName}`.toLowerCase();
-    const recipientName = `${appointment.recipient.firstName} ${appointment.recipient.lastName}`.toLowerCase();
-    
-    const matchesSearch = 
-      searchQuery === "" ||
-      requesterName.includes(searchQuery.toLowerCase()) ||
-      recipientName.includes(searchQuery.toLowerCase()) ||
-      (appointment.message && appointment.message.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const matchesStatus = 
-      statusFilter === "all" || 
-      appointment.status === statusFilter;
-    
-    const matchesDirection = 
-      activeTab === "pending" && appointment.recipientId === currentUserRegistrationId && appointment.status === "PENDING" ||
-      activeTab === "received" && appointment.recipientId === currentUserRegistrationId ||
-      activeTab === "sent" && appointment.requesterId === currentUserRegistrationId ||
-      activeTab === "accepted" && appointment.status === "ACCEPTED" && (appointment.recipientId === currentUserRegistrationId || appointment.requesterId === currentUserRegistrationId);
-    
-    return matchesSearch && matchesStatus && matchesDirection;
-  });
-
-  // Fonction pour formater la date
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "Non spécifié";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', { 
-      day: 'numeric', 
-      month: 'short', 
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  // Rendu d'un badge de statut
-  const renderStatusBadge = (status: AppointmentStatus) => {
-    switch (status) {
-      case "PENDING":
-        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">En attente</Badge>;
-      case "ACCEPTED":
-        return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">Accepté</Badge>;
-      case "DECLINED":
-        return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300">Refusé</Badge>;
-      case "COMPLETED":
-        return <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300">Terminé</Badge>;
-      default:
-        return <Badge variant="outline">Inconnu</Badge>;
-    }
-  };
-
-  // Obtenir les informations de l'autre participant
-  const getOtherPerson = (appointment: Appointment) => {
-    const isIncoming = appointment.recipientId === currentUserRegistrationId;
-    return isIncoming ? appointment.requester : appointment.recipient;
-  };
-
-  // Calculer les statistiques basées sur l'utilisateur courant
-  const getReceivedAppointments = () => appointments.filter(a => a.recipientId === currentUserRegistrationId);
-  const getSentAppointments = () => appointments.filter(a => a.requesterId === currentUserRegistrationId);
-  const getPendingReceived = () => getReceivedAppointments().filter(a => a.status === "PENDING");
-  const getAcceptedAppointments = () => appointments.filter(a => a.status === "ACCEPTED" && (a.recipientId === currentUserRegistrationId || a.requesterId === currentUserRegistrationId));
-
-  // Calculer les nombres pour les onglets
-  const pendingCount = getPendingReceived().length;
-  const receivedCount = getReceivedAppointments().length;
-  const sentCount = getSentAppointments().length;
-  const acceptedCount = getAcceptedAppointments().length;
 
   return (
     <div className="dashboard-container min-h-screen overflow-hidden">
@@ -313,7 +200,7 @@ export default function UserRendezVousPage() {
         }}
       >
         <main className="dashboard-main flex-1">
-          {/* En-tête */}
+          {/* Header */}
           <div className="p-4 bg-white border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -328,424 +215,179 @@ export default function UserRendezVousPage() {
                   Mes Rendez-vous
                 </h1>
               </div>
+              <div className="flex space-x-2">
+                <Link href={`/dashboard/user/events/${id}/rendez-vous/horaires`}>
+                  <Button variant="outline" size="sm">
+                    <ClockIcon className="h-4 w-4 mr-2" />
+                    Horaires
+                  </Button>
+                </Link>
+                <Link href={`/dashboard/user/events/${id}/rendez-vous/lieux`}>
+                  <Button variant="outline" size="sm">
+                    <MapPinIcon className="h-4 w-4 mr-2" />
+                    Lieux
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Contenu principal */}
-          <div className="p-6 space-y-6">
-            {/* Section Matchmaking */}
-            <div className="space-y-6">
-              <MatchSuggestions 
-                eventId={id as string}
-                onRequestMeeting={(userId, userName) => {
-                  setSelectedUser({id: userId, name: userName});
-                  setShowRequestForm(true);
-                }}
-              />
+          {/* Main Content */}
+          <div className="p-6 space-y-8">
+            {/* Configuration du matchmaking - EN PREMIER */}
+            <div className="bg-gradient-to-r from-[#DBAEEE] to-[#94C3E9] p-6 rounded-lg shadow-sm">
+              <div className="flex justify-between items-center">
+                  <div>
+                  <h2 className="text-xl font-semibold text-white mb-2">Configuration du matchmaking</h2>
+                  <p className="text-white/90 text-sm">
+                    Configurez votre profil pour recevoir des suggestions personnalisées de participants à rencontrer
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => setShowMatchmakingWizard(true)}
+                  className="bg-[#81B441] text-white border-none"
+                >
+                  <Cog6ToothIcon className="h-4 w-4 mr-2" />
+                  Configurer mon profil
+                </Button>
+                </div>
+              </div>
               
-              <div className="bg-gradient-to-r from-[#DBAEEE] to-[#94C3E9] p-4 rounded-lg shadow-sm">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-white">Configuration du matchmaking</h2>
+            {/* Suggestions de participants à rencontrer */}
+            <Card className="border border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                      <UserGroupIcon className="h-5 w-5 mr-2 text-[#81B441]" />
+                      Suggestions de participants à rencontrer
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">Basées sur vos intérêts et objectifs</p>
+                  </div>
                   <Button 
                     variant="outline" 
-                    onClick={() => setShowMatchmakingWizard(true)}
-                    className="bg-[#81B441] text-white border-none"
+                    size="sm"
+                    onClick={generateSuggestions}
+                    disabled={loading}
+                    className="border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
                   >
-                    Configurer mon profil
+                    <ArrowPathIcon className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Actualiser
                   </Button>
                 </div>
-              </div>
-            </div>
 
-            <Separator />
+                {suggestions.length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <div className="flex space-x-4 pb-4" style={{ minWidth: 'fit-content' }}>
+                      {suggestions.map((suggestion) => (
+                        <div key={suggestion.id} className="flex-shrink-0 w-64 bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                          {/* Avatar et nom */}
+                          <div className="text-center mb-4">
+                            <Avatar className="h-16 w-16 mx-auto mb-3 ring-2 ring-[#81B441] ring-offset-2">
+                              <AvatarImage src={suggestion.user.image} />
+                              <AvatarFallback className="bg-[#81B441] text-white">
+                                {getInitials(suggestion.user.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <h4 className="font-semibold text-sm text-gray-900">
+                              {suggestion.user.name}
+                            </h4>
+                            <p className="text-xs text-gray-600">
+                              {suggestion.profile.jobTitle || 'Fonction'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {suggestion.profile.company || 'Entreprise'}
+                            </p>
+                </div>
 
-            {/* Statistiques */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">À traiter</h3>
-                    <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {pendingCount}
-                    </p>
-                  </div>
-                  <div className="bg-amber-100 p-2 rounded-lg">
-                    <ClockIcon className="h-5 w-5 text-amber-500" />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-                    Demandes reçues en attente
-                  </span>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">Reçus</h3>
-                    <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {receivedCount}
-                    </p>
-                  </div>
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    <CheckCircleIcon className="h-5 w-5 text-blue-500" />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                    Total demandes reçues
-                  </span>
-                </div>
+                          {/* Badge niveau match */}
+                          <div className="flex justify-center mb-4">
+                            {getMatchBadge(suggestion.score)}
               </div>
               
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">Envoyés</h3>
-                    <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {sentCount}
-                    </p>
-                  </div>
-                  <div className="bg-emerald-100 p-2 rounded-lg">
-                    <EyeIcon className="h-5 w-5 text-emerald-500" />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                    Mes demandes envoyées
-                  </span>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">Acceptés</h3>
-                    <p className="text-2xl font-bold text-gray-800 mt-1">
-                      {acceptedCount}
-                    </p>
-                  </div>
-                  <div className="bg-green-100 p-2 rounded-lg">
-                    <CheckCircleIcon className="h-5 w-5 text-green-500" />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                    Rendez-vous confirmés
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Liste des rendez-vous */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Liste des rendez-vous</CardTitle>
-                <CardDescription>
-                  Consultez et gérez vos demandes de rendez-vous
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col md:flex-row gap-4 mb-6">
-                  <div className="flex-1">
-                    <Input
-                      placeholder="Rechercher par nom, email ou message..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="w-full md:w-48">
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Filtrer par statut" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Tous les statuts</SelectItem>
-                        <SelectItem value="PENDING">En attente</SelectItem>
-                        <SelectItem value="ACCEPTED">Acceptés</SelectItem>
-                        <SelectItem value="DECLINED">Refusés</SelectItem>
-                        <SelectItem value="COMPLETED">Terminés</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <Tabs defaultValue="pending" value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="pending" className="flex items-center gap-2">
-                      À traiter
-                      {pendingCount > 0 && (
-                        <Badge variant="outline" className="bg-amber-100 text-amber-700 border-amber-300 text-xs px-2 py-0.5 min-w-[20px] h-5">
-                          {pendingCount}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                    <TabsTrigger value="received" className="flex items-center gap-2">
-                      Reçus
-                      {receivedCount > 0 && (
-                        <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300 text-xs px-2 py-0.5 min-w-[20px] h-5">
-                          {receivedCount}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                    <TabsTrigger value="sent" className="flex items-center gap-2">
-                      Envoyées
-                      {sentCount > 0 && (
-                        <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-emerald-300 text-xs px-2 py-0.5 min-w-[20px] h-5">
-                          {sentCount}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                    <TabsTrigger value="accepted" className="flex items-center gap-2">
-                      Acceptées
-                      {acceptedCount > 0 && (
-                        <Badge variant="outline" className="bg-[#81B441]/20 text-[#81B441] border-[#81B441]/30 text-xs px-2 py-0.5 min-w-[20px] h-5">
-                          {acceptedCount}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                  </TabsList>
-
-                  {loading ? (
-                    <div className="flex justify-center items-center h-32">
-                      <p>Chargement des rendez-vous...</p>
+                          {/* Bouton rencontrer */}
+                          <Button 
+                            size="sm"
+                            onClick={() => {
+                              setSelectedUser({id: suggestion.user.id, name: suggestion.user.name});
+                              setShowRequestForm(true);
+                            }}
+                            className="w-full bg-[#81B441] text-white border-none"
+                          >
+                            Rencontrer
+                          </Button>
+                        </div>
+                      ))}
                     </div>
-                  ) : error ? (
-                    <div className="flex justify-center items-center h-32 text-red-500">
-                      <p>{error}</p>
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-gray-500">
+                    <UserGroupIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p className="text-sm">Aucune suggestion disponible</p>
+                    <p className="text-xs text-gray-400 mt-1">Configurez votre profil pour recevoir des suggestions</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Vous pouvez aussi rencontrer */}
+            <Card className="border border-gray-200">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-6">
+                  Vous pouvez aussi rencontrer
+                </h3>
+
+                {otherParticipants.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {otherParticipants.map((participant) => (
+                      <div key={participant.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center space-x-3">
+                          <Avatar className="h-12 w-12 ring-2 ring-[#81B441] ring-offset-2">
+                            <AvatarImage src={participant.user.image} />
+                            <AvatarFallback className="bg-[#81B441] text-white">
+                              {getInitials(participant.user.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-sm text-gray-900 truncate">
+                              {participant.user.name}
+                            </h4>
+                            <p className="text-xs text-gray-600 truncate">
+                              {participant.profile.jobTitle || 'Fonction'}
+                            </p>
+                            <p className="text-xs text-gray-500 truncate">
+                              {participant.profile.company || 'Entreprise'}
+                    </p>
+                  </div>
+                          <div className="flex flex-col space-y-1">
+                            {getMatchBadge(participant.score)}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setSelectedUser({id: participant.user.id, name: participant.user.name});
+                                setShowRequestForm(true);
+                              }}
+                              className="text-xs px-2 py-1 h-7 border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
+                            >
+                              Contacter
+                            </Button>
+                </div>
+              </div>
+            </div>
+                    ))}
                     </div>
                   ) : (
-                    <div className="rounded-md border">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Participant</TableHead>
-                            <TableHead>Date proposée</TableHead>
-                            <TableHead>Statut</TableHead>
-                            <TableHead>Direction</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {filteredAppointments.length > 0 ? (
-                            filteredAppointments.map((appointment) => {
-                              const otherPerson = getOtherPerson(appointment);
-                              const isIncoming = appointment.recipientId === currentUserRegistrationId;
-                              const fullName = `${otherPerson.firstName} ${otherPerson.lastName}`;
-                              
-                              return (
-                                <TableRow 
-                                  key={appointment.id}
-                                  className="cursor-pointer hover:bg-slate-50"
-                                  onClick={() => {
-                                    setSelectedAppointment(appointment);
-                                    setDialogOpen(true);
-                                  }}
-                                >
-                                  <TableCell>
-                                    <div className="flex items-center gap-3">
-                                      <Avatar className="h-8 w-8">
-                                        <AvatarFallback>{otherPerson.firstName[0]}{otherPerson.lastName[0]}</AvatarFallback>
-                                      </Avatar>
-                                      <div>
-                                        <div className="font-medium">{fullName}</div>
-                                        <div className="text-xs text-muted-foreground">{otherPerson.company}</div>
-                                      </div>
-                                    </div>
-                                  </TableCell>
-                                  <TableCell>
-                                    <div className="text-sm">
-                                      {formatDate(appointment.proposedTime || appointment.createdAt)}
-                                    </div>
-                                  </TableCell>
-                                  <TableCell>
-                                    {renderStatusBadge(appointment.status)}
-                                  </TableCell>
-                                  <TableCell>
-                                    <Badge variant={isIncoming ? "outline" : "secondary"}>
-                                      {isIncoming ? "Reçu" : "Envoyé"}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell className="text-right">
-                                    {/* Bouton Accepter directement dans le tableau pour les demandes reçues en attente */}
-                                    {appointment.status === "PENDING" && isIncoming && (activeTab === "pending" || activeTab === "received") ? (
-                                      <div className="flex gap-2">
-                                        <Button
-                                          variant="outline"
-                                          size="sm"
-                                          className="bg-[#81B441] text-white border-[#81B441]"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            updateAppointmentStatus(appointment.id, "ACCEPTED");
-                                          }}
-                                        >
-                                          <CheckCircleIcon className="h-4 w-4 mr-1" />
-                                          Accepter
-                                        </Button>
-                                        <Button
-                                          variant="ghost"
-                                          size="sm"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSelectedAppointment(appointment);
-                                            setDialogOpen(true);
-                                          }}
-                                        >
-                                          <EyeIcon className="h-4 w-4" />
-                                        </Button>
-                                      </div>
-                                    ) : (
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setSelectedAppointment(appointment);
-                                          setDialogOpen(true);
-                                        }}
-                                      >
-                                        <EyeIcon className="h-4 w-4" />
-                                      </Button>
-                                    )}
-                                  </TableCell>
-                                </TableRow>
-                              );
-                            })
-                          ) : (
-                            <TableRow>
-                              <TableCell colSpan={5} className="h-24 text-center">
-                                {activeTab === "pending" && "Aucune demande à traiter" || 
-                                 activeTab === "received" && "Aucune demande reçue" || 
-                                 activeTab === "sent" && "Aucune demande envoyée" ||
-                                 activeTab === "accepted" && "Aucun rendez-vous accepté" ||
-                                 "Aucun rendez-vous trouvé"}
-                              </TableCell>
-                            </TableRow>
-                          )}
-                        </TableBody>
-                      </Table>
+                  <div className="text-center py-12 text-gray-500">
+                    <UserGroupIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p className="text-sm">Aucun participant disponible</p>
                     </div>
                   )}
-                </Tabs>
               </CardContent>
             </Card>
           </div>
         </main>
       </div>
-
-      {/* Dialog de détails du rendez-vous */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[525px]">
-          {selectedAppointment && (
-            <>
-              <DialogHeader>
-                <DialogTitle>Détails du rendez-vous</DialogTitle>
-                <DialogDescription>
-                  {selectedAppointment.recipientId === currentUserRegistrationId 
-                    ? "Demande reçue" 
-                    : "Demande envoyée"} le {formatDate(selectedAppointment.createdAt)}
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="mt-4 space-y-4">
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-12 w-12">
-                    <AvatarFallback>
-                      {getOtherPerson(selectedAppointment).firstName[0]}
-                      {getOtherPerson(selectedAppointment).lastName[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-semibold text-lg">
-                      {getOtherPerson(selectedAppointment).firstName} {getOtherPerson(selectedAppointment).lastName}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {getOtherPerson(selectedAppointment).jobTitle} 
-                      {getOtherPerson(selectedAppointment).company ? ` chez ${getOtherPerson(selectedAppointment).company}` : ''}
-                    </p>
-                  </div>
-                  <div className="ml-auto">
-                    {renderStatusBadge(selectedAppointment.status)}
-                  </div>
-                </div>
-
-                <div className="p-4 bg-slate-50 rounded-md text-sm">
-                  {selectedAppointment.message || "Aucun message"}
-                </div>
-
-                <div className="flex flex-wrap gap-6 text-sm">
-                  <div className="flex items-center">
-                    <CalendarIcon className="h-4 w-4 mr-2" />
-                    <span>Proposé: {formatDate(selectedAppointment.proposedTime || selectedAppointment.createdAt)}</span>
-                  </div>
-                  {selectedAppointment.confirmedTime && (
-                    <div className="flex items-center">
-                      <ClockIcon className="h-4 w-4 mr-2" />
-                      <span>Confirmé: {formatDate(selectedAppointment.confirmedTime)}</span>
-                    </div>
-                  )}
-                  {selectedAppointment.location && (
-                    <div className="flex items-center">
-                      <span>Lieu: {selectedAppointment.location}</span>
-                    </div>
-                  )}
-                </div>
-
-                {selectedAppointment.notes && (
-                  <div>
-                    <h4 className="text-sm font-medium mb-1">Notes:</h4>
-                    <p className="text-sm">{selectedAppointment.notes}</p>
-                  </div>
-                )}
-
-                <Separator />
-
-                <DialogFooter className="gap-2 sm:gap-0">
-                  <DialogClose asChild>
-                    <Button variant="outline">Fermer</Button>
-                  </DialogClose>
-
-                  {selectedAppointment.status === "PENDING" && selectedAppointment.recipientId === currentUserRegistrationId && (
-                    <>
-                      <Button 
-                        variant="outline" 
-                        className="border-red-300 text-red-600 hover:bg-red-50"
-                        onClick={() => updateAppointmentStatus(selectedAppointment.id, "DECLINED")}
-                      >
-                        <XCircleIcon className="h-4 w-4 mr-1" />
-                        Refuser
-                      </Button>
-                      <Button 
-                        className="bg-[#81B441] hover:bg-[#6a9636]"
-                        onClick={() => updateAppointmentStatus(selectedAppointment.id, "ACCEPTED")}
-                      >
-                        <CheckCircleIcon className="h-4 w-4 mr-1" />
-                        Accepter
-                      </Button>
-                    </>
-                  )}
-                  
-                  {selectedAppointment.status === "ACCEPTED" && (
-                    <Button 
-                      className="bg-blue-500 hover:bg-blue-600"
-                      onClick={() => updateAppointmentStatus(selectedAppointment.id, "COMPLETED")}
-                    >
-                      <CheckCircleIcon className="h-4 w-4 mr-1" />
-                      Marquer comme terminé
-                    </Button>
-                  )}
-                </DialogFooter>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* Modal de demande de rendez-vous */}
       {showRequestForm && selectedUser && (
@@ -763,27 +405,27 @@ export default function UserRendezVousPage() {
             company: '',
             jobTitle: ''
           }}
-          event={currentEvent}
-          currentUserRegistrationId={currentUserRegistrationId!}
+          event={currentEvent!}
+          currentUserRegistrationId=""
           onSuccess={() => {
             setShowRequestForm(false);
             setSelectedUser(null);
-            fetchAppointments();
+            toast.success("Demande de rendez-vous envoyée !");
           }}
-                    />
-          )}
+        />
+      )}
 
-          {/* Wizard de configuration du matchmaking */}
-          {showMatchmakingWizard && currentEvent && (
-            <MatchmakingWizard
-              isOpen={showMatchmakingWizard}
-              onClose={() => setShowMatchmakingWizard(false)}
-              eventId={id as string}
-              eventName={currentEvent.name}
-              eventSector={currentEvent.sector}
-              eventDescription={currentEvent.description}
-            />
-          )}
-        </div>
-      );
+      {/* Wizard de configuration du matchmaking */}
+      {showMatchmakingWizard && currentEvent && (
+        <MatchmakingWizard
+          isOpen={showMatchmakingWizard}
+          onClose={() => setShowMatchmakingWizard(false)}
+          eventId={id as string}
+          eventName={currentEvent.name}
+          eventSector={currentEvent.sector}
+          eventDescription={currentEvent.description}
+        />
+      )}
+    </div>
+  );
 } 
