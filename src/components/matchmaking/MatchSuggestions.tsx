@@ -129,6 +129,10 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
     );
   }
 
+  // Découper en suggestions primaires (4) et secondaires (jusqu'à 6)
+  const primary = suggestions.slice(0, 4);
+  const secondary = suggestions.slice(4, 10);
+
   return (
     <Card>
       <CardHeader>
@@ -168,63 +172,67 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
             </Button>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <div className="flex space-x-4 pb-4" style={{ minWidth: 'fit-content' }}>
-              {suggestions.map((suggestion) => (
-                <div key={suggestion.id} className="flex-shrink-0 w-72 bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                  {/* Header avec avatar et badge */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <Avatar className="h-12 w-12 ring-2 ring-[#81B441] ring-offset-2">
-                        <AvatarImage src={suggestion.user.image} />
-                        <AvatarFallback className="bg-[#81B441] text-white">
-                          {getInitials(suggestion.user.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 text-sm">
-                          {suggestion.user.name}
-                        </h4>
-                        {suggestion.profile.headline && (
-                          <p className="text-xs text-gray-600 truncate max-w-32">
-                            {suggestion.profile.headline}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    {getScoreBadge(suggestion.score)}
+          <div className="space-y-6">
+            {/* Cartes principales (4) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {primary.map((s) => (
+                <div key={s.id} className="bg-white border border-gray-200 rounded-xl p-5 text-center shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex justify-end">{getScoreBadge(s.score)}</div>
+                  <div className="flex flex-col items-center mt-2">
+                    <Avatar className="h-20 w-20 ring-2 ring-[#81B441] ring-offset-2 mb-3">
+                      <AvatarImage src={s.user.image} />
+                      <AvatarFallback className="bg-[#81B441] text-white">
+                        {getInitials(s.user.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <h4 className="font-semibold text-gray-900">{s.user.name}</h4>
+                    {s.profile.headline && (
+                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{s.profile.headline}</p>
+                    )}
+                    <Button 
+                      onClick={() => onRequestMeeting?.(s.user.id, s.user.name)}
+                      className="mt-4 w-full bg-[#81B441] text-white border-none"
+                    >
+                      Rencontrer
+                    </Button>
                   </div>
-
-                  {/* Objectifs */}
-                  {suggestion.profile.goals.length > 0 && (
-                    <div className="mb-3">
-                      <div className="flex flex-wrap gap-1">
-                        {suggestion.profile.goals.slice(0, 3).map((goal, index) => (
-                          <Badge key={index} className="bg-[#81B441]/20 text-[#81B441] text-xs border-none">
-                            {goal}
-                          </Badge>
-                        ))}
-                        {suggestion.profile.goals.length > 3 && (
-                          <Badge className="bg-[#81B441]/20 text-[#81B441] text-xs border-none">
-                            +{suggestion.profile.goals.length - 3}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Bouton d'action */}
-                  <Button 
-                    size="sm"
-                    onClick={() => onRequestMeeting?.(suggestion.user.id, suggestion.user.name)}
-                    className="w-full bg-[#81B441] text-white border-none"
-                  >
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Demander un RDV
-                  </Button>
                 </div>
               ))}
             </div>
+
+            {/* Liste secondaire */}
+            {secondary.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-gray-700">Vous pouvez aussi rencontrer</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {secondary.map((s) => (
+                    <div key={s.id} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <Avatar className="h-10 w-10 ring-2 ring-[#81B441] ring-offset-2">
+                          <AvatarImage src={s.user.image} />
+                          <AvatarFallback className="bg-[#81B441] text-white">
+                            {getInitials(s.user.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-gray-900 truncate">{s.user.name}</div>
+                          <div className="text-xs text-gray-600 truncate">{s.profile.headline || ''}</div>
+                          <div className="mt-1">{getScoreBadge(s.score)}</div>
+                        </div>
+                      </div>
+                      <Button 
+                        variant="ghost"
+                        onClick={() => onRequestMeeting?.(s.user.id, s.user.name)}
+                        className="shrink-0 text-[#81B441] hover:bg-[#81B441]/10"
+                        aria-label="Demander un RDV"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </CardContent>
