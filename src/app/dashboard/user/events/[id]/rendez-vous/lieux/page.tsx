@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import UserEventSidebar from "@/components/dashboard/UserEventSidebar";
 import { 
   Card,
@@ -31,6 +31,12 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent
+} from "@/components/ui/tabs";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
@@ -49,13 +55,24 @@ type MeetingLocation = {
 
 export default function LieuxPage() {
   const { id } = useParams();
-  const router = useRouter();
+
   const [locations, setLocations] = useState<MeetingLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingLocation, setEditingLocation] = useState<MeetingLocation | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<MeetingLocation | null>(null);
+  const [locationAppointments, setLocationAppointments] = useState<Array<{
+    id?: string; 
+    requester?: {firstName: string; lastName: string}; 
+    recipient?: {firstName: string; lastName: string}; 
+    message?: string; 
+    proposedTime?: string; 
+    status: string; 
+    location?: string
+  }>>([]);
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -121,7 +138,57 @@ export default function LieuxPage() {
   };
 
   useEffect(() => {
-    fetchLocations();
+    const handleFetchLocations = async () => {
+      try {
+        setLoading(true);
+        // Mock data - replace with actual API call
+        const mockLocations: MeetingLocation[] = [
+          {
+            id: "1",
+            name: "Salle de réunion A",
+            address: "1er étage, aile gauche",
+            description: "Grande salle équipée pour les présentations",
+            capacity: "12",
+            type: "CONFERENCE_ROOM",
+            equipment: ["Projecteur", "Écran", "Tableau blanc"],
+            isActive: true,
+            eventId: id as string,
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "2",
+            name: "Espace café",
+            address: "Hall principal",
+            description: "Zone détendue pour discussions informelles",
+            capacity: "8",
+            type: "CAFE",
+            equipment: ["Tables hautes", "Machine à café"],
+            isActive: true,
+            eventId: id as string,
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "3",
+            name: "Terrasse",
+            address: "3ème étage",
+            description: "Espace extérieur avec vue panoramique",
+            capacity: "15",
+            type: "OUTDOOR",
+            equipment: ["Tables", "Parasols"],
+            isActive: true,
+            eventId: id as string,
+            createdAt: new Date().toISOString()
+          }
+        ];
+        setLocations(mockLocations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleFetchLocations();
 
     // Vérifier si l'écran est mobile
     const checkMobile = () => {
@@ -218,6 +285,23 @@ export default function LieuxPage() {
     }
   };
 
+  const handleLocationClick = async (location: MeetingLocation) => {
+    setSelectedLocation(location);
+    setShowDetailsModal(true);
+    
+    // Fetch appointments for this location
+    try {
+      const response = await fetch(`/api/events/${id}/appointments?location=${encodeURIComponent(location.name)}`);
+      if (response.ok) {
+        const appointments = await response.json();
+        setLocationAppointments(appointments || []);
+      }
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      setLocationAppointments([]);
+    }
+  };
+
   const getLocationTypeLabel = (type: MeetingLocation["type"]) => {
     const types = {
       CONFERENCE_ROOM: "Salle de réunion",
@@ -306,7 +390,11 @@ export default function LieuxPage() {
                 ) : locations.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {locations.map((location) => (
-                      <div key={location.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                      <div 
+                        key={location.id} 
+                        className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer transition-shadow"
+                        onClick={() => handleLocationClick(location)}
+                      >
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center gap-2">
                             {getLocationIcon(location.type)}
@@ -319,7 +407,7 @@ export default function LieuxPage() {
                             >
                               {location.isActive ? "Actif" : "Inactif"}
                             </Badge>
-                            <div className="flex gap-1">
+                            <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -491,6 +579,134 @@ export default function LieuxPage() {
               {editingLocation ? "Modifier" : "Créer"}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de détails du lieu avec onglets */}
+      <Dialog open={showDetailsModal} onOpenChange={setShowDetailsModal}>
+        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MapPinIcon className="h-5 w-5 text-[#81B441]" />
+              {selectedLocation?.name}
+            </DialogTitle>
+            <DialogDescription>
+              Détails du lieu et rendez-vous associés
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedLocation && (
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="details">Informations</TabsTrigger>
+                <TabsTrigger value="appointments">
+                  Rendez-vous ({locationAppointments.length})
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="details" className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Nom du lieu</Label>
+                    <p className="text-gray-900">{selectedLocation.name}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Type</Label>
+                    <div className="mt-1">
+                      <Badge variant="outline" className="bg-gray-50">
+                        {getLocationTypeLabel(selectedLocation.type)}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Adresse</Label>
+                    <p className="text-gray-900">{selectedLocation.address || "Non spécifiée"}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Capacité</Label>
+                    <p className="text-gray-900">
+                      {selectedLocation.capacity ? `${selectedLocation.capacity} personnes` : "Non spécifiée"}
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Statut</Label>
+                    <div className="mt-1">
+                      <Badge 
+                        variant={selectedLocation.isActive ? "default" : "secondary"}
+                        className={selectedLocation.isActive ? "bg-[#81B441] text-white" : ""}
+                      >
+                        {selectedLocation.isActive ? "Actif" : "Inactif"}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+                {selectedLocation.description && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Description</Label>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded-md">{selectedLocation.description}</p>
+                  </div>
+                )}
+                {selectedLocation.equipment && selectedLocation.equipment.length > 0 && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Équipements</Label>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      {selectedLocation.equipment.map((item, index) => (
+                        <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
+                          {item}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="appointments" className="space-y-4">
+                {locationAppointments.length > 0 ? (
+                  <div className="space-y-3">
+                    {locationAppointments.map((appointment, index) => (
+                      <div key={appointment.id || index} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h4 className="font-medium text-gray-900">
+                              {appointment.requester?.firstName} {appointment.requester?.lastName} → {appointment.recipient?.firstName} {appointment.recipient?.lastName}
+                            </h4>
+                            <p className="text-sm text-gray-600">{appointment.message || "Aucun message"}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Proposé: {appointment.proposedTime ? new Date(appointment.proposedTime).toLocaleString('fr-FR') : 'Non spécifié'}
+                            </p>
+                            {appointment.location && (
+                              <p className="text-xs text-gray-500">
+                                Lieu: {appointment.location}
+                              </p>
+                            )}
+                          </div>
+                          <Badge 
+                            variant="outline" 
+                            className={
+                              appointment.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' :
+                              appointment.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                              appointment.status === 'DECLINED' ? 'bg-red-100 text-red-800 border-red-300' :
+                              'bg-blue-100 text-blue-800 border-blue-300'
+                            }
+                          >
+                            {appointment.status === 'ACCEPTED' ? 'Accepté' :
+                             appointment.status === 'PENDING' ? 'En attente' :
+                             appointment.status === 'DECLINED' ? 'Refusé' :
+                             'Terminé'}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <BuildingOfficeIcon className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+                    <p>Aucun rendez-vous prévu dans ce lieu</p>
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+          )}
         </DialogContent>
       </Dialog>
     </div>

@@ -191,7 +191,8 @@ export default function MatchSuggestions({ eventId, onRequestMeeting }: MatchSug
                     )}
                     <Button 
                       onClick={() => onRequestMeeting?.(s.user.id, s.user.name)}
-                      className="mt-4 w-full bg-[#81B441] text-white border-none"
+                      className="mt-4 px-4 bg-[#81B441] text-white border-none"
+                      size="sm"
                     >
                       Rencontrer
                     </Button>

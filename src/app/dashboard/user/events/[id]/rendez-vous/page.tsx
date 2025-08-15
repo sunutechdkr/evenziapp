@@ -103,6 +103,7 @@ export default function UserRendezVousPage() {
   const [currentUserRegistrationId, setCurrentUserRegistrationId] = useState<string | null>(null);
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{id: string, name: string} | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const [showMatchmakingWizard, setShowMatchmakingWizard] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<{
@@ -149,13 +150,16 @@ export default function UserRendezVousPage() {
     }
   };
 
-  // Obtenir l'ID de registration de l'utilisateur courant
+  // Obtenir l'ID de registration de l'utilisateur courant et son rôle
   const fetchCurrentUserRegistration = async () => {
     try {
       const sessionResponse = await fetch("/api/auth/session");
       const sessionData = await sessionResponse.json();
       
       if (sessionData && sessionData.user && sessionData.user.email) {
+        // Stocker le rôle utilisateur
+        setUserRole(sessionData.user.role || 'USER');
+        
         // Récupérer l'ID de registration de l'utilisateur pour cet événement
         const registrationResponse = await fetch(`/api/events/${id}/registrations?userEmail=${sessionData.user.email}`);
         const registrationData = await registrationResponse.json();
@@ -331,23 +335,25 @@ export default function UserRendezVousPage() {
                 </h1>
               </div>
               
-              {/* Navigation vers sous-pages */}
-              <div className="flex items-center space-x-2">
-                <Link 
-                  href={`/dashboard/user/events/${id}/rendez-vous/horaires`}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  <ClockIcon className="w-4 h-4 mr-2" />
-                  Horaires
-                </Link>
-                <Link 
-                  href={`/dashboard/user/events/${id}/rendez-vous/lieux`}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  <CalendarIcon className="w-4 h-4 mr-2" />
-                  Lieux
-                </Link>
-              </div>
+              {/* Navigation vers sous-pages - Admin/Organizer seulement */}
+              {(userRole === 'ADMIN' || userRole === 'ORGANIZER') && (
+                <div className="flex items-center space-x-2">
+                  <Link 
+                    href={`/dashboard/user/events/${id}/rendez-vous/horaires`}
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  >
+                    <ClockIcon className="w-4 h-4 mr-2" />
+                    Horaires
+                  </Link>
+                  <Link 
+                    href={`/dashboard/user/events/${id}/rendez-vous/lieux`}
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  >
+                    <CalendarIcon className="w-4 h-4 mr-2" />
+                    Lieux
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import UserEventSidebar from "@/components/dashboard/UserEventSidebar";
 import { 
   Card,
@@ -29,6 +29,12 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent
+} from "@/components/ui/tabs";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
@@ -45,13 +51,24 @@ type TimeSlot = {
 
 export default function HorairesPage() {
   const { id } = useParams();
-  const router = useRouter();
+
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingSlot, setEditingSlot] = useState<TimeSlot | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
+  const [slotAppointments, setSlotAppointments] = useState<Array<{
+    id?: string; 
+    requester?: {firstName: string; lastName: string}; 
+    recipient?: {firstName: string; lastName: string}; 
+    message?: string; 
+    proposedTime?: string; 
+    status: string; 
+    location?: string
+  }>>([]);
   const [formData, setFormData] = useState({
     name: "",
     startTime: "",
@@ -102,7 +119,51 @@ export default function HorairesPage() {
   };
 
   useEffect(() => {
-    fetchTimeSlots();
+    const handleFetchTimeSlots = async () => {
+      try {
+        setLoading(true);
+        // Mock data - replace with actual API call
+        const mockSlots: TimeSlot[] = [
+          {
+            id: "1",
+            name: "Matinée networking",
+            startTime: "09:00",
+            endTime: "12:00",
+            description: "Sessions de networking du matin",
+            isActive: true,
+            eventId: id as string,
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "2",
+            name: "Pause déjeuner",
+            startTime: "12:00",
+            endTime: "14:00",
+            description: "Rendez-vous informels pendant le déjeuner",
+            isActive: true,
+            eventId: id as string,
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "3",
+            name: "Après-midi business",
+            startTime: "14:00",
+            endTime: "17:00",
+            description: "Créneaux pour rendez-vous d'affaires",
+            isActive: true,
+            eventId: id as string,
+            createdAt: new Date().toISOString()
+          }
+        ];
+        setTimeSlots(mockSlots);
+      } catch (error) {
+        console.error("Error fetching time slots:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleFetchTimeSlots();
 
     // Vérifier si l'écran est mobile
     const checkMobile = () => {
@@ -192,6 +253,23 @@ export default function HorairesPage() {
     }
   };
 
+  const handleSlotClick = async (slot: TimeSlot) => {
+    setSelectedSlot(slot);
+    setShowDetailsModal(true);
+    
+    // Fetch appointments for this time slot
+    try {
+      const response = await fetch(`/api/events/${id}/appointments?timeSlot=${slot.startTime}-${slot.endTime}`);
+      if (response.ok) {
+        const appointments = await response.json();
+        setSlotAppointments(appointments || []);
+      }
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      setSlotAppointments([]);
+    }
+  };
+
   const formatTime = (time: string) => {
     return time || "Non défini";
   };
@@ -258,7 +336,11 @@ export default function HorairesPage() {
                 ) : timeSlots.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {timeSlots.map((slot) => (
-                      <div key={slot.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                      <div 
+                        key={slot.id} 
+                        className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer transition-shadow"
+                        onClick={() => handleSlotClick(slot)}
+                      >
                         <div className="flex justify-between items-start mb-3">
                           <h3 className="font-medium text-gray-900">{slot.name}</h3>
                           <div className="flex items-center gap-2">
@@ -268,7 +350,7 @@ export default function HorairesPage() {
                             >
                               {slot.isActive ? "Actif" : "Inactif"}
                             </Badge>
-                            <div className="flex gap-1">
+                            <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -400,6 +482,107 @@ export default function HorairesPage() {
               {editingSlot ? "Modifier" : "Créer"}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de détails du créneau avec onglets */}
+      <Dialog open={showDetailsModal} onOpenChange={setShowDetailsModal}>
+        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ClockIcon className="h-5 w-5 text-[#81B441]" />
+              {selectedSlot?.name}
+            </DialogTitle>
+            <DialogDescription>
+              Détails du créneau et rendez-vous associés
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedSlot && (
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="details">Informations</TabsTrigger>
+                <TabsTrigger value="appointments">
+                  Rendez-vous ({slotAppointments.length})
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="details" className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Nom du créneau</Label>
+                    <p className="text-gray-900">{selectedSlot.name}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Statut</Label>
+                    <div className="mt-1">
+                      <Badge 
+                        variant={selectedSlot.isActive ? "default" : "secondary"}
+                        className={selectedSlot.isActive ? "bg-[#81B441] text-white" : ""}
+                      >
+                        {selectedSlot.isActive ? "Actif" : "Inactif"}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Heure de début</Label>
+                    <p className="text-gray-900">{formatTime(selectedSlot.startTime)}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Heure de fin</Label>
+                    <p className="text-gray-900">{formatTime(selectedSlot.endTime)}</p>
+                  </div>
+                </div>
+                {selectedSlot.description && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Description</Label>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded-md">{selectedSlot.description}</p>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="appointments" className="space-y-4">
+                {slotAppointments.length > 0 ? (
+                  <div className="space-y-3">
+                    {slotAppointments.map((appointment, index) => (
+                      <div key={appointment.id || index} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h4 className="font-medium text-gray-900">
+                              {appointment.requester?.firstName} {appointment.requester?.lastName} → {appointment.recipient?.firstName} {appointment.recipient?.lastName}
+                            </h4>
+                            <p className="text-sm text-gray-600">{appointment.message || "Aucun message"}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Proposé: {appointment.proposedTime ? new Date(appointment.proposedTime).toLocaleString('fr-FR') : 'Non spécifié'}
+                            </p>
+                          </div>
+                          <Badge 
+                            variant="outline" 
+                            className={
+                              appointment.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' :
+                              appointment.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                              appointment.status === 'DECLINED' ? 'bg-red-100 text-red-800 border-red-300' :
+                              'bg-blue-100 text-blue-800 border-blue-300'
+                            }
+                          >
+                            {appointment.status === 'ACCEPTED' ? 'Accepté' :
+                             appointment.status === 'PENDING' ? 'En attente' :
+                             appointment.status === 'DECLINED' ? 'Refusé' :
+                             'Terminé'}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <CalendarIcon className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+                    <p>Aucun rendez-vous prévu pour ce créneau</p>
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+          )}
         </DialogContent>
       </Dialog>
     </div>
