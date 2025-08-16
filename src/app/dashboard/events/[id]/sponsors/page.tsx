@@ -486,6 +486,18 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                                   src={sponsor.logo} 
                                   alt={sponsor.name}
                                   className="w-10 h-10 object-contain rounded"
+                                  onError={(e) => {
+                                    console.log('Erreur chargement logo sponsor:', sponsor.name, sponsor.logo);
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                    const parent = target.parentElement;
+                                    if (parent) {
+                                      parent.innerHTML = '<div class="flex flex-col items-center"><div class="h-5 w-5 text-gray-400">🏢</div></div>';
+                                    }
+                                  }}
+                                  onLoad={() => {
+                                    console.log('Logo chargé avec succès:', sponsor.name, sponsor.logo);
+                                  }}
                                 />
                               ) : (
                                 <div className="flex flex-col items-center">
@@ -691,6 +703,18 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                         src={selectedSponsor.logo} 
                         alt={selectedSponsor.name}
                         className="w-14 h-14 object-contain rounded"
+                        onError={(e) => {
+                          console.log('Erreur chargement logo sponsor (modal):', selectedSponsor.name, selectedSponsor.logo);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = '<div class="h-8 w-8 text-gray-400">🏢</div>';
+                          }
+                        }}
+                        onLoad={() => {
+                          console.log('Logo chargé avec succès (modal):', selectedSponsor.name);
+                        }}
                       />
                     ) : (
                       <PhotoIcon className="h-8 w-8 text-gray-400" />

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import { 
   Card,
@@ -329,6 +330,24 @@ export default function RendezVousPage() {
               <p className="text-muted-foreground mt-1">
                 Gérez les demandes de rendez-vous pour votre événement
               </p>
+            </div>
+            
+            {/* Boutons de navigation pour Admin/Organizer */}
+            <div className="flex items-center space-x-2 mt-4 md:mt-0">
+              <Link 
+                href={`/dashboard/events/${id}/rendez-vous/horaires`}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                <ClockIcon className="w-4 h-4 mr-2" />
+                Horaires
+              </Link>
+              <Link 
+                href={`/dashboard/events/${id}/rendez-vous/lieux`}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                <CalendarIcon className="w-4 h-4 mr-2" />
+                Lieux
+              </Link>
             </div>
           </div>
 
