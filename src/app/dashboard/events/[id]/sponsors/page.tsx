@@ -10,9 +10,7 @@ import {
   PlusIcon,
   ArrowDownTrayIcon,
   ArrowPathIcon,
-  LinkIcon,
   PencilIcon,
-  TrashIcon,
   EyeIcon,
   EyeSlashIcon,
   BuildingOfficeIcon,
@@ -42,7 +40,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
@@ -109,6 +109,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [sponsorToDelete, setSponsorToDelete] = useState<Sponsor | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   
   const router = useRouter();
 
@@ -237,12 +238,12 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   // Helper function to convert sponsor data for tabs
   const getSponsorTabData = (sponsor: Sponsor) => ({
     ...sponsor,
-    createdAt: sponsor.createdAt.toISOString(),
-    updatedAt: sponsor.updatedAt.toISOString()
+    createdAt: sponsor.createdAt instanceof Date ? sponsor.createdAt.toISOString() : sponsor.createdAt,
+    updatedAt: sponsor.updatedAt instanceof Date ? sponsor.updatedAt.toISOString() : sponsor.updatedAt
   });
 
   // Helper function to handle edited sponsor updates
-  const handleEditedSponsorUpdate = (updatedData: Partial<Sponsor>) => {
+  const handleEditedSponsorUpdate = (updatedData: Record<string, any>) => {
     setEditedSponsor(updatedData);
   };
 
@@ -321,9 +322,16 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
       
       const updatedSponsor = await response.json();
       
+      // Convertir les dates en objets Date si nécessaire
+      const formattedSponsor = {
+        ...updatedSponsor,
+        createdAt: typeof updatedSponsor.createdAt === 'string' ? new Date(updatedSponsor.createdAt) : updatedSponsor.createdAt,
+        updatedAt: typeof updatedSponsor.updatedAt === 'string' ? new Date(updatedSponsor.updatedAt) : updatedSponsor.updatedAt,
+      };
+
       // Mettre à jour la liste locale
-      setSponsors(prev => prev.map(s => s.id === selectedSponsor.id ? updatedSponsor : s));
-      setSelectedSponsor(updatedSponsor);
+      setSponsors(prev => prev.map(s => s.id === selectedSponsor.id ? formattedSponsor : s));
+      setSelectedSponsor(formattedSponsor);
       
       toast.success('Sponsor mis à jour avec succès');
       
@@ -432,33 +440,15 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
               Ajouter un sponsor
             </Link>
             
-            {/* Bouton Options */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-2">
-                  <Cog6ToothIcon className="h-4 w-4 mr-2" />
-                  Options
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem disabled>
-                  <DocumentDuplicateIcon className="h-4 w-4 mr-2" />
-                  Dupliquer sponsors
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <ArchiveBoxIcon className="h-4 w-4 mr-2" />
-                  Archiver sélection
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <BanknotesIcon className="h-4 w-4 mr-2" />
-                  Gérer les tarifs
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-                  Import en masse
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Bouton Réglages */}
+            <Button 
+              variant="outline" 
+              className="ml-2"
+              onClick={() => setShowSettingsModal(true)}
+            >
+              <Cog6ToothIcon className="h-4 w-4 mr-2" />
+              Réglages
+            </Button>
           </div>
         </div>
         
@@ -727,42 +717,18 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                                 <PencilIcon className="h-4 w-4" />
                               </Button>
                               
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="h-8 w-8 p-0"
-                                  >
-                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01" />
-                                    </svg>
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem onClick={() => openSponsorDetails(sponsor)}>
-                                    <EyeIcon className="h-4 w-4 mr-2" />
-                                    Voir les détails
-                                  </DropdownMenuItem>
-                                  {sponsor.website && (
-                                    <DropdownMenuItem onClick={() => window.open(sponsor.website, '_blank')}>
-                                      <LinkIcon className="h-4 w-4 mr-2" />
-                                      Visiter le site
-                                    </DropdownMenuItem>
-                                  )}
-                                  <DropdownMenuItem
-                                    onClick={() => {
-                                      setSponsorToDelete(sponsor);
-                                      setDeleteConfirmOpen(true);
-                                    }}
-                                    className="text-red-600"
-                                  >
-                                    <TrashIcon className="h-4 w-4 mr-2" />
-                                    Supprimer
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openSponsorDetails(sponsor);
+                                }}
+                                className="h-8 w-8 p-0"
+                                title="Voir les détails"
+                              >
+                                <EyeIcon className="h-4 w-4" />
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -909,7 +875,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                       <SponsorDetailsTab 
                         sponsor={getSponsorTabData(selectedSponsor)} 
                         isEditing={isEditing}
-                        editedSponsor={editedSponsor}
+                        editedSponsor={editedSponsor as any}
                         setEditedSponsor={handleEditedSponsorUpdate}
                       />
                     </TabsContent>
@@ -919,7 +885,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                       <SponsorContactTab 
                         sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
-                        editedSponsor={editedSponsor}
+                        editedSponsor={editedSponsor as any}
                         setEditedSponsor={handleEditedSponsorUpdate}
                       />
                     </TabsContent>
@@ -929,7 +895,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                       <SponsorSocialTab 
                         sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
-                        editedSponsor={editedSponsor}
+                        editedSponsor={editedSponsor as any}
                         setEditedSponsor={handleEditedSponsorUpdate}
                       />
                     </TabsContent>
@@ -1038,6 +1004,156 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
               className="bg-red-600 hover:bg-red-700"
             >
               {processing ? 'Suppression...' : 'Supprimer'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de réglages sponsors */}
+      <Dialog open={showSettingsModal} onOpenChange={setShowSettingsModal}>
+        <DialogContent className="max-w-4xl h-[600px] flex flex-col">
+          <DialogHeader className="flex-shrink-0">
+            <DialogTitle className="flex items-center gap-3">
+              <Cog6ToothIcon className="h-6 w-6 text-[#81B441]" />
+              Réglages des sponsors
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="space-y-8 p-1">
+                
+                {/* Configuration générale */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Configuration générale</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-sm font-medium">Affichage public des sponsors</Label>
+                        <p className="text-xs text-gray-500">Autoriser l&apos;affichage des sponsors sur la page publique de l&apos;événement</p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-sm font-medium">Ordre d&apos;affichage par défaut</Label>
+                        <p className="text-xs text-gray-500">Choisir l&apos;ordre d&apos;affichage des sponsors</p>
+                      </div>
+                      <Select defaultValue="level">
+                        <SelectTrigger className="w-48">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="level">Par niveau</SelectItem>
+                          <SelectItem value="name">Par nom</SelectItem>
+                          <SelectItem value="date">Par date d&apos;ajout</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Gestion des niveaux */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Gestion des niveaux de partenariat</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-sm font-medium">Niveaux personnalisés</Label>
+                        <p className="text-xs text-gray-500">Permettre la création de niveaux personnalisés</p>
+                      </div>
+                      <Switch />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-sm font-medium">Affichage des badges de niveau</Label>
+                        <p className="text-xs text-gray-500">Afficher les badges de niveau sur les logos</p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions en masse */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Actions en masse</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button variant="outline" className="justify-start h-auto p-4">
+                      <div className="text-left">
+                        <div className="flex items-center gap-2 mb-1">
+                          <DocumentDuplicateIcon className="h-4 w-4" />
+                          <span className="font-medium">Dupliquer sponsors</span>
+                        </div>
+                        <p className="text-xs text-gray-500">Dupliquer les sponsors sélectionnés</p>
+                      </div>
+                    </Button>
+
+                    <Button variant="outline" className="justify-start h-auto p-4">
+                      <div className="text-left">
+                        <div className="flex items-center gap-2 mb-1">
+                          <ArrowDownTrayIcon className="h-4 w-4" />
+                          <span className="font-medium">Import en masse</span>
+                        </div>
+                        <p className="text-xs text-gray-500">Importer plusieurs sponsors via CSV</p>
+                      </div>
+                    </Button>
+
+                    <Button variant="outline" className="justify-start h-auto p-4">
+                      <div className="text-left">
+                        <div className="flex items-center gap-2 mb-1">
+                          <ArchiveBoxIcon className="h-4 w-4" />
+                          <span className="font-medium">Archivage automatique</span>
+                        </div>
+                        <p className="text-xs text-gray-500">Archiver les sponsors inactifs</p>
+                      </div>
+                    </Button>
+
+                    <Button variant="outline" className="justify-start h-auto p-4">
+                      <div className="text-left">
+                        <div className="flex items-center gap-2 mb-1">
+                          <BanknotesIcon className="h-4 w-4" />
+                          <span className="font-medium">Gestion tarifaire</span>
+                        </div>
+                        <p className="text-xs text-gray-500">Configurer les tarifs par niveau</p>
+                      </div>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Notifications */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Notifications</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-sm font-medium">Notifications de nouveaux sponsors</Label>
+                        <p className="text-xs text-gray-500">Recevoir une notification lors de l&apos;ajout d&apos;un nouveau sponsor</p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-sm font-medium">Rappels de renouvellement</Label>
+                        <p className="text-xs text-gray-500">Envoyer des rappels avant expiration des contrats</p>
+                      </div>
+                      <Switch />
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </ScrollArea>
+          </div>
+
+          <DialogFooter className="flex-shrink-0 pt-4 border-t">
+            <Button variant="outline" onClick={() => setShowSettingsModal(false)}>
+              Annuler
+            </Button>
+            <Button onClick={() => setShowSettingsModal(false)} className="bg-[#81B441] hover:bg-[#72a139]">
+              Enregistrer les réglages
             </Button>
           </DialogFooter>
         </DialogContent>
