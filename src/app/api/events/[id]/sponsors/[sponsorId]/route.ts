@@ -193,11 +193,12 @@ export async function PUT(
         linkedinUrl: formData.get("linkedinUrl")?.toString(),
         twitterUrl: formData.get("twitterUrl")?.toString(),
         facebookUrl: formData.get("facebookUrl")?.toString(),
+        documents: formData.get("documents") ? JSON.parse(formData.get("documents") as string) : undefined,
       };
       data.logoFile = formData.get("logo") as File | null;
     }
     
-    const { name, description, website, level, visible, location, address, phone, mobile, email, linkedinUrl, twitterUrl, facebookUrl, logoFile } = data;
+    const { name, description, website, level, visible, location, address, phone, mobile, email, linkedinUrl, twitterUrl, facebookUrl, documents, logoFile } = data;
     
     console.log("Données de mise à jour du sponsor:", { name, level, visible });
 
@@ -244,9 +245,10 @@ export async function PUT(
         phone: phone || undefined,
         mobile: mobile || undefined,
         email: email || undefined,
-        linkedinUrl: linkedinUrl || undefined,
-        twitterUrl: twitterUrl || undefined,
+                linkedinUrl: linkedinUrl || undefined, 
+        twitterUrl: twitterUrl || undefined,   
         facebookUrl: facebookUrl || undefined,
+        documents: documents !== undefined ? documents : undefined,
       }
     });
     

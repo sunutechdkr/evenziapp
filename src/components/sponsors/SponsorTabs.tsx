@@ -1,6 +1,6 @@
 "use client";
 
-
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,15 @@ import { Badge } from "@/components/ui/badge";
 import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, DocumentIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+
+// Helper function to ensure URL has proper protocol
+const ensureProtocol = (url: string): string => {
+  if (!url) return url;
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `https://${url}`;
+};
 
 // Types
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -118,7 +127,7 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
           {isEditing ? (
             <Select 
               value={editedSponsor?.level || sponsor.level}
-              onValueChange={(value) => setEditedSponsor?.({ ...editedSponsor, level: value })}
+              onValueChange={(value) => setEditedSponsor?.({ ...editedSponsor, level: value as SponsorLevel })}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -171,7 +180,7 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
           />
         ) : sponsor.website ? (
           <a 
-            href={sponsor.website} 
+            href={ensureProtocol(sponsor.website)} 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center text-blue-600 hover:text-blue-800"
@@ -373,11 +382,86 @@ export function SponsorSocialTab({ sponsor, isEditing, editedSponsor, setEditedS
 }
 
 // Composant Onglet Documents
-export function SponsorDocumentsTab({ sponsor, isEditing }: TabProps) {
-  const documents = sponsor.documents || [];
+export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
+  const [uploading, setUploading] = React.useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const documents = (editedSponsor?.documents as any[]) || (sponsor.documents as any[]) || [];
+
+  const handleFileUpload = async (files: FileList) => {
+    if (files.length === 0) return;
+    
+    // Vérifier le nombre maximum de documents
+    if (documents.length + files.length > 2) {
+      alert('Vous ne pouvez charger que 2 documents maximum par sponsor.');
+      return;
+    }
+
+    // Vérifier la taille des fichiers (5Mo max)
+    const maxSize = 5 * 1024 * 1024; // 5Mo en bytes
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size > maxSize) {
+        alert(`Le fichier "${files[i].name}" est trop volumineux. Taille maximum : 5Mo`);
+        return;
+      }
+    }
+
+    setUploading(true);
+    const newDocuments = [...documents];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch('/api/blob/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          newDocuments.push({
+            name: file.name,
+            url: data.url,
+            size: formatFileSize(file.size),
+            type: file.type,
+            uploadedAt: new Date().toISOString()
+          });
+        } else {
+          throw new Error(`Erreur lors du téléchargement de ${file.name}`);
+        }
+      }
+
+      if (setEditedSponsor) {
+        setEditedSponsor({ ...editedSponsor, documents: newDocuments });
+      }
+    } catch (error) {
+      console.error('Erreur lors du téléchargement:', error);
+      alert('Erreur lors du téléchargement des documents');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const removeDocument = (index: number) => {
+    const newDocuments = documents.filter((_, i) => i !== index);
+    if (setEditedSponsor) {
+      setEditedSponsor({ ...editedSponsor, documents: newDocuments });
+    }
+  };
 
   return (
     <div className="space-y-6">
+      {/* Documents existants */}
       {documents.length === 0 ? (
         <div className="text-center py-8">
           <DocumentIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -386,7 +470,7 @@ export function SponsorDocumentsTab({ sponsor, isEditing }: TabProps) {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
-          {documents.map((doc: { name: string; size: string; type: string }, index: number) => (
+          {documents.map((doc: any, index: number) => (
             <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
               <div className="flex items-center gap-3">
                 <DocumentIcon className="h-5 w-5 text-gray-400" />
@@ -395,21 +479,60 @@ export function SponsorDocumentsTab({ sponsor, isEditing }: TabProps) {
                   <p className="text-sm text-gray-500">{doc.size} • {doc.type}</p>
                 </div>
               </div>
-              <Button variant="outline" size="sm">
-                Télécharger
-              </Button>
+              <div className="flex gap-2">
+                {doc.url && (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => window.open(doc.url, '_blank')}
+                  >
+                    Ouvrir
+                  </Button>
+                )}
+                {isEditing && (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => removeDocument(index)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    Supprimer
+                  </Button>
+                )}
+              </div>
             </div>
           ))}
         </div>
       )}
       
-      {isEditing && (
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-          <DocumentIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600 mb-2">Glissez-déposez des documents ici</p>
-          <Button variant="outline" size="sm">
-            Choisir des fichiers
-          </Button>
+      {/* Zone d'upload en mode édition */}
+      {isEditing && documents.length < 2 && (
+        <div className="space-y-4">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <DocumentIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+            <p className="text-sm text-gray-600 mb-2">
+              Téléchargez vos documents (max 2 fichiers, 5Mo chacun)
+            </p>
+            <p className="text-xs text-gray-500 mb-4">
+              Formats acceptés : PDF, DOC, DOCX, JPG, PNG
+            </p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
+              className="hidden"
+            />
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? 'Téléchargement...' : 'Choisir des fichiers'}
+            </Button>
+          </div>
         </div>
       )}
     </div>
