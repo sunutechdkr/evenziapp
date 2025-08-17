@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { 
   ChevronLeftIcon,
   BuildingOfficeIcon,
-  PhotoIcon,
-  LinkIcon,
   GlobeAltIcon,
   UserIcon,
   CalendarIcon,
@@ -20,13 +18,22 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 // Importer les composants Shadcn UI
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { SponsorLogo } from "@/components/ui/sponsor-logo";
+
+// Helper function to ensure URL has proper protocol
+const ensureProtocol = (url: string): string => {
+  if (!url) return url;
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `https://${url}`;
+};
 
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -305,16 +312,13 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                     <CardContent className="p-4">
                       <div className="flex flex-col items-center text-center space-y-3">
                         {/* Logo */}
-                        <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
-                          {sponsor.logo ? (
-                            <img 
-                              src={sponsor.logo} 
-                              alt={sponsor.name}
-                              className="w-12 h-12 object-contain rounded"
-                            />
-                          ) : (
-                            <PhotoIcon className="h-8 w-8 text-gray-400" />
-                          )}
+                        <div className="w-16 h-16">
+                          <SponsorLogo 
+                            src={sponsor.logo} 
+                            alt={sponsor.name}
+                            size="md"
+                            className="w-full h-full"
+                          />
                         </div>
                         
                         {/* Nom du sponsor */}
@@ -358,17 +362,11 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
               {/* En-tête fixe */}
               <div className="flex-shrink-0 pb-4 border-b">
                 <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
-                    {selectedSponsor.logo ? (
-                      <img 
-                        src={selectedSponsor.logo} 
-                        alt={selectedSponsor.name}
-                        className="w-14 h-14 object-contain rounded"
-                      />
-                    ) : (
-                      <PhotoIcon className="h-8 w-8 text-gray-400" />
-                    )}
-                  </div>
+                  <SponsorLogo 
+                    src={selectedSponsor.logo} 
+                    alt={selectedSponsor.name}
+                    size="lg"
+                  />
                   <div className="flex-1">
                     <h2 className="text-xl font-bold text-gray-900">{selectedSponsor.name}</h2>
                     <div className="flex gap-2 mt-2">
@@ -417,7 +415,7 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                           <div>
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">Site web</h3>
                             <a 
-                              href={selectedSponsor.website}
+                              href={ensureProtocol(selectedSponsor.website)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center text-[#81B441] hover:text-[#72a139] underline"

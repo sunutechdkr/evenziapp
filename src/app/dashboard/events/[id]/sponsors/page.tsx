@@ -22,7 +22,8 @@ import {
   DocumentDuplicateIcon,
   ArchiveBoxIcon,
   BanknotesIcon,
-  UsersIcon
+  UsersIcon,
+  TrashIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
@@ -340,6 +341,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
           linkedinUrl: editedSponsor.linkedinUrl,
           twitterUrl: editedSponsor.twitterUrl,
           facebookUrl: editedSponsor.facebookUrl,
+          documents: editedSponsor.documents,
         }),
       });
       
@@ -390,6 +392,8 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
       toast.success('Sponsor supprimé avec succès');
       setDeleteConfirmOpen(false);
       setSponsorToDelete(null);
+      setShowSponsorModal(false); // Fermer le modal des détails
+      setSelectedSponsor(null);
       fetchSponsors();
     } catch (error) {
       console.error('Erreur:', error);
@@ -732,19 +736,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                           {/* Actions */}
                           <TableCell className="py-4 text-right">
                             <div className="flex items-center justify-end gap-1">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${sponsor.id}`);
-                                }}
-                                className="h-8 w-8 p-0"
-                                title="Modifier le sponsor"
-                              >
-                                <PencilIcon className="h-4 w-4" />
-                              </Button>
-                              
+
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -870,18 +862,32 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     </div>
                   </div>
                   
-                  {/* Bouton Modifier */}
-                  <Button
-                    onClick={() => {
-                      setIsEditing(!isEditing);
-                      setEditedSponsor(selectedSponsor);
-                    }}
-                    variant={isEditing ? "outline" : "default"}
-                    className={!isEditing ? "bg-[#81B441] hover:bg-[#72a139]" : ""}
-                  >
-                    <PencilIcon className="h-4 w-4 mr-2" />
-                    {isEditing ? 'Annuler' : 'Modifier'}
-                  </Button>
+                  {/* Boutons d'actions */}
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => {
+                        setIsEditing(!isEditing);
+                        setEditedSponsor(selectedSponsor);
+                      }}
+                      variant={isEditing ? "outline" : "default"}
+                      className={!isEditing ? "bg-[#81B441] hover:bg-[#72a139]" : ""}
+                    >
+                      <PencilIcon className="h-4 w-4 mr-2" />
+                      {isEditing ? 'Annuler' : 'Modifier'}
+                    </Button>
+                    
+                    <Button
+                      onClick={() => {
+                        setSponsorToDelete(selectedSponsor);
+                        setDeleteConfirmOpen(true);
+                      }}
+                      variant="outline"
+                      className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                    >
+                      <TrashIcon className="h-4 w-4 mr-2" />
+                      Supprimer
+                    </Button>
+                  </div>
                 </div>
               </div>
 
@@ -1247,6 +1253,37 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
             </Button>
             <Button onClick={() => setShowSettingsModal(false)} className="bg-[#81B441] hover:bg-[#72a139]">
               Enregistrer les réglages
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de confirmation de suppression */}
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Supprimer le sponsor</DialogTitle>
+            <DialogDescription>
+              Êtes-vous sûr de vouloir supprimer le sponsor &quot;{sponsorToDelete?.name}&quot; ? 
+              Cette action est irréversible.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2 sm:gap-0">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteConfirmOpen(false);
+                setSponsorToDelete(null);
+              }}
+            >
+              Annuler
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteSponsor}
+              disabled={processing}
+            >
+              {processing ? 'Suppression...' : 'Supprimer'}
             </Button>
           </DialogFooter>
         </DialogContent>

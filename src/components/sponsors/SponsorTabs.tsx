@@ -413,6 +413,7 @@ export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEdit
         const file = files[i];
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('type', 'document');
 
         const response = await fetch('/api/blob/upload', {
           method: 'POST',
