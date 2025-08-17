@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { 
+import {
   UserPlusIcon, 
   ChevronLeftIcon,
   MagnifyingGlassIcon,
-  PhotoIcon,
   PlusIcon,
   ArrowDownTrayIcon,
   ArrowPathIcon,
@@ -42,6 +41,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { SponsorLogo } from "@/components/ui/sponsor-logo";
 
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -93,7 +93,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   const [processing, setProcessing] = useState(false);
   
   const router = useRouter();
-  const sponsorsPerPage = 10;
+
 
   // Extraction des paramètres
   useEffect(() => {
@@ -106,10 +106,13 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
   // Fetch data on load
   useEffect(() => {
-    if (eventId) {
-      fetchEventDetails();
-      fetchSponsors();
-    }
+    const handleFetch = async () => {
+      if (eventId) {
+        await fetchEventDetails();
+        await fetchSponsors();
+      }
+    };
+    handleFetch();
   }, [eventId]);
 
   /**
@@ -467,7 +470,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                         </TableHead>
                         <TableHead className="min-w-[200px]">Site web</TableHead>
                         <TableHead className="w-[100px]">Statut</TableHead>
-                        <TableHead className="w-[140px]">Date d'ajout</TableHead>
+                        <TableHead className="w-[140px]">Date d&apos;ajout</TableHead>
                         <TableHead className="w-[100px] text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -480,31 +483,11 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                         >
                           {/* Logo */}
                           <TableCell className="py-4 sticky left-0 bg-white z-10">
-                            <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
-                              {sponsor.logo ? (
-                                <img 
-                                  src={sponsor.logo} 
-                                  alt={sponsor.name}
-                                  className="w-10 h-10 object-contain rounded"
-                                  onError={(e) => {
-                                    console.log('Erreur chargement logo sponsor:', sponsor.name, sponsor.logo);
-                                    const target = e.target as HTMLImageElement;
-                                    target.style.display = 'none';
-                                    const parent = target.parentElement;
-                                    if (parent) {
-                                      parent.innerHTML = '<div class="flex flex-col items-center"><div class="h-5 w-5 text-gray-400">🏢</div></div>';
-                                    }
-                                  }}
-                                  onLoad={() => {
-                                    console.log('Logo chargé avec succès:', sponsor.name, sponsor.logo);
-                                  }}
-                                />
-                              ) : (
-                                <div className="flex flex-col items-center">
-                                  <PhotoIcon className="h-5 w-5 text-gray-400" />
-                                </div>
-                              )}
-                            </div>
+                            <SponsorLogo 
+                              src={sponsor.logo} 
+                              alt={sponsor.name}
+                              size="md"
+                            />
                           </TableCell>
                           
                           {/* Informations sponsor */}
@@ -513,11 +496,6 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                               <div className="font-medium text-gray-900">
                                 {sponsor.name}
                               </div>
-                              {sponsor.description && (
-                                <div className="text-sm text-gray-600 line-clamp-2 max-w-xs">
-                                  {sponsor.description}
-                                </div>
-                              )}
                               {!sponsor.logo && (
                                 <button
                                   onClick={(e) => {
@@ -697,29 +675,11 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
               {/* En-tête fixe */}
               <div className="flex-shrink-0 pb-4 border-b">
                 <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">
-                    {selectedSponsor.logo ? (
-                      <img 
-                        src={selectedSponsor.logo} 
-                        alt={selectedSponsor.name}
-                        className="w-14 h-14 object-contain rounded"
-                        onError={(e) => {
-                          console.log('Erreur chargement logo sponsor (modal):', selectedSponsor.name, selectedSponsor.logo);
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const parent = target.parentElement;
-                          if (parent) {
-                            parent.innerHTML = '<div class="h-8 w-8 text-gray-400">🏢</div>';
-                          }
-                        }}
-                        onLoad={() => {
-                          console.log('Logo chargé avec succès (modal):', selectedSponsor.name);
-                        }}
-                      />
-                    ) : (
-                      <PhotoIcon className="h-8 w-8 text-gray-400" />
-                    )}
-                  </div>
+                  <SponsorLogo 
+                    src={selectedSponsor.logo} 
+                    alt={selectedSponsor.name}
+                    size="lg"
+                  />
                   <div className="flex-1">
                     <h2 className="text-xl font-bold text-gray-900">{selectedSponsor.name}</h2>
                     <div className="flex gap-2 mt-2">

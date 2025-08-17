@@ -15,7 +15,18 @@ type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MED
 function shouldUseBlob(): boolean {
   const useBlobStorage = process.env.NEXT_PUBLIC_USE_BLOB_STORAGE === 'true';
   const migrationTypes = process.env.BLOB_MIGRATION_TYPES?.split(',') || [];
-  return useBlobStorage && migrationTypes.includes('sponsors');
+  
+  // Force l'utilisation de Blob si le token est disponible (par défaut pour les sponsors)
+  const hasBlobToken = !!process.env.BLOB_READ_WRITE_TOKEN;
+  
+  console.log('📊 Configuration Blob (update):', {
+    useBlobStorage,
+    migrationTypes,
+    hasBlobToken,
+    includesSponsors: migrationTypes.includes('sponsors')
+  });
+  
+  return hasBlobToken && (useBlobStorage || migrationTypes.includes('sponsors'));
 }
 
 // Fonction utilitaire pour uploader via Blob ou local
