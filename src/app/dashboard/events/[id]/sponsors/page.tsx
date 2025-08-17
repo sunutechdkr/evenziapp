@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
@@ -19,11 +19,15 @@ import {
   GlobeAltIcon,
   UserIcon,
   CalendarIcon,
-  ClockIcon
+  ClockIcon,
+  Cog6ToothIcon,
+  DocumentDuplicateIcon,
+  ArchiveBoxIcon,
+  BanknotesIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { 
   Table, 
@@ -95,6 +99,8 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(20); // 20 sponsors par page
   const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
   const [showSponsorModal, setShowSponsorModal] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
@@ -216,6 +222,30 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
     (levelFilter ? sponsor.level === levelFilter : true)
   );
 
+  // Pagination des résultats filtrés
+  const totalItems = filteredSponsors.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedSponsors = filteredSponsors.slice(startIndex, endIndex);
+
+  // Reset page when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, levelFilter]);
+
+  // Helper function to convert sponsor data for tabs
+  const getSponsorTabData = (sponsor: Sponsor) => ({
+    ...sponsor,
+    createdAt: sponsor.createdAt.toISOString(),
+    updatedAt: sponsor.updatedAt.toISOString()
+  });
+
+  // Helper function to handle edited sponsor updates
+  const handleEditedSponsorUpdate = (updatedData: Partial<Sponsor>) => {
+    setEditedSponsor(updatedData);
+  };
+
   /**
    * Rafraîchit la liste des sponsors
    */
@@ -294,10 +324,14 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
       // Mettre à jour la liste locale
       setSponsors(prev => prev.map(s => s.id === selectedSponsor.id ? updatedSponsor : s));
       setSelectedSponsor(updatedSponsor);
-      setIsEditing(false);
-      setEditedSponsor(null);
       
       toast.success('Sponsor mis à jour avec succès');
+      
+      // Délai pour permettre à l'utilisateur de voir le message
+      setTimeout(() => {
+        setIsEditing(false);
+        setEditedSponsor(null);
+      }, 1500);
     } catch (error: unknown) {
       console.error('Erreur lors de la sauvegarde:', error);
       toast.error(error instanceof Error ? error.message : 'Erreur lors de la sauvegarde');
@@ -397,6 +431,34 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
               <PlusIcon className="h-4 w-4 mr-2" />
               Ajouter un sponsor
             </Link>
+            
+            {/* Bouton Options */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-2">
+                  <Cog6ToothIcon className="h-4 w-4 mr-2" />
+                  Options
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem disabled>
+                  <DocumentDuplicateIcon className="h-4 w-4 mr-2" />
+                  Dupliquer sponsors
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <ArchiveBoxIcon className="h-4 w-4 mr-2" />
+                  Archiver sélection
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <BanknotesIcon className="h-4 w-4 mr-2" />
+                  Gérer les tarifs
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                  Import en masse
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
         
@@ -487,7 +549,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BuildingOfficeIcon className="h-5 w-5" />
-                Sponsors et Partenaires ({filteredSponsors.length})
+                Sponsors et Partenaires ({totalItems})
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -540,7 +602,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredSponsors.map((sponsor) => (
+                      {paginatedSponsors.map((sponsor) => (
                         <TableRow 
                           key={sponsor.id} 
                           className="hover:bg-gray-50 cursor-pointer"
@@ -709,6 +771,53 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                   </Table>
                 </div>
               </div>
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-6 py-4 border-t">
+                  <div className="text-sm text-gray-700">
+                    Affichage de {startIndex + 1} à {Math.min(endIndex, totalItems)} sur {totalItems} sponsors
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                    >
+                      Précédent
+                    </Button>
+                    
+                    <div className="flex items-center space-x-1">
+                      {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                        const pageNum = currentPage <= 3 ? i + 1 : currentPage - 2 + i;
+                        if (pageNum > totalPages) return null;
+                        
+                        return (
+                          <Button
+                            key={pageNum}
+                            variant={currentPage === pageNum ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setCurrentPage(pageNum)}
+                            className={currentPage === pageNum ? "bg-[#81B441] hover:bg-[#72a139]" : ""}
+                          >
+                            {pageNum}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                    >
+                      Suivant
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         ) : (
@@ -798,53 +907,37 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     {/* Onglet Détails */}
                     <TabsContent value="details" className="mt-6 space-y-6">
                       <SponsorDetailsTab 
-                        sponsor={{
-                          ...selectedSponsor,
-                          createdAt: selectedSponsor.createdAt.toISOString(),
-                          updatedAt: selectedSponsor.updatedAt.toISOString()
-                        }} 
+                        sponsor={getSponsorTabData(selectedSponsor)} 
                         isEditing={isEditing}
                         editedSponsor={editedSponsor}
-                        setEditedSponsor={setEditedSponsor}
+                        setEditedSponsor={handleEditedSponsorUpdate}
                       />
                     </TabsContent>
 
                     {/* Onglet Contact */}
                     <TabsContent value="contact" className="mt-6 space-y-6">
                       <SponsorContactTab 
-                        sponsor={{
-                          ...selectedSponsor,
-                          createdAt: selectedSponsor.createdAt.toISOString(),
-                          updatedAt: selectedSponsor.updatedAt.toISOString()
-                        }}
+                        sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
                         editedSponsor={editedSponsor}
-                        setEditedSponsor={setEditedSponsor}
+                        setEditedSponsor={handleEditedSponsorUpdate}
                       />
                     </TabsContent>
 
                     {/* Onglet Réseaux Sociaux */}
                     <TabsContent value="social" className="mt-6 space-y-6">
                       <SponsorSocialTab 
-                        sponsor={{
-                          ...selectedSponsor,
-                          createdAt: selectedSponsor.createdAt.toISOString(),
-                          updatedAt: selectedSponsor.updatedAt.toISOString()
-                        }}
+                        sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
                         editedSponsor={editedSponsor}
-                        setEditedSponsor={setEditedSponsor}
+                        setEditedSponsor={handleEditedSponsorUpdate}
                       />
                     </TabsContent>
 
                     {/* Onglet Documents */}
                     <TabsContent value="documents" className="mt-6 space-y-6">
                       <SponsorDocumentsTab 
-                        sponsor={{
-                          ...selectedSponsor,
-                          createdAt: selectedSponsor.createdAt.toISOString(),
-                          updatedAt: selectedSponsor.updatedAt.toISOString()
-                        }}
+                        sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
                       />
                     </TabsContent>
