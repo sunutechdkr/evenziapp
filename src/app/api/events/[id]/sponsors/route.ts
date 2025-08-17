@@ -238,6 +238,14 @@ export async function POST(
     const website = formData.get("website")?.toString();
     const level = formData.get("level")?.toString() as SponsorLevel;
     const visible = formData.get("visible") === "true";
+    const location = formData.get("location")?.toString();
+    const address = formData.get("address")?.toString();
+    const phone = formData.get("phone")?.toString();
+    const mobile = formData.get("mobile")?.toString();
+    const email = formData.get("email")?.toString();
+    const linkedinUrl = formData.get("linkedinUrl")?.toString();
+    const twitterUrl = formData.get("twitterUrl")?.toString();
+    const facebookUrl = formData.get("facebookUrl")?.toString();
     const logoFile = formData.get("logo") as File | null;
     
     console.log("Données du sponsor:", { name, level, visible });
@@ -270,6 +278,14 @@ export async function POST(
         website: website || undefined,
         level: level || "GOLD",
         visible,
+        location: location || undefined,
+        address: address || undefined,
+        phone: phone || undefined,
+        mobile: mobile || undefined,
+        email: email || undefined,
+        linkedinUrl: linkedinUrl || undefined,
+        twitterUrl: twitterUrl || undefined,
+        facebookUrl: facebookUrl || undefined,
         eventId: id,
       }
     });

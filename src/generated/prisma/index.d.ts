@@ -13529,6 +13529,14 @@ export namespace Prisma {
     level: $Enums.SponsorLevel | null
     visible: boolean | null
     eventId: string | null
+    location: string | null
+    address: string | null
+    phone: string | null
+    mobile: string | null
+    email: string | null
+    linkedinUrl: string | null
+    twitterUrl: string | null
+    facebookUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13542,6 +13550,14 @@ export namespace Prisma {
     level: $Enums.SponsorLevel | null
     visible: boolean | null
     eventId: string | null
+    location: string | null
+    address: string | null
+    phone: string | null
+    mobile: string | null
+    email: string | null
+    linkedinUrl: string | null
+    twitterUrl: string | null
+    facebookUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13555,6 +13571,15 @@ export namespace Prisma {
     level: number
     visible: number
     eventId: number
+    location: number
+    address: number
+    phone: number
+    mobile: number
+    email: number
+    linkedinUrl: number
+    twitterUrl: number
+    facebookUrl: number
+    documents: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -13570,6 +13595,14 @@ export namespace Prisma {
     level?: true
     visible?: true
     eventId?: true
+    location?: true
+    address?: true
+    phone?: true
+    mobile?: true
+    email?: true
+    linkedinUrl?: true
+    twitterUrl?: true
+    facebookUrl?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13583,6 +13616,14 @@ export namespace Prisma {
     level?: true
     visible?: true
     eventId?: true
+    location?: true
+    address?: true
+    phone?: true
+    mobile?: true
+    email?: true
+    linkedinUrl?: true
+    twitterUrl?: true
+    facebookUrl?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13596,6 +13637,15 @@ export namespace Prisma {
     level?: true
     visible?: true
     eventId?: true
+    location?: true
+    address?: true
+    phone?: true
+    mobile?: true
+    email?: true
+    linkedinUrl?: true
+    twitterUrl?: true
+    facebookUrl?: true
+    documents?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -13682,6 +13732,15 @@ export namespace Prisma {
     level: $Enums.SponsorLevel
     visible: boolean
     eventId: string
+    location: string | null
+    address: string | null
+    phone: string | null
+    mobile: string | null
+    email: string | null
+    linkedinUrl: string | null
+    twitterUrl: string | null
+    facebookUrl: string | null
+    documents: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: SponsorCountAggregateOutputType | null
@@ -13712,6 +13771,15 @@ export namespace Prisma {
     level?: boolean
     visible?: boolean
     eventId?: boolean
+    location?: boolean
+    address?: boolean
+    phone?: boolean
+    mobile?: boolean
+    email?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    facebookUrl?: boolean
+    documents?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -13726,6 +13794,15 @@ export namespace Prisma {
     level?: boolean
     visible?: boolean
     eventId?: boolean
+    location?: boolean
+    address?: boolean
+    phone?: boolean
+    mobile?: boolean
+    email?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    facebookUrl?: boolean
+    documents?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -13740,6 +13817,15 @@ export namespace Prisma {
     level?: boolean
     visible?: boolean
     eventId?: boolean
+    location?: boolean
+    address?: boolean
+    phone?: boolean
+    mobile?: boolean
+    email?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    facebookUrl?: boolean
+    documents?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -13754,11 +13840,20 @@ export namespace Prisma {
     level?: boolean
     visible?: boolean
     eventId?: boolean
+    location?: boolean
+    address?: boolean
+    phone?: boolean
+    mobile?: boolean
+    email?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    facebookUrl?: boolean
+    documents?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SponsorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "logo" | "website" | "level" | "visible" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["sponsor"]>
+  export type SponsorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "logo" | "website" | "level" | "visible" | "eventId" | "location" | "address" | "phone" | "mobile" | "email" | "linkedinUrl" | "twitterUrl" | "facebookUrl" | "documents" | "createdAt" | "updatedAt", ExtArgs["result"]["sponsor"]>
   export type SponsorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
   }
@@ -13783,6 +13878,15 @@ export namespace Prisma {
       level: $Enums.SponsorLevel
       visible: boolean
       eventId: string
+      location: string | null
+      address: string | null
+      phone: string | null
+      mobile: string | null
+      email: string | null
+      linkedinUrl: string | null
+      twitterUrl: string | null
+      facebookUrl: string | null
+      documents: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["sponsor"]>
@@ -14217,6 +14321,15 @@ export namespace Prisma {
     readonly level: FieldRef<"Sponsor", 'SponsorLevel'>
     readonly visible: FieldRef<"Sponsor", 'Boolean'>
     readonly eventId: FieldRef<"Sponsor", 'String'>
+    readonly location: FieldRef<"Sponsor", 'String'>
+    readonly address: FieldRef<"Sponsor", 'String'>
+    readonly phone: FieldRef<"Sponsor", 'String'>
+    readonly mobile: FieldRef<"Sponsor", 'String'>
+    readonly email: FieldRef<"Sponsor", 'String'>
+    readonly linkedinUrl: FieldRef<"Sponsor", 'String'>
+    readonly twitterUrl: FieldRef<"Sponsor", 'String'>
+    readonly facebookUrl: FieldRef<"Sponsor", 'String'>
+    readonly documents: FieldRef<"Sponsor", 'Json'>
     readonly createdAt: FieldRef<"Sponsor", 'DateTime'>
     readonly updatedAt: FieldRef<"Sponsor", 'DateTime'>
   }
@@ -29638,6 +29751,15 @@ export namespace Prisma {
     level: 'level',
     visible: 'visible',
     eventId: 'eventId',
+    location: 'location',
+    address: 'address',
+    phone: 'phone',
+    mobile: 'mobile',
+    email: 'email',
+    linkedinUrl: 'linkedinUrl',
+    twitterUrl: 'twitterUrl',
+    facebookUrl: 'facebookUrl',
+    documents: 'documents',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -29860,6 +29982,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -29874,6 +30004,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -30011,6 +30150,20 @@ export namespace Prisma {
    * Reference to a field of type 'SponsorLevel[]'
    */
   export type ListEnumSponsorLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SponsorLevel[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -30989,6 +31142,15 @@ export namespace Prisma {
     level?: EnumSponsorLevelFilter<"Sponsor"> | $Enums.SponsorLevel
     visible?: BoolFilter<"Sponsor"> | boolean
     eventId?: StringFilter<"Sponsor"> | string
+    location?: StringNullableFilter<"Sponsor"> | string | null
+    address?: StringNullableFilter<"Sponsor"> | string | null
+    phone?: StringNullableFilter<"Sponsor"> | string | null
+    mobile?: StringNullableFilter<"Sponsor"> | string | null
+    email?: StringNullableFilter<"Sponsor"> | string | null
+    linkedinUrl?: StringNullableFilter<"Sponsor"> | string | null
+    twitterUrl?: StringNullableFilter<"Sponsor"> | string | null
+    facebookUrl?: StringNullableFilter<"Sponsor"> | string | null
+    documents?: JsonNullableFilter<"Sponsor">
     createdAt?: DateTimeFilter<"Sponsor"> | Date | string
     updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
@@ -31003,6 +31165,15 @@ export namespace Prisma {
     level?: SortOrder
     visible?: SortOrder
     eventId?: SortOrder
+    location?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    mobile?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    linkedinUrl?: SortOrderInput | SortOrder
+    twitterUrl?: SortOrderInput | SortOrder
+    facebookUrl?: SortOrderInput | SortOrder
+    documents?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
@@ -31020,6 +31191,15 @@ export namespace Prisma {
     level?: EnumSponsorLevelFilter<"Sponsor"> | $Enums.SponsorLevel
     visible?: BoolFilter<"Sponsor"> | boolean
     eventId?: StringFilter<"Sponsor"> | string
+    location?: StringNullableFilter<"Sponsor"> | string | null
+    address?: StringNullableFilter<"Sponsor"> | string | null
+    phone?: StringNullableFilter<"Sponsor"> | string | null
+    mobile?: StringNullableFilter<"Sponsor"> | string | null
+    email?: StringNullableFilter<"Sponsor"> | string | null
+    linkedinUrl?: StringNullableFilter<"Sponsor"> | string | null
+    twitterUrl?: StringNullableFilter<"Sponsor"> | string | null
+    facebookUrl?: StringNullableFilter<"Sponsor"> | string | null
+    documents?: JsonNullableFilter<"Sponsor">
     createdAt?: DateTimeFilter<"Sponsor"> | Date | string
     updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
@@ -31034,6 +31214,15 @@ export namespace Prisma {
     level?: SortOrder
     visible?: SortOrder
     eventId?: SortOrder
+    location?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    mobile?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    linkedinUrl?: SortOrderInput | SortOrder
+    twitterUrl?: SortOrderInput | SortOrder
+    facebookUrl?: SortOrderInput | SortOrder
+    documents?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SponsorCountOrderByAggregateInput
@@ -31053,6 +31242,15 @@ export namespace Prisma {
     level?: EnumSponsorLevelWithAggregatesFilter<"Sponsor"> | $Enums.SponsorLevel
     visible?: BoolWithAggregatesFilter<"Sponsor"> | boolean
     eventId?: StringWithAggregatesFilter<"Sponsor"> | string
+    location?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    address?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    mobile?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    email?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    linkedinUrl?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    twitterUrl?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    facebookUrl?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    documents?: JsonNullableWithAggregatesFilter<"Sponsor">
     createdAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
   }
@@ -33126,6 +33324,15 @@ export namespace Prisma {
     website?: string | null
     level?: $Enums.SponsorLevel
     visible?: boolean
+    location?: string | null
+    address?: string | null
+    phone?: string | null
+    mobile?: string | null
+    email?: string | null
+    linkedinUrl?: string | null
+    twitterUrl?: string | null
+    facebookUrl?: string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutSponsorsInput
@@ -33140,6 +33347,15 @@ export namespace Prisma {
     level?: $Enums.SponsorLevel
     visible?: boolean
     eventId: string
+    location?: string | null
+    address?: string | null
+    phone?: string | null
+    mobile?: string | null
+    email?: string | null
+    linkedinUrl?: string | null
+    twitterUrl?: string | null
+    facebookUrl?: string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33152,6 +33368,15 @@ export namespace Prisma {
     website?: NullableStringFieldUpdateOperationsInput | string | null
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutSponsorsNestedInput
@@ -33166,6 +33391,15 @@ export namespace Prisma {
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
     eventId?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33179,6 +33413,15 @@ export namespace Prisma {
     level?: $Enums.SponsorLevel
     visible?: boolean
     eventId: string
+    location?: string | null
+    address?: string | null
+    phone?: string | null
+    mobile?: string | null
+    email?: string | null
+    linkedinUrl?: string | null
+    twitterUrl?: string | null
+    facebookUrl?: string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33191,6 +33434,15 @@ export namespace Prisma {
     website?: NullableStringFieldUpdateOperationsInput | string | null
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33204,6 +33456,15 @@ export namespace Prisma {
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
     eventId?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35273,6 +35534,29 @@ export namespace Prisma {
     notIn?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
     not?: NestedEnumSponsorLevelFilter<$PrismaModel> | $Enums.SponsorLevel
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type SponsorCountOrderByAggregateInput = {
     id?: SortOrder
@@ -35283,6 +35567,15 @@ export namespace Prisma {
     level?: SortOrder
     visible?: SortOrder
     eventId?: SortOrder
+    location?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    mobile?: SortOrder
+    email?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    facebookUrl?: SortOrder
+    documents?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35296,6 +35589,14 @@ export namespace Prisma {
     level?: SortOrder
     visible?: SortOrder
     eventId?: SortOrder
+    location?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    mobile?: SortOrder
+    email?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    facebookUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35309,6 +35610,14 @@ export namespace Prisma {
     level?: SortOrder
     visible?: SortOrder
     eventId?: SortOrder
+    location?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    mobile?: SortOrder
+    email?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    facebookUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35321,6 +35630,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSponsorLevelFilter<$PrismaModel>
     _max?: NestedEnumSponsorLevelFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type RegistrationScalarRelationFilter = {
@@ -38219,6 +38554,29 @@ export namespace Prisma {
     _min?: NestedEnumSponsorLevelFilter<$PrismaModel>
     _max?: NestedEnumSponsorLevelFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumAppointmentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
@@ -39386,6 +39744,15 @@ export namespace Prisma {
     website?: string | null
     level?: $Enums.SponsorLevel
     visible?: boolean
+    location?: string | null
+    address?: string | null
+    phone?: string | null
+    mobile?: string | null
+    email?: string | null
+    linkedinUrl?: string | null
+    twitterUrl?: string | null
+    facebookUrl?: string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39398,6 +39765,15 @@ export namespace Prisma {
     website?: string | null
     level?: $Enums.SponsorLevel
     visible?: boolean
+    location?: string | null
+    address?: string | null
+    phone?: string | null
+    mobile?: string | null
+    email?: string | null
+    linkedinUrl?: string | null
+    twitterUrl?: string | null
+    facebookUrl?: string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39940,6 +40316,15 @@ export namespace Prisma {
     level?: EnumSponsorLevelFilter<"Sponsor"> | $Enums.SponsorLevel
     visible?: BoolFilter<"Sponsor"> | boolean
     eventId?: StringFilter<"Sponsor"> | string
+    location?: StringNullableFilter<"Sponsor"> | string | null
+    address?: StringNullableFilter<"Sponsor"> | string | null
+    phone?: StringNullableFilter<"Sponsor"> | string | null
+    mobile?: StringNullableFilter<"Sponsor"> | string | null
+    email?: StringNullableFilter<"Sponsor"> | string | null
+    linkedinUrl?: StringNullableFilter<"Sponsor"> | string | null
+    twitterUrl?: StringNullableFilter<"Sponsor"> | string | null
+    facebookUrl?: StringNullableFilter<"Sponsor"> | string | null
+    documents?: JsonNullableFilter<"Sponsor">
     createdAt?: DateTimeFilter<"Sponsor"> | Date | string
     updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
   }
@@ -44740,6 +45125,15 @@ export namespace Prisma {
     website?: string | null
     level?: $Enums.SponsorLevel
     visible?: boolean
+    location?: string | null
+    address?: string | null
+    phone?: string | null
+    mobile?: string | null
+    email?: string | null
+    linkedinUrl?: string | null
+    twitterUrl?: string | null
+    facebookUrl?: string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -45185,6 +45579,15 @@ export namespace Prisma {
     website?: NullableStringFieldUpdateOperationsInput | string | null
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -45197,6 +45600,15 @@ export namespace Prisma {
     website?: NullableStringFieldUpdateOperationsInput | string | null
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -45209,6 +45621,15 @@ export namespace Prisma {
     website?: NullableStringFieldUpdateOperationsInput | string | null
     level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
     visible?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    documents?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

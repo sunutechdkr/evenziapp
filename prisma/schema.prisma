@@ -193,6 +193,22 @@ model Sponsor {
   level       SponsorLevel @default(GOLD)
   visible     Boolean      @default(true)
   eventId     String       @map("event_id")
+  
+  // Emplacement et coordonnées
+  location    String?      // Lieu dans l'événement ou numéro de stand
+  address     String?      // Adresse complète
+  phone       String?      // Téléphone fixe
+  mobile      String?      // Téléphone mobile
+  email       String?      // Email de contact
+  
+  // Réseaux sociaux
+  linkedinUrl String?      @map("linkedin_url")
+  twitterUrl  String?      @map("twitter_url") // X (ex-Twitter)
+  facebookUrl String?      @map("facebook_url") // Meta (Facebook)
+  
+  // Documents
+  documents   Json?        // Array de documents joints
+  
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
   event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)

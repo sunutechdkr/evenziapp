@@ -169,14 +169,35 @@ export async function PUT(
       );
     }
 
-    // Traiter le formulaire multipart
-    const formData = await request.formData();
-    const name = formData.get("name")?.toString();
-    const description = formData.get("description")?.toString();
-    const website = formData.get("website")?.toString();
-    const level = formData.get("level")?.toString() as SponsorLevel;
-    const visible = formData.get("visible") === "true";
-    const logoFile = formData.get("logo") as File | null;
+    // Traiter les données JSON ou multipart
+    let data: any = {};
+    const contentType = request.headers.get("content-type");
+    
+    if (contentType?.includes("application/json")) {
+      // Requête JSON (depuis le popup d'édition)
+      data = await request.json();
+    } else {
+      // Requête multipart (depuis le formulaire avec fichier)
+      const formData = await request.formData();
+      data = {
+        name: formData.get("name")?.toString(),
+        description: formData.get("description")?.toString(),
+        website: formData.get("website")?.toString(),
+        level: formData.get("level")?.toString(),
+        visible: formData.get("visible") === "true",
+        location: formData.get("location")?.toString(),
+        address: formData.get("address")?.toString(),
+        phone: formData.get("phone")?.toString(),
+        mobile: formData.get("mobile")?.toString(),
+        email: formData.get("email")?.toString(),
+        linkedinUrl: formData.get("linkedinUrl")?.toString(),
+        twitterUrl: formData.get("twitterUrl")?.toString(),
+        facebookUrl: formData.get("facebookUrl")?.toString(),
+      };
+      data.logoFile = formData.get("logo") as File | null;
+    }
+    
+    const { name, description, website, level, visible, location, address, phone, mobile, email, linkedinUrl, twitterUrl, facebookUrl, logoFile } = data;
     
     console.log("Données de mise à jour du sponsor:", { name, level, visible });
 
@@ -217,7 +238,15 @@ export async function PUT(
         logo: logoPath,
         website: website || undefined,
         level: level || "GOLD",
-        visible
+        visible,
+        location: location || undefined,
+        address: address || undefined,
+        phone: phone || undefined,
+        mobile: mobile || undefined,
+        email: email || undefined,
+        linkedinUrl: linkedinUrl || undefined,
+        twitterUrl: twitterUrl || undefined,
+        facebookUrl: facebookUrl || undefined,
       }
     });
     

@@ -42,6 +42,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
+import { SponsorDetailsTab, SponsorContactTab, SponsorSocialTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
 
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -62,6 +63,15 @@ type Sponsor = {
   website?: string;
   level: SponsorLevel;
   visible: boolean;
+  location?: string;
+  address?: string;
+  phone?: string;
+  mobile?: string;
+  email?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  facebookUrl?: string;
+  documents?: { name: string; size: string; type: string }[];
   eventId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -88,6 +98,8 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
   const [showSponsorModal, setShowSponsorModal] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedSponsor, setEditedSponsor] = useState<Partial<Sponsor> | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [sponsorToDelete, setSponsorToDelete] = useState<Sponsor | null>(null);
   const [processing, setProcessing] = useState(false);
@@ -239,6 +251,59 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
     setSelectedSponsor(sponsor);
     setActiveTab("details");
     setShowSponsorModal(true);
+  };
+
+  /**
+   * Sauvegarde les modifications du sponsor
+   */
+  const handleSaveSponsor = async () => {
+    if (!editedSponsor || !selectedSponsor) return;
+    
+    try {
+      setProcessing(true);
+      
+      const response = await fetch(`/api/events/${eventId}/sponsors/${selectedSponsor.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: editedSponsor.name,
+          description: editedSponsor.description,
+          website: editedSponsor.website,
+          level: editedSponsor.level,
+          visible: editedSponsor.visible,
+          location: editedSponsor.location,
+          address: editedSponsor.address,
+          phone: editedSponsor.phone,
+          mobile: editedSponsor.mobile,
+          email: editedSponsor.email,
+          linkedinUrl: editedSponsor.linkedinUrl,
+          twitterUrl: editedSponsor.twitterUrl,
+          facebookUrl: editedSponsor.facebookUrl,
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors de la sauvegarde');
+      }
+      
+      const updatedSponsor = await response.json();
+      
+      // Mettre à jour la liste locale
+      setSponsors(prev => prev.map(s => s.id === selectedSponsor.id ? updatedSponsor : s));
+      setSelectedSponsor(updatedSponsor);
+      setIsEditing(false);
+      setEditedSponsor(null);
+      
+      toast.success('Sponsor mis à jour avec succès');
+    } catch (error: unknown) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de la sauvegarde');
+    } finally {
+      setProcessing(false);
+    }
   };
 
   const handleDeleteSponsor = async () => {
@@ -669,175 +734,132 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
       {/* Modal des détails du sponsor */}
       <Dialog open={showSponsorModal} onOpenChange={setShowSponsorModal}>
-        <DialogContent className="max-w-4xl h-[600px] flex flex-col">
+        <DialogContent className="max-w-5xl h-[700px] flex flex-col">
           {selectedSponsor && (
             <div className="flex flex-col h-full">
               {/* En-tête fixe */}
               <div className="flex-shrink-0 pb-4 border-b">
-                <div className="flex items-start gap-4">
-                  <SponsorLogo 
-                    src={selectedSponsor.logo} 
-                    alt={selectedSponsor.name}
-                    size="lg"
-                  />
-                  <div className="flex-1">
-                    <h2 className="text-xl font-bold text-gray-900">{selectedSponsor.name}</h2>
-                    <div className="flex gap-2 mt-2">
-                      <Badge className={`text-xs ${getLevelBadgeClass(selectedSponsor.level)}`}>
-                        {getLevelText(selectedSponsor.level)}
-                      </Badge>
-                      {selectedSponsor.visible ? (
-                        <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
-                          <EyeIcon className="h-3 w-3 mr-1" />
-                          Visible
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <SponsorLogo 
+                      src={selectedSponsor.logo} 
+                      alt={selectedSponsor.name}
+                      size="lg"
+                    />
+                    <div className="flex-1">
+                      <h2 className="text-xl font-bold text-gray-900">{selectedSponsor.name}</h2>
+                      <div className="flex gap-2 mt-2">
+                        <Badge className={`text-xs ${getLevelBadgeClass(selectedSponsor.level)}`}>
+                          {getLevelText(selectedSponsor.level)}
                         </Badge>
-                      ) : (
-                        <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]" variant="outline">
-                          <EyeSlashIcon className="h-3 w-3 mr-1" />
-                          Masqué
-                        </Badge>
-                      )}
+                        {selectedSponsor.visible ? (
+                          <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]">
+                            <EyeIcon className="h-3 w-3 mr-1" />
+                            Visible
+                          </Badge>
+                        ) : (
+                          <Badge className="bg-[#EAF9D7] text-gray-800 hover:bg-[#EAF9D7] border-[#EAF9D7]" variant="outline">
+                            <EyeSlashIcon className="h-3 w-3 mr-1" />
+                            Masqué
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
+                  
+                  {/* Bouton Modifier */}
+                  <Button
+                    onClick={() => {
+                      setIsEditing(!isEditing);
+                      setEditedSponsor(selectedSponsor);
+                    }}
+                    variant={isEditing ? "outline" : "default"}
+                    className={!isEditing ? "bg-[#81B441] hover:bg-[#72a139]" : ""}
+                  >
+                    <PencilIcon className="h-4 w-4 mr-2" />
+                    {isEditing ? 'Annuler' : 'Modifier'}
+                  </Button>
                 </div>
               </div>
 
               {/* Onglets */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-                <TabsList className="grid w-full grid-cols-5 flex-shrink-0">
+                <TabsList className="grid w-full grid-cols-6 flex-shrink-0">
                   <TabsTrigger value="details">Détails</TabsTrigger>
-                  <TabsTrigger value="members">Membres</TabsTrigger>
-                  <TabsTrigger value="sessions">Sessions</TabsTrigger>
-                  <TabsTrigger value="appointments">RDV</TabsTrigger>
                   <TabsTrigger value="contact">Contact</TabsTrigger>
+                  <TabsTrigger value="social">Réseaux</TabsTrigger>
+                  <TabsTrigger value="documents">Documents</TabsTrigger>
+                  <TabsTrigger value="appointments">RDV</TabsTrigger>
                   <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
 
                 <div className="flex-1 overflow-hidden">
                   <ScrollArea className="h-full">
-                    <TabsContent value="details" className="mt-6 space-y-4">
-                      {selectedSponsor.description && (
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-500 mb-1">Description</h4>
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-gray-700 whitespace-pre-wrap">{selectedSponsor.description}</p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-500 mb-1">Niveau de sponsoring</h4>
-                          <Badge className={`${getLevelBadgeClass(selectedSponsor.level)}`}>
-                            {getLevelText(selectedSponsor.level)}
-                          </Badge>
-                        </div>
-                        
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-500 mb-1">Visibilité</h4>
-                          <p className="flex items-center gap-2">
-                            {selectedSponsor.visible ? (
-                              <span className="flex items-center text-green-600">
-                                <EyeIcon className="h-4 w-4 mr-2" />
-                                Visible publiquement
-                              </span>
-                            ) : (
-                              <span className="flex items-center text-gray-500">
-                                <EyeSlashIcon className="h-4 w-4 mr-2" />
-                                Non visible
-                              </span>
-                            )}
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-500 mb-1">Date d&apos;ajout</h4>
-                          <p className="flex items-center gap-2">
-                            <span className="text-gray-700">
-                              {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
+                    {/* Onglet Détails */}
+                    <TabsContent value="details" className="mt-6 space-y-6">
+                      <SponsorDetailsTab 
+                        sponsor={{
+                          ...selectedSponsor,
+                          createdAt: selectedSponsor.createdAt.toISOString(),
+                          updatedAt: selectedSponsor.updatedAt.toISOString()
+                        }} 
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor}
+                        setEditedSponsor={setEditedSponsor}
+                      />
+                    </TabsContent>
 
-                      {/* Actions */}
-                      <div className="flex gap-2 pt-4">
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            router.push(`/dashboard/events/${eventId}/sponsors/edit?id=${selectedSponsor.id}`);
-                            setShowSponsorModal(false);
-                          }}
-                        >
-                          <PencilIcon className="h-4 w-4 mr-2" />
-                          Modifier
-                        </Button>
-                        {selectedSponsor.website && (
-                          <Button
-                            variant="outline"
-                            onClick={() => window.open(selectedSponsor.website, '_blank')}
-                          >
-                            <LinkIcon className="h-4 w-4 mr-2" />
-                            Visiter le site
-                          </Button>
-                        )}
-                        <Button
-                          variant="outline"
-                          className="text-red-600 hover:text-red-700"
-                          onClick={() => {
-                            setSponsorToDelete(selectedSponsor);
-                            setDeleteConfirmOpen(true);
-                            setShowSponsorModal(false);
-                          }}
-                        >
-                          <TrashIcon className="h-4 w-4 mr-2" />
-                          Supprimer
-                        </Button>
+                    {/* Onglet Contact */}
+                    <TabsContent value="contact" className="mt-6 space-y-6">
+                      <SponsorContactTab 
+                        sponsor={{
+                          ...selectedSponsor,
+                          createdAt: selectedSponsor.createdAt.toISOString(),
+                          updatedAt: selectedSponsor.updatedAt.toISOString()
+                        }}
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor}
+                        setEditedSponsor={setEditedSponsor}
+                      />
+                    </TabsContent>
+
+                    {/* Onglet Réseaux Sociaux */}
+                    <TabsContent value="social" className="mt-6 space-y-6">
+                      <SponsorSocialTab 
+                        sponsor={{
+                          ...selectedSponsor,
+                          createdAt: selectedSponsor.createdAt.toISOString(),
+                          updatedAt: selectedSponsor.updatedAt.toISOString()
+                        }}
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor}
+                        setEditedSponsor={setEditedSponsor}
+                      />
+                    </TabsContent>
+
+                    {/* Onglet Documents */}
+                    <TabsContent value="documents" className="mt-6 space-y-6">
+                      <SponsorDocumentsTab 
+                        sponsor={{
+                          ...selectedSponsor,
+                          createdAt: selectedSponsor.createdAt.toISOString(),
+                          updatedAt: selectedSponsor.updatedAt.toISOString()
+                        }}
+                        isEditing={isEditing}
+                      />
+                    </TabsContent>
+
+                    {/* Onglet RDV */}
+                    <TabsContent value="appointments" className="mt-6">
+                      <div className="text-center py-8">
+                        <ClockIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun rendez-vous planifié</h3>
+                        <p className="text-gray-500">Les rendez-vous avec ce sponsor apparaîtront ici.</p>
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="members" className="mt-6 space-y-4">
-                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                        Fonctionnalité à venir : Liste détaillée des membres
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="sessions" className="mt-6 space-y-4">
-                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                        Fonctionnalité à venir : Liste détaillée des sessions
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="appointments" className="mt-6 space-y-4">
-                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                        Fonctionnalité à venir : Liste des rendez-vous demandés
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="contact" className="mt-6 space-y-4">
-                      <div className="space-y-4">
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-500 mb-1">Site web</h4>
-                          {selectedSponsor.website ? (
-                            <div className="flex items-center gap-2">
-                              <GlobeAltIcon className="h-4 w-4 text-blue-600" />
-                              <a
-                                href={selectedSponsor.website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-800"
-                              >
-                                {selectedSponsor.website}
-                              </a>
-                            </div>
-                          ) : (
-                            <p className="text-gray-500">Aucun site web renseigné</p>
-                          )}
-                        </div>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="timeline" className="mt-6 space-y-4">
+                    {/* Onglet Historique */}
+                    <TabsContent value="timeline" className="mt-6">
                       <div className="space-y-3">
                         <div className="flex items-start gap-3">
                           <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -868,6 +890,30 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     </TabsContent>
                   </ScrollArea>
                 </div>
+
+                {/* Footer avec boutons d'action en mode édition */}
+                {isEditing && (
+                  <div className="flex-shrink-0 pt-4 border-t bg-gray-50 -mx-6 -mb-6 px-6 py-4">
+                    <div className="flex justify-end gap-3">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setIsEditing(false);
+                          setEditedSponsor(null);
+                        }}
+                      >
+                        Annuler
+                      </Button>
+                      <Button
+                        onClick={handleSaveSponsor}
+                        disabled={processing}
+                        className="bg-[#81B441] hover:bg-[#72a139]"
+                      >
+                        {processing ? 'Enregistrement...' : 'Enregistrer'}
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </Tabs>
             </div>
           )}
