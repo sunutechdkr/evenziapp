@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, DocumentIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, DocumentIcon, PhotoIcon, UserPlusIcon, UserIcon } from "@heroicons/react/24/outline";
+import { SponsorLogo } from "@/components/ui/sponsor-logo";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -31,6 +32,7 @@ interface SponsorTabData {
   website?: string;
   level: SponsorLevel;
   visible: boolean;
+  eventId: string;
   location?: string;
   address?: string;
   phone?: string;
@@ -80,8 +82,64 @@ const getLevelBadgeClass = (level: SponsorLevel) => {
 
 // Composant Onglet Détails
 export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
+  const handleLogoUpload = async (file: File) => {
+    if (!setEditedSponsor) return;
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', 'sponsor');
+
+      const response = await fetch('/api/blob/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Erreur lors de l\'upload');
+
+      const data = await response.json();
+      setEditedSponsor({ ...editedSponsor, logo: data.url });
+    } catch (error) {
+      console.error('Erreur upload logo:', error);
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {/* Logo du sponsor */}
+      <div>
+        <Label className="text-sm font-medium text-gray-500 mb-2 block">Logo</Label>
+        <div className="flex items-center gap-4">
+          <SponsorLogo 
+            src={editedSponsor?.logo || sponsor.logo} 
+            alt={sponsor.name}
+            size="lg"
+          />
+          {isEditing && (
+            <div>
+              <input
+                type="file"
+                id="logo-upload"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleLogoUpload(file);
+                }}
+              />
+              <Button 
+                variant="outline" 
+                onClick={() => document.getElementById('logo-upload')?.click()}
+                className="h-8"
+              >
+                <PhotoIcon className="h-4 w-4 mr-2" />
+                Changer logo
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Description */}
       <div>
         <Label className="text-sm font-medium text-gray-500 mb-2 block">Description</Label>
@@ -193,6 +251,173 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
         )}
       </div>
 
+      {/* Coordonnées */}
+      <div>
+        <Label className="text-sm font-medium text-gray-500 mb-3 block">Coordonnées</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Adresse */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">Adresse</Label>
+            {isEditing ? (
+              <Textarea
+                value={editedSponsor?.address || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, address: e.target.value })}
+                placeholder="Adresse complète..."
+                rows={2}
+              />
+            ) : (
+              <div className="flex items-start gap-2">
+                <MapPinIcon className="h-4 w-4 text-gray-400 mt-0.5" />
+                <span className="text-gray-700 text-sm">
+                  {sponsor.address || 'Non renseignée'}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">Email</Label>
+            {isEditing ? (
+              <Input
+                value={editedSponsor?.email || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, email: e.target.value })}
+                placeholder="contact@entreprise.com"
+                type="email"
+              />
+            ) : sponsor.email ? (
+              <a href={`mailto:${sponsor.email}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
+                <EnvelopeIcon className="h-4 w-4" />
+                {sponsor.email}
+              </a>
+            ) : (
+              <span className="text-gray-500 text-sm">Non renseigné</span>
+            )}
+          </div>
+
+          {/* Téléphone fixe */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">Téléphone</Label>
+            {isEditing ? (
+              <Input
+                value={editedSponsor?.phone || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, phone: e.target.value })}
+                placeholder="+33 1 23 45 67 89"
+                type="tel"
+              />
+            ) : sponsor.phone ? (
+              <a href={`tel:${sponsor.phone}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
+                <PhoneIcon className="h-4 w-4" />
+                {sponsor.phone}
+              </a>
+            ) : (
+              <span className="text-gray-500 text-sm">Non renseigné</span>
+            )}
+          </div>
+
+          {/* Mobile */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">Mobile</Label>
+            {isEditing ? (
+              <Input
+                value={editedSponsor?.mobile || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, mobile: e.target.value })}
+                placeholder="+33 6 12 34 56 78"
+                type="tel"
+              />
+            ) : sponsor.mobile ? (
+              <a href={`tel:${sponsor.mobile}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
+                <PhoneIcon className="h-4 w-4" />
+                {sponsor.mobile}
+              </a>
+            ) : (
+              <span className="text-gray-500 text-sm">Non renseigné</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Réseaux sociaux */}
+      <div>
+        <Label className="text-sm font-medium text-gray-500 mb-3 block">Réseaux sociaux</Label>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* LinkedIn */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">LinkedIn</Label>
+            {isEditing ? (
+              <Input
+                value={editedSponsor?.linkedinUrl || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, linkedinUrl: e.target.value })}
+                placeholder="https://linkedin.com/company/..."
+                type="url"
+              />
+            ) : sponsor.linkedinUrl ? (
+              <a 
+                href={ensureProtocol(sponsor.linkedinUrl)} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+              >
+                <span className="w-4 h-4 mr-2">📊</span>
+                LinkedIn
+              </a>
+            ) : (
+              <span className="text-gray-500 text-sm">Non renseigné</span>
+            )}
+          </div>
+
+          {/* X (Twitter) */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">X (Twitter)</Label>
+            {isEditing ? (
+              <Input
+                value={editedSponsor?.twitterUrl || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, twitterUrl: e.target.value })}
+                placeholder="https://x.com/username"
+                type="url"
+              />
+            ) : sponsor.twitterUrl ? (
+              <a 
+                href={ensureProtocol(sponsor.twitterUrl)} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+              >
+                <span className="w-4 h-4 mr-2">🐦</span>
+                X (Twitter)
+              </a>
+            ) : (
+              <span className="text-gray-500 text-sm">Non renseigné</span>
+            )}
+          </div>
+
+          {/* Facebook */}
+          <div>
+            <Label className="text-xs text-gray-400 mb-1 block">Facebook</Label>
+            {isEditing ? (
+              <Input
+                value={editedSponsor?.facebookUrl || ''}
+                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, facebookUrl: e.target.value })}
+                placeholder="https://facebook.com/page"
+                type="url"
+              />
+            ) : sponsor.facebookUrl ? (
+              <a 
+                href={ensureProtocol(sponsor.facebookUrl)} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+              >
+                <span className="w-4 h-4 mr-2">📘</span>
+                Facebook
+              </a>
+            ) : (
+              <span className="text-gray-500 text-sm">Non renseigné</span>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Date d'ajout */}
       <div>
         <Label className="text-sm font-medium text-gray-500 mb-2 block">Date d&apos;ajout</Label>
@@ -204,182 +429,9 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
   );
 }
 
-// Composant Onglet Contact
-export function SponsorContactTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
-  return (
-    <div className="space-y-6">
-      {/* Adresse */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Adresse</Label>
-        {isEditing ? (
-          <Textarea
-            value={editedSponsor?.address || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, address: e.target.value })}
-            placeholder="Adresse complète..."
-            rows={3}
-          />
-        ) : (
-          <div className="flex items-start gap-2">
-            <MapPinIcon className="h-4 w-4 text-gray-400 mt-1" />
-            <span className="text-gray-700">
-              {sponsor.address || 'Adresse non renseignée'}
-            </span>
-          </div>
-        )}
-      </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        {/* Téléphone fixe */}
-        <div>
-          <Label className="text-sm font-medium text-gray-500 mb-2 block">Téléphone fixe</Label>
-          {isEditing ? (
-            <Input
-              value={editedSponsor?.phone || ''}
-              onChange={(e) => setEditedSponsor?.({ ...editedSponsor, phone: e.target.value })}
-              placeholder="+33 1 23 45 67 89"
-              type="tel"
-            />
-          ) : sponsor.phone ? (
-            <div className="flex items-center gap-2">
-              <PhoneIcon className="h-4 w-4 text-gray-400" />
-              <a href={`tel:${sponsor.phone}`} className="text-gray-700 hover:text-blue-600">
-                {sponsor.phone}
-              </a>
-            </div>
-          ) : (
-            <span className="text-gray-500">Non renseigné</span>
-          )}
-        </div>
 
-        {/* Téléphone mobile */}
-        <div>
-          <Label className="text-sm font-medium text-gray-500 mb-2 block">Téléphone mobile</Label>
-          {isEditing ? (
-            <Input
-              value={editedSponsor?.mobile || ''}
-              onChange={(e) => setEditedSponsor?.({ ...editedSponsor, mobile: e.target.value })}
-              placeholder="+33 6 12 34 56 78"
-              type="tel"
-            />
-          ) : sponsor.mobile ? (
-            <div className="flex items-center gap-2">
-              <PhoneIcon className="h-4 w-4 text-gray-400" />
-              <a href={`tel:${sponsor.mobile}`} className="text-gray-700 hover:text-blue-600">
-                {sponsor.mobile}
-              </a>
-            </div>
-          ) : (
-            <span className="text-gray-500">Non renseigné</span>
-          )}
-        </div>
-      </div>
 
-      {/* Email */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Email de contact</Label>
-        {isEditing ? (
-          <Input
-            value={editedSponsor?.email || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, email: e.target.value })}
-            placeholder="contact@sponsor.com"
-            type="email"
-          />
-        ) : sponsor.email ? (
-          <div className="flex items-center gap-2">
-            <EnvelopeIcon className="h-4 w-4 text-gray-400" />
-            <a href={`mailto:${sponsor.email}`} className="text-gray-700 hover:text-blue-600">
-              {sponsor.email}
-            </a>
-          </div>
-        ) : (
-          <span className="text-gray-500">Email non renseigné</span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Composant Onglet Réseaux Sociaux
-export function SponsorSocialTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
-  return (
-    <div className="space-y-6">
-      {/* LinkedIn */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">LinkedIn</Label>
-        {isEditing ? (
-          <Input
-            value={editedSponsor?.linkedinUrl || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, linkedinUrl: e.target.value })}
-            placeholder="https://linkedin.com/company/..."
-            type="url"
-          />
-        ) : sponsor.linkedinUrl ? (
-          <a 
-            href={sponsor.linkedinUrl} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <LinkIcon className="h-4 w-4 mr-2" />
-            Profil LinkedIn
-          </a>
-        ) : (
-          <span className="text-gray-500">Profil LinkedIn non renseigné</span>
-        )}
-      </div>
-
-      {/* X (Twitter) */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">X (Twitter)</Label>
-        {isEditing ? (
-          <Input
-            value={editedSponsor?.twitterUrl || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, twitterUrl: e.target.value })}
-            placeholder="https://x.com/..."
-            type="url"
-          />
-        ) : sponsor.twitterUrl ? (
-          <a 
-            href={sponsor.twitterUrl} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <LinkIcon className="h-4 w-4 mr-2" />
-            Profil X
-          </a>
-        ) : (
-          <span className="text-gray-500">Profil X non renseigné</span>
-        )}
-      </div>
-
-      {/* Facebook */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Facebook</Label>
-        {isEditing ? (
-          <Input
-            value={editedSponsor?.facebookUrl || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, facebookUrl: e.target.value })}
-            placeholder="https://facebook.com/..."
-            type="url"
-          />
-        ) : sponsor.facebookUrl ? (
-          <a 
-            href={sponsor.facebookUrl} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <LinkIcon className="h-4 w-4 mr-2" />
-            Page Facebook
-          </a>
-        ) : (
-          <span className="text-gray-500">Page Facebook non renseignée</span>
-        )}
-      </div>
-    </div>
-  );
-}
 
 // Composant Onglet Documents
 export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
@@ -534,6 +586,239 @@ export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEdit
               {uploading ? 'Téléchargement...' : 'Choisir des fichiers'}
             </Button>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Composant Onglet Membres
+export function SponsorMembersTab({ sponsor }: TabProps) {
+  const [members, setMembers] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [showAddMember, setShowAddMember] = React.useState(false);
+  const [participants, setParticipants] = React.useState<any[]>([]);
+
+  const fetchMembers = async () => {
+    if (!sponsor.id) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/events/sponsors/${sponsor.id}/members`);
+      if (response.ok) {
+        const data = await response.json();
+        setMembers(data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des membres:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchParticipants = async () => {
+    try {
+      const response = await fetch(`/api/events/${sponsor.eventId}/participants`);
+      if (response.ok) {
+        const data = await response.json();
+        setParticipants(data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des participants:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchMembers();
+  }, [sponsor.id]);
+
+  const addMember = async (participantId: string) => {
+    // API call to add member - to be implemented
+    console.log('Ajouter membre:', participantId);
+    setShowAddMember(false);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* En-tête avec CTA */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-medium text-gray-900">Membres de l'organisation</h3>
+          <p className="text-sm text-gray-500">
+            Participants associés à {sponsor.name}
+          </p>
+        </div>
+        <Button
+          onClick={() => {
+            setShowAddMember(true);
+            fetchParticipants();
+          }}
+          className="bg-[#81B441] hover:bg-[#72a139]"
+        >
+          <UserPlusIcon className="h-4 w-4 mr-2" />
+          Ajouter un Membre
+        </Button>
+      </div>
+
+      {/* Liste des membres */}
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
+          <p className="mt-2 text-sm text-gray-500">Chargement des membres...</p>
+        </div>
+      ) : members.length > 0 ? (
+        <div className="space-y-3">
+          {members.map((member, index) => (
+            <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+              <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
+                <UserIcon className="h-5 w-5 text-gray-500" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium text-gray-900">{member.name}</h4>
+                <p className="text-sm text-gray-500">{member.jobTitle}</p>
+                <p className="text-sm text-gray-400">{member.company}</p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => console.log('Voir profil:', member.id)}
+              >
+                Voir profil
+              </Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <UserIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun membre</h3>
+          <p className="text-sm text-gray-500 mb-4">
+            Aucun participant n&apos;est encore associé à ce sponsor.
+          </p>
+        </div>
+      )}
+
+      {/* Modal pour ajouter un membre */}
+      {showAddMember && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-medium mb-4">Ajouter un membre</h3>
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {participants.map((participant) => (
+                <div
+                  key={participant.id}
+                  className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
+                >
+                  <div>
+                    <p className="font-medium">{participant.name}</p>
+                    <p className="text-sm text-gray-500">{participant.email}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => addMember(participant.id)}
+                  >
+                    Ajouter
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowAddMember(false)}
+              >
+                Annuler
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Composant Onglet Sessions
+export function SponsorSessionsTab({ sponsor }: TabProps) {
+  const [sessions, setSessions] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const fetchSessions = async () => {
+    if (!sponsor.eventId) return;
+    setLoading(true);
+    try {
+      // Rechercher les sessions où le sponsor est mentionné ou participe
+      const response = await fetch(`/api/events/${sponsor.eventId}/sessions?sponsor=${sponsor.name}`);
+      if (response.ok) {
+        const data = await response.json();
+        setSessions(data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des sessions:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchSessions();
+  }, [sponsor.eventId, sponsor.name]);
+
+  return (
+    <div className="space-y-6">
+      {/* En-tête */}
+      <div>
+        <h3 className="text-lg font-medium text-gray-900">Sessions du sponsor</h3>
+        <p className="text-sm text-gray-500">
+          Sessions animées ou sponsorisées par {sponsor.name}
+        </p>
+      </div>
+
+      {/* Liste des sessions */}
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
+          <p className="mt-2 text-sm text-gray-500">Chargement des sessions...</p>
+        </div>
+      ) : sessions.length > 0 ? (
+        <div className="space-y-4">
+          {sessions.map((session, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h4 className="font-medium text-gray-900">{session.title}</h4>
+                  <p className="text-sm text-gray-600 mt-1">{session.description}</p>
+                  <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                    <span>🗓️ {format(new Date(session.startTime), "dd MMM yyyy", { locale: fr })}</span>
+                    <span>⏰ {format(new Date(session.startTime), "HH:mm", { locale: fr })} - {format(new Date(session.endTime), "HH:mm", { locale: fr })}</span>
+                    <span>📍 {session.location}</span>
+                  </div>
+                  {session.speakers && session.speakers.length > 0 && (
+                    <div className="mt-2">
+                      <span className="text-sm text-gray-500">
+                        Intervenant(s): {session.speakers.map((s: any) => s.name).join(', ')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => console.log('Voir session:', session.id)}
+                >
+                  Voir détails
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <div className="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl">🎯</span>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune session</h3>
+          <p className="text-sm text-gray-500">
+            Ce sponsor n&apos;est associé à aucune session pour le moment.
+          </p>
         </div>
       )}
     </div>

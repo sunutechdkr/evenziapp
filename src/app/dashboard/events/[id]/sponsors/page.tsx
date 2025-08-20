@@ -22,7 +22,6 @@ import {
   DocumentDuplicateIcon,
   ArchiveBoxIcon,
   BanknotesIcon,
-  UsersIcon,
   TrashIcon
 } from "@heroicons/react/24/outline";
 import { EventSidebar } from "@/components/dashboard/EventSidebar";
@@ -48,7 +47,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
-import { SponsorDetailsTab, SponsorContactTab, SponsorSocialTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
+import { SponsorDetailsTab, SponsorMembersTab, SponsorSessionsTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
 
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -112,8 +111,6 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
   const [sponsorToDelete, setSponsorToDelete] = useState<Sponsor | null>(null);
   const [processing, setProcessing] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [sponsorMembers, setSponsorMembers] = useState<any[]>([]);
-  const [loadingMembers, setLoadingMembers] = useState(false);
   
   const router = useRouter();
 
@@ -239,12 +236,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
     setCurrentPage(1);
   }, [searchTerm, levelFilter]);
 
-  // Helper function to convert sponsor data for tabs
-  const getSponsorTabData = (sponsor: Sponsor) => ({
-    ...sponsor,
-    createdAt: sponsor.createdAt instanceof Date ? sponsor.createdAt.toISOString() : sponsor.createdAt,
-    updatedAt: sponsor.updatedAt instanceof Date ? sponsor.updatedAt.toISOString() : sponsor.updatedAt
-  });
+
 
   // Helper function to handle edited sponsor updates
   const handleEditedSponsorUpdate = (updatedData: Record<string, any>) => {
@@ -303,14 +295,19 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
     }, 1000);
   };
 
+  const getSponsorTabData = (sponsor: Sponsor) => ({
+    ...sponsor,
+    eventId,
+    createdAt: sponsor.createdAt instanceof Date ? sponsor.createdAt.toISOString() : sponsor.createdAt,
+    updatedAt: sponsor.updatedAt instanceof Date ? sponsor.updatedAt.toISOString() : sponsor.updatedAt,
+  });
+
   const openSponsorDetails = (sponsor: Sponsor) => {
     setSelectedSponsor(sponsor);
     setActiveTab("details");
     setShowSponsorModal(true);
     setIsEditing(false);
     setEditedSponsor(null);
-    // Charger les membres du sponsor
-    fetchSponsorMembers(sponsor.name);
   };
 
   /**
@@ -893,13 +890,12 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
               {/* Onglets */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-                <TabsList className="grid w-full grid-cols-7 flex-shrink-0">
+                <TabsList className="grid w-full grid-cols-6 flex-shrink-0">
                   <TabsTrigger value="details">Détails</TabsTrigger>
-                  <TabsTrigger value="contact">Contact</TabsTrigger>
-                  <TabsTrigger value="social">Réseaux</TabsTrigger>
-                  <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="members">Membres</TabsTrigger>
+                  <TabsTrigger value="sessions">Sessions</TabsTrigger>
                   <TabsTrigger value="appointments">RDV</TabsTrigger>
+                  <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
 
@@ -915,25 +911,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                       />
                     </TabsContent>
 
-                    {/* Onglet Contact */}
-                    <TabsContent value="contact" className="mt-6 space-y-6">
-                      <SponsorContactTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
 
-                    {/* Onglet Réseaux Sociaux */}
-                    <TabsContent value="social" className="mt-6 space-y-6">
-                      <SponsorSocialTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
 
                     {/* Onglet Documents */}
                     <TabsContent value="documents" className="mt-6 space-y-6">
@@ -946,65 +924,23 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     </TabsContent>
 
                     {/* Onglet Membres */}
-                    <TabsContent value="members" className="mt-6">
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2 mb-4">
-                          <UsersIcon className="h-5 w-5 text-gray-600" />
-                          <h3 className="text-lg font-semibold">Membres de l&apos;organisation</h3>
-                        </div>
-                        
-                        {loadingMembers ? (
-                          <div className="flex items-center justify-center py-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#81B441]"></div>
-                            <span className="ml-2 text-gray-600">Chargement des membres...</span>
-                          </div>
-                        ) : sponsorMembers.length > 0 ? (
-                          <div className="space-y-3">
-                            {sponsorMembers.map((member: any) => (
-                              <div 
-                                key={member.id}
-                                className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                                onClick={() => {
-                                  // Ouvrir les détails du participant
-                                  toast.info(`Participant: ${member.firstName} ${member.lastName}`);
-                                }}
-                              >
-                                <div className="flex-shrink-0">
-                                  <div className="w-10 h-10 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium">
-                                    {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
-                                  </div>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-gray-900 truncate">
-                                    {member.firstName} {member.lastName}
-                                  </p>
-                                  {member.jobTitle && (
-                                    <p className="text-sm text-gray-500 truncate">
-                                      {member.jobTitle}
-                                    </p>
-                                  )}
-                                  {member.company && (
-                                    <p className="text-xs text-gray-400 truncate">
-                                      {member.company}
-                                    </p>
-                                  )}
-                                </div>
-                                <div className="flex-shrink-0">
-                                  <EyeIcon className="h-5 w-5 text-gray-400" />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-center py-8">
-                            <UsersIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun membre trouvé</h3>
-                            <p className="text-gray-500">
-                              Aucun participant n&apos;est associé à cette organisation pour le moment.
-                            </p>
-                          </div>
-                        )}
-                      </div>
+                    <TabsContent value="members" className="mt-6 space-y-6">
+                      <SponsorMembersTab 
+                        sponsor={getSponsorTabData(selectedSponsor)}
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor as any}
+                        setEditedSponsor={handleEditedSponsorUpdate}
+                      />
+                    </TabsContent>
+
+                    {/* Onglet Sessions */}
+                    <TabsContent value="sessions" className="mt-6 space-y-6">
+                      <SponsorSessionsTab 
+                        sponsor={getSponsorTabData(selectedSponsor)}
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor as any}
+                        setEditedSponsor={handleEditedSponsorUpdate}
+                      />
                     </TabsContent>
 
                     {/* Onglet RDV */}
