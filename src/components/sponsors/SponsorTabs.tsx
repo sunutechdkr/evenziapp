@@ -441,8 +441,6 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
 export function SponsorMembersTab({ sponsor }: TabProps) {
   const [members, setMembers] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const [showAddMember, setShowAddMember] = React.useState(false);
-  const [participants, setParticipants] = React.useState<any[]>([]);
   const [filteredParticipants, setFilteredParticipants] = React.useState<any[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState<any>(null);
@@ -477,7 +475,6 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        setParticipants(data);
         setFilteredParticipants(data);
       }
     } catch (error) {
@@ -514,7 +511,6 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
         // Vider la recherche et les résultats
         setSearchQuery('');
         setFilteredParticipants([]);
-        setShowAddMember(false);
       } else {
         console.error('Erreur lors de l\'ajout du membre');
       }
@@ -552,8 +548,9 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
   };
 
   return (
-    <div className="space-y-6">
-      {/* En-tête avec barre de recherche */}
+    <div className="flex flex-col gap-4 max-h-[75vh] overflow-hidden">
+      {/* En-tête avec barre de recherche sticky */}
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b p-3">
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-medium text-gray-900">Membres de l&apos;organisation</h3>
@@ -576,92 +573,64 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
+          
+          {/* Dropdown des résultats de recherche */}
+          {searchQuery.trim() && (
+            <div className="absolute top-full left-0 right-0 z-50 mt-2 max-h-72 overflow-y-auto rounded-md border bg-white shadow-lg">
+              {filteredParticipants.length > 0 ? (
+                <ul className="divide-y">
+                  {filteredParticipants.map((participant) => (
+                    <li key={participant.id} className="p-3 hover:bg-gray-50">
+                      <div className="flex items-center gap-3">
+                        <div className="h-8 w-8 bg-[#81B441] rounded-full flex items-center justify-center text-white text-xs font-medium">
+                          {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold truncate">{participant.firstName} {participant.lastName}</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">{participant.type}</span>
+                          </div>
+                          <div className="text-sm text-gray-600 truncate">
+                            {participant.jobTitle && <span className="mr-2 font-medium">{participant.jobTitle}</span>}
+                            {participant.company && <span className="mr-2">📢 {participant.company}</span>}
+                            <span className="truncate">✉️ {participant.email}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => viewParticipantProfile(participant)}
+                            className="text-gray-600 hover:text-gray-800 text-sm px-2 py-1 border rounded"
+                          >
+                            Voir profil
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => addMember(participant.id)}
+                            className="text-white bg-[#81B441] hover:bg-[#72a139] text-sm px-3 py-1 rounded"
+                          >
+                            Ajouter
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="p-3 text-sm text-gray-500">Aucun résultat pour &quot;{searchQuery}&quot;.</div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+      </div>
 
-      {/* Résultats de recherche */}
-      {searchQuery.trim() && filteredParticipants.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="text-sm font-medium text-gray-900">
-            Résultats ({filteredParticipants.length})
-          </h4>
-          <div className="space-y-2 max-h-48 overflow-y-auto">
-            {filteredParticipants.map((participant) => (
-              <div
-                key={participant.id}
-                className="flex items-center justify-between p-3 border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                <div className="flex items-center gap-3 flex-1">
-                  {/* Avatar */}
-                  <div className="h-8 w-8 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium text-xs">
-                    {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
-                  </div>
-                  
-                  {/* Informations du participant - tout sur une ligne */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-gray-900 truncate">
-                        {participant.firstName} {participant.lastName}
-                      </h4>
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                        {participant.type}
-                      </span>
-                    </div>
-                    
-                    {/* Une seule ligne pour fonction, entreprise et email */}
-                    <div className="flex items-center gap-4 text-sm text-gray-600 truncate">
-                      {participant.jobTitle && (
-                        <span className="font-medium truncate">
-                          {participant.jobTitle}
-                        </span>
-                      )}
-                      {participant.company && (
-                        <span className="truncate">
-                          📢 {participant.company}
-                        </span>
-                      )}
-                      <span className="truncate">
-                        ✉️ {participant.email}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Actions */}
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => viewParticipantProfile(participant)}
-                    className="text-gray-600 hover:text-gray-800"
-                  >
-                    Voir profil
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => addMember(participant.id)}
-                    className="bg-[#81B441] hover:bg-[#72a139]"
-                  >
-                    Ajouter
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Message pour recherche vide */}
-      {searchQuery.trim() && filteredParticipants.length === 0 && (
-        <div className="text-center py-6 border border-gray-200 rounded-lg bg-gray-50">
-          <p className="text-gray-500">
-            Aucun participant trouvé pour &quot;{searchQuery}&quot;
-          </p>
-        </div>
-      )}
 
-      {/* Liste des membres */}
-      {loading ? (
+      {/* Liste des membres avec scroll interne */}
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full overflow-y-auto px-1">
+          {loading ? (
         <div className="text-center py-8">
           <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
           <p className="mt-2 text-sm text-gray-500">Chargement des membres...</p>
@@ -731,102 +700,10 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
           </p>
         </div>
       )}
-
-      {/* Modal pour ajouter un membre */}
-      {showAddMember && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[80vh] flex flex-col">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-gray-900">Ajouter un membre</h3>
-              <Button
-                variant="outline"
-                onClick={() => setShowAddMember(false)}
-                className="h-8 w-8 p-0"
-              >
-                ×
-              </Button>
-            </div>
-            
-            <div className="flex-1 overflow-hidden">
-              <div className="h-full overflow-y-auto space-y-3 pr-2">
-                {participants.length > 0 ? participants.map((participant) => (
-                  <div
-                    key={participant.id}
-                    className="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    <div className="flex items-center gap-4 flex-1">
-                      {/* Avatar */}
-                      <div className="h-12 w-12 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium">
-                        {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
-                      </div>
-                      
-                      {/* Informations du participant */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-gray-900 truncate">
-                            {participant.firstName} {participant.lastName}
-                          </h4>
-                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                            {participant.type}
-                          </span>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          {participant.jobTitle && (
-                            <p className="text-sm font-medium text-gray-700 truncate">
-                              {participant.jobTitle}
-                            </p>
-                          )}
-                          {participant.company && (
-                            <p className="text-sm text-gray-600 truncate">
-                              📢 {participant.company}
-                            </p>
-                          )}
-                          <p className="text-sm text-gray-500 truncate">
-                            ✉️ {participant.email}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Actions */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => viewParticipantProfile(participant)}
-                        className="text-gray-600 hover:text-gray-800"
-                      >
-                        Voir profil
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={() => addMember(participant.id)}
-                        className="bg-[#81B441] hover:bg-[#72a139]"
-                      >
-                        Ajouter
-                      </Button>
-                    </div>
-                  </div>
-                )) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">Aucun participant disponible</p>
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            <div className="mt-6 flex justify-end">
-              <Button
-                variant="outline"
-                onClick={() => setShowAddMember(false)}
-              >
-                Fermer
-              </Button>
-            </div>
-          </div>
         </div>
-      )}
+      </div>
+
+
 
       {/* Modal de profil du participant */}
       {showParticipantProfile && selectedParticipant && (
