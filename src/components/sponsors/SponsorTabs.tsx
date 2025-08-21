@@ -9,7 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, PhotoIcon, UserIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
-import { AddMemberPopover } from "./AddMemberPopover";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { AddMembersDialog } from "./AddMembersDialog";
+import { ConfirmDeleteMemberDialog } from "./ConfirmDeleteMemberDialog";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -438,15 +441,23 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
 
 
 
-// Composant Onglet Membres
+// Composant Onglet Membres - Refonte complète
 export function SponsorMembersTab({ sponsor }: TabProps) {
   const [members, setMembers] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState<any>(null);
   const [showParticipantProfile, setShowParticipantProfile] = React.useState(false);
+  
+  // États pour le dialog d'ajout de membres
+  const [showAddDialog, setShowAddDialog] = React.useState(false);
+  
+  // États pour la confirmation de suppression
+  const [memberToDelete, setMemberToDelete] = React.useState<any>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+  const [deletingMember, setDeletingMember] = React.useState(false);
 
-  const fetchMembers = async () => {
+  const fetchMembers = React.useCallback(async () => {
     if (!sponsor.id) return;
     setLoading(true);
     try {
@@ -464,11 +475,11 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sponsor.id]);
 
   React.useEffect(() => {
     fetchMembers();
-  }, [sponsor.id]);
+  }, [fetchMembers]);
 
   // Normalisation pour la recherche locale (sans accents)
   const normalize = (s = "") =>
@@ -481,7 +492,7 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     const q = normalize(searchQuery);
     return members.filter((member) => {
       const haystack = normalize(
-        `${member.firstName ?? ""} ${member.lastName ?? ""} ${member.jobTitle ?? ""} ${member.company ?? ""} ${member.email ?? ""}`
+        `${member.firstName ?? ""} ${member.lastName ?? ""} ${member.name ?? ""} ${member.jobTitle ?? ""} ${member.company ?? ""} ${member.email ?? ""}`
       );
       return haystack.includes(q);
     });
@@ -492,19 +503,24 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     setShowParticipantProfile(true);
   };
 
-  const removeMember = async (memberId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir retirer ce membre du sponsor ?')) {
-      return;
-    }
+  const handleDeleteMember = (member: any) => {
+    setMemberToDelete(member);
+    setShowDeleteConfirm(true);
+  };
 
+  const confirmDeleteMember = async () => {
+    if (!memberToDelete) return;
+    
+    setDeletingMember(true);
     try {
-      const response = await fetch(`/api/events/sponsors/${sponsor.id}/members?participantId=${memberId}`, {
+      const response = await fetch(`/api/events/sponsors/${sponsor.id}/members?participantId=${memberToDelete.id}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        // Recharger la liste des membres
-        await fetchMembers();
+        await fetchMembers(); // Recharger la liste des membres
+        setShowDeleteConfirm(false);
+        setMemberToDelete(null);
       } else {
         console.error('Erreur lors de la suppression du membre');
         alert('Erreur lors de la suppression du membre');
@@ -512,138 +528,173 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     } catch (error) {
       console.error('Erreur lors de la suppression du membre:', error);
       alert('Erreur lors de la suppression du membre');
+    } finally {
+      setDeletingMember(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-4 max-h-[75vh] overflow-hidden">
-      {/* Header sticky avec titre + recherche locale + bouton ajout */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b p-3">
-        <div className="space-y-4">
-          {/* Titre et sous-titre */}
-          <div>
-            <h3 className="text-lg font-medium text-gray-900">Membres de l&apos;organisation</h3>
-            <p className="text-sm text-gray-500">
-              Participants associés à {sponsor.name} ({members.length})
-            </p>
-          </div>
-          
-          {/* Barre de recherche locale + bouton d'ajout */}
-          <div className="flex items-center gap-2">
-            {/* Recherche locale : filtre uniquement `members` */}
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Rechercher parmi les membres…"
-                className="pl-9 text-sm"
-              />
+    <>
+      <div className="flex flex-col h-full max-h-[calc(80vh-120px)]">
+        {/* Header sticky */}
+        <div className="flex-shrink-0 border-b bg-white p-4">
+          <div className="space-y-4">
+            {/* Titre et sous-titre */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Membres de l&apos;organisation</h3>
+              <p className="text-sm text-gray-600">
+                {members.length} participant{members.length > 1 ? 's' : ''} associé{members.length > 1 ? 's' : ''} à {sponsor.name}
+              </p>
             </div>
+            
+            {/* Barre de recherche locale + bouton d'ajout */}
+            <div className="flex items-center gap-3">
+              {/* Recherche locale */}
+              <div className="flex-1">
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Rechercher parmi les membres..."
+                  className="w-full"
+                />
+              </div>
 
-            {/* Bouton d'ajout (ouvre le Popover global) */}
-            <AddMemberPopover 
-              sponsorId={sponsor.id}
-              eventId={sponsor.eventId}
-              onMemberAdded={fetchMembers}
-            />
+              {/* CTA Ajouter des membres */}
+              <Button
+                onClick={() => setShowAddDialog(true)}
+                className="bg-[#81B441] hover:bg-[#72a139] text-white"
+              >
+                <UserIcon className="h-4 w-4 mr-2" />
+                Ajouter des membres
+              </Button>
+            </div>
           </div>
+        </div>
+
+        {/* Zone liste scrollable */}
+        <div className="flex-1 min-h-0">
+          <ScrollArea className="h-full">
+            <div className="p-4">
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
+                  <p className="mt-4 text-sm text-gray-500">Chargement des membres...</p>
+                </div>
+              ) : filteredMembers.length > 0 ? (
+                <div className="space-y-3">
+                  {filteredMembers.map((member, index) => (
+                    <div key={index} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                      {/* Avatar */}
+                      <Avatar className="h-12 w-12">
+                        <AvatarFallback className="bg-[#81B441] text-white font-semibold">
+                          {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      {/* Informations */}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 truncate">
+                          {member.name || `${member.firstName} ${member.lastName}`}
+                        </h4>
+                        {member.jobTitle && (
+                          <p className="text-sm text-gray-600 truncate">{member.jobTitle}</p>
+                        )}
+                        {member.company && (
+                          <p className="text-sm text-gray-500 truncate">{member.company}</p>
+                        )}
+                      </div>
+                      
+                      {/* Actions */}
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const participant = {
+                              id: member.id,
+                              firstName: member.firstName,
+                              lastName: member.lastName,
+                              email: member.email,
+                              jobTitle: member.jobTitle,
+                              company: member.company,
+                              type: member.type,
+                              registrationDate: member.joinedAt,
+                              shortCode: '',
+                              checkedIn: false
+                            };
+                            viewParticipantProfile(participant);
+                          }}
+                        >
+                          Voir profil
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteMember(member)}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  {searchQuery.trim() ? (
+                    <div>
+                      <div className="text-gray-400 mb-4">
+                        <svg className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun résultat</h3>
+                      <p className="text-gray-500">
+                        Aucun membre ne correspond à &quot;{searchQuery}&quot;
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="text-gray-400 mb-4">
+                        <UserIcon className="h-16 w-16 mx-auto" />
+                      </div>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun membre</h3>
+                      <p className="text-gray-500 mb-4">
+                        Aucun participant n&apos;est encore associé à ce sponsor.
+                      </p>
+                      <Button
+                        onClick={() => setShowAddDialog(true)}
+                        className="bg-[#81B441] hover:bg-[#72a139] text-white"
+                      >
+                        <UserIcon className="h-4 w-4 mr-2" />
+                        Ajouter des membres
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </ScrollArea>
         </div>
       </div>
 
-      {/* Liste des membres scrollable (interne à l'onglet) */}
-      <div className="flex-1 overflow-y-auto pr-2 max-h-[calc(75vh-160px)]" id="sponsor-members-scroll">
-        {loading ? (
-          <div className="text-center py-8">
-            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
-            <p className="mt-2 text-sm text-gray-500">Chargement des membres...</p>
-          </div>
-        ) : filteredMembers.length > 0 ? (
-          <div className="space-y-2 pb-4">
-            {filteredMembers.map((member, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="h-8 w-8 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium text-sm">
-                  {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-gray-900 text-sm">{member.name}</h4>
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
-                    {member.jobTitle && (
-                      <span className="truncate">{member.jobTitle}</span>
-                    )}
-                    {member.jobTitle && member.company && (
-                      <span>•</span>
-                    )}
-                    {member.company && (
-                      <span className="truncate">{member.company}</span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      // Créer un objet participant pour la modal
-                      const participant = {
-                        id: member.id,
-                        firstName: member.firstName,
-                        lastName: member.lastName,
-                        email: member.email,
-                        jobTitle: member.jobTitle,
-                        company: member.company,
-                        type: member.type,
-                        registrationDate: member.joinedAt,
-                        shortCode: '',
-                        checkedIn: false
-                      };
-                      viewParticipantProfile(participant);
-                    }}
-                  >
-                    Voir profil
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeMember(member.id)}
-                    className="text-red-600 hover:text-red-800 hover:bg-red-50"
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            {searchQuery.trim() ? (
-              <div>
-                <svg className="h-12 w-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun résultat</h3>
-                <p className="text-sm text-gray-500">
-                  Aucun membre ne correspond à &quot;{searchQuery}&quot;
-                </p>
-              </div>
-            ) : (
-              <div>
-                <UserIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun membre</h3>
-                <p className="text-sm text-gray-500 mb-4">
-                  Aucun participant n&apos;est encore associé à ce sponsor.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      {/* Dialog d'ajout de membres */}
+      <AddMembersDialog
+        sponsorId={sponsor.id}
+        eventId={sponsor.eventId}
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+        onMemberAdded={fetchMembers}
+      />
 
-
+      {/* Dialog de confirmation de suppression */}
+      <ConfirmDeleteMemberDialog
+        member={memberToDelete}
+        open={showDeleteConfirm}
+        onOpenChange={setShowDeleteConfirm}
+        onConfirm={confirmDeleteMember}
+        loading={deletingMember}
+      />
 
       {/* Modal de profil du participant */}
       {showParticipantProfile && selectedParticipant && (
@@ -754,7 +805,7 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
