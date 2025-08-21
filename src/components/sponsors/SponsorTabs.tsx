@@ -607,9 +607,13 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
       if (response.ok) {
         const data = await response.json();
         setMembers(data);
+      } else {
+        console.error('Erreur API membres:', response.status, response.statusText);
+        setMembers([]);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des membres:', error);
+      setMembers([]);
     } finally {
       setLoading(false);
     }
@@ -632,9 +636,25 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
   }, [sponsor.id]);
 
   const addMember = async (participantId: string) => {
-    // API call to add member - to be implemented
-    console.log('Ajouter membre:', participantId);
-    setShowAddMember(false);
+    try {
+      const response = await fetch(`/api/events/sponsors/${sponsor.id}/members`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ participantId }),
+      });
+
+      if (response.ok) {
+        // Recharger la liste des membres
+        await fetchMembers();
+        setShowAddMember(false);
+      } else {
+        console.error('Erreur lors de l\'ajout du membre');
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du membre:', error);
+    }
   };
 
   return (
@@ -642,7 +662,7 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
       {/* En-tête avec CTA */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-medium text-gray-900">Membres de l'organisation</h3>
+          <h3 className="text-lg font-medium text-gray-900">Membres de l&apos;organisation</h3>
           <p className="text-sm text-gray-500">
             Participants associés à {sponsor.name}
           </p>
@@ -746,13 +766,17 @@ export function SponsorSessionsTab({ sponsor }: TabProps) {
     setLoading(true);
     try {
       // Rechercher les sessions où le sponsor est mentionné ou participe
-      const response = await fetch(`/api/events/${sponsor.eventId}/sessions?sponsor=${sponsor.name}`);
+      const response = await fetch(`/api/events/${sponsor.eventId}/sessions?sponsor=${encodeURIComponent(sponsor.name)}`);
       if (response.ok) {
         const data = await response.json();
         setSessions(data);
+      } else {
+        console.error('Erreur API sessions:', response.status, response.statusText);
+        setSessions([]);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des sessions:', error);
+      setSessions([]);
     } finally {
       setLoading(false);
     }
@@ -787,14 +811,14 @@ export function SponsorSessionsTab({ sponsor }: TabProps) {
                   <h4 className="font-medium text-gray-900">{session.title}</h4>
                   <p className="text-sm text-gray-600 mt-1">{session.description}</p>
                   <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
-                    <span>🗓️ {format(new Date(session.startTime), "dd MMM yyyy", { locale: fr })}</span>
-                    <span>⏰ {format(new Date(session.startTime), "HH:mm", { locale: fr })} - {format(new Date(session.endTime), "HH:mm", { locale: fr })}</span>
-                    <span>📍 {session.location}</span>
+                    <span>🗓️ {session.start_date ? format(new Date(session.start_date), "dd MMM yyyy", { locale: fr }) : 'Date non définie'}</span>
+                    <span>⏰ {session.start_time || '00:00'} - {session.end_time || '00:00'}</span>
+                    <span>📍 {session.location || 'Lieu non défini'}</span>
                   </div>
                   {session.speakers && session.speakers.length > 0 && (
                     <div className="mt-2">
                       <span className="text-sm text-gray-500">
-                        Intervenant(s): {session.speakers.map((s: any) => s.name).join(', ')}
+                        Intervenant(s): {session.speakers.map((s: any) => `${s.firstName} ${s.lastName}`).join(', ')}
                       </span>
                     </div>
                   )}

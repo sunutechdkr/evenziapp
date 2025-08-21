@@ -33,21 +33,15 @@ export async function GET(
       );
     }
 
-    // Construire la requête avec filtre par type si spécifié
-    let whereClause = `event_id = ${id}`;
-    if (type) {
-      whereClause += ` AND type = '${type}'`;
-    }
-    
     // Récupérer les participants qui correspondent au filtre avec SQL direct
     const participantsQuery = await prisma.$queryRaw`
       SELECT 
         id, first_name, last_name, email, phone, job_title, company, type, 
-        checked_in, check_in_time, short_code, registration_date
+        checked_in, check_in_time, short_code, created_at
       FROM 
         registrations
       WHERE 
-        ${whereClause}
+        event_id = ${id}
         AND (
           LOWER(first_name) LIKE LOWER(${'%' + query + '%'})
           OR LOWER(last_name) LIKE LOWER(${'%' + query + '%'})
@@ -73,7 +67,7 @@ export async function GET(
           checkedIn: p.checked_in,
           checkInTime: p.check_in_time,
           shortCode: p.short_code,
-          registrationDate: p.registration_date
+          registrationDate: p.created_at
         }))
       : [];
 

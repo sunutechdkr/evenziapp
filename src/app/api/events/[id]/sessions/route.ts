@@ -64,6 +64,8 @@ export async function GET(
     
     // Accéder directement aux paramètres depuis le contexte
     const { id } = await params;
+    const { searchParams } = new URL(request.url);
+    const sponsorFilter = searchParams.get("sponsor");
     
     // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
@@ -77,9 +79,46 @@ export async function GET(
       );
     }
 
+    // Construire la condition de filtre pour les sessions
+    let whereCondition: {
+      event_id: string;
+      OR?: Array<{
+        title?: { contains: string; mode: 'insensitive' };
+        description?: { contains: string; mode: 'insensitive' };
+        speaker?: { contains: string; mode: 'insensitive' };
+      }>;
+    } = { event_id: id };
+    
+    // Si un sponsor est spécifié, filtrer les sessions qui mentionnent ce sponsor
+    if (sponsorFilter) {
+      whereCondition = {
+        event_id: id,
+        OR: [
+          {
+            title: {
+              contains: sponsorFilter,
+              mode: 'insensitive'
+            }
+          },
+          {
+            description: {
+              contains: sponsorFilter,
+              mode: 'insensitive'
+            }
+          },
+          {
+            speaker: {
+              contains: sponsorFilter,
+              mode: 'insensitive'
+            }
+          }
+        ]
+      };
+    }
+
     // Récupérer toutes les sessions de l'événement avec les participants
     const sessions = await prisma.event_sessions.findMany({
-      where: { event_id: id },
+      where: whereCondition,
       include: {
         participants: {
           include: {
