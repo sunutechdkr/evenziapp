@@ -9,7 +9,8 @@ import {
   CalendarIcon,
   ClockIcon,
   EyeIcon,
-  EyeSlashIcon
+  EyeSlashIcon,
+  EnvelopeIcon
 } from "@heroicons/react/24/outline";
 import { UserEventSidebar } from "@/components/dashboard/UserEventSidebar";
 import Link from "next/link";
@@ -25,6 +26,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 // Helper function to ensure URL has proper protocol
 const ensureProtocol = (url: string): string => {
@@ -80,6 +83,10 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
   const [activeTab, setActiveTab] = useState("details");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [sponsorMembers, setSponsorMembers] = useState<any[]>([]);
+  const [loadingMembers, setLoadingMembers] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [showMemberProfile, setShowMemberProfile] = useState(false);
 
   // Extraction des paramètres
   useEffect(() => {
@@ -108,6 +115,13 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
     }
   }, [eventId]);
 
+  // Charger les membres quand l'onglet Membres est sélectionné
+  useEffect(() => {
+    if (selectedSponsor && activeTab === 'members') {
+      fetchSponsorMembers(selectedSponsor.id);
+    }
+  }, [selectedSponsor, activeTab]);
+
   /**
    * Récupère les détails de l'événement
    */
@@ -125,12 +139,12 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
   };
 
   /**
-   * Récupère la liste des sponsors
+   * Récupère la liste des sponsors (API publique)
    */
   const fetchSponsors = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/events/${eventId}/sponsors`);
+      const response = await fetch(`/api/public/events/${eventId}/sponsors`);
       if (!response.ok) throw new Error('Erreur lors de la récupération des sponsors');
       
       const data = await response.json();
@@ -145,6 +159,13 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
         eventId: string;
         createdAt: string;
         updatedAt: string;
+        stats?: {
+          members: number;
+          sessions: number;
+          documents: number;
+          appointments: number;
+          products: number;
+        };
       }) => ({
         ...sponsor,
         createdAt: new Date(sponsor.createdAt),
@@ -157,6 +178,34 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
     } finally {
       setLoading(false);
     }
+  };
+
+  /**
+   * Récupère les membres d'un sponsor
+   */
+  const fetchSponsorMembers = async (sponsorId: string) => {
+    setLoadingMembers(true);
+    try {
+      const response = await fetch(`/api/public/events/${eventId}/sponsors/${sponsorId}/members`);
+      if (!response.ok) throw new Error('Erreur lors de la récupération des membres');
+      
+      const data = await response.json();
+      setSponsorMembers(data);
+    } catch (error) {
+      console.error('Erreur:', error);
+      toast.error('Impossible de charger les membres');
+      setSponsorMembers([]);
+    } finally {
+      setLoadingMembers(false);
+    }
+  };
+
+  /**
+   * Affiche le profil d'un membre
+   */
+  const viewMemberProfile = (member: any) => {
+    setSelectedMember(member);
+    setShowMemberProfile(true);
   };
 
   /**
@@ -489,13 +538,157 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                   <TabsContent value="members" className="flex-1 overflow-auto">
                     <ScrollArea className="h-full">
                       <div className="p-6">
-                        <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                          Fonctionnalité à venir : Liste détaillée des membres
-                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                          Membres de l&apos;organisation ({sponsorMembers.length})
+                        </h3>
+                        
+                        {loadingMembers ? (
+                          <div className="text-center py-8">
+                            <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
+                            <p className="mt-4 text-sm text-gray-500">Chargement des membres...</p>
+                          </div>
+                        ) : sponsorMembers.length > 0 ? (
+                          <div className="space-y-3">
+                            {sponsorMembers.map((member) => (
+                              <div key={member.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                {/* Avatar */}
+                                <Avatar className="h-12 w-12">
+                                  <AvatarFallback className="bg-[#81B441] text-white font-semibold">
+                                    {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
+                                  </AvatarFallback>
+                                </Avatar>
+                                
+                                {/* Informations */}
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-semibold text-gray-900 text-sm">
+                                    {member.firstName} {member.lastName}
+                                  </h4>
+                                  <div className="text-sm text-gray-600">
+                                    {member.jobTitle && member.company ? (
+                                      <span>{member.jobTitle} • {member.company}</span>
+                                    ) : member.jobTitle ? (
+                                      <span>{member.jobTitle}</span>
+                                    ) : member.company ? (
+                                      <span>{member.company}</span>
+                                    ) : (
+                                      <span className="text-gray-400">Aucune information</span>
+                                    )}
+                                  </div>
+                                  {member.email && (
+                                    <div className="text-xs text-gray-500 truncate">
+                                      {member.email}
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                {/* Actions */}
+                                <div className="flex-shrink-0">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => viewMemberProfile(member)}
+                                    className="text-[#81B441] border-[#81B441] hover:bg-[#81B441] hover:text-white"
+                                  >
+                                    <UserIcon className="h-4 w-4 mr-1" />
+                                    Voir profil
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-12">
+                            <div className="text-gray-400 mb-4">
+                              <UserIcon className="h-16 w-16 mx-auto" />
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun membre</h3>
+                            <p className="text-gray-500">
+                              Aucun participant n&apos;est associé à ce sponsor pour le moment.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </ScrollArea>
                   </TabsContent>
                 </Tabs>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de profil du membre */}
+      <Dialog open={showMemberProfile} onOpenChange={setShowMemberProfile}>
+        <DialogContent className="sm:max-w-md">
+          {selectedMember && (
+            <div className="space-y-6">
+              {/* Avatar et informations principales */}
+              <div className="text-center">
+                <Avatar className="h-20 w-20 mx-auto mb-4">
+                  <AvatarFallback className="bg-[#81B441]/10 text-[#81B441] font-medium text-xl">
+                    {selectedMember.firstName?.[0]?.toUpperCase()}{selectedMember.lastName?.[0]?.toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                  {selectedMember.firstName} {selectedMember.lastName}
+                </h4>
+                
+                {/* Informations professionnelles */}
+                <div className="space-y-1 text-sm text-gray-600">
+                  {selectedMember.jobTitle && (
+                    <div className="flex items-center justify-center space-x-2">
+                      <BuildingOfficeIcon className="h-4 w-4" />
+                      <span>{selectedMember.jobTitle}</span>
+                    </div>
+                  )}
+                  {selectedMember.company && (
+                    <div className="flex items-center justify-center space-x-2">
+                      <BuildingOfficeIcon className="h-4 w-4" />
+                      <span>{selectedMember.company}</span>
+                    </div>
+                  )}
+                  {selectedMember.email && (
+                    <div className="flex items-center justify-center space-x-2">
+                      <EnvelopeIcon className="h-4 w-4" />
+                      <span className="truncate">{selectedMember.email}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Badge du type */}
+                <Badge className="mt-3 bg-blue-100 text-blue-800">
+                  {selectedMember.type === 'PARTICIPANT' ? 'Participant' : 
+                   selectedMember.type === 'SPEAKER' ? 'Intervenant' : 
+                   selectedMember.type === 'ORGANIZER' ? 'Organisateur' : 
+                   selectedMember.type}
+                </Badge>
+              </div>
+
+              {/* Actions CTA */}
+              <div className="flex gap-3 pt-4">
+                <Button
+                  variant="outline"
+                  className="flex-1 border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
+                  onClick={() => {
+                    toast.success(`Contact avec ${selectedMember.firstName} ${selectedMember.lastName} initié`);
+                    setShowMemberProfile(false);
+                  }}
+                >
+                  <UserIcon className="h-4 w-4 mr-2" />
+                  Contacter
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  className="flex-1 border-[#81B441] text-[#81B441] hover:bg-[#81B441] hover:text-white"
+                  onClick={() => {
+                    toast.success(`Demande de rendez-vous envoyée à ${selectedMember.firstName} ${selectedMember.lastName}`);
+                    setShowMemberProfile(false);
+                  }}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  Prendre RV
+                </Button>
               </div>
             </div>
           )}

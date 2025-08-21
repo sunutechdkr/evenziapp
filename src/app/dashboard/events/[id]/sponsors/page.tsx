@@ -1093,19 +1093,52 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                 {/* Gestion des niveaux */}
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold mb-4 text-gray-900">Gestion des niveaux de partenariat</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label className="text-sm font-medium">Niveaux personnalisés</Label>
-                        <p className="text-xs text-gray-500">Permettre la création de niveaux personnalisés</p>
+                  <div className="space-y-6">
+                    
+                    {/* Liste des niveaux actuels */}
+                    <div>
+                      <Label className="text-sm font-medium mb-3 block">Niveaux disponibles</Label>
+                      <div className="space-y-2">
+                        {[
+                          { value: 'PLATINUM', label: 'Platinum', color: 'bg-gray-200 text-gray-800' },
+                          { value: 'GOLD', label: 'Gold', color: 'bg-yellow-100 text-yellow-800' },
+                          { value: 'SILVER', label: 'Silver', color: 'bg-gray-100 text-gray-700' },
+                          { value: 'BRONZE', label: 'Bronze', color: 'bg-orange-100 text-orange-700' },
+                          { value: 'PARTNER', label: 'Partenaire', color: 'bg-blue-100 text-blue-800' },
+                          { value: 'MEDIA', label: 'Média', color: 'bg-purple-100 text-purple-800' },
+                          { value: 'OTHER', label: 'Autre', color: 'bg-gray-50 text-gray-600' }
+                        ].map((level) => (
+                          <div key={level.value} className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                            <div className="flex items-center gap-3">
+                              <Badge className={`${level.color} hover:${level.color}`}>
+                                {level.label}
+                              </Badge>
+                              <span className="text-sm text-gray-600">Niveau {level.label.toLowerCase()}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button variant="outline" size="sm">
+                                <PencilIcon className="h-3 w-3" />
+                              </Button>
+                              {level.value !== 'OTHER' && (
+                                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                                  <TrashIcon className="h-3 w-3" />
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <Switch />
+                      
+                      {/* Bouton d'ajout de niveau */}
+                      <Button variant="outline" className="mt-3 w-full border-dashed border-2 text-[#81B441] border-[#81B441] hover:bg-[#81B441]/5">
+                        + Ajouter un niveau personnalisé
+                      </Button>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div>
                         <Label className="text-sm font-medium">Affichage des badges de niveau</Label>
-                        <p className="text-xs text-gray-500">Afficher les badges de niveau sur les logos</p>
+                        <p className="text-xs text-gray-500">Afficher les badges de niveau sur les logos des sponsors</p>
                       </div>
                       <Switch defaultChecked />
                     </div>
