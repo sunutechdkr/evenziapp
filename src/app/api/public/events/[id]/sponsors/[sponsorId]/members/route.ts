@@ -44,6 +44,11 @@ export async function GET(
         company: true,
         type: true,
         createdAt: true,
+        user: {
+          select: {
+            image: true // Récupérer l'avatar de l'utilisateur
+          }
+        }
         // Pas de données sensibles exposées aux participants
       },
       orderBy: [
@@ -63,6 +68,7 @@ export async function GET(
       company: member.company || sponsor.name,
       type: member.type,
       joinedAt: member.createdAt,
+      avatar: member.user?.image || null, // Avatar de l'utilisateur
     }));
     
     return NextResponse.json(formattedMembers);
