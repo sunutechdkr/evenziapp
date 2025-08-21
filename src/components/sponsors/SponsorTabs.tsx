@@ -571,41 +571,47 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
           </div>
         </div>
 
-        {/* Zone liste scrollable */}
-        <div className="flex-1 min-h-0">
+        {/* Zone liste scrollable - hauteur fixe pour éviter débordement */}
+        <div className="flex-1 min-h-0 max-h-[400px]">
           <ScrollArea className="h-full">
-            <div className="p-4">
+            <div className="p-4 space-y-2">
               {loading ? (
                 <div className="text-center py-12">
                   <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
                   <p className="mt-4 text-sm text-gray-500">Chargement des membres...</p>
                 </div>
               ) : filteredMembers.length > 0 ? (
-                <div className="space-y-3">
+                <>
                   {filteredMembers.map((member, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                    <div key={index} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors">
                       {/* Avatar */}
-                      <Avatar className="h-12 w-12">
-                        <AvatarFallback className="bg-[#81B441] text-white font-semibold">
+                      <Avatar className="h-10 w-10 flex-shrink-0">
+                        <AvatarFallback className="bg-[#81B441] text-white font-semibold text-sm">
                           {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       
                       {/* Informations */}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 truncate">
+                        <h4 className="font-semibold text-gray-900 truncate text-sm">
                           {member.name || `${member.firstName} ${member.lastName}`}
                         </h4>
-                        {member.jobTitle && (
-                          <p className="text-sm text-gray-600 truncate">{member.jobTitle}</p>
-                        )}
-                        {member.company && (
-                          <p className="text-sm text-gray-500 truncate">{member.company}</p>
-                        )}
+                        {/* Fonction et entreprise sur la même ligne */}
+                        <div className="text-xs text-gray-600 truncate">
+                          {member.jobTitle && member.company ? (
+                            <span>{member.jobTitle} • {member.company}</span>
+                          ) : member.jobTitle ? (
+                            <span>{member.jobTitle}</span>
+                          ) : member.company ? (
+                            <span>{member.company}</span>
+                          ) : (
+                            <span className="text-gray-400">Aucune information</span>
+                          )}
+                        </div>
                       </div>
                       
                       {/* Actions */}
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <Button
                           variant="outline"
                           size="sm"
@@ -624,6 +630,7 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
                             };
                             viewParticipantProfile(participant);
                           }}
+                          className="text-xs px-2 py-1"
                         >
                           Voir profil
                         </Button>
@@ -631,14 +638,14 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDeleteMember(member)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1"
                         >
-                          <TrashIcon className="h-4 w-4" />
+                          <TrashIcon className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
                   ))}
-                </div>
+                </>
               ) : (
                 <div className="text-center py-12">
                   {searchQuery.trim() ? (

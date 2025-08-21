@@ -38,6 +38,10 @@ export function AddMembersDialog({
   const [loading, setLoading] = React.useState(false);
   const [addingMemberId, setAddingMemberId] = React.useState<string | null>(null);
 
+  // Normalisation pour la recherche (sans accents)
+  const normalize = (s = "") =>
+    s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
   // Reset search when dialog opens/closes
   React.useEffect(() => {
     if (!open) {
@@ -60,8 +64,18 @@ export function AddMembersDialog({
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        // Limiter à 25 résultats pour les performances
-        setParticipants(data.slice(0, 25));
+        
+        // Filtrer selon nom, prénom, email uniquement
+        const q = normalize(query);
+        const filteredData = data.filter((participant: Participant) => {
+          const haystack = normalize(
+            `${participant.firstName ?? ""} ${participant.lastName ?? ""} ${participant.email ?? ""}`
+          );
+          return haystack.includes(q);
+        });
+        
+        // Limiter à 15 résultats pour éviter débordement
+        setParticipants(filteredData.slice(0, 15));
       } else {
         console.error('Erreur lors du chargement des participants');
         setParticipants([]);
@@ -116,28 +130,28 @@ export function AddMembersDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[70vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
             Ajouter des membres
           </DialogTitle>
         </DialogHeader>
         
-        <div className="flex flex-col gap-4 flex-1 min-h-0">
+        <div className="flex flex-col gap-4 flex-1 min-h-0 overflow-hidden">
           {/* Barre de recherche */}
           <div className="flex-shrink-0">
             <Input
-              placeholder="Rechercher des participants (nom, email, entreprise)..."
+              placeholder="Rechercher des participants (nom, prénom, email)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
             />
           </div>
 
-          {/* Zone de résultats avec scroll */}
-          <div className="flex-1 min-h-0">
+          {/* Zone de résultats avec scroll - hauteur fixe */}
+          <div className="flex-1 min-h-0 max-h-[350px]">
             <ScrollArea className="h-full border rounded-md">
-              <div className="p-4">
+              <div className="p-3">
                 {loading ? (
                   <div className="text-center py-8">
                     <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
@@ -145,37 +159,36 @@ export function AddMembersDialog({
                   </div>
                 ) : searchQuery.trim() ? (
                   participants.length > 0 ? (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {participants.map((participant) => (
                         <div
                           key={participant.id}
-                          className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors"
+                          className="flex items-center gap-3 p-2 border rounded-lg hover:bg-gray-50 transition-colors"
                         >
-                          <Avatar className="h-10 w-10">
-                            <AvatarFallback className="bg-[#81B441] text-white font-medium">
+                          <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarFallback className="bg-[#81B441] text-white font-medium text-xs">
                               {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                           
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <p className="font-medium text-gray-900 truncate">
+                              <p className="font-medium text-gray-900 truncate text-sm">
                                 {participant.firstName} {participant.lastName}
                               </p>
-                              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                              <span className="text-xs bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full">
                                 {participant.type}
                               </span>
                             </div>
-                            <div className="text-sm text-gray-600 truncate">
-                              {participant.jobTitle && (
+                            {/* Fonction et entreprise sur la même ligne */}
+                            <div className="text-xs text-gray-600 truncate">
+                              {participant.jobTitle && participant.company ? (
+                                <span>{participant.jobTitle} • {participant.company}</span>
+                              ) : participant.jobTitle ? (
                                 <span>{participant.jobTitle}</span>
-                              )}
-                              {participant.jobTitle && participant.company && (
-                                <span className="mx-1">•</span>
-                              )}
-                              {participant.company && (
+                              ) : participant.company ? (
                                 <span>{participant.company}</span>
-                              )}
+                              ) : null}
                             </div>
                             <p className="text-xs text-gray-500 truncate">
                               {participant.email}
@@ -185,11 +198,11 @@ export function AddMembersDialog({
                           <Button
                             onClick={() => addMember(participant.id)}
                             disabled={addingMemberId === participant.id}
-                            className="bg-[#81B441] hover:bg-[#72a139] text-white"
+                            className="bg-[#81B441] hover:bg-[#72a139] text-white flex-shrink-0"
                             size="sm"
                           >
                             {addingMemberId === participant.id ? (
-                              <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-r-transparent"></div>
+                              <div className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-white border-r-transparent"></div>
                             ) : (
                               'Ajouter'
                             )}
