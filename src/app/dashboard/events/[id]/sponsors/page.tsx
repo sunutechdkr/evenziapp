@@ -880,92 +880,110 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                   <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
 
-                <div className="flex-1 overflow-hidden">
-                  <ScrollArea className="h-full">
-                    {/* Onglet Détails */}
-                    <TabsContent value="details" className="mt-6 space-y-6 pb-6">
-                      <SponsorDetailsTab 
-                        sponsor={getSponsorTabData(selectedSponsor)} 
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
-
-
-
-                    {/* Onglet Membres */}
-                    <TabsContent value="members" className="mt-6 space-y-6 pb-6">
-                      <SponsorMembersTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
-
-                    {/* Onglet Sessions */}
-                    <TabsContent value="sessions" className="mt-6 space-y-6 pb-6">
-                      <SponsorSessionsTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
-
-                    {/* Onglet RDV */}
-                    <TabsContent value="appointments" className="mt-6 pb-6">
-                      <div className="text-center py-8">
-                        <ClockIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun rendez-vous planifié</h3>
-                        <p className="text-gray-500">Les rendez-vous avec ce sponsor apparaîtront ici.</p>
+                <div className="flex-1 flex flex-col overflow-hidden">
+                  {/* Onglet Détails */}
+                  <TabsContent value="details" className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      <div className="p-6 space-y-6">
+                        <SponsorDetailsTab 
+                          sponsor={getSponsorTabData(selectedSponsor)} 
+                          isEditing={isEditing}
+                          editedSponsor={editedSponsor as any}
+                          setEditedSponsor={handleEditedSponsorUpdate}
+                        />
                       </div>
-                    </TabsContent>
+                    </ScrollArea>
+                  </TabsContent>
 
+                  {/* Onglet Membres */}
+                  <TabsContent value="members" className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      <div className="p-6 space-y-6">
+                        <SponsorMembersTab 
+                          sponsor={getSponsorTabData(selectedSponsor)}
+                          isEditing={isEditing}
+                          editedSponsor={editedSponsor as any}
+                          setEditedSponsor={handleEditedSponsorUpdate}
+                        />
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
 
+                  {/* Onglet Sessions */}
+                  <TabsContent value="sessions" className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      <div className="p-6 space-y-6">
+                        <SponsorSessionsTab 
+                          sponsor={getSponsorTabData(selectedSponsor)}
+                          isEditing={isEditing}
+                          editedSponsor={editedSponsor as any}
+                          setEditedSponsor={handleEditedSponsorUpdate}
+                        />
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
 
-                    {/* Onglet Documents */}
-                    <TabsContent value="documents" className="mt-6 space-y-6 pb-6">
-                      <SponsorDocumentsTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
-
-                    {/* Onglet Historique */}
-                    <TabsContent value="timeline" className="mt-6 pb-6">
-                      <div className="space-y-3">
-                        <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <CalendarIcon className="h-4 w-4 text-green-600" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-sm font-medium">Sponsor créé</div>
-                            <div className="text-xs text-gray-500">
-                              {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
-                            </div>
-                          </div>
+                  {/* Onglet RDV */}
+                  <TabsContent value="appointments" className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      <div className="p-6">
+                        <div className="text-center py-8">
+                          <ClockIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun rendez-vous planifié</h3>
+                          <p className="text-gray-500">Les rendez-vous avec ce sponsor apparaîtront ici.</p>
                         </div>
-                        
-                        {selectedSponsor.updatedAt && selectedSponsor.updatedAt.getTime() !== selectedSponsor.createdAt.getTime() && (
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+
+                  {/* Onglet Documents */}
+                  <TabsContent value="documents" className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      <div className="p-6 space-y-6">
+                        <SponsorDocumentsTab 
+                          sponsor={getSponsorTabData(selectedSponsor)}
+                          isEditing={isEditing}
+                          editedSponsor={editedSponsor as any}
+                          setEditedSponsor={handleEditedSponsorUpdate}
+                        />
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+
+                  {/* Onglet Historique */}
+                  <TabsContent value="timeline" className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      <div className="p-6">
+                        <div className="space-y-3">
                           <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                              <PencilIcon className="h-4 w-4 text-blue-600" />
+                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                              <CalendarIcon className="h-4 w-4 text-green-600" />
                             </div>
                             <div className="flex-1">
-                              <div className="text-sm font-medium">Dernière modification</div>
+                              <div className="text-sm font-medium">Sponsor créé</div>
                               <div className="text-xs text-gray-500">
-                                {format(selectedSponsor.updatedAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
+                                {format(selectedSponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
                               </div>
                             </div>
                           </div>
-                        )}
+                          
+                          {selectedSponsor.updatedAt && selectedSponsor.updatedAt.getTime() !== selectedSponsor.createdAt.getTime() && (
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <PencilIcon className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="text-sm font-medium">Dernière modification</div>
+                                <div className="text-xs text-gray-500">
+                                  {format(selectedSponsor.updatedAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </TabsContent>
-                  </ScrollArea>
+                    </ScrollArea>
+                  </TabsContent>
                 </div>
 
                 {/* Footer avec boutons d'action en mode édition */}

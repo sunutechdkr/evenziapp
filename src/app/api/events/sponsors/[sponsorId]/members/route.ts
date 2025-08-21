@@ -152,3 +152,52 @@ export async function POST(
     );
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ sponsorId: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+    }
+
+    const { sponsorId } = await params;
+    const { searchParams } = new URL(request.url);
+    const participantId = searchParams.get('participantId');
+
+    if (!participantId) {
+      return NextResponse.json({ error: 'ID du participant requis' }, { status: 400 });
+    }
+
+    // Récupérer le sponsor
+    const sponsor = await prisma.sponsor.findUnique({
+      where: { id: sponsorId },
+      select: { name: true, eventId: true }
+    });
+
+    if (!sponsor) {
+      return NextResponse.json({ error: 'Sponsor non trouvé' }, { status: 404 });
+    }
+
+    // Retirer l'association en vidant la company du participant
+    await prisma.registration.update({
+      where: { 
+        id: participantId,
+        eventId: sponsor.eventId // Sécurité: s'assurer que le participant est bien de cet événement
+      },
+      data: {
+        company: null
+      }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Erreur lors de la suppression du membre:', error);
+    return NextResponse.json(
+      { error: 'Erreur lors de la suppression du membre' },
+      { status: 500 }
+    );
+  }
+}

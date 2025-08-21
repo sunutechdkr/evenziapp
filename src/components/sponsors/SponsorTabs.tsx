@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, DocumentIcon, PhotoIcon, UserIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, PhotoIcon, UserIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -526,6 +526,29 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     setShowParticipantProfile(true);
   };
 
+  const removeMember = async (memberId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir retirer ce membre du sponsor ?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/events/sponsors/${sponsor.id}/members?participantId=${memberId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Recharger la liste des membres
+        await fetchMembers();
+      } else {
+        console.error('Erreur lors de la suppression du membre');
+        alert('Erreur lors de la suppression du membre');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression du membre:', error);
+      alert('Erreur lors de la suppression du membre');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* En-tête avec barre de recherche */}
@@ -560,21 +583,21 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
           <h4 className="text-md font-medium text-gray-900">
             Résultats de recherche ({filteredParticipants.length})
           </h4>
-          <div className="space-y-3 max-h-80 overflow-y-auto">
+          <div className="space-y-2 max-h-80 overflow-y-auto">
             {filteredParticipants.map((participant) => (
               <div
                 key={participant.id}
-                className="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
+                className="flex items-center justify-between p-3 border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
               >
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-3 flex-1">
                   {/* Avatar */}
-                  <div className="h-10 w-10 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium text-sm">
+                  <div className="h-8 w-8 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium text-xs">
                     {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
                   </div>
                   
-                  {/* Informations du participant */}
+                  {/* Informations du participant - tout sur une ligne */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2">
                       <h4 className="font-semibold text-gray-900 truncate">
                         {participant.firstName} {participant.lastName}
                       </h4>
@@ -583,20 +606,21 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
                       </span>
                     </div>
                     
-                    <div className="space-y-1">
+                    {/* Une seule ligne pour fonction, entreprise et email */}
+                    <div className="flex items-center gap-4 text-sm text-gray-600 truncate">
                       {participant.jobTitle && (
-                        <p className="text-sm font-medium text-gray-700 truncate">
+                        <span className="font-medium truncate">
                           {participant.jobTitle}
-                        </p>
+                        </span>
                       )}
                       {participant.company && (
-                        <p className="text-sm text-gray-600 truncate">
+                        <span className="truncate">
                           📢 {participant.company}
-                        </p>
+                        </span>
                       )}
-                      <p className="text-sm text-gray-500 truncate">
+                      <span className="truncate">
                         ✉️ {participant.email}
-                      </p>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -629,7 +653,7 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
       {searchQuery.trim() && filteredParticipants.length === 0 && (
         <div className="text-center py-6 border border-gray-200 rounded-lg bg-gray-50">
           <p className="text-gray-500">
-            Aucun participant trouvé pour "{searchQuery}"
+            Aucun participant trouvé pour &quot;{searchQuery}&quot;
           </p>
         </div>
       )}
@@ -644,21 +668,46 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
         <div className="space-y-3">
           {members.map((member, index) => (
             <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
-                <UserIcon className="h-5 w-5 text-gray-500" />
+              <div className="h-10 w-10 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium">
+                {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
               </div>
               <div className="flex-1">
                 <h4 className="font-medium text-gray-900">{member.name}</h4>
                 <p className="text-sm text-gray-500">{member.jobTitle}</p>
                 <p className="text-sm text-gray-400">{member.company}</p>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => console.log('Voir profil:', member.id)}
-              >
-                Voir profil
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    // Créer un objet participant pour la modal
+                    const participant = {
+                      id: member.id,
+                      firstName: member.firstName,
+                      lastName: member.lastName,
+                      email: member.email,
+                      jobTitle: member.jobTitle,
+                      company: member.company,
+                      type: member.type,
+                      registrationDate: member.joinedAt,
+                      shortCode: '',
+                      checkedIn: false
+                    };
+                    viewParticipantProfile(participant);
+                  }}
+                >
+                  Voir profil
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => removeMember(member.id)}
+                  className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                >
+                  <TrashIcon className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           ))}
         </div>
@@ -887,10 +936,28 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
 export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
   const [uploading, setUploading] = React.useState(false);
 
-  const handleDocumentUpload = async (files: FileList) => {
-    if (!files.length || !isEditing) return;
+  // Définir documents d'abord
+  const documents = React.useMemo(() => {
+    try {
+      // En mode édition, utiliser editedSponsor, sinon utiliser sponsor
+      const docsSource = isEditing && editedSponsor?.documents ? editedSponsor.documents : sponsor.documents;
+      
+      if (typeof docsSource === 'string') {
+        return JSON.parse(docsSource);
+      } else if (Array.isArray(docsSource)) {
+        return docsSource;
+      }
+      return [];
+    } catch (e) {
+      console.error('Erreur parsing documents:', e);
+      return [];
+    }
+  }, [sponsor.documents, editedSponsor?.documents, isEditing]);
 
-    const currentDocs = editedSponsor?.documents ? JSON.parse(editedSponsor.documents) : [];
+  const handleDocumentUpload = async (files: FileList) => {
+    if (!files.length || !isEditing || !setEditedSponsor) return;
+
+    const currentDocs = documents;
     
     // Limite de 2 documents
     if (currentDocs.length + files.length > 2) {
@@ -932,36 +999,28 @@ export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEdit
       }
 
       setEditedSponsor({
-        ...editedSponsor,
+        ...(editedSponsor || sponsor),
         documents: JSON.stringify(newDocs)
       });
     } catch (error) {
       console.error('Erreur lors du téléchargement:', error);
+      alert('Erreur lors du téléchargement des documents');
     } finally {
       setUploading(false);
     }
   };
 
   const handleDocumentDelete = (docId: string) => {
-    if (!isEditing) return;
+    if (!isEditing || !setEditedSponsor) return;
     
-    const currentDocs = editedSponsor?.documents ? JSON.parse(editedSponsor.documents) : [];
+    const currentDocs = documents;
     const filteredDocs = currentDocs.filter((doc: any) => doc.id !== docId);
     
     setEditedSponsor({
-      ...editedSponsor,
+      ...(editedSponsor || sponsor),
       documents: JSON.stringify(filteredDocs)
     });
   };
-
-  const documents = React.useMemo(() => {
-    try {
-      return editedSponsor?.documents ? JSON.parse(editedSponsor.documents) : 
-             sponsor.documents ? JSON.parse(sponsor.documents) : [];
-    } catch (e) {
-      return [];
-    }
-  }, [sponsor.documents, editedSponsor?.documents]);
 
   return (
     <div className="space-y-6">
