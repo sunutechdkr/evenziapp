@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, DocumentIcon, PhotoIcon, UserPlusIcon, UserIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon, LinkIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, DocumentIcon, PhotoIcon, UserIcon } from "@heroicons/react/24/outline";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -433,164 +433,7 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
 
 
 
-// Composant Onglet Documents
-export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
-  const [uploading, setUploading] = React.useState(false);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const documents = (editedSponsor?.documents as any[]) || (sponsor.documents as any[]) || [];
 
-  const handleFileUpload = async (files: FileList) => {
-    if (files.length === 0) return;
-    
-    // Vérifier le nombre maximum de documents
-    if (documents.length + files.length > 2) {
-      alert('Vous ne pouvez charger que 2 documents maximum par sponsor.');
-      return;
-    }
-
-    // Vérifier la taille des fichiers (5Mo max)
-    const maxSize = 5 * 1024 * 1024; // 5Mo en bytes
-    for (let i = 0; i < files.length; i++) {
-      if (files[i].size > maxSize) {
-        alert(`Le fichier "${files[i].name}" est trop volumineux. Taille maximum : 5Mo`);
-        return;
-      }
-    }
-
-    setUploading(true);
-    const newDocuments = [...documents];
-
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('type', 'document');
-
-        const response = await fetch('/api/blob/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          newDocuments.push({
-            name: file.name,
-            url: data.url,
-            size: formatFileSize(file.size),
-            type: file.type,
-            uploadedAt: new Date().toISOString()
-          });
-        } else {
-          throw new Error(`Erreur lors du téléchargement de ${file.name}`);
-        }
-      }
-
-      if (setEditedSponsor) {
-        setEditedSponsor({ ...editedSponsor, documents: newDocuments });
-      }
-    } catch (error) {
-      console.error('Erreur lors du téléchargement:', error);
-      alert('Erreur lors du téléchargement des documents');
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const removeDocument = (index: number) => {
-    const newDocuments = documents.filter((_, i) => i !== index);
-    if (setEditedSponsor) {
-      setEditedSponsor({ ...editedSponsor, documents: newDocuments });
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* Documents existants */}
-      {documents.length === 0 ? (
-        <div className="text-center py-8">
-          <DocumentIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun document</h3>
-          <p className="text-gray-500">Les documents joints par le sponsor apparaîtront ici.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {documents.map((doc: any, index: number) => (
-            <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
-              <div className="flex items-center gap-3">
-                <DocumentIcon className="h-5 w-5 text-gray-400" />
-                <div>
-                  <p className="font-medium text-gray-900">{doc.name}</p>
-                  <p className="text-sm text-gray-500">{doc.size} • {doc.type}</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                {doc.url && (
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => window.open(doc.url, '_blank')}
-                  >
-                    Ouvrir
-                  </Button>
-                )}
-                {isEditing && (
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => removeDocument(index)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    Supprimer
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      
-      {/* Zone d'upload en mode édition */}
-      {isEditing && documents.length < 2 && (
-        <div className="space-y-4">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <DocumentIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-            <p className="text-sm text-gray-600 mb-2">
-              Téléchargez vos documents (max 2 fichiers, 5Mo chacun)
-            </p>
-            <p className="text-xs text-gray-500 mb-4">
-              Formats acceptés : PDF, DOC, DOCX, JPG, PNG
-            </p>
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-              onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
-              className="hidden"
-            />
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-            >
-              {uploading ? 'Téléchargement...' : 'Choisir des fichiers'}
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Composant Onglet Membres
 export function SponsorMembersTab({ sponsor }: TabProps) {
@@ -598,6 +441,8 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
   const [loading, setLoading] = React.useState(false);
   const [showAddMember, setShowAddMember] = React.useState(false);
   const [participants, setParticipants] = React.useState<any[]>([]);
+  const [filteredParticipants, setFilteredParticipants] = React.useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState<any>(null);
   const [showParticipantProfile, setShowParticipantProfile] = React.useState(false);
 
@@ -621,15 +466,29 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     }
   };
 
-  const fetchParticipants = async () => {
+  const fetchParticipants = async (query = '') => {
     try {
-      const response = await fetch(`/api/events/${sponsor.eventId}/participants`);
+      const url = query 
+        ? `/api/events/${sponsor.eventId}/participants?search=${encodeURIComponent(query)}`
+        : `/api/events/${sponsor.eventId}/participants`;
+      
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         setParticipants(data);
+        setFilteredParticipants(data);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des participants:', error);
+    }
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      fetchParticipants(query);
+    } else {
+      setFilteredParticipants([]);
     }
   };
 
@@ -650,6 +509,9 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
       if (response.ok) {
         // Recharger la liste des membres
         await fetchMembers();
+        // Vider la recherche et les résultats
+        setSearchQuery('');
+        setFilteredParticipants([]);
         setShowAddMember(false);
       } else {
         console.error('Erreur lors de l\'ajout du membre');
@@ -666,25 +528,111 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
 
   return (
     <div className="space-y-6">
-      {/* En-tête avec CTA */}
-      <div className="flex items-center justify-between">
+      {/* En-tête avec barre de recherche */}
+      <div className="space-y-4">
         <div>
           <h3 className="text-lg font-medium text-gray-900">Membres de l&apos;organisation</h3>
           <p className="text-sm text-gray-500">
             Participants associés à {sponsor.name}
           </p>
         </div>
-        <Button
-          onClick={() => {
-            setShowAddMember(true);
-            fetchParticipants();
-          }}
-          className="bg-[#81B441] hover:bg-[#72a139]"
-        >
-          <UserPlusIcon className="h-4 w-4 mr-2" />
-          Ajouter un Membre
-        </Button>
+        
+        {/* Barre de recherche */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <input
+            type="text"
+            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-[#81B441] focus:border-[#81B441] sm:text-sm"
+            placeholder="Rechercher un participant à ajouter..."
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+        </div>
       </div>
+
+      {/* Résultats de recherche */}
+      {searchQuery.trim() && filteredParticipants.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="text-md font-medium text-gray-900">
+            Résultats de recherche ({filteredParticipants.length})
+          </h4>
+          <div className="space-y-3 max-h-80 overflow-y-auto">
+            {filteredParticipants.map((participant) => (
+              <div
+                key={participant.id}
+                className="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                <div className="flex items-center gap-4 flex-1">
+                  {/* Avatar */}
+                  <div className="h-10 w-10 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium text-sm">
+                    {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
+                  </div>
+                  
+                  {/* Informations du participant */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="font-semibold text-gray-900 truncate">
+                        {participant.firstName} {participant.lastName}
+                      </h4>
+                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                        {participant.type}
+                      </span>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      {participant.jobTitle && (
+                        <p className="text-sm font-medium text-gray-700 truncate">
+                          {participant.jobTitle}
+                        </p>
+                      )}
+                      {participant.company && (
+                        <p className="text-sm text-gray-600 truncate">
+                          📢 {participant.company}
+                        </p>
+                      )}
+                      <p className="text-sm text-gray-500 truncate">
+                        ✉️ {participant.email}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Actions */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => viewParticipantProfile(participant)}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    Voir profil
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => addMember(participant.id)}
+                    className="bg-[#81B441] hover:bg-[#72a139]"
+                  >
+                    Ajouter
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Message pour recherche vide */}
+      {searchQuery.trim() && filteredParticipants.length === 0 && (
+        <div className="text-center py-6 border border-gray-200 rounded-lg bg-gray-50">
+          <p className="text-gray-500">
+            Aucun participant trouvé pour "{searchQuery}"
+          </p>
+        </div>
+      )}
 
       {/* Liste des membres */}
       {loading ? (
@@ -933,147 +881,168 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
   );
 }
 
-// Composant Onglet Produits
-export function SponsorProductsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
-  const [products, setProducts] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(false);
 
-  const fetchProducts = async () => {
-    if (!sponsor.id) return;
-    setLoading(true);
+
+// Composant Onglet Documents
+export function SponsorDocumentsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
+  const [uploading, setUploading] = React.useState(false);
+
+  const handleDocumentUpload = async (files: FileList) => {
+    if (!files.length || !isEditing) return;
+
+    const currentDocs = editedSponsor?.documents ? JSON.parse(editedSponsor.documents) : [];
+    
+    // Limite de 2 documents
+    if (currentDocs.length + files.length > 2) {
+      alert('Vous ne pouvez télécharger que 2 documents maximum');
+      return;
+    }
+
+    setUploading(true);
+    const newDocs = [...currentDocs];
+
     try {
-      // Pour l'instant, on simule des produits
-      // Plus tard, on pourra créer une API dédiée
-      const mockProducts = [
-        {
-          id: '1',
-          name: 'Produit Premium',
-          description: 'Description du produit premium offert par le sponsor',
-          price: '99.99',
-          currency: 'EUR',
-          category: 'Premium',
-          available: true,
-          image: null
-        },
-        {
-          id: '2',
-          name: 'Service Consultation',
-          description: 'Service de consultation spécialisé',
-          price: '299.99',
-          currency: 'EUR',
-          category: 'Services',
-          available: true,
-          image: null
+      for (const file of Array.from(files)) {
+        // Vérifier la taille (5MB max)
+        if (file.size > 5 * 1024 * 1024) {
+          alert(`Le fichier ${file.name} est trop volumineux (max 5MB)`);
+          continue;
         }
-      ];
-      
-      // Simuler un délai d'API
-      setTimeout(() => {
-        setProducts(mockProducts);
-        setLoading(false);
-      }, 500);
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'document');
+
+        const response = await fetch('/api/blob/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          newDocs.push({
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            name: file.name,
+            url: data.url,
+            type: file.type,
+            size: file.size,
+            uploadedAt: new Date().toISOString()
+          });
+        }
+      }
+
+      setEditedSponsor({
+        ...editedSponsor,
+        documents: JSON.stringify(newDocs)
+      });
     } catch (error) {
-      console.error('Erreur lors du chargement des produits:', error);
-      setProducts([]);
-      setLoading(false);
+      console.error('Erreur lors du téléchargement:', error);
+    } finally {
+      setUploading(false);
     }
   };
 
-  React.useEffect(() => {
-    fetchProducts();
-  }, [sponsor.id]);
+  const handleDocumentDelete = (docId: string) => {
+    if (!isEditing) return;
+    
+    const currentDocs = editedSponsor?.documents ? JSON.parse(editedSponsor.documents) : [];
+    const filteredDocs = currentDocs.filter((doc: any) => doc.id !== docId);
+    
+    setEditedSponsor({
+      ...editedSponsor,
+      documents: JSON.stringify(filteredDocs)
+    });
+  };
+
+  const documents = React.useMemo(() => {
+    try {
+      return editedSponsor?.documents ? JSON.parse(editedSponsor.documents) : 
+             sponsor.documents ? JSON.parse(sponsor.documents) : [];
+    } catch (e) {
+      return [];
+    }
+  }, [sponsor.documents, editedSponsor?.documents]);
 
   return (
     <div className="space-y-6">
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-medium text-gray-900">Produits et Services</h3>
+          <h3 className="text-lg font-medium text-gray-900">Documents</h3>
           <p className="text-sm text-gray-500">
-            Produits et services proposés par {sponsor.name}
+            Documents partagés par {sponsor.name} (max 2 fichiers, 5MB chacun)
           </p>
         </div>
-        {isEditing && (
-          <Button className="bg-[#81B441] hover:bg-[#72a139]">
-            Ajouter un produit
-          </Button>
+        {isEditing && documents.length < 2 && (
+          <div>
+            <input
+              type="file"
+              id="document-upload"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              multiple
+              onChange={(e) => e.target.files && handleDocumentUpload(e.target.files)}
+            />
+            <Button
+              onClick={() => document.getElementById('document-upload')?.click()}
+              disabled={uploading}
+              className="bg-[#81B441] hover:bg-[#72a139]"
+            >
+              {uploading ? 'Téléchargement...' : 'Ajouter document'}
+            </Button>
+          </div>
         )}
       </div>
 
-      {/* Liste des produits */}
-      {loading ? (
-        <div className="text-center py-8">
-          <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
-          <p className="mt-2 text-sm text-gray-500">Chargement des produits...</p>
-        </div>
-      ) : products.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {products.map((product) => (
-            <div key={product.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-              {/* Image du produit */}
-              <div className="h-32 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
-                {product.image ? (
-                  <img src={product.image} alt={product.name} className="h-full w-full object-cover rounded-lg" />
-                ) : (
-                  <div className="text-gray-400 text-4xl">📦</div>
-                )}
+      {/* Liste des documents */}
+      {documents.length > 0 ? (
+        <div className="space-y-3">
+          {documents.map((doc: any) => (
+            <div key={doc.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg className="h-5 w-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">{doc.name}</h4>
+                  <p className="text-sm text-gray-500">
+                    {(doc.size / 1024 / 1024).toFixed(1)} MB
+                  </p>
+                </div>
               </div>
-              
-              {/* Informations du produit */}
-              <div className="space-y-2">
-                <div className="flex items-start justify-between">
-                  <h4 className="font-semibold text-gray-900 truncate">{product.name}</h4>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    product.available 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {product.available ? 'Disponible' : 'Indisponible'}
-                  </span>
-                </div>
-                
-                <p className="text-sm text-gray-600 line-clamp-2">
-                  {product.description}
-                </p>
-                
-                <div className="flex items-center justify-between pt-2">
-                  <div>
-                    <span className="text-lg font-bold text-[#81B441]">
-                      {product.price} {product.currency}
-                    </span>
-                    <p className="text-xs text-gray-500">{product.category}</p>
-                  </div>
-                  
-                  {isEditing ? (
-                    <div className="flex gap-1">
-                      <Button variant="outline" size="sm">
-                        Modifier
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button variant="outline" size="sm">
-                      Voir détails
-                    </Button>
-                  )}
-                </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open(doc.url, '_blank')}
+                >
+                  Ouvrir
+                </Button>
+                {isEditing && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDocumentDelete(doc.id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    Supprimer
+                  </Button>
+                )}
               </div>
             </div>
           ))}
         </div>
       ) : (
         <div className="text-center py-8">
-          <div className="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">📦</span>
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun produit</h3>
+          <svg className="h-12 w-12 text-gray-300 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+          </svg>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun document</h3>
           <p className="text-sm text-gray-500">
-            Ce sponsor n&apos;a pas encore ajouté de produits ou services.
+            {isEditing ? 'Ajoutez des documents pour ce sponsor' : 'Ce sponsor n\'a pas encore partagé de documents.'}
           </p>
-          {isEditing && (
-            <Button className="mt-4 bg-[#81B441] hover:bg-[#72a139]">
-              Ajouter le premier produit
-            </Button>
-          )}
         </div>
       )}
     </div>

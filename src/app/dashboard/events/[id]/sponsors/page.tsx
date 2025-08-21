@@ -47,7 +47,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
-import { SponsorDetailsTab, SponsorMembersTab, SponsorSessionsTab, SponsorProductsTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
+import { SponsorDetailsTab, SponsorMembersTab, SponsorSessionsTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
 
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -871,12 +871,11 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
               {/* Onglets */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-                <TabsList className="grid w-full grid-cols-7 flex-shrink-0">
+                <TabsList className="grid w-full grid-cols-6 flex-shrink-0">
                   <TabsTrigger value="details">Détails</TabsTrigger>
                   <TabsTrigger value="members">Membres</TabsTrigger>
                   <TabsTrigger value="sessions">Sessions</TabsTrigger>
                   <TabsTrigger value="appointments">RDV</TabsTrigger>
-                  <TabsTrigger value="products">Produits</TabsTrigger>
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
@@ -884,7 +883,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                 <div className="flex-1 overflow-hidden">
                   <ScrollArea className="h-full">
                     {/* Onglet Détails */}
-                    <TabsContent value="details" className="mt-6 space-y-6">
+                    <TabsContent value="details" className="mt-6 space-y-6 pb-6">
                       <SponsorDetailsTab 
                         sponsor={getSponsorTabData(selectedSponsor)} 
                         isEditing={isEditing}
@@ -895,18 +894,8 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
 
 
-                    {/* Onglet Documents */}
-                    <TabsContent value="documents" className="mt-6 space-y-6">
-                      <SponsorDocumentsTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
-
                     {/* Onglet Membres */}
-                    <TabsContent value="members" className="mt-6 space-y-6">
+                    <TabsContent value="members" className="mt-6 space-y-6 pb-6">
                       <SponsorMembersTab 
                         sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
@@ -916,7 +905,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     </TabsContent>
 
                     {/* Onglet Sessions */}
-                    <TabsContent value="sessions" className="mt-6 space-y-6">
+                    <TabsContent value="sessions" className="mt-6 space-y-6 pb-6">
                       <SponsorSessionsTab 
                         sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
@@ -926,7 +915,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     </TabsContent>
 
                     {/* Onglet RDV */}
-                    <TabsContent value="appointments" className="mt-6">
+                    <TabsContent value="appointments" className="mt-6 pb-6">
                       <div className="text-center py-8">
                         <ClockIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun rendez-vous planifié</h3>
@@ -934,18 +923,10 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                       </div>
                     </TabsContent>
 
-                    {/* Onglet Produits */}
-                    <TabsContent value="products" className="mt-6 space-y-6">
-                      <SponsorProductsTab 
-                        sponsor={getSponsorTabData(selectedSponsor)}
-                        isEditing={isEditing}
-                        editedSponsor={editedSponsor as any}
-                        setEditedSponsor={handleEditedSponsorUpdate}
-                      />
-                    </TabsContent>
+
 
                     {/* Onglet Documents */}
-                    <TabsContent value="documents" className="mt-6 space-y-6">
+                    <TabsContent value="documents" className="mt-6 space-y-6 pb-6">
                       <SponsorDocumentsTab 
                         sponsor={getSponsorTabData(selectedSponsor)}
                         isEditing={isEditing}
@@ -955,7 +936,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                     </TabsContent>
 
                     {/* Onglet Historique */}
-                    <TabsContent value="timeline" className="mt-6">
+                    <TabsContent value="timeline" className="mt-6 pb-6">
                       <div className="space-y-3">
                         <div className="flex items-start gap-3">
                           <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
