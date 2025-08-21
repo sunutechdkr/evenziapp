@@ -105,89 +105,93 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
   };
 
   return (
-    <div className="space-y-6">
-      {/* Logo du sponsor */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Logo</Label>
-        <div className="flex items-center gap-4">
-          <SponsorLogo 
-            src={editedSponsor?.logo || sponsor.logo} 
-            alt={sponsor.name}
-            size="lg"
-          />
-          {isEditing && (
-            <div>
-              <input
-                type="file"
-                id="logo-upload"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleLogoUpload(file);
-                }}
-              />
-              <Button 
-                variant="outline" 
-                onClick={() => document.getElementById('logo-upload')?.click()}
-                className="h-8"
-              >
-                <PhotoIcon className="h-4 w-4 mr-2" />
-                Changer logo
-              </Button>
-            </div>
+    <div className="space-y-4">
+      {/* Section Logo + Description en une ligne */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        {/* Logo */}
+        <div>
+          <Label className="text-sm font-medium text-gray-500 mb-2 block">Logo</Label>
+          <div className="flex items-center gap-2">
+            <SponsorLogo 
+              src={editedSponsor?.logo || sponsor.logo} 
+              alt={sponsor.name}
+              size="md"
+            />
+            {isEditing && (
+              <div>
+                <input
+                  type="file"
+                  id="logo-upload"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleLogoUpload(file);
+                  }}
+                />
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => document.getElementById('logo-upload')?.click()}
+                >
+                  <PhotoIcon className="h-3 w-3 mr-1" />
+                  Modifier
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="lg:col-span-3">
+          <Label className="text-sm font-medium text-gray-500 mb-2 block">Description</Label>
+          {isEditing ? (
+            <Textarea
+              value={editedSponsor?.description || ''}
+              onChange={(e) => setEditedSponsor?.({ ...editedSponsor, description: e.target.value })}
+              placeholder="Description du sponsor..."
+              rows={2}
+              className="text-sm"
+            />
+          ) : (
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {sponsor.description || 'Aucune description disponible'}
+            </p>
           )}
         </div>
       </div>
 
-      {/* Description */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Description</Label>
-        {isEditing ? (
-          <Textarea
-            value={editedSponsor?.description || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, description: e.target.value })}
-            placeholder="Description du sponsor..."
-            className="min-h-[100px]"
-          />
-        ) : (
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-gray-700 whitespace-pre-wrap">
-              {sponsor.description || 'Aucune description disponible'}
-            </p>
-          </div>
-        )}
-      </div>
+      {/* Informations générales sur une seule ligne */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Emplacement */}
+        <div>
+          <Label className="text-sm font-medium text-gray-500 mb-1 block">Emplacement</Label>
+          {isEditing ? (
+            <Input
+              value={editedSponsor?.location || ''}
+              onChange={(e) => setEditedSponsor?.({ ...editedSponsor, location: e.target.value })}
+              placeholder="Stand A12, Hall 1, etc."
+              className="text-sm"
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <MapPinIcon className="h-3 w-3 text-gray-400" />
+              <span className="text-sm text-gray-700">
+                {sponsor.location || 'Non défini'}
+              </span>
+            </div>
+          )}
+        </div>
 
-      {/* Emplacement */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Emplacement</Label>
-        {isEditing ? (
-          <Input
-            value={editedSponsor?.location || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, location: e.target.value })}
-            placeholder="Stand A12, Hall 1, etc."
-          />
-        ) : (
-          <div className="flex items-center gap-2">
-            <MapPinIcon className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-700">
-              {sponsor.location || 'Emplacement non défini'}
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className="grid grid-cols-2 gap-6">
         {/* Niveau de sponsoring */}
         <div>
-          <Label className="text-sm font-medium text-gray-500 mb-2 block">Niveau de sponsoring</Label>
+          <Label className="text-sm font-medium text-gray-500 mb-1 block">Niveau</Label>
           {isEditing ? (
             <Select 
               value={editedSponsor?.level || sponsor.level}
               onValueChange={(value) => setEditedSponsor?.({ ...editedSponsor, level: value as SponsorLevel })}
             >
-              <SelectTrigger>
+              <SelectTrigger className="text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -201,7 +205,7 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
               </SelectContent>
             </Select>
           ) : (
-            <Badge className={`${getLevelBadgeClass(sponsor.level)}`}>
+            <Badge className={`${getLevelBadgeClass(sponsor.level)} text-xs`}>
               {getLevelText(sponsor.level)}
             </Badge>
           )}
@@ -209,221 +213,219 @@ export function SponsorDetailsTab({ sponsor, isEditing, editedSponsor, setEdited
         
         {/* Visibilité */}
         <div>
-          <Label className="text-sm font-medium text-gray-500 mb-2 block">Visibilité</Label>
+          <Label className="text-sm font-medium text-gray-500 mb-1 block">Visibilité</Label>
           <div className="flex items-center gap-2">
             {sponsor.visible ? (
-              <span className="flex items-center text-green-600">
-                <EyeIcon className="h-4 w-4 mr-2" />
-                Visible publiquement
+              <span className="flex items-center text-sm text-green-600">
+                <EyeIcon className="h-3 w-3 mr-1" />
+                Visible
               </span>
             ) : (
-              <span className="flex items-center text-gray-500">
-                <EyeSlashIcon className="h-4 w-4 mr-2" />
-                Non visible
+              <span className="flex items-center text-sm text-gray-500">
+                <EyeSlashIcon className="h-3 w-3 mr-1" />
+                Masqué
               </span>
             )}
           </div>
         </div>
+
+        {/* Site Web */}
+        <div>
+          <Label className="text-sm font-medium text-gray-500 mb-1 block">Site web</Label>
+          {isEditing ? (
+            <Input
+              value={editedSponsor?.website || ''}
+              onChange={(e) => setEditedSponsor?.({ ...editedSponsor, website: e.target.value })}
+              placeholder="https://exemple.com"
+              type="url"
+              className="text-sm"
+            />
+          ) : sponsor.website ? (
+            <a 
+              href={ensureProtocol(sponsor.website)} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
+            >
+              <LinkIcon className="h-3 w-3 mr-1" />
+              Site web
+            </a>
+          ) : (
+            <span className="text-sm text-gray-500">Non renseigné</span>
+          )}
+        </div>
       </div>
 
-      {/* Site Web */}
+      {/* Coordonnées compactes */}
       <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Site web</Label>
-        {isEditing ? (
-          <Input
-            value={editedSponsor?.website || ''}
-            onChange={(e) => setEditedSponsor?.({ ...editedSponsor, website: e.target.value })}
-            placeholder="https://exemple.com"
-            type="url"
-          />
-        ) : sponsor.website ? (
-          <a 
-            href={ensureProtocol(sponsor.website)} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <LinkIcon className="h-4 w-4 mr-2" />
-            {sponsor.website}
-          </a>
-        ) : (
-          <span className="text-gray-500">Aucun site web renseigné</span>
-        )}
-      </div>
-
-      {/* Coordonnées */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-3 block">Coordonnées</Label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Adresse */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">Adresse</Label>
-            {isEditing ? (
-              <Textarea
-                value={editedSponsor?.address || ''}
-                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, address: e.target.value })}
-                placeholder="Adresse complète..."
-                rows={2}
-              />
-            ) : (
-              <div className="flex items-start gap-2">
-                <MapPinIcon className="h-4 w-4 text-gray-400 mt-0.5" />
-                <span className="text-gray-700 text-sm">
+        <Label className="text-sm font-medium text-gray-500 mb-2 block">Coordonnées</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* Colonne 1 */}
+          <div className="space-y-2">
+            {/* Adresse */}
+            <div>
+              <Label className="text-xs text-gray-400 mb-1 block">Adresse</Label>
+              {isEditing ? (
+                <Input
+                  value={editedSponsor?.address || ''}
+                  onChange={(e) => setEditedSponsor?.({ ...editedSponsor, address: e.target.value })}
+                  placeholder="Adresse complète..."
+                  className="text-sm"
+                />
+              ) : (
+                <span className="text-sm text-gray-700">
                   {sponsor.address || 'Non renseignée'}
                 </span>
-              </div>
-            )}
+              )}
+            </div>
+
+            {/* Téléphone */}
+            <div>
+              <Label className="text-xs text-gray-400 mb-1 block">Téléphone</Label>
+              {isEditing ? (
+                <Input
+                  value={editedSponsor?.phone || ''}
+                  onChange={(e) => setEditedSponsor?.({ ...editedSponsor, phone: e.target.value })}
+                  placeholder="+33 1 23 45 67 89"
+                  type="tel"
+                  className="text-sm"
+                />
+              ) : sponsor.phone ? (
+                <a href={`tel:${sponsor.phone}`} className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800">
+                  <PhoneIcon className="h-3 w-3" />
+                  {sponsor.phone}
+                </a>
+              ) : (
+                <span className="text-sm text-gray-500">Non renseigné</span>
+              )}
+            </div>
           </div>
 
-          {/* Email */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">Email</Label>
-            {isEditing ? (
-              <Input
-                value={editedSponsor?.email || ''}
-                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, email: e.target.value })}
-                placeholder="contact@entreprise.com"
-                type="email"
-              />
-            ) : sponsor.email ? (
-              <a href={`mailto:${sponsor.email}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
-                <EnvelopeIcon className="h-4 w-4" />
-                {sponsor.email}
-              </a>
-            ) : (
-              <span className="text-gray-500 text-sm">Non renseigné</span>
-            )}
-          </div>
+          {/* Colonne 2 */}
+          <div className="space-y-2">
+            {/* Email */}
+            <div>
+              <Label className="text-xs text-gray-400 mb-1 block">Email</Label>
+              {isEditing ? (
+                <Input
+                  value={editedSponsor?.email || ''}
+                  onChange={(e) => setEditedSponsor?.({ ...editedSponsor, email: e.target.value })}
+                  placeholder="contact@entreprise.com"
+                  type="email"
+                  className="text-sm"
+                />
+              ) : sponsor.email ? (
+                <a href={`mailto:${sponsor.email}`} className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800">
+                  <EnvelopeIcon className="h-3 w-3" />
+                  {sponsor.email}
+                </a>
+              ) : (
+                <span className="text-sm text-gray-500">Non renseigné</span>
+              )}
+            </div>
 
-          {/* Téléphone fixe */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">Téléphone</Label>
-            {isEditing ? (
-              <Input
-                value={editedSponsor?.phone || ''}
-                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, phone: e.target.value })}
-                placeholder="+33 1 23 45 67 89"
-                type="tel"
-              />
-            ) : sponsor.phone ? (
-              <a href={`tel:${sponsor.phone}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
-                <PhoneIcon className="h-4 w-4" />
-                {sponsor.phone}
-              </a>
-            ) : (
-              <span className="text-gray-500 text-sm">Non renseigné</span>
-            )}
-          </div>
-
-          {/* Mobile */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">Mobile</Label>
-            {isEditing ? (
-              <Input
-                value={editedSponsor?.mobile || ''}
-                onChange={(e) => setEditedSponsor?.({ ...editedSponsor, mobile: e.target.value })}
-                placeholder="+33 6 12 34 56 78"
-                type="tel"
-              />
-            ) : sponsor.mobile ? (
-              <a href={`tel:${sponsor.mobile}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
-                <PhoneIcon className="h-4 w-4" />
-                {sponsor.mobile}
-              </a>
-            ) : (
-              <span className="text-gray-500 text-sm">Non renseigné</span>
-            )}
+            {/* Mobile */}
+            <div>
+              <Label className="text-xs text-gray-400 mb-1 block">Mobile</Label>
+              {isEditing ? (
+                <Input
+                  value={editedSponsor?.mobile || ''}
+                  onChange={(e) => setEditedSponsor?.({ ...editedSponsor, mobile: e.target.value })}
+                  placeholder="+33 6 12 34 56 78"
+                  type="tel"
+                  className="text-sm"
+                />
+              ) : sponsor.mobile ? (
+                <a href={`tel:${sponsor.mobile}`} className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800">
+                  <PhoneIcon className="h-3 w-3" />
+                  {sponsor.mobile}
+                </a>
+              ) : (
+                <span className="text-sm text-gray-500">Non renseigné</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Réseaux sociaux */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-3 block">Réseaux sociaux</Label>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* LinkedIn */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">LinkedIn</Label>
+      {/* Réseaux sociaux compacts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <Label className="text-sm font-medium text-gray-500 mb-2 block">Réseaux sociaux</Label>
+          <div className="space-y-1">
+            {/* LinkedIn */}
             {isEditing ? (
               <Input
                 value={editedSponsor?.linkedinUrl || ''}
                 onChange={(e) => setEditedSponsor?.({ ...editedSponsor, linkedinUrl: e.target.value })}
-                placeholder="https://linkedin.com/company/..."
+                placeholder="LinkedIn URL..."
                 type="url"
+                className="text-sm"
               />
             ) : sponsor.linkedinUrl ? (
               <a 
                 href={ensureProtocol(sponsor.linkedinUrl)} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+                className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
               >
-                <span className="w-4 h-4 mr-2">📊</span>
-                LinkedIn
+                📊 LinkedIn
               </a>
-            ) : (
-              <span className="text-gray-500 text-sm">Non renseigné</span>
-            )}
-          </div>
+            ) : null}
 
-          {/* X (Twitter) */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">X (Twitter)</Label>
+            {/* X (Twitter) */}
             {isEditing ? (
               <Input
                 value={editedSponsor?.twitterUrl || ''}
                 onChange={(e) => setEditedSponsor?.({ ...editedSponsor, twitterUrl: e.target.value })}
-                placeholder="https://x.com/username"
+                placeholder="X/Twitter URL..."
                 type="url"
+                className="text-sm"
               />
             ) : sponsor.twitterUrl ? (
               <a 
                 href={ensureProtocol(sponsor.twitterUrl)} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+                className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
               >
-                <span className="w-4 h-4 mr-2">🐦</span>
-                X (Twitter)
+                🐦 X (Twitter)
               </a>
-            ) : (
-              <span className="text-gray-500 text-sm">Non renseigné</span>
-            )}
-          </div>
+            ) : null}
 
-          {/* Facebook */}
-          <div>
-            <Label className="text-xs text-gray-400 mb-1 block">Facebook</Label>
+            {/* Facebook */}
             {isEditing ? (
               <Input
                 value={editedSponsor?.facebookUrl || ''}
                 onChange={(e) => setEditedSponsor?.({ ...editedSponsor, facebookUrl: e.target.value })}
-                placeholder="https://facebook.com/page"
+                placeholder="Facebook URL..."
                 type="url"
+                className="text-sm"
               />
             ) : sponsor.facebookUrl ? (
               <a 
                 href={ensureProtocol(sponsor.facebookUrl)} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+                className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
               >
-                <span className="w-4 h-4 mr-2">📘</span>
-                Facebook
+                📘 Facebook
               </a>
-            ) : (
-              <span className="text-gray-500 text-sm">Non renseigné</span>
+            ) : null}
+
+            {!isEditing && !sponsor.linkedinUrl && !sponsor.twitterUrl && !sponsor.facebookUrl && (
+              <span className="text-sm text-gray-500">Aucun réseau social renseigné</span>
             )}
           </div>
         </div>
-      </div>
 
-      {/* Date d'ajout */}
-      <div>
-        <Label className="text-sm font-medium text-gray-500 mb-2 block">Date d&apos;ajout</Label>
-        <span className="text-gray-700">
-          {format(typeof sponsor.createdAt === 'string' ? new Date(sponsor.createdAt) : sponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
-        </span>
+        {/* Date d'ajout */}
+        <div>
+          <Label className="text-sm font-medium text-gray-500 mb-2 block">Date d&apos;ajout</Label>
+          <span className="text-sm text-gray-700">
+            {format(typeof sponsor.createdAt === 'string' ? new Date(sponsor.createdAt) : sponsor.createdAt, "dd MMMM yyyy à HH:mm", { locale: fr })}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -579,11 +581,11 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
 
       {/* Résultats de recherche */}
       {searchQuery.trim() && filteredParticipants.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="text-md font-medium text-gray-900">
-            Résultats de recherche ({filteredParticipants.length})
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-900">
+            Résultats ({filteredParticipants.length})
           </h4>
-          <div className="space-y-2 max-h-80 overflow-y-auto">
+          <div className="space-y-2 max-h-48 overflow-y-auto">
             {filteredParticipants.map((participant) => (
               <div
                 key={participant.id}
@@ -665,16 +667,25 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
           <p className="mt-2 text-sm text-gray-500">Chargement des membres...</p>
         </div>
       ) : members.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {members.map((member, index) => (
-            <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="h-10 w-10 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium">
+            <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <div className="h-8 w-8 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium text-sm">
                 {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
               </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-gray-900">{member.name}</h4>
-                <p className="text-sm text-gray-500">{member.jobTitle}</p>
-                <p className="text-sm text-gray-400">{member.company}</p>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-medium text-gray-900 text-sm">{member.name}</h4>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  {member.jobTitle && (
+                    <span className="truncate">{member.jobTitle}</span>
+                  )}
+                  {member.jobTitle && member.company && (
+                    <span>•</span>
+                  )}
+                  {member.company && (
+                    <span className="truncate">{member.company}</span>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <Button

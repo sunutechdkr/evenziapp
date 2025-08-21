@@ -807,7 +807,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
       {/* Modal des détails du sponsor */}
       <Dialog open={showSponsorModal} onOpenChange={setShowSponsorModal}>
-        <DialogContent className="max-w-5xl h-[700px] flex flex-col">
+        <DialogContent className="max-w-5xl max-h-[90vh] h-[80vh] flex flex-col">
           {selectedSponsor && (
             <div className="flex flex-col h-full">
               {/* En-tête fixe */}
