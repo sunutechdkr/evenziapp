@@ -598,6 +598,8 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
   const [loading, setLoading] = React.useState(false);
   const [showAddMember, setShowAddMember] = React.useState(false);
   const [participants, setParticipants] = React.useState<any[]>([]);
+  const [selectedParticipant, setSelectedParticipant] = React.useState<any>(null);
+  const [showParticipantProfile, setShowParticipantProfile] = React.useState(false);
 
   const fetchMembers = async () => {
     if (!sponsor.id) return;
@@ -655,6 +657,11 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
     } catch (error) {
       console.error('Erreur lors de l\'ajout du membre:', error);
     }
+  };
+
+  const viewParticipantProfile = (participant: any) => {
+    setSelectedParticipant(participant);
+    setShowParticipantProfile(true);
   };
 
   return (
@@ -719,37 +726,354 @@ export function SponsorMembersTab({ sponsor }: TabProps) {
 
       {/* Modal pour ajouter un membre */}
       {showAddMember && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-medium mb-4">Ajouter un membre</h3>
-            <div className="space-y-2 max-h-64 overflow-y-auto">
-              {participants.map((participant) => (
-                <div
-                  key={participant.id}
-                  className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
-                >
-                  <div>
-                    <p className="font-medium">{participant.name}</p>
-                    <p className="text-sm text-gray-500">{participant.email}</p>
-                  </div>
-                  <Button
-                    size="sm"
-                    onClick={() => addMember(participant.id)}
-                  >
-                    Ajouter
-                  </Button>
-                </div>
-              ))}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">Ajouter un membre</h3>
+              <Button
+                variant="outline"
+                onClick={() => setShowAddMember(false)}
+                className="h-8 w-8 p-0"
+              >
+                ×
+              </Button>
             </div>
-            <div className="mt-4 flex justify-end">
+            
+            <div className="flex-1 overflow-hidden">
+              <div className="h-full overflow-y-auto space-y-3 pr-2">
+                {participants.length > 0 ? participants.map((participant) => (
+                  <div
+                    key={participant.id}
+                    className="flex items-center justify-between p-4 border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="flex items-center gap-4 flex-1">
+                      {/* Avatar */}
+                      <div className="h-12 w-12 bg-[#81B441] rounded-full flex items-center justify-center text-white font-medium">
+                        {participant.firstName?.[0]?.toUpperCase()}{participant.lastName?.[0]?.toUpperCase()}
+                      </div>
+                      
+                      {/* Informations du participant */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold text-gray-900 truncate">
+                            {participant.firstName} {participant.lastName}
+                          </h4>
+                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            {participant.type}
+                          </span>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          {participant.jobTitle && (
+                            <p className="text-sm font-medium text-gray-700 truncate">
+                              {participant.jobTitle}
+                            </p>
+                          )}
+                          {participant.company && (
+                            <p className="text-sm text-gray-600 truncate">
+                              📢 {participant.company}
+                            </p>
+                          )}
+                          <p className="text-sm text-gray-500 truncate">
+                            ✉️ {participant.email}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => viewParticipantProfile(participant)}
+                        className="text-gray-600 hover:text-gray-800"
+                      >
+                        Voir profil
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => addMember(participant.id)}
+                        className="bg-[#81B441] hover:bg-[#72a139]"
+                      >
+                        Ajouter
+                      </Button>
+                    </div>
+                  </div>
+                )) : (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">Aucun participant disponible</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-end">
               <Button
                 variant="outline"
                 onClick={() => setShowAddMember(false)}
               >
-                Annuler
+                Fermer
               </Button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Modal de profil du participant */}
+      {showParticipantProfile && selectedParticipant && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">Profil du participant</h3>
+              <Button
+                variant="outline"
+                onClick={() => setShowParticipantProfile(false)}
+                className="h-8 w-8 p-0"
+              >
+                ×
+              </Button>
+            </div>
+            
+            <div className="space-y-6">
+              {/* En-tête du profil */}
+              <div className="flex items-center gap-4">
+                <div className="h-16 w-16 bg-[#81B441] rounded-full flex items-center justify-center text-white font-bold text-xl">
+                  {selectedParticipant.firstName?.[0]?.toUpperCase()}{selectedParticipant.lastName?.[0]?.toUpperCase()}
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900">
+                    {selectedParticipant.firstName} {selectedParticipant.lastName}
+                  </h4>
+                  <p className="text-gray-600">{selectedParticipant.jobTitle}</p>
+                  <span className="inline-block mt-1 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                    {selectedParticipant.type}
+                  </span>
+                </div>
+              </div>
+
+              {/* Informations détaillées */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="font-semibold text-gray-900 mb-2">Contact</h5>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-500">✉️</span>
+                      <span className="text-sm">{selectedParticipant.email}</span>
+                    </div>
+                    {selectedParticipant.phone && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-500">📞</span>
+                        <span className="text-sm">{selectedParticipant.phone}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h5 className="font-semibold text-gray-900 mb-2">Entreprise</h5>
+                  <div className="space-y-2">
+                    {selectedParticipant.company && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-500">🏢</span>
+                        <span className="text-sm">{selectedParticipant.company}</span>
+                      </div>
+                    )}
+                    {selectedParticipant.jobTitle && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-500">💼</span>
+                        <span className="text-sm">{selectedParticipant.jobTitle}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Informations d'inscription */}
+              <div>
+                <h5 className="font-semibold text-gray-900 mb-2">Inscription</h5>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500">📅</span>
+                    <span className="text-sm">
+                      Inscrit le {selectedParticipant.registrationDate ? 
+                        format(new Date(selectedParticipant.registrationDate), "dd MMMM yyyy", { locale: fr }) :
+                        'Date inconnue'
+                      }
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500">🎫</span>
+                    <span className="text-sm">Code: {selectedParticipant.shortCode}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={selectedParticipant.checkedIn ? "text-green-500" : "text-gray-500"}>
+                      {selectedParticipant.checkedIn ? "✅" : "⏳"}
+                    </span>
+                    <span className="text-sm">
+                      {selectedParticipant.checkedIn ? "Présent à l'événement" : "Pas encore arrivé"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowParticipantProfile(false)}
+              >
+                Fermer
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Composant Onglet Produits
+export function SponsorProductsTab({ sponsor, isEditing, editedSponsor, setEditedSponsor }: TabProps) {
+  const [products, setProducts] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const fetchProducts = async () => {
+    if (!sponsor.id) return;
+    setLoading(true);
+    try {
+      // Pour l'instant, on simule des produits
+      // Plus tard, on pourra créer une API dédiée
+      const mockProducts = [
+        {
+          id: '1',
+          name: 'Produit Premium',
+          description: 'Description du produit premium offert par le sponsor',
+          price: '99.99',
+          currency: 'EUR',
+          category: 'Premium',
+          available: true,
+          image: null
+        },
+        {
+          id: '2',
+          name: 'Service Consultation',
+          description: 'Service de consultation spécialisé',
+          price: '299.99',
+          currency: 'EUR',
+          category: 'Services',
+          available: true,
+          image: null
+        }
+      ];
+      
+      // Simuler un délai d'API
+      setTimeout(() => {
+        setProducts(mockProducts);
+        setLoading(false);
+      }, 500);
+    } catch (error) {
+      console.error('Erreur lors du chargement des produits:', error);
+      setProducts([]);
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProducts();
+  }, [sponsor.id]);
+
+  return (
+    <div className="space-y-6">
+      {/* En-tête */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-medium text-gray-900">Produits et Services</h3>
+          <p className="text-sm text-gray-500">
+            Produits et services proposés par {sponsor.name}
+          </p>
+        </div>
+        {isEditing && (
+          <Button className="bg-[#81B441] hover:bg-[#72a139]">
+            Ajouter un produit
+          </Button>
+        )}
+      </div>
+
+      {/* Liste des produits */}
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#81B441] border-r-transparent"></div>
+          <p className="mt-2 text-sm text-gray-500">Chargement des produits...</p>
+        </div>
+      ) : products.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {products.map((product) => (
+            <div key={product.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              {/* Image du produit */}
+              <div className="h-32 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                {product.image ? (
+                  <img src={product.image} alt={product.name} className="h-full w-full object-cover rounded-lg" />
+                ) : (
+                  <div className="text-gray-400 text-4xl">📦</div>
+                )}
+              </div>
+              
+              {/* Informations du produit */}
+              <div className="space-y-2">
+                <div className="flex items-start justify-between">
+                  <h4 className="font-semibold text-gray-900 truncate">{product.name}</h4>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    product.available 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {product.available ? 'Disponible' : 'Indisponible'}
+                  </span>
+                </div>
+                
+                <p className="text-sm text-gray-600 line-clamp-2">
+                  {product.description}
+                </p>
+                
+                <div className="flex items-center justify-between pt-2">
+                  <div>
+                    <span className="text-lg font-bold text-[#81B441]">
+                      {product.price} {product.currency}
+                    </span>
+                    <p className="text-xs text-gray-500">{product.category}</p>
+                  </div>
+                  
+                  {isEditing ? (
+                    <div className="flex gap-1">
+                      <Button variant="outline" size="sm">
+                        Modifier
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button variant="outline" size="sm">
+                      Voir détails
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <div className="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl">📦</span>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun produit</h3>
+          <p className="text-sm text-gray-500">
+            Ce sponsor n&apos;a pas encore ajouté de produits ou services.
+          </p>
+          {isEditing && (
+            <Button className="mt-4 bg-[#81B441] hover:bg-[#72a139]">
+              Ajouter le premier produit
+            </Button>
+          )}
         </div>
       )}
     </div>

@@ -47,7 +47,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
-import { SponsorDetailsTab, SponsorMembersTab, SponsorSessionsTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
+import { SponsorDetailsTab, SponsorMembersTab, SponsorSessionsTab, SponsorProductsTab, SponsorDocumentsTab } from "@/components/sponsors/SponsorTabs";
 
 // Types pour les sponsors
 type SponsorLevel = 'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE' | 'PARTNER' | 'MEDIA' | 'OTHER';
@@ -243,26 +243,7 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
     setEditedSponsor(updatedData);
   };
 
-  /**
-   * Récupère les membres d'un sponsor
-   */
-  const fetchSponsorMembers = async (sponsorName: string) => {
-    setLoadingMembers(true);
-    try {
-      const response = await fetch(`/api/events/${eventId}/participants?sponsor=${encodeURIComponent(sponsorName)}`);
-      if (response.ok) {
-        const data = await response.json();
-        setSponsorMembers(data.participants || []);
-      } else {
-        setSponsorMembers([]);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la récupération des membres:', error);
-      setSponsorMembers([]);
-    } finally {
-      setLoadingMembers(false);
-    }
-  };
+
 
   /**
    * Rafraîchit la liste des sponsors
@@ -890,11 +871,12 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
 
               {/* Onglets */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-                <TabsList className="grid w-full grid-cols-6 flex-shrink-0">
+                <TabsList className="grid w-full grid-cols-7 flex-shrink-0">
                   <TabsTrigger value="details">Détails</TabsTrigger>
                   <TabsTrigger value="members">Membres</TabsTrigger>
                   <TabsTrigger value="sessions">Sessions</TabsTrigger>
                   <TabsTrigger value="appointments">RDV</TabsTrigger>
+                  <TabsTrigger value="products">Produits</TabsTrigger>
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="timeline">Historique</TabsTrigger>
                 </TabsList>
@@ -950,6 +932,26 @@ export default function EventSponsorsPage({ params }: { params: Promise<{ id: st
                         <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun rendez-vous planifié</h3>
                         <p className="text-gray-500">Les rendez-vous avec ce sponsor apparaîtront ici.</p>
                       </div>
+                    </TabsContent>
+
+                    {/* Onglet Produits */}
+                    <TabsContent value="products" className="mt-6 space-y-6">
+                      <SponsorProductsTab 
+                        sponsor={getSponsorTabData(selectedSponsor)}
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor as any}
+                        setEditedSponsor={handleEditedSponsorUpdate}
+                      />
+                    </TabsContent>
+
+                    {/* Onglet Documents */}
+                    <TabsContent value="documents" className="mt-6 space-y-6">
+                      <SponsorDocumentsTab 
+                        sponsor={getSponsorTabData(selectedSponsor)}
+                        isEditing={isEditing}
+                        editedSponsor={editedSponsor as any}
+                        setEditedSponsor={handleEditedSponsorUpdate}
+                      />
                     </TabsContent>
 
                     {/* Onglet Historique */}

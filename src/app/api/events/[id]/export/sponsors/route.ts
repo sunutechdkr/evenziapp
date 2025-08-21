@@ -67,9 +67,13 @@ export async function GET(
       );
     }
     
-    // Récupérer tous les sponsors de l'événement
+    // Récupérer tous les sponsors de l'événement avec tous les champs
     const sponsors = await prisma.$queryRaw`
-      SELECT *
+      SELECT 
+        id, name, description, logo, website, level, visible, 
+        location, address, phone, mobile, email, 
+        linkedin_url, twitter_url, facebook_url, documents,
+        event_id, created_at, updated_at
       FROM sponsors
       WHERE event_id = ${id}
       ORDER BY name ASC
@@ -78,35 +82,50 @@ export async function GET(
     // Si aucun sponsor n'est trouvé
     if (!Array.isArray(sponsors) || sponsors.length === 0) {
       return NextResponse.json(
-        { message: "Aucun exposant trouvé pour cet événement" },
+        { message: "No sponsors found for this event" },
         { status: 404 }
       );
     }
     
-    // Formater les données pour l'export Excel
-    const formattedSponsors = (sponsors as SponsorData[]).map((sponsor) => ({
-      ID: sponsor.id,
-      Nom: sponsor.name,
-      Description: sponsor.description || '',
-      Logo: sponsor.logo || '',
-      "Site Web": sponsor.website || '',
-      Niveau: sponsor.level,
-      Visible: sponsor.visible ? 'Oui' : 'Non',
-      "Date de création": format(new Date(sponsor.created_at), 'dd/MM/yyyy HH:mm:ss'),
-      "Dernière modification": format(new Date(sponsor.updated_at), 'dd/MM/yyyy HH:mm:ss')
+    // Formater les données pour l'export Excel en anglais
+    const formattedSponsors = (sponsors as any[]).map((sponsor) => ({
+      "ID": sponsor.id,
+      "Name": sponsor.name || '',
+      "Description": sponsor.description || '',
+      "Logo": sponsor.logo ? 'TRUE' : 'FALSE',
+      "Website": sponsor.website || '',
+      "Level": sponsor.level || '',
+      "Visible": sponsor.visible ? 'TRUE' : 'FALSE',
+      "Location": sponsor.location || '',
+      "Address": sponsor.address || '',
+      "Phone": sponsor.phone || '',
+      "Mobile": sponsor.mobile || '',
+      "Email": sponsor.email || '',
+      "LinkedIn URL": sponsor.linkedin_url || '',
+      "Twitter URL": sponsor.twitter_url || '',
+      "Facebook URL": sponsor.facebook_url || '',
+      "Documents Count": sponsor.documents ? (() => {
+        try {
+          return JSON.parse(sponsor.documents).length || 0;
+        } catch (e) {
+          return 0;
+        }
+      })() : 0,
+      "Created Date": format(new Date(sponsor.created_at), 'yyyy-MM-dd HH:mm:ss'),
+      "Updated Date": format(new Date(sponsor.updated_at), 'yyyy-MM-dd HH:mm:ss')
     }));
     
     // Créer un classeur Excel
     const worksheet = XLSX.utils.json_to_sheet(formattedSponsors);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Exposants");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sponsors");
     
     // Générer le fichier Excel
     const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
     
     // Créer un nom de fichier avec le nom de l'événement et la date
     const eventName = event[0].name.replace(/[^a-zA-Z0-9]/g, '_');
-    const fileName = `Exposants_${eventName}_${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
+    const fileName = `Sponsors_${eventName}_${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
     
     // Définir les en-têtes de réponse
     const headers = new Headers();
