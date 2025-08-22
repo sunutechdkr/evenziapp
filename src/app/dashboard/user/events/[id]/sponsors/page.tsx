@@ -26,7 +26,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SponsorLogo } from "@/components/ui/sponsor-logo";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 // Helper function to ensure URL has proper protocol
@@ -361,11 +361,12 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                     <CardContent className="p-4">
                       <div className="flex flex-col items-center text-center space-y-3">
                         {/* Logo */}
-                        <div className="flex items-center justify-center">
+                        <div className="w-16 h-16">
                           <SponsorLogo 
                             src={sponsor.logo} 
                             alt={sponsor.name}
-                            size="lg"
+                            size="md"
+                            className="w-full h-full"
                           />
                         </div>
                         
@@ -547,13 +548,12 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                             <p className="mt-4 text-sm text-gray-500">Chargement des membres...</p>
                           </div>
                         ) : sponsorMembers.length > 0 ? (
-                          <div className="space-y-2">
+                          <div className="space-y-3">
                             {sponsorMembers.map((member) => (
-                              <div key={member.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                              <div key={member.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                                 {/* Avatar */}
-                                <Avatar className="h-10 w-10">
-                                  <AvatarImage src={member.avatar || undefined} />
-                                  <AvatarFallback className="bg-[#81B441] text-white font-medium text-sm">
+                                <Avatar className="h-12 w-12">
+                                  <AvatarFallback className="bg-[#81B441] text-white font-semibold">
                                     {member.firstName?.[0]?.toUpperCase()}{member.lastName?.[0]?.toUpperCase()}
                                   </AvatarFallback>
                                 </Avatar>
@@ -563,7 +563,7 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                                   <h4 className="font-semibold text-gray-900 text-sm">
                                     {member.firstName} {member.lastName}
                                   </h4>
-                                  <div className="text-xs text-gray-600 truncate">
+                                  <div className="text-sm text-gray-600">
                                     {member.jobTitle && member.company ? (
                                       <span>{member.jobTitle} • {member.company}</span>
                                     ) : member.jobTitle ? (
@@ -574,6 +574,11 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                                       <span className="text-gray-400">Aucune information</span>
                                     )}
                                   </div>
+                                  {member.email && (
+                                    <div className="text-xs text-gray-500 truncate">
+                                      {member.email}
+                                    </div>
+                                  )}
                                 </div>
                                 
                                 {/* Actions */}
@@ -582,10 +587,10 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
                                     variant="outline"
                                     size="sm"
                                     onClick={() => viewMemberProfile(member)}
-                                    className="text-[#81B441] border-[#81B441] hover:bg-[#81B441] hover:text-white text-xs px-3 py-1"
+                                    className="text-[#81B441] border-[#81B441] hover:bg-[#81B441] hover:text-white"
                                   >
-                                    <UserIcon className="h-3 w-3 mr-1" />
-                                    Profil
+                                    <UserIcon className="h-4 w-4 mr-1" />
+                                    Voir profil
                                   </Button>
                                 </div>
                               </div>
@@ -620,7 +625,6 @@ export default function UserEventSponsorsPage({ params }: { params: Promise<{ id
               {/* Avatar et informations principales */}
               <div className="text-center">
                 <Avatar className="h-20 w-20 mx-auto mb-4">
-                  <AvatarImage src={selectedMember.avatar || undefined} />
                   <AvatarFallback className="bg-[#81B441]/10 text-[#81B441] font-medium text-xl">
                     {selectedMember.firstName?.[0]?.toUpperCase()}{selectedMember.lastName?.[0]?.toUpperCase()}
                   </AvatarFallback>

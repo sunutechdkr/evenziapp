@@ -154,7 +154,10 @@ export default function CheckInPage() {
     try {
       console.log("Création du scanner QR avec configuration optimisée...");
       
-      // Configuration optimisée pour les Mac
+      // Détecter si on est sur mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      // Configuration optimisée pour desktop et mobile
       const qrcodeScanner = new Html5QrcodeScanner(
         scannerContainerId,
         { 
@@ -165,9 +168,9 @@ export default function CheckInPage() {
           showZoomSliderIfSupported: true,
           formatsToSupport: [0], // QR Code uniquement
           videoConstraints: {
-            facingMode: "user", // Force la caméra frontale du MacBook
-            width: { ideal: 640 },
-            height: { ideal: 480 }
+            facingMode: isMobile ? "environment" : "user", // Caméra arrière sur mobile, frontale sur desktop
+            width: { ideal: isMobile ? 1280 : 640 },
+            height: { ideal: isMobile ? 720 : 480 }
           }
         },
         /* verbose */ true // Définir à true pour afficher plus de logs
@@ -199,6 +202,11 @@ export default function CheckInPage() {
         
         // Personnaliser l'interface du scanner
         customizeQrScannerUI();
+        
+        // Ajouter le bouton de basculement de caméra pour mobile
+        if (isMobile) {
+          addCameraSwitchButton();
+        }
       }, 800);
 
       scannerRef.current = qrcodeScanner;
@@ -669,6 +677,139 @@ export default function CheckInPage() {
     }
     
     console.log("Personnalisation de l'interface du scanner QR terminée");
+  };
+
+  // Fonction pour ajouter le bouton de basculement de caméra sur mobile
+  const addCameraSwitchButton = () => {
+    if (typeof document === 'undefined') return;
+    
+    console.log("Ajout du bouton de basculement de caméra pour mobile...");
+    
+    // Vérifier si le bouton existe déjà
+    if (document.getElementById('camera-switch-button')) {
+      return;
+    }
+    
+    // Trouver le conteneur des contrôles du scanner
+    const scannerContainer = document.querySelector('#qr-reader');
+    if (!scannerContainer) {
+      console.error("Conteneur du scanner non trouvé");
+      return;
+    }
+    
+    // Créer le bouton de basculement
+    const switchButton = document.createElement('button');
+    switchButton.id = 'camera-switch-button';
+    switchButton.innerHTML = '🔄 Basculer caméra';
+    switchButton.style.cssText = `
+      background-color: #81B441;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      margin: 10px 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    `;
+    
+    // Ajouter l'effet hover
+    switchButton.addEventListener('mouseenter', () => {
+      switchButton.style.backgroundColor = '#6fa234';
+    });
+    switchButton.addEventListener('mouseleave', () => {
+      switchButton.style.backgroundColor = '#81B441';
+    });
+    
+    // Fonction de basculement
+    switchButton.addEventListener('click', () => {
+      if (scannerRef.current) {
+        // Arrêter le scanner actuel
+        scannerRef.current.clear();
+        setScannerInitialized(false);
+        
+        // Attendre un peu puis redémarrer avec la configuration opposée
+        setTimeout(() => {
+          // Basculer la configuration de la caméra
+          const currentConfig = scannerRef.current?.getConfig || {};
+          const newFacingMode = currentConfig.facingMode === 'environment' ? 'user' : 'environment';
+          
+          // Réinitialiser le scanner avec la nouvelle configuration
+          console.log("Basculement vers:", newFacingMode);
+          initializeScannerWithFacingMode(newFacingMode);
+        }, 500);
+      }
+    });
+    
+    // Insérer le bouton après les contrôles existants
+    const controlsContainer = scannerContainer.querySelector('div') || scannerContainer;
+    controlsContainer.appendChild(switchButton);
+    
+    console.log("Bouton de basculement de caméra ajouté avec succès");
+  };
+
+  // Fonction pour initialiser le scanner avec un mode de caméra spécifique
+  const initializeScannerWithFacingMode = (facingMode: string) => {
+    if (!Html5QrcodeScanner) {
+      console.error("Html5QrcodeScanner non disponible");
+      return;
+    }
+
+    const scannerElement = document.getElementById(scannerContainerId);
+    if (!scannerElement) {
+      console.error(`Élément avec ID ${scannerContainerId} non trouvé`);
+      return;
+    }
+
+    try {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      const qrcodeScanner = new Html5QrcodeScanner(
+        scannerContainerId,
+        { 
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          rememberLastUsedCamera: true,
+          showTorchButtonIfSupported: true,
+          showZoomSliderIfSupported: true,
+          formatsToSupport: [0],
+          videoConstraints: {
+            facingMode: facingMode,
+            width: { ideal: isMobile ? 1280 : 640 },
+            height: { ideal: isMobile ? 720 : 480 }
+          }
+        },
+        true
+      );
+
+      qrcodeScanner.render(
+        (qrCodeMessage: any) => {
+          console.log("QR Code détecté:", qrCodeMessage);
+          processCheckIn(qrCodeMessage);
+        },
+        (errorMessage: any) => {
+          console.log("Erreur de scan:", errorMessage);
+        }
+      );
+
+      scannerRef.current = qrcodeScanner;
+      setScannerInitialized(true);
+      
+      // Redémarrer automatiquement
+      setTimeout(() => {
+        const startButton = document.getElementById("html5-qrcode-button-camera-start");
+        if (startButton) {
+          startButton.click();
+        }
+        customizeQrScannerUI();
+        if (isMobile) {
+          addCameraSwitchButton();
+        }
+      }, 800);
+      
+    } catch (error) {
+      console.error("Erreur d'initialisation du scanner avec facingMode:", error);
+    }
   };
 
   // If authentication is still loading, show a loading state
@@ -1660,6 +1801,52 @@ export default function CheckInPage() {
           font-size: 0.85rem;
           color: #aaa;
           margin-top: 1rem;
+        }
+
+        .checkin-buttons-container {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          justify-content: center;
+          margin-top: 2rem;
+          width: 100%;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+          .checkin-buttons-container {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+          }
+
+          .checkin-buttons-container .checkin-button {
+            width: 100%;
+            max-width: 280px;
+          }
+        }
+
+        .checkin-result {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 60vh;
+          text-align: center;
+          padding: 2rem 1rem;
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        .checkin-success-title,
+        .checkin-error-title {
+          color: white;
+          font-size: 1.8rem;
+          font-weight: 700;
+          margin-bottom: 1.5rem;
         }
 
         .checkin-error-icon {
