@@ -837,16 +837,6 @@ export default function CheckInPage() {
 
   return (
     <div className="checkin-page check-in-page">
-      <div className="back-to-event-button">
-        <a href={eventId ? `/dashboard/events/${eventId}` : "/dashboard/events"} className="back-button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>Retour à l&apos;événement</span>
-        </a>
-      </div>
-      
       <div className="checkin-brand-logo">
         <Logo width={200} height={50} color="white" />
       </div>
@@ -854,7 +844,7 @@ export default function CheckInPage() {
       <div className="checkin-welcome">
         <h1 className="checkin-title">Check-in {currentEventName.current || eventSlug}</h1>
         <p className="checkin-subtitle">Choisissez une méthode d&apos;enregistrement ci-dessous</p>
-                </div>
+      </div>
       
       {/* ÉTAPE 1: OPTIONS DE CHECK-IN */}
       {currentStep === CheckInStep.Intro && (
@@ -864,7 +854,7 @@ export default function CheckInPage() {
               <div className="checkin-card" onClick={startQrScanner}>
                 <div className="checkin-card-content">
                   <div className="checkin-card-icon">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="3" y="3" width="7" height="7" stroke="#81B441" strokeWidth="1.8" />
                       <rect x="14" y="3" width="7" height="7" stroke="#81B441" strokeWidth="1.8" />
                       <rect x="3" y="14" width="7" height="7" stroke="#81B441" strokeWidth="1.8" />
@@ -879,7 +869,7 @@ export default function CheckInPage() {
               <div className="checkin-card" onClick={startManualSearch}>
                 <div className="checkin-card-content">
                   <div className="checkin-card-icon">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="12" cy="8" r="5" stroke="#81B441" strokeWidth="1.8" />
                       <path d="M3 21C3 16.5817 6.58172 13 11 13H13C17.4183 13 21 16.5817 21 21" stroke="#81B441" strokeWidth="1.8" />
                     </svg>
@@ -908,8 +898,8 @@ export default function CheckInPage() {
           )}
           
           {!showOptions && showManualForm && (
-            <div className="checkin-scanner-active">
-              <div className="checkin-result">
+            <div className="checkin-search-container">
+              <div className="checkin-search-result">
                 <h2 className="checkin-option-title mb-4">Recherche de participant</h2>
 
                 <div className="search-container">
@@ -1267,10 +1257,19 @@ export default function CheckInPage() {
         )}
       
       <div className="checkin-footer">
+        <div className="back-to-event-button">
+          <a href={eventId ? `/dashboard/events/${eventId}` : "/dashboard/events"} className="back-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span>Retour à l&apos;événement</span>
+          </a>
+        </div>
         <div className="checkin-powered-by">
           Propulsé par Evenzi
+        </div>
       </div>
-    </div>
 
       <style jsx>{`
         .checkin-page {
@@ -1349,11 +1348,13 @@ export default function CheckInPage() {
         .checkin-options-new {
           display: flex;
           flex-direction: row;
-          gap: 2rem;
+          gap: 3rem;
           width: 100%;
-          max-width: 900px;
+          max-width: 1200px;
           justify-content: center;
-          margin-bottom: 2rem;
+          margin-bottom: 3rem;
+          margin-top: 2rem;
+          min-height: 450px;
         }
 
         @media (max-width: 768px) {
@@ -1368,15 +1369,16 @@ export default function CheckInPage() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: center;
           background-color: rgba(20, 20, 20, 0.9);
           border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          padding: 2rem 1.5rem;
+          border-radius: 16px;
+          padding: 3rem 2rem;
           cursor: pointer;
           transition: all 0.3s ease-in-out;
           width: 100%;
-          max-width: 350px;
+          max-width: 450px;
+          min-height: 400px;
           height: 100%;
           box-shadow: 0 0 20px rgba(129, 180, 65, 0.05);
           position: relative;
@@ -1420,11 +1422,14 @@ export default function CheckInPage() {
         .checkin-card-icon {
           display: flex;
           justify-content: center;
-          margin-bottom: 1.5rem;
+          margin-bottom: 2rem;
           background-color: rgba(129, 180, 65, 0.1);
           border-radius: 50%;
-          padding: 1rem;
+          padding: 1.5rem;
           transition: transform 0.3s ease, background-color 0.3s ease;
+          width: 120px;
+          height: 120px;
+          align-items: center;
         }
         
         .checkin-card:hover .checkin-card-icon {
@@ -1433,16 +1438,20 @@ export default function CheckInPage() {
         }
 
         .checkin-card-title {
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-bottom: 0.75rem;
+          font-size: 1.8rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
           color: white;
+          text-align: center;
+          line-height: 1.2;
         }
 
         .checkin-card-description {
-          font-size: 0.9rem;
+          font-size: 1.1rem;
           color: #ccc;
-          line-height: 1.4;
+          line-height: 1.5;
+          text-align: center;
+          max-width: 280px;
         }
 
         .checkin-form-input {
@@ -1982,6 +1991,100 @@ export default function CheckInPage() {
           align-items: center;
           gap: 0.75rem;
           margin-bottom: 1rem;
+        }
+
+        .checkin-search-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          max-width: 1200px;
+          min-height: 450px;
+          margin-top: 2rem;
+          margin-bottom: 3rem;
+        }
+
+        .checkin-search-result {
+          background-color: rgba(20, 20, 20, 0.9);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
+          padding: 3rem 2rem;
+          width: 100%;
+          max-width: 800px;
+          min-height: 400px;
+          box-shadow: 0 0 20px rgba(129, 180, 65, 0.05);
+          backdrop-filter: blur(5px);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+        }
+
+        .checkin-footer {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 2rem;
+          background-color: rgba(20, 20, 20, 0.95);
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          z-index: 100;
+        }
+
+        .back-to-event-button {
+          display: flex;
+          align-items: center;
+        }
+
+        .back-button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1rem;
+          background-color: rgba(129, 180, 65, 0.1);
+          border: 1px solid rgba(129, 180, 65, 0.3);
+          border-radius: 8px;
+          color: #81B441;
+          text-decoration: none;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+          background-color: rgba(129, 180, 65, 0.2);
+          border-color: rgba(129, 180, 65, 0.5);
+          transform: translateX(-2px);
+        }
+
+        .checkin-powered-by {
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+          .checkin-footer {
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+          }
+          
+          .checkin-search-container {
+            min-height: 350px;
+            margin-top: 1rem;
+            margin-bottom: 8rem;
+          }
+          
+          .checkin-search-result {
+            min-height: 300px;
+            padding: 2rem 1.5rem;
+          }
+          
+          .checkin-options-new {
+            margin-bottom: 8rem;
+          }
         }
       `}</style>
     </div>
