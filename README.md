@@ -1,4 +1,4 @@
-# 🎉 Evenzi - Plateforme de Gestion d'Événements Moderne
+  # 🎉 Evenzi - Plateforme de Gestion d'Événements Moderne
 
 > **Plateforme complète de gestion d'événements avec système de gamification et networking avancé**
 
