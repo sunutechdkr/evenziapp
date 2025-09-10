@@ -1,0 +1,14 @@
+{
+  "domains": [
+    "evenziapp.vercel.app",
+    "evenzi.app",
+    "www.evenzi.app"
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://evenziapp.vercel.app/$1",
+      "permanent": true
+    }
+  ]
+}
