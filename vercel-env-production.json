@@ -1,0 +1,17 @@
+{
+  "env": {
+    "DATABASE_URL": "postgresql://neondb_owner:npg_aAOi8fcJSMB2@ep-rapid-rice-advv5203-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+    "DIRECT_URL": "postgresql://neondb_owner:npg_aAOi8fcJSMB2@ep-rapid-rice-advv5203-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+    "NEXTAUTH_SECRET": "evenzi-super-secret-key-2024-production-secure",
+    "NEXTAUTH_URL": "https://evenziapp-dofej32h9-sunutech.vercel.app",
+    "RESEND_API_KEY": "re_2A7HEAud_NdwDjpKYW9xSLFpHtUE5wMM7",
+    "NODE_ENV": "production",
+    "PORT": "3000",
+    "PRISMA_GENERATE_DATAPROXY": "true",
+    "BLOB_READ_WRITE_TOKEN": "vercel_blob_rw_xxxxxxxxxx",
+    "NEXT_PUBLIC_USE_BLOB_STORAGE": "true",
+    "BLOB_MIGRATION_TYPES": "avatar,sponsor,event",
+    "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+    "SKIP_ENV_VALIDATION": "1"
+  }
+}
