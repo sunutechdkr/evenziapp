@@ -125,210 +125,6 @@ export type UserMatchProfile = $Result.DefaultSelection<Prisma.$UserMatchProfile
 export type MatchSuggestion = $Result.DefaultSelection<Prisma.$MatchSuggestionPayload>
 
 /**
- * Enums
- */
-export namespace $Enums {
-  export const UserRole: {
-  USER: 'USER',
-  STAFF: 'STAFF',
-  ORGANIZER: 'ORGANIZER',
-  ADMIN: 'ADMIN'
-};
-
-export type UserRole = (typeof UserRole)[keyof typeof UserRole]
-
-
-export const UserPlan: {
-  STARTER: 'STARTER',
-  PRO: 'PRO',
-  PREMIUM: 'PREMIUM'
-};
-
-export type UserPlan = (typeof UserPlan)[keyof typeof UserPlan]
-
-
-export const TicketStatus: {
-  ACTIVE: 'ACTIVE',
-  TERMINATED: 'TERMINATED',
-  DRAFT: 'DRAFT'
-};
-
-export type TicketStatus = (typeof TicketStatus)[keyof typeof TicketStatus]
-
-
-export const TicketVisibility: {
-  VISIBLE: 'VISIBLE',
-  HIDDEN: 'HIDDEN'
-};
-
-export type TicketVisibility = (typeof TicketVisibility)[keyof typeof TicketVisibility]
-
-
-export const SponsorLevel: {
-  PLATINUM: 'PLATINUM',
-  GOLD: 'GOLD',
-  SILVER: 'SILVER',
-  BRONZE: 'BRONZE',
-  PARTNER: 'PARTNER',
-  MEDIA: 'MEDIA',
-  OTHER: 'OTHER'
-};
-
-export type SponsorLevel = (typeof SponsorLevel)[keyof typeof SponsorLevel]
-
-
-export const AppointmentStatus: {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  COMPLETED: 'COMPLETED'
-};
-
-export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus]
-
-
-export const BadgeStatus: {
-  GENERATED: 'GENERATED',
-  PRINTED: 'PRINTED',
-  DELIVERED: 'DELIVERED'
-};
-
-export type BadgeStatus = (typeof BadgeStatus)[keyof typeof BadgeStatus]
-
-
-export const CampaignStatus: {
-  DRAFT: 'DRAFT',
-  SCHEDULED: 'SCHEDULED',
-  SENDING: 'SENDING',
-  SENT: 'SENT',
-  FAILED: 'FAILED'
-};
-
-export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]
-
-
-export const CampaignType: {
-  ANNOUNCEMENT: 'ANNOUNCEMENT',
-  REMINDER: 'REMINDER',
-  INVITATION: 'INVITATION',
-  FOLLOW_UP: 'FOLLOW_UP',
-  CUSTOM: 'CUSTOM'
-};
-
-export type CampaignType = (typeof CampaignType)[keyof typeof CampaignType]
-
-
-export const RecipientType: {
-  ALL_PARTICIPANTS: 'ALL_PARTICIPANTS',
-  PARTICIPANTS: 'PARTICIPANTS',
-  SPEAKERS: 'SPEAKERS',
-  EXHIBITORS: 'EXHIBITORS',
-  SPONSORS: 'SPONSORS',
-  CUSTOM_LIST: 'CUSTOM_LIST'
-};
-
-export type RecipientType = (typeof RecipientType)[keyof typeof RecipientType]
-
-
-export const TemplateCategory: {
-  CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
-  BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
-  RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
-  INFOS_PRATIQUES: 'INFOS_PRATIQUES',
-  SUIVI_POST_EVENEMENT: 'SUIVI_POST_EVENEMENT',
-  GUIDE_EXPOSANT: 'GUIDE_EXPOSANT',
-  RAPPEL_INSTALLATION: 'RAPPEL_INSTALLATION',
-  INFOS_TECHNIQUES_STAND: 'INFOS_TECHNIQUES_STAND',
-  BILAN_PARTICIPATION: 'BILAN_PARTICIPATION',
-  CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
-  INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
-  RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
-  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER',
-  CONFIRMATION_CHECKIN: 'CONFIRMATION_CHECKIN'
-};
-
-export type TemplateCategory = (typeof TemplateCategory)[keyof typeof TemplateCategory]
-
-
-export const EmailStatus: {
-  PENDING: 'PENDING',
-  SENT: 'SENT',
-  DELIVERED: 'DELIVERED',
-  FAILED: 'FAILED',
-  BOUNCED: 'BOUNCED',
-  OPENED: 'OPENED',
-  CLICKED: 'CLICKED'
-};
-
-export type EmailStatus = (typeof EmailStatus)[keyof typeof EmailStatus]
-
-
-export const GameAction: {
-  CHECK_IN: 'CHECK_IN',
-  SESSION_ENTRY: 'SESSION_ENTRY',
-  SESSION_PARTICIPATION: 'SESSION_PARTICIPATION',
-  PARTICIPANT_SCAN: 'PARTICIPANT_SCAN',
-  APPOINTMENT_REQUEST: 'APPOINTMENT_REQUEST',
-  APPOINTMENT_CONFIRMED: 'APPOINTMENT_CONFIRMED'
-};
-
-export type GameAction = (typeof GameAction)[keyof typeof GameAction]
-
-}
-
-export type UserRole = $Enums.UserRole
-
-export const UserRole: typeof $Enums.UserRole
-
-export type UserPlan = $Enums.UserPlan
-
-export const UserPlan: typeof $Enums.UserPlan
-
-export type TicketStatus = $Enums.TicketStatus
-
-export const TicketStatus: typeof $Enums.TicketStatus
-
-export type TicketVisibility = $Enums.TicketVisibility
-
-export const TicketVisibility: typeof $Enums.TicketVisibility
-
-export type SponsorLevel = $Enums.SponsorLevel
-
-export const SponsorLevel: typeof $Enums.SponsorLevel
-
-export type AppointmentStatus = $Enums.AppointmentStatus
-
-export const AppointmentStatus: typeof $Enums.AppointmentStatus
-
-export type BadgeStatus = $Enums.BadgeStatus
-
-export const BadgeStatus: typeof $Enums.BadgeStatus
-
-export type CampaignStatus = $Enums.CampaignStatus
-
-export const CampaignStatus: typeof $Enums.CampaignStatus
-
-export type CampaignType = $Enums.CampaignType
-
-export const CampaignType: typeof $Enums.CampaignType
-
-export type RecipientType = $Enums.RecipientType
-
-export const RecipientType: typeof $Enums.RecipientType
-
-export type TemplateCategory = $Enums.TemplateCategory
-
-export const TemplateCategory: typeof $Enums.TemplateCategory
-
-export type EmailStatus = $Enums.EmailStatus
-
-export const EmailStatus: typeof $Enums.EmailStatus
-
-export type GameAction = $Enums.GameAction
-
-export const GameAction: typeof $Enums.GameAction
-
-/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -344,7 +140,7 @@ export const GameAction: typeof $Enums.GameAction
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -376,13 +172,6 @@ export class PrismaClient<
    * Disconnect from the database
    */
   $disconnect(): $Utils.JsPromise<void>;
-
-  /**
-   * Add a middleware
-   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
-   * @see https://pris.ly/d/extensions
-   */
-  $use(cb: Prisma.Middleware): void
 
 /**
    * Executes a prepared raw query and returns the number of affected rows.
@@ -730,8 +519,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.10.1
-   * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
+   * Prisma Client JS version: 6.16.0
+   * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
    */
   export type PrismaVersion = {
     client: string
@@ -2827,16 +2616,24 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Defaults to stdout
+     * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events
+     * // Emit as events only
      * log: [
-     *   { emit: 'stdout', level: 'query' },
-     *   { emit: 'stdout', level: 'info' },
-     *   { emit: 'stdout', level: 'warn' }
-     *   { emit: 'stdout', level: 'error' }
+     *   { emit: 'event', level: 'query' },
+     *   { emit: 'event', level: 'info' },
+     *   { emit: 'event', level: 'warn' }
+     *   { emit: 'event', level: 'error' }
      * ]
+     * 
+     * / Emit as events and log to stdout
+     * og: [
+     *  { emit: 'stdout', level: 'query' },
+     *  { emit: 'stdout', level: 'info' },
+     *  { emit: 'stdout', level: 'warn' }
+     *  { emit: 'stdout', level: 'error' }
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -2851,6 +2648,10 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
+    /**
+     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     */
+    adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -2899,10 +2700,15 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
-  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
-    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
-    : never
+  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
+
+  export type GetLogType<T> = CheckIsLogLevel<
+    T extends LogDefinition ? T['level'] : T
+  >;
+
+  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
+    ? GetLogType<T[number]>
+    : never;
 
   export type QueryEvent = {
     timestamp: Date
@@ -2943,25 +2749,6 @@ export namespace Prisma {
     | 'findRaw'
     | 'groupBy'
 
-  /**
-   * These options are being passed into the middleware as "params"
-   */
-  export type MiddlewareParams = {
-    model?: ModelName
-    action: PrismaAction
-    args: any
-    dataPath: string[]
-    runInTransaction: boolean
-  }
-
-  /**
-   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
-   */
-  export type Middleware<T = any> = (
-    params: MiddlewareParams,
-    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
-  ) => $Utils.JsPromise<T>
-
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
 
@@ -2986,19 +2773,19 @@ export namespace Prisma {
   export type UserCountOutputType = {
     accounts: number
     events: number
+    suggestedFor: number
+    suggestions: number
     sessions: number
     matchProfiles: number
-    suggestions: number
-    suggestedFor: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     events?: boolean | UserCountOutputTypeCountEventsArgs
+    suggestedFor?: boolean | UserCountOutputTypeCountSuggestedForArgs
+    suggestions?: boolean | UserCountOutputTypeCountSuggestionsArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     matchProfiles?: boolean | UserCountOutputTypeCountMatchProfilesArgs
-    suggestions?: boolean | UserCountOutputTypeCountSuggestionsArgs
-    suggestedFor?: boolean | UserCountOutputTypeCountSuggestedForArgs
   }
 
   // Custom InputTypes
@@ -3029,15 +2816,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountMatchProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserMatchProfileWhereInput
+  export type UserCountOutputTypeCountSuggestedForArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchSuggestionWhereInput
   }
 
   /**
@@ -3050,8 +2830,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSuggestedForArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MatchSuggestionWhereInput
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMatchProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserMatchProfileWhereInput
   }
 
 
@@ -3066,14 +2853,14 @@ export namespace Prisma {
     emailCampaigns: number
     emailTemplates: number
     event_sessions: number
+    games: number
+    matchSuggestions: number
     participantBadges: number
     registrations: number
     sponsors: number
     tickets: number
-    games: number
     userEventScores: number
     matchProfiles: number
-    matchSuggestions: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3083,14 +2870,14 @@ export namespace Prisma {
     emailCampaigns?: boolean | EventCountOutputTypeCountEmailCampaignsArgs
     emailTemplates?: boolean | EventCountOutputTypeCountEmailTemplatesArgs
     event_sessions?: boolean | EventCountOutputTypeCountEvent_sessionsArgs
+    games?: boolean | EventCountOutputTypeCountGamesArgs
+    matchSuggestions?: boolean | EventCountOutputTypeCountMatchSuggestionsArgs
     participantBadges?: boolean | EventCountOutputTypeCountParticipantBadgesArgs
     registrations?: boolean | EventCountOutputTypeCountRegistrationsArgs
     sponsors?: boolean | EventCountOutputTypeCountSponsorsArgs
     tickets?: boolean | EventCountOutputTypeCountTicketsArgs
-    games?: boolean | EventCountOutputTypeCountGamesArgs
     userEventScores?: boolean | EventCountOutputTypeCountUserEventScoresArgs
     matchProfiles?: boolean | EventCountOutputTypeCountMatchProfilesArgs
-    matchSuggestions?: boolean | EventCountOutputTypeCountMatchSuggestionsArgs
   }
 
   // Custom InputTypes
@@ -3149,6 +2936,20 @@ export namespace Prisma {
   /**
    * EventCountOutputType without action
    */
+  export type EventCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GameWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountMatchSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchSuggestionWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
   export type EventCountOutputTypeCountParticipantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ParticipantBadgeWhereInput
   }
@@ -3177,13 +2978,6 @@ export namespace Prisma {
   /**
    * EventCountOutputType without action
    */
-  export type EventCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GameWhereInput
-  }
-
-  /**
-   * EventCountOutputType without action
-   */
   export type EventCountOutputTypeCountUserEventScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserEventScoreWhereInput
   }
@@ -3195,13 +2989,6 @@ export namespace Prisma {
     where?: UserMatchProfileWhereInput
   }
 
-  /**
-   * EventCountOutputType without action
-   */
-  export type EventCountOutputTypeCountMatchSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MatchSuggestionWhereInput
-  }
-
 
   /**
    * Count Type RegistrationCountOutputType
@@ -3210,18 +2997,18 @@ export namespace Prisma {
   export type RegistrationCountOutputType = {
     receivedAppointments: number
     sentAppointments: number
+    games: number
     participantBadges: number
     sessions: number
-    games: number
     userEventScores: number
   }
 
   export type RegistrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     receivedAppointments?: boolean | RegistrationCountOutputTypeCountReceivedAppointmentsArgs
     sentAppointments?: boolean | RegistrationCountOutputTypeCountSentAppointmentsArgs
+    games?: boolean | RegistrationCountOutputTypeCountGamesArgs
     participantBadges?: boolean | RegistrationCountOutputTypeCountParticipantBadgesArgs
     sessions?: boolean | RegistrationCountOutputTypeCountSessionsArgs
-    games?: boolean | RegistrationCountOutputTypeCountGamesArgs
     userEventScores?: boolean | RegistrationCountOutputTypeCountUserEventScoresArgs
   }
 
@@ -3253,6 +3040,13 @@ export namespace Prisma {
   /**
    * RegistrationCountOutputType without action
    */
+  export type RegistrationCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GameWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
   export type RegistrationCountOutputTypeCountParticipantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ParticipantBadgeWhereInput
   }
@@ -3262,13 +3056,6 @@ export namespace Prisma {
    */
   export type RegistrationCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionParticipantWhereInput
-  }
-
-  /**
-   * RegistrationCountOutputType without action
-   */
-  export type RegistrationCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GameWhereInput
   }
 
   /**
@@ -3426,10 +3213,10 @@ export namespace Prisma {
     password: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    role: $Enums.UserRole | null
+    role: string | null
     lastLogin: Date | null
     phone: string | null
-    plan: $Enums.UserPlan | null
+    plan: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3441,10 +3228,10 @@ export namespace Prisma {
     password: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    role: $Enums.UserRole | null
+    role: string | null
     lastLogin: Date | null
     phone: string | null
-    plan: $Enums.UserPlan | null
+    plan: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3594,10 +3381,10 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     permissions: string[]
-    role: $Enums.UserRole
+    role: string
     lastLogin: Date | null
     phone: string | null
-    plan: $Enums.UserPlan
+    plan: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3633,10 +3420,10 @@ export namespace Prisma {
     plan?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     events?: boolean | User$eventsArgs<ExtArgs>
+    suggestedFor?: boolean | User$suggestedForArgs<ExtArgs>
+    suggestions?: boolean | User$suggestionsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     matchProfiles?: boolean | User$matchProfilesArgs<ExtArgs>
-    suggestions?: boolean | User$suggestionsArgs<ExtArgs>
-    suggestedFor?: boolean | User$suggestedForArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3692,10 +3479,10 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     events?: boolean | User$eventsArgs<ExtArgs>
+    suggestedFor?: boolean | User$suggestedForArgs<ExtArgs>
+    suggestions?: boolean | User$suggestionsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     matchProfiles?: boolean | User$matchProfilesArgs<ExtArgs>
-    suggestions?: boolean | User$suggestionsArgs<ExtArgs>
-    suggestedFor?: boolean | User$suggestedForArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3706,10 +3493,10 @@ export namespace Prisma {
     objects: {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       events: Prisma.$EventPayload<ExtArgs>[]
+      suggestedFor: Prisma.$MatchSuggestionPayload<ExtArgs>[]
+      suggestions: Prisma.$MatchSuggestionPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       matchProfiles: Prisma.$UserMatchProfilePayload<ExtArgs>[]
-      suggestions: Prisma.$MatchSuggestionPayload<ExtArgs>[]
-      suggestedFor: Prisma.$MatchSuggestionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3721,10 +3508,10 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       permissions: string[]
-      role: $Enums.UserRole
+      role: string
       lastLogin: Date | null
       phone: string | null
-      plan: $Enums.UserPlan
+      plan: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4121,10 +3908,10 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     events<T extends User$eventsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    suggestedFor<T extends User$suggestedForArgs<ExtArgs> = {}>(args?: Subset<T, User$suggestedForArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    suggestions<T extends User$suggestionsArgs<ExtArgs> = {}>(args?: Subset<T, User$suggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchProfiles<T extends User$matchProfilesArgs<ExtArgs> = {}>(args?: Subset<T, User$matchProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserMatchProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    suggestions<T extends User$suggestionsArgs<ExtArgs> = {}>(args?: Subset<T, User$suggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    suggestedFor<T extends User$suggestedForArgs<ExtArgs> = {}>(args?: Subset<T, User$suggestedForArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4163,10 +3950,10 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly permissions: FieldRef<"User", 'String[]'>
-    readonly role: FieldRef<"User", 'UserRole'>
+    readonly role: FieldRef<"User", 'String'>
     readonly lastLogin: FieldRef<"User", 'DateTime'>
     readonly phone: FieldRef<"User", 'String'>
-    readonly plan: FieldRef<"User", 'UserPlan'>
+    readonly plan: FieldRef<"User", 'String'>
   }
     
 
@@ -4603,6 +4390,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.suggestedFor
+   */
+  export type User$suggestedForArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MatchSuggestion
+     */
+    select?: MatchSuggestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MatchSuggestion
+     */
+    omit?: MatchSuggestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchSuggestionInclude<ExtArgs> | null
+    where?: MatchSuggestionWhereInput
+    orderBy?: MatchSuggestionOrderByWithRelationInput | MatchSuggestionOrderByWithRelationInput[]
+    cursor?: MatchSuggestionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchSuggestionScalarFieldEnum | MatchSuggestionScalarFieldEnum[]
+  }
+
+  /**
+   * User.suggestions
+   */
+  export type User$suggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MatchSuggestion
+     */
+    select?: MatchSuggestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MatchSuggestion
+     */
+    omit?: MatchSuggestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchSuggestionInclude<ExtArgs> | null
+    where?: MatchSuggestionWhereInput
+    orderBy?: MatchSuggestionOrderByWithRelationInput | MatchSuggestionOrderByWithRelationInput[]
+    cursor?: MatchSuggestionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchSuggestionScalarFieldEnum | MatchSuggestionScalarFieldEnum[]
+  }
+
+  /**
    * User.sessions
    */
   export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4648,54 +4483,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserMatchProfileScalarFieldEnum | UserMatchProfileScalarFieldEnum[]
-  }
-
-  /**
-   * User.suggestions
-   */
-  export type User$suggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MatchSuggestion
-     */
-    select?: MatchSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MatchSuggestion
-     */
-    omit?: MatchSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MatchSuggestionInclude<ExtArgs> | null
-    where?: MatchSuggestionWhereInput
-    orderBy?: MatchSuggestionOrderByWithRelationInput | MatchSuggestionOrderByWithRelationInput[]
-    cursor?: MatchSuggestionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MatchSuggestionScalarFieldEnum | MatchSuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * User.suggestedFor
-   */
-  export type User$suggestedForArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MatchSuggestion
-     */
-    select?: MatchSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MatchSuggestion
-     */
-    omit?: MatchSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MatchSuggestionInclude<ExtArgs> | null
-    where?: MatchSuggestionWhereInput
-    orderBy?: MatchSuggestionOrderByWithRelationInput | MatchSuggestionOrderByWithRelationInput[]
-    cursor?: MatchSuggestionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MatchSuggestionScalarFieldEnum | MatchSuggestionScalarFieldEnum[]
   }
 
   /**
@@ -8221,14 +8008,14 @@ export namespace Prisma {
     emailTemplates?: boolean | Event$emailTemplatesArgs<ExtArgs>
     event_sessions?: boolean | Event$event_sessionsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    games?: boolean | Event$gamesArgs<ExtArgs>
+    matchSuggestions?: boolean | Event$matchSuggestionsArgs<ExtArgs>
     participantBadges?: boolean | Event$participantBadgesArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
     sponsors?: boolean | Event$sponsorsArgs<ExtArgs>
     tickets?: boolean | Event$ticketsArgs<ExtArgs>
-    games?: boolean | Event$gamesArgs<ExtArgs>
     userEventScores?: boolean | Event$userEventScoresArgs<ExtArgs>
     matchProfiles?: boolean | Event$matchProfilesArgs<ExtArgs>
-    matchSuggestions?: boolean | Event$matchSuggestionsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -8318,14 +8105,14 @@ export namespace Prisma {
     emailTemplates?: boolean | Event$emailTemplatesArgs<ExtArgs>
     event_sessions?: boolean | Event$event_sessionsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    games?: boolean | Event$gamesArgs<ExtArgs>
+    matchSuggestions?: boolean | Event$matchSuggestionsArgs<ExtArgs>
     participantBadges?: boolean | Event$participantBadgesArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
     sponsors?: boolean | Event$sponsorsArgs<ExtArgs>
     tickets?: boolean | Event$ticketsArgs<ExtArgs>
-    games?: boolean | Event$gamesArgs<ExtArgs>
     userEventScores?: boolean | Event$userEventScoresArgs<ExtArgs>
     matchProfiles?: boolean | Event$matchProfilesArgs<ExtArgs>
-    matchSuggestions?: boolean | Event$matchSuggestionsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8345,14 +8132,14 @@ export namespace Prisma {
       emailTemplates: Prisma.$EmailTemplatePayload<ExtArgs>[]
       event_sessions: Prisma.$event_sessionsPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
+      games: Prisma.$GamePayload<ExtArgs>[]
+      matchSuggestions: Prisma.$MatchSuggestionPayload<ExtArgs>[]
       participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
       registrations: Prisma.$RegistrationPayload<ExtArgs>[]
       sponsors: Prisma.$SponsorPayload<ExtArgs>[]
       tickets: Prisma.$TicketPayload<ExtArgs>[]
-      games: Prisma.$GamePayload<ExtArgs>[]
       userEventScores: Prisma.$UserEventScorePayload<ExtArgs>[]
       matchProfiles: Prisma.$UserMatchProfilePayload<ExtArgs>[]
-      matchSuggestions: Prisma.$MatchSuggestionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8778,14 +8565,14 @@ export namespace Prisma {
     emailTemplates<T extends Event$emailTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Event$emailTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     event_sessions<T extends Event$event_sessionsArgs<ExtArgs> = {}>(args?: Subset<T, Event$event_sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$event_sessionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    games<T extends Event$gamesArgs<ExtArgs> = {}>(args?: Subset<T, Event$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    matchSuggestions<T extends Event$matchSuggestionsArgs<ExtArgs> = {}>(args?: Subset<T, Event$matchSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     participantBadges<T extends Event$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     registrations<T extends Event$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, Event$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sponsors<T extends Event$sponsorsArgs<ExtArgs> = {}>(args?: Subset<T, Event$sponsorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tickets<T extends Event$ticketsArgs<ExtArgs> = {}>(args?: Subset<T, Event$ticketsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    games<T extends Event$gamesArgs<ExtArgs> = {}>(args?: Subset<T, Event$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userEventScores<T extends Event$userEventScoresArgs<ExtArgs> = {}>(args?: Subset<T, Event$userEventScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserEventScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchProfiles<T extends Event$matchProfilesArgs<ExtArgs> = {}>(args?: Subset<T, Event$matchProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserMatchProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    matchSuggestions<T extends Event$matchSuggestionsArgs<ExtArgs> = {}>(args?: Subset<T, Event$matchSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9377,6 +9164,54 @@ export namespace Prisma {
   }
 
   /**
+   * Event.games
+   */
+  export type Event$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Game
+     */
+    select?: GameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Game
+     */
+    omit?: GameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameInclude<ExtArgs> | null
+    where?: GameWhereInput
+    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
+    cursor?: GameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
+  }
+
+  /**
+   * Event.matchSuggestions
+   */
+  export type Event$matchSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MatchSuggestion
+     */
+    select?: MatchSuggestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MatchSuggestion
+     */
+    omit?: MatchSuggestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchSuggestionInclude<ExtArgs> | null
+    where?: MatchSuggestionWhereInput
+    orderBy?: MatchSuggestionOrderByWithRelationInput | MatchSuggestionOrderByWithRelationInput[]
+    cursor?: MatchSuggestionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchSuggestionScalarFieldEnum | MatchSuggestionScalarFieldEnum[]
+  }
+
+  /**
    * Event.participantBadges
    */
   export type Event$participantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9473,30 +9308,6 @@ export namespace Prisma {
   }
 
   /**
-   * Event.games
-   */
-  export type Event$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Game
-     */
-    select?: GameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Game
-     */
-    omit?: GameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GameInclude<ExtArgs> | null
-    where?: GameWhereInput
-    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
-    cursor?: GameWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
-  }
-
-  /**
    * Event.userEventScores
    */
   export type Event$userEventScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9542,30 +9353,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserMatchProfileScalarFieldEnum | UserMatchProfileScalarFieldEnum[]
-  }
-
-  /**
-   * Event.matchSuggestions
-   */
-  export type Event$matchSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MatchSuggestion
-     */
-    select?: MatchSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MatchSuggestion
-     */
-    omit?: MatchSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MatchSuggestionInclude<ExtArgs> | null
-    where?: MatchSuggestionWhereInput
-    orderBy?: MatchSuggestionOrderByWithRelationInput | MatchSuggestionOrderByWithRelationInput[]
-    cursor?: MatchSuggestionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MatchSuggestionScalarFieldEnum | MatchSuggestionScalarFieldEnum[]
   }
 
   /**
@@ -9841,11 +9628,11 @@ export namespace Prisma {
     jobTitle?: boolean
     receivedAppointments?: boolean | Registration$receivedAppointmentsArgs<ExtArgs>
     sentAppointments?: boolean | Registration$sentAppointmentsArgs<ExtArgs>
+    games?: boolean | Registration$gamesArgs<ExtArgs>
     participantBadges?: boolean | Registration$participantBadgesArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
     ticket?: boolean | Registration$ticketArgs<ExtArgs>
     sessions?: boolean | Registration$sessionsArgs<ExtArgs>
-    games?: boolean | Registration$gamesArgs<ExtArgs>
     userEventScores?: boolean | Registration$userEventScoresArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
@@ -9915,11 +9702,11 @@ export namespace Prisma {
   export type RegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     receivedAppointments?: boolean | Registration$receivedAppointmentsArgs<ExtArgs>
     sentAppointments?: boolean | Registration$sentAppointmentsArgs<ExtArgs>
+    games?: boolean | Registration$gamesArgs<ExtArgs>
     participantBadges?: boolean | Registration$participantBadgesArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
     ticket?: boolean | Registration$ticketArgs<ExtArgs>
     sessions?: boolean | Registration$sessionsArgs<ExtArgs>
-    games?: boolean | Registration$gamesArgs<ExtArgs>
     userEventScores?: boolean | Registration$userEventScoresArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -9937,11 +9724,11 @@ export namespace Prisma {
     objects: {
       receivedAppointments: Prisma.$AppointmentPayload<ExtArgs>[]
       sentAppointments: Prisma.$AppointmentPayload<ExtArgs>[]
+      games: Prisma.$GamePayload<ExtArgs>[]
       participantBadges: Prisma.$ParticipantBadgePayload<ExtArgs>[]
       event: Prisma.$EventPayload<ExtArgs>
       ticket: Prisma.$TicketPayload<ExtArgs> | null
       sessions: Prisma.$SessionParticipantPayload<ExtArgs>[]
-      games: Prisma.$GamePayload<ExtArgs>[]
       userEventScores: Prisma.$UserEventScorePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -10357,11 +10144,11 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     receivedAppointments<T extends Registration$receivedAppointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$receivedAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentAppointments<T extends Registration$sentAppointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sentAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    games<T extends Registration$gamesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     participantBadges<T extends Registration$participantBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$participantBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ticket<T extends Registration$ticketArgs<ExtArgs> = {}>(args?: Subset<T, Registration$ticketArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sessions<T extends Registration$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    games<T extends Registration$gamesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userEventScores<T extends Registration$userEventScoresArgs<ExtArgs> = {}>(args?: Subset<T, Registration$userEventScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserEventScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -10852,6 +10639,30 @@ export namespace Prisma {
   }
 
   /**
+   * Registration.games
+   */
+  export type Registration$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Game
+     */
+    select?: GameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Game
+     */
+    omit?: GameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameInclude<ExtArgs> | null
+    where?: GameWhereInput
+    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
+    cursor?: GameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
+  }
+
+  /**
    * Registration.participantBadges
    */
   export type Registration$participantBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10916,30 +10727,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
-  }
-
-  /**
-   * Registration.games
-   */
-  export type Registration$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Game
-     */
-    select?: GameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Game
-     */
-    omit?: GameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GameInclude<ExtArgs> | null
-    where?: GameWhereInput
-    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
-    cursor?: GameWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
   }
 
   /**
@@ -11017,8 +10804,8 @@ export namespace Prisma {
     currency: string | null
     quantity: number | null
     sold: number | null
-    status: $Enums.TicketStatus | null
-    visibility: $Enums.TicketVisibility | null
+    status: string | null
+    visibility: string | null
     validFrom: Date | null
     validUntil: Date | null
     group: string | null
@@ -11035,8 +10822,8 @@ export namespace Prisma {
     currency: string | null
     quantity: number | null
     sold: number | null
-    status: $Enums.TicketStatus | null
-    visibility: $Enums.TicketVisibility | null
+    status: string | null
+    visibility: string | null
     validFrom: Date | null
     validUntil: Date | null
     group: string | null
@@ -11226,8 +11013,8 @@ export namespace Prisma {
     currency: string
     quantity: number | null
     sold: number
-    status: $Enums.TicketStatus
-    visibility: $Enums.TicketVisibility
+    status: string
+    visibility: string
     validFrom: Date
     validUntil: Date
     group: string
@@ -11271,8 +11058,8 @@ export namespace Prisma {
     eventId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    event?: boolean | EventDefaultArgs<ExtArgs>
     registrations?: boolean | Ticket$registrationsArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
     _count?: boolean | TicketCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ticket"]>
 
@@ -11334,8 +11121,8 @@ export namespace Prisma {
 
   export type TicketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "currency" | "quantity" | "sold" | "status" | "visibility" | "validFrom" | "validUntil" | "group" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["ticket"]>
   export type TicketInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    event?: boolean | EventDefaultArgs<ExtArgs>
     registrations?: boolean | Ticket$registrationsArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
     _count?: boolean | TicketCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TicketIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11348,8 +11135,8 @@ export namespace Prisma {
   export type $TicketPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Ticket"
     objects: {
-      event: Prisma.$EventPayload<ExtArgs>
       registrations: Prisma.$RegistrationPayload<ExtArgs>[]
+      event: Prisma.$EventPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11359,8 +11146,8 @@ export namespace Prisma {
       currency: string
       quantity: number | null
       sold: number
-      status: $Enums.TicketStatus
-      visibility: $Enums.TicketVisibility
+      status: string
+      visibility: string
       validFrom: Date
       validUntil: Date
       group: string
@@ -11761,8 +11548,8 @@ export namespace Prisma {
    */
   export interface Prisma__TicketClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     registrations<T extends Ticket$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, Ticket$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11799,8 +11586,8 @@ export namespace Prisma {
     readonly currency: FieldRef<"Ticket", 'String'>
     readonly quantity: FieldRef<"Ticket", 'Int'>
     readonly sold: FieldRef<"Ticket", 'Int'>
-    readonly status: FieldRef<"Ticket", 'TicketStatus'>
-    readonly visibility: FieldRef<"Ticket", 'TicketVisibility'>
+    readonly status: FieldRef<"Ticket", 'String'>
+    readonly visibility: FieldRef<"Ticket", 'String'>
     readonly validFrom: FieldRef<"Ticket", 'DateTime'>
     readonly validUntil: FieldRef<"Ticket", 'DateTime'>
     readonly group: FieldRef<"Ticket", 'String'>
@@ -13526,7 +13313,7 @@ export namespace Prisma {
     description: string | null
     logo: string | null
     website: string | null
-    level: $Enums.SponsorLevel | null
+    level: string | null
     visible: boolean | null
     eventId: string | null
     location: string | null
@@ -13547,7 +13334,7 @@ export namespace Prisma {
     description: string | null
     logo: string | null
     website: string | null
-    level: $Enums.SponsorLevel | null
+    level: string | null
     visible: boolean | null
     eventId: string | null
     location: string | null
@@ -13729,7 +13516,7 @@ export namespace Prisma {
     description: string | null
     logo: string | null
     website: string | null
-    level: $Enums.SponsorLevel
+    level: string
     visible: boolean
     eventId: string
     location: string | null
@@ -13875,7 +13662,7 @@ export namespace Prisma {
       description: string | null
       logo: string | null
       website: string | null
-      level: $Enums.SponsorLevel
+      level: string
       visible: boolean
       eventId: string
       location: string | null
@@ -14318,7 +14105,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Sponsor", 'String'>
     readonly logo: FieldRef<"Sponsor", 'String'>
     readonly website: FieldRef<"Sponsor", 'String'>
-    readonly level: FieldRef<"Sponsor", 'SponsorLevel'>
+    readonly level: FieldRef<"Sponsor", 'String'>
     readonly visible: FieldRef<"Sponsor", 'Boolean'>
     readonly eventId: FieldRef<"Sponsor", 'String'>
     readonly location: FieldRef<"Sponsor", 'String'>
@@ -15840,7 +15627,7 @@ export namespace Prisma {
     eventId: string | null
     requesterId: string | null
     recipientId: string | null
-    status: $Enums.AppointmentStatus | null
+    status: string | null
     message: string | null
     proposedTime: Date | null
     confirmedTime: Date | null
@@ -15855,7 +15642,7 @@ export namespace Prisma {
     eventId: string | null
     requesterId: string | null
     recipientId: string | null
-    status: $Enums.AppointmentStatus | null
+    status: string | null
     message: string | null
     proposedTime: Date | null
     confirmedTime: Date | null
@@ -16005,7 +15792,7 @@ export namespace Prisma {
     eventId: string
     requesterId: string
     recipientId: string
-    status: $Enums.AppointmentStatus
+    status: string
     message: string | null
     proposedTime: Date | null
     confirmedTime: Date | null
@@ -16130,7 +15917,7 @@ export namespace Prisma {
       eventId: string
       requesterId: string
       recipientId: string
-      status: $Enums.AppointmentStatus
+      status: string
       message: string | null
       proposedTime: Date | null
       confirmedTime: Date | null
@@ -16568,7 +16355,7 @@ export namespace Prisma {
     readonly eventId: FieldRef<"Appointment", 'String'>
     readonly requesterId: FieldRef<"Appointment", 'String'>
     readonly recipientId: FieldRef<"Appointment", 'String'>
-    readonly status: FieldRef<"Appointment", 'AppointmentStatus'>
+    readonly status: FieldRef<"Appointment", 'String'>
     readonly message: FieldRef<"Appointment", 'String'>
     readonly proposedTime: FieldRef<"Appointment", 'DateTime'>
     readonly confirmedTime: FieldRef<"Appointment", 'DateTime'>
@@ -17004,30 +16791,30 @@ export namespace Prisma {
     id: string | null
     email: string | null
     code: string | null
-    eventId: string | null
-    expiresAt: Date | null
+    event_id: string | null
+    expires_at: Date | null
     used: boolean | null
-    createdAt: Date | null
+    created_at: Date | null
   }
 
   export type OtpCodeMaxAggregateOutputType = {
     id: string | null
     email: string | null
     code: string | null
-    eventId: string | null
-    expiresAt: Date | null
+    event_id: string | null
+    expires_at: Date | null
     used: boolean | null
-    createdAt: Date | null
+    created_at: Date | null
   }
 
   export type OtpCodeCountAggregateOutputType = {
     id: number
     email: number
     code: number
-    eventId: number
-    expiresAt: number
+    event_id: number
+    expires_at: number
     used: number
-    createdAt: number
+    created_at: number
     _all: number
   }
 
@@ -17036,30 +16823,30 @@ export namespace Prisma {
     id?: true
     email?: true
     code?: true
-    eventId?: true
-    expiresAt?: true
+    event_id?: true
+    expires_at?: true
     used?: true
-    createdAt?: true
+    created_at?: true
   }
 
   export type OtpCodeMaxAggregateInputType = {
     id?: true
     email?: true
     code?: true
-    eventId?: true
-    expiresAt?: true
+    event_id?: true
+    expires_at?: true
     used?: true
-    createdAt?: true
+    created_at?: true
   }
 
   export type OtpCodeCountAggregateInputType = {
     id?: true
     email?: true
     code?: true
-    eventId?: true
-    expiresAt?: true
+    event_id?: true
+    expires_at?: true
     used?: true
-    createdAt?: true
+    created_at?: true
     _all?: true
   }
 
@@ -17139,10 +16926,10 @@ export namespace Prisma {
     id: string
     email: string
     code: string
-    eventId: string | null
-    expiresAt: Date
+    event_id: string | null
+    expires_at: Date
     used: boolean
-    createdAt: Date
+    created_at: Date
     _count: OtpCodeCountAggregateOutputType | null
     _min: OtpCodeMinAggregateOutputType | null
     _max: OtpCodeMaxAggregateOutputType | null
@@ -17166,43 +16953,43 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     code?: boolean
-    eventId?: boolean
-    expiresAt?: boolean
+    event_id?: boolean
+    expires_at?: boolean
     used?: boolean
-    createdAt?: boolean
+    created_at?: boolean
   }, ExtArgs["result"]["otpCode"]>
 
   export type OtpCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
     code?: boolean
-    eventId?: boolean
-    expiresAt?: boolean
+    event_id?: boolean
+    expires_at?: boolean
     used?: boolean
-    createdAt?: boolean
+    created_at?: boolean
   }, ExtArgs["result"]["otpCode"]>
 
   export type OtpCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
     code?: boolean
-    eventId?: boolean
-    expiresAt?: boolean
+    event_id?: boolean
+    expires_at?: boolean
     used?: boolean
-    createdAt?: boolean
+    created_at?: boolean
   }, ExtArgs["result"]["otpCode"]>
 
   export type OtpCodeSelectScalar = {
     id?: boolean
     email?: boolean
     code?: boolean
-    eventId?: boolean
-    expiresAt?: boolean
+    event_id?: boolean
+    expires_at?: boolean
     used?: boolean
-    createdAt?: boolean
+    created_at?: boolean
   }
 
-  export type OtpCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "code" | "eventId" | "expiresAt" | "used" | "createdAt", ExtArgs["result"]["otpCode"]>
+  export type OtpCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "code" | "event_id" | "expires_at" | "used" | "created_at", ExtArgs["result"]["otpCode"]>
 
   export type $OtpCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "OtpCode"
@@ -17211,10 +16998,10 @@ export namespace Prisma {
       id: string
       email: string
       code: string
-      eventId: string | null
-      expiresAt: Date
+      event_id: string | null
+      expires_at: Date
       used: boolean
-      createdAt: Date
+      created_at: Date
     }, ExtArgs["result"]["otpCode"]>
     composites: {}
   }
@@ -17641,10 +17428,10 @@ export namespace Prisma {
     readonly id: FieldRef<"OtpCode", 'String'>
     readonly email: FieldRef<"OtpCode", 'String'>
     readonly code: FieldRef<"OtpCode", 'String'>
-    readonly eventId: FieldRef<"OtpCode", 'String'>
-    readonly expiresAt: FieldRef<"OtpCode", 'DateTime'>
+    readonly event_id: FieldRef<"OtpCode", 'String'>
+    readonly expires_at: FieldRef<"OtpCode", 'DateTime'>
     readonly used: FieldRef<"OtpCode", 'Boolean'>
-    readonly createdAt: FieldRef<"OtpCode", 'DateTime'>
+    readonly created_at: FieldRef<"OtpCode", 'DateTime'>
   }
     
 
@@ -20269,7 +20056,7 @@ export namespace Prisma {
     registrationId: string | null
     eventId: string | null
     templateId: string | null
-    status: $Enums.BadgeStatus | null
+    status: string | null
     generatedAt: Date | null
     printedAt: Date | null
     deliveredAt: Date | null
@@ -20284,7 +20071,7 @@ export namespace Prisma {
     registrationId: string | null
     eventId: string | null
     templateId: string | null
-    status: $Enums.BadgeStatus | null
+    status: string | null
     generatedAt: Date | null
     printedAt: Date | null
     deliveredAt: Date | null
@@ -20434,7 +20221,7 @@ export namespace Prisma {
     registrationId: string
     eventId: string
     templateId: string
-    status: $Enums.BadgeStatus
+    status: string
     generatedAt: Date
     printedAt: Date | null
     deliveredAt: Date | null
@@ -20559,7 +20346,7 @@ export namespace Prisma {
       registrationId: string
       eventId: string
       templateId: string
-      status: $Enums.BadgeStatus
+      status: string
       generatedAt: Date
       printedAt: Date | null
       deliveredAt: Date | null
@@ -20997,7 +20784,7 @@ export namespace Prisma {
     readonly registrationId: FieldRef<"ParticipantBadge", 'String'>
     readonly eventId: FieldRef<"ParticipantBadge", 'String'>
     readonly templateId: FieldRef<"ParticipantBadge", 'String'>
-    readonly status: FieldRef<"ParticipantBadge", 'BadgeStatus'>
+    readonly status: FieldRef<"ParticipantBadge", 'String'>
     readonly generatedAt: FieldRef<"ParticipantBadge", 'DateTime'>
     readonly printedAt: FieldRef<"ParticipantBadge", 'DateTime'>
     readonly deliveredAt: FieldRef<"ParticipantBadge", 'DateTime'>
@@ -21448,12 +21235,12 @@ export namespace Prisma {
     eventId: string | null
     name: string | null
     description: string | null
-    type: $Enums.CampaignType | null
-    recipientType: $Enums.RecipientType | null
+    type: string | null
+    recipientType: string | null
     subject: string | null
     htmlContent: string | null
     textContent: string | null
-    status: $Enums.CampaignStatus | null
+    status: string | null
     scheduledAt: Date | null
     sentAt: Date | null
     totalRecipients: number | null
@@ -21468,12 +21255,12 @@ export namespace Prisma {
     eventId: string | null
     name: string | null
     description: string | null
-    type: $Enums.CampaignType | null
-    recipientType: $Enums.RecipientType | null
+    type: string | null
+    recipientType: string | null
     subject: string | null
     htmlContent: string | null
     textContent: string | null
-    status: $Enums.CampaignStatus | null
+    status: string | null
     scheduledAt: Date | null
     sentAt: Date | null
     totalRecipients: number | null
@@ -21669,12 +21456,12 @@ export namespace Prisma {
     eventId: string
     name: string
     description: string | null
-    type: $Enums.CampaignType
-    recipientType: $Enums.RecipientType
+    type: string
+    recipientType: string
     subject: string
     htmlContent: string
     textContent: string | null
-    status: $Enums.CampaignStatus
+    status: string
     scheduledAt: Date | null
     sentAt: Date | null
     totalRecipients: number | null
@@ -21812,12 +21599,12 @@ export namespace Prisma {
       eventId: string
       name: string
       description: string | null
-      type: $Enums.CampaignType
-      recipientType: $Enums.RecipientType
+      type: string
+      recipientType: string
       subject: string
       htmlContent: string
       textContent: string | null
-      status: $Enums.CampaignStatus
+      status: string
       scheduledAt: Date | null
       sentAt: Date | null
       totalRecipients: number | null
@@ -22254,12 +22041,12 @@ export namespace Prisma {
     readonly eventId: FieldRef<"EmailCampaign", 'String'>
     readonly name: FieldRef<"EmailCampaign", 'String'>
     readonly description: FieldRef<"EmailCampaign", 'String'>
-    readonly type: FieldRef<"EmailCampaign", 'CampaignType'>
-    readonly recipientType: FieldRef<"EmailCampaign", 'RecipientType'>
+    readonly type: FieldRef<"EmailCampaign", 'String'>
+    readonly recipientType: FieldRef<"EmailCampaign", 'String'>
     readonly subject: FieldRef<"EmailCampaign", 'String'>
     readonly htmlContent: FieldRef<"EmailCampaign", 'String'>
     readonly textContent: FieldRef<"EmailCampaign", 'String'>
-    readonly status: FieldRef<"EmailCampaign", 'CampaignStatus'>
+    readonly status: FieldRef<"EmailCampaign", 'String'>
     readonly scheduledAt: FieldRef<"EmailCampaign", 'DateTime'>
     readonly sentAt: FieldRef<"EmailCampaign", 'DateTime'>
     readonly totalRecipients: FieldRef<"EmailCampaign", 'Int'>
@@ -22722,8 +22509,8 @@ export namespace Prisma {
     subject: string | null
     htmlContent: string | null
     textContent: string | null
-    type: $Enums.CampaignType | null
-    category: $Enums.TemplateCategory | null
+    type: string | null
+    category: string | null
     isGlobal: boolean | null
     eventId: string | null
     isActive: boolean | null
@@ -22739,8 +22526,8 @@ export namespace Prisma {
     subject: string | null
     htmlContent: string | null
     textContent: string | null
-    type: $Enums.CampaignType | null
-    category: $Enums.TemplateCategory | null
+    type: string | null
+    category: string | null
     isGlobal: boolean | null
     eventId: string | null
     isActive: boolean | null
@@ -22899,8 +22686,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent: string | null
-    type: $Enums.CampaignType
-    category: $Enums.TemplateCategory | null
+    type: string
+    category: string | null
     isGlobal: boolean
     eventId: string | null
     isActive: boolean
@@ -23020,8 +22807,8 @@ export namespace Prisma {
       subject: string
       htmlContent: string
       textContent: string | null
-      type: $Enums.CampaignType
-      category: $Enums.TemplateCategory | null
+      type: string
+      category: string | null
       isGlobal: boolean
       eventId: string | null
       isActive: boolean
@@ -23458,8 +23245,8 @@ export namespace Prisma {
     readonly subject: FieldRef<"EmailTemplate", 'String'>
     readonly htmlContent: FieldRef<"EmailTemplate", 'String'>
     readonly textContent: FieldRef<"EmailTemplate", 'String'>
-    readonly type: FieldRef<"EmailTemplate", 'CampaignType'>
-    readonly category: FieldRef<"EmailTemplate", 'TemplateCategory'>
+    readonly type: FieldRef<"EmailTemplate", 'String'>
+    readonly category: FieldRef<"EmailTemplate", 'String'>
     readonly isGlobal: FieldRef<"EmailTemplate", 'Boolean'>
     readonly eventId: FieldRef<"EmailTemplate", 'String'>
     readonly isActive: FieldRef<"EmailTemplate", 'Boolean'>
@@ -23914,7 +23701,7 @@ export namespace Prisma {
     campaignId: string | null
     recipientEmail: string | null
     recipientName: string | null
-    status: $Enums.EmailStatus | null
+    status: string | null
     errorMessage: string | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -23929,7 +23716,7 @@ export namespace Prisma {
     campaignId: string | null
     recipientEmail: string | null
     recipientName: string | null
-    status: $Enums.EmailStatus | null
+    status: string | null
     errorMessage: string | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -24079,7 +23866,7 @@ export namespace Prisma {
     campaignId: string
     recipientEmail: string
     recipientName: string | null
-    status: $Enums.EmailStatus
+    status: string
     errorMessage: string | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -24190,7 +23977,7 @@ export namespace Prisma {
       campaignId: string
       recipientEmail: string
       recipientName: string | null
-      status: $Enums.EmailStatus
+      status: string
       errorMessage: string | null
       sentAt: Date | null
       deliveredAt: Date | null
@@ -24626,7 +24413,7 @@ export namespace Prisma {
     readonly campaignId: FieldRef<"EmailLog", 'String'>
     readonly recipientEmail: FieldRef<"EmailLog", 'String'>
     readonly recipientName: FieldRef<"EmailLog", 'String'>
-    readonly status: FieldRef<"EmailLog", 'EmailStatus'>
+    readonly status: FieldRef<"EmailLog", 'String'>
     readonly errorMessage: FieldRef<"EmailLog", 'String'>
     readonly sentAt: FieldRef<"EmailLog", 'DateTime'>
     readonly deliveredAt: FieldRef<"EmailLog", 'DateTime'>
@@ -25072,7 +24859,7 @@ export namespace Prisma {
     id: string | null
     eventId: string | null
     participantId: string | null
-    action: $Enums.GameAction | null
+    action: string | null
     points: number | null
     actionDetails: string | null
     relatedEntityId: string | null
@@ -25083,7 +24870,7 @@ export namespace Prisma {
     id: string | null
     eventId: string | null
     participantId: string | null
-    action: $Enums.GameAction | null
+    action: string | null
     points: number | null
     actionDetails: string | null
     relatedEntityId: string | null
@@ -25235,7 +25022,7 @@ export namespace Prisma {
     id: string
     eventId: string
     participantId: string
-    action: $Enums.GameAction
+    action: string
     points: number
     actionDetails: string | null
     relatedEntityId: string | null
@@ -25335,7 +25122,7 @@ export namespace Prisma {
       id: string
       eventId: string
       participantId: string
-      action: $Enums.GameAction
+      action: string
       points: number
       actionDetails: string | null
       relatedEntityId: string | null
@@ -25768,7 +25555,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Game", 'String'>
     readonly eventId: FieldRef<"Game", 'String'>
     readonly participantId: FieldRef<"Game", 'String'>
-    readonly action: FieldRef<"Game", 'GameAction'>
+    readonly action: FieldRef<"Game", 'String'>
     readonly points: FieldRef<"Game", 'Int'>
     readonly actionDetails: FieldRef<"Game", 'String'>
     readonly relatedEntityId: FieldRef<"Game", 'String'>
@@ -27508,8 +27295,8 @@ export namespace Prisma {
     availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userMatchProfile"]>
 
   export type UserMatchProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -27525,8 +27312,8 @@ export namespace Prisma {
     availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userMatchProfile"]>
 
   export type UserMatchProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -27542,8 +27329,8 @@ export namespace Prisma {
     availability?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userMatchProfile"]>
 
   export type UserMatchProfileSelectScalar = {
@@ -27563,23 +27350,23 @@ export namespace Prisma {
 
   export type UserMatchProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "headline" | "bio" | "jobTitle" | "company" | "interests" | "goals" | "availability" | "createdAt" | "updatedAt", ExtArgs["result"]["userMatchProfile"]>
   export type UserMatchProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserMatchProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserMatchProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $UserMatchProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserMatchProfile"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       event: Prisma.$EventPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27988,8 +27775,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserMatchProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -28659,9 +28446,9 @@ export namespace Prisma {
     score?: boolean
     reason?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    suggested?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    suggested?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["matchSuggestion"]>
 
   export type MatchSuggestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28672,9 +28459,9 @@ export namespace Prisma {
     score?: boolean
     reason?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    suggested?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    suggested?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["matchSuggestion"]>
 
   export type MatchSuggestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28685,9 +28472,9 @@ export namespace Prisma {
     score?: boolean
     reason?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    suggested?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    suggested?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["matchSuggestion"]>
 
   export type MatchSuggestionSelectScalar = {
@@ -28702,27 +28489,27 @@ export namespace Prisma {
 
   export type MatchSuggestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "suggestedId" | "eventId" | "score" | "reason" | "createdAt", ExtArgs["result"]["matchSuggestion"]>
   export type MatchSuggestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    suggested?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    suggested?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type MatchSuggestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    suggested?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    suggested?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type MatchSuggestionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    suggested?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
+    suggested?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $MatchSuggestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MatchSuggestion"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      suggested: Prisma.$UserPayload<ExtArgs>
       event: Prisma.$EventPayload<ExtArgs>
+      suggested: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -29126,9 +28913,9 @@ export namespace Prisma {
    */
   export interface Prisma__MatchSuggestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    suggested<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    suggested<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29801,10 +29588,10 @@ export namespace Prisma {
     id: 'id',
     email: 'email',
     code: 'code',
-    eventId: 'eventId',
-    expiresAt: 'expiresAt',
+    event_id: 'event_id',
+    expires_at: 'expires_at',
     used: 'used',
-    createdAt: 'createdAt'
+    created_at: 'created_at'
   };
 
   export type OtpCodeScalarFieldEnum = (typeof OtpCodeScalarFieldEnum)[keyof typeof OtpCodeScalarFieldEnum]
@@ -30049,34 +29836,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'UserRole'
-   */
-  export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
-    
-
-
-  /**
-   * Reference to a field of type 'UserRole[]'
-   */
-  export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'UserPlan'
-   */
-  export type EnumUserPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserPlan'>
-    
-
-
-  /**
-   * Reference to a field of type 'UserPlan[]'
-   */
-  export type ListEnumUserPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserPlan[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -30112,48 +29871,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'TicketStatus'
-   */
-  export type EnumTicketStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TicketStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'TicketStatus[]'
-   */
-  export type ListEnumTicketStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TicketStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'TicketVisibility'
-   */
-  export type EnumTicketVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TicketVisibility'>
-    
-
-
-  /**
-   * Reference to a field of type 'TicketVisibility[]'
-   */
-  export type ListEnumTicketVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TicketVisibility[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'SponsorLevel'
-   */
-  export type EnumSponsorLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SponsorLevel'>
-    
-
-
-  /**
-   * Reference to a field of type 'SponsorLevel[]'
-   */
-  export type ListEnumSponsorLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SponsorLevel[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -30164,118 +29881,6 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
-   * Reference to a field of type 'AppointmentStatus'
-   */
-  export type EnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'AppointmentStatus[]'
-   */
-  export type ListEnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'BadgeStatus'
-   */
-  export type EnumBadgeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BadgeStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'BadgeStatus[]'
-   */
-  export type ListEnumBadgeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BadgeStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'CampaignType'
-   */
-  export type EnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType'>
-    
-
-
-  /**
-   * Reference to a field of type 'CampaignType[]'
-   */
-  export type ListEnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'RecipientType'
-   */
-  export type EnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType'>
-    
-
-
-  /**
-   * Reference to a field of type 'RecipientType[]'
-   */
-  export type ListEnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'CampaignStatus'
-   */
-  export type EnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'CampaignStatus[]'
-   */
-  export type ListEnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'TemplateCategory'
-   */
-  export type EnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory'>
-    
-
-
-  /**
-   * Reference to a field of type 'TemplateCategory[]'
-   */
-  export type ListEnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'EmailStatus'
-   */
-  export type EnumEmailStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'EmailStatus[]'
-   */
-  export type ListEnumEmailStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'GameAction'
-   */
-  export type EnumGameActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameAction'>
-    
-
-
-  /**
-   * Reference to a field of type 'GameAction[]'
-   */
-  export type ListEnumGameActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameAction[]'>
     
 
 
@@ -30309,16 +29914,16 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     permissions?: StringNullableListFilter<"User">
-    role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    role?: StringFilter<"User"> | string
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     phone?: StringNullableFilter<"User"> | string | null
-    plan?: EnumUserPlanFilter<"User"> | $Enums.UserPlan
+    plan?: StringFilter<"User"> | string
     accounts?: AccountListRelationFilter
     events?: EventListRelationFilter
+    suggestedFor?: MatchSuggestionListRelationFilter
+    suggestions?: MatchSuggestionListRelationFilter
     sessions?: SessionListRelationFilter
     matchProfiles?: UserMatchProfileListRelationFilter
-    suggestions?: MatchSuggestionListRelationFilter
-    suggestedFor?: MatchSuggestionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -30337,10 +29942,10 @@ export namespace Prisma {
     plan?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     events?: EventOrderByRelationAggregateInput
+    suggestedFor?: MatchSuggestionOrderByRelationAggregateInput
+    suggestions?: MatchSuggestionOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     matchProfiles?: UserMatchProfileOrderByRelationAggregateInput
-    suggestions?: MatchSuggestionOrderByRelationAggregateInput
-    suggestedFor?: MatchSuggestionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -30356,16 +29961,16 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     permissions?: StringNullableListFilter<"User">
-    role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    role?: StringFilter<"User"> | string
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     phone?: StringNullableFilter<"User"> | string | null
-    plan?: EnumUserPlanFilter<"User"> | $Enums.UserPlan
+    plan?: StringFilter<"User"> | string
     accounts?: AccountListRelationFilter
     events?: EventListRelationFilter
+    suggestedFor?: MatchSuggestionListRelationFilter
+    suggestions?: MatchSuggestionListRelationFilter
     sessions?: SessionListRelationFilter
     matchProfiles?: UserMatchProfileListRelationFilter
-    suggestions?: MatchSuggestionListRelationFilter
-    suggestedFor?: MatchSuggestionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -30400,10 +30005,10 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     permissions?: StringNullableListFilter<"User">
-    role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+    role?: StringWithAggregatesFilter<"User"> | string
     lastLogin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
-    plan?: EnumUserPlanWithAggregatesFilter<"User"> | $Enums.UserPlan
+    plan?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type AccountWhereInput = {
@@ -30625,14 +30230,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateListRelationFilter
     event_sessions?: Event_sessionsListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    games?: GameListRelationFilter
+    matchSuggestions?: MatchSuggestionListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
     registrations?: RegistrationListRelationFilter
     sponsors?: SponsorListRelationFilter
     tickets?: TicketListRelationFilter
-    games?: GameListRelationFilter
     userEventScores?: UserEventScoreListRelationFilter
     matchProfiles?: UserMatchProfileListRelationFilter
-    matchSuggestions?: MatchSuggestionListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -30665,14 +30270,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateOrderByRelationAggregateInput
     event_sessions?: event_sessionsOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
+    games?: GameOrderByRelationAggregateInput
+    matchSuggestions?: MatchSuggestionOrderByRelationAggregateInput
     participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
     registrations?: RegistrationOrderByRelationAggregateInput
     sponsors?: SponsorOrderByRelationAggregateInput
     tickets?: TicketOrderByRelationAggregateInput
-    games?: GameOrderByRelationAggregateInput
     userEventScores?: UserEventScoreOrderByRelationAggregateInput
     matchProfiles?: UserMatchProfileOrderByRelationAggregateInput
-    matchSuggestions?: MatchSuggestionOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -30708,14 +30313,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateListRelationFilter
     event_sessions?: Event_sessionsListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    games?: GameListRelationFilter
+    matchSuggestions?: MatchSuggestionListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
     registrations?: RegistrationListRelationFilter
     sponsors?: SponsorListRelationFilter
     tickets?: TicketListRelationFilter
-    games?: GameListRelationFilter
     userEventScores?: UserEventScoreListRelationFilter
     matchProfiles?: UserMatchProfileListRelationFilter
-    matchSuggestions?: MatchSuggestionListRelationFilter
   }, "id" | "slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -30796,11 +30401,11 @@ export namespace Prisma {
     jobTitle?: StringNullableFilter<"Registration"> | string | null
     receivedAppointments?: AppointmentListRelationFilter
     sentAppointments?: AppointmentListRelationFilter
+    games?: GameListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     ticket?: XOR<TicketNullableScalarRelationFilter, TicketWhereInput> | null
     sessions?: SessionParticipantListRelationFilter
-    games?: GameListRelationFilter
     userEventScores?: UserEventScoreListRelationFilter
   }
 
@@ -30823,11 +30428,11 @@ export namespace Prisma {
     jobTitle?: SortOrderInput | SortOrder
     receivedAppointments?: AppointmentOrderByRelationAggregateInput
     sentAppointments?: AppointmentOrderByRelationAggregateInput
+    games?: GameOrderByRelationAggregateInput
     participantBadges?: ParticipantBadgeOrderByRelationAggregateInput
     event?: EventOrderByWithRelationInput
     ticket?: TicketOrderByWithRelationInput
     sessions?: SessionParticipantOrderByRelationAggregateInput
-    games?: GameOrderByRelationAggregateInput
     userEventScores?: UserEventScoreOrderByRelationAggregateInput
   }
 
@@ -30853,11 +30458,11 @@ export namespace Prisma {
     jobTitle?: StringNullableFilter<"Registration"> | string | null
     receivedAppointments?: AppointmentListRelationFilter
     sentAppointments?: AppointmentListRelationFilter
+    games?: GameListRelationFilter
     participantBadges?: ParticipantBadgeListRelationFilter
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     ticket?: XOR<TicketNullableScalarRelationFilter, TicketWhereInput> | null
     sessions?: SessionParticipantListRelationFilter
-    games?: GameListRelationFilter
     userEventScores?: UserEventScoreListRelationFilter
   }, "id" | "qrCode" | "shortCode">
 
@@ -30916,16 +30521,16 @@ export namespace Prisma {
     currency?: StringFilter<"Ticket"> | string
     quantity?: IntNullableFilter<"Ticket"> | number | null
     sold?: IntFilter<"Ticket"> | number
-    status?: EnumTicketStatusFilter<"Ticket"> | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFilter<"Ticket"> | $Enums.TicketVisibility
+    status?: StringFilter<"Ticket"> | string
+    visibility?: StringFilter<"Ticket"> | string
     validFrom?: DateTimeFilter<"Ticket"> | Date | string
     validUntil?: DateTimeFilter<"Ticket"> | Date | string
     group?: StringFilter<"Ticket"> | string
     eventId?: StringFilter<"Ticket"> | string
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     updatedAt?: DateTimeFilter<"Ticket"> | Date | string
-    event?: XOR<EventScalarRelationFilter, EventWhereInput>
     registrations?: RegistrationListRelationFilter
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
   }
 
   export type TicketOrderByWithRelationInput = {
@@ -30944,8 +30549,8 @@ export namespace Prisma {
     eventId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    event?: EventOrderByWithRelationInput
     registrations?: RegistrationOrderByRelationAggregateInput
+    event?: EventOrderByWithRelationInput
   }
 
   export type TicketWhereUniqueInput = Prisma.AtLeast<{
@@ -30959,16 +30564,16 @@ export namespace Prisma {
     currency?: StringFilter<"Ticket"> | string
     quantity?: IntNullableFilter<"Ticket"> | number | null
     sold?: IntFilter<"Ticket"> | number
-    status?: EnumTicketStatusFilter<"Ticket"> | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFilter<"Ticket"> | $Enums.TicketVisibility
+    status?: StringFilter<"Ticket"> | string
+    visibility?: StringFilter<"Ticket"> | string
     validFrom?: DateTimeFilter<"Ticket"> | Date | string
     validUntil?: DateTimeFilter<"Ticket"> | Date | string
     group?: StringFilter<"Ticket"> | string
     eventId?: StringFilter<"Ticket"> | string
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     updatedAt?: DateTimeFilter<"Ticket"> | Date | string
-    event?: XOR<EventScalarRelationFilter, EventWhereInput>
     registrations?: RegistrationListRelationFilter
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
   }, "id">
 
   export type TicketOrderByWithAggregationInput = {
@@ -31005,8 +30610,8 @@ export namespace Prisma {
     currency?: StringWithAggregatesFilter<"Ticket"> | string
     quantity?: IntNullableWithAggregatesFilter<"Ticket"> | number | null
     sold?: IntWithAggregatesFilter<"Ticket"> | number
-    status?: EnumTicketStatusWithAggregatesFilter<"Ticket"> | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityWithAggregatesFilter<"Ticket"> | $Enums.TicketVisibility
+    status?: StringWithAggregatesFilter<"Ticket"> | string
+    visibility?: StringWithAggregatesFilter<"Ticket"> | string
     validFrom?: DateTimeWithAggregatesFilter<"Ticket"> | Date | string
     validUntil?: DateTimeWithAggregatesFilter<"Ticket"> | Date | string
     group?: StringWithAggregatesFilter<"Ticket"> | string
@@ -31139,7 +30744,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Sponsor"> | string | null
     logo?: StringNullableFilter<"Sponsor"> | string | null
     website?: StringNullableFilter<"Sponsor"> | string | null
-    level?: EnumSponsorLevelFilter<"Sponsor"> | $Enums.SponsorLevel
+    level?: StringFilter<"Sponsor"> | string
     visible?: BoolFilter<"Sponsor"> | boolean
     eventId?: StringFilter<"Sponsor"> | string
     location?: StringNullableFilter<"Sponsor"> | string | null
@@ -31188,7 +30793,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Sponsor"> | string | null
     logo?: StringNullableFilter<"Sponsor"> | string | null
     website?: StringNullableFilter<"Sponsor"> | string | null
-    level?: EnumSponsorLevelFilter<"Sponsor"> | $Enums.SponsorLevel
+    level?: StringFilter<"Sponsor"> | string
     visible?: BoolFilter<"Sponsor"> | boolean
     eventId?: StringFilter<"Sponsor"> | string
     location?: StringNullableFilter<"Sponsor"> | string | null
@@ -31239,7 +30844,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
     logo?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
     website?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
-    level?: EnumSponsorLevelWithAggregatesFilter<"Sponsor"> | $Enums.SponsorLevel
+    level?: StringWithAggregatesFilter<"Sponsor"> | string
     visible?: BoolWithAggregatesFilter<"Sponsor"> | boolean
     eventId?: StringWithAggregatesFilter<"Sponsor"> | string
     location?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
@@ -31327,7 +30932,7 @@ export namespace Prisma {
     eventId?: StringFilter<"Appointment"> | string
     requesterId?: StringFilter<"Appointment"> | string
     recipientId?: StringFilter<"Appointment"> | string
-    status?: EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
+    status?: StringFilter<"Appointment"> | string
     message?: StringNullableFilter<"Appointment"> | string | null
     proposedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
     confirmedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
@@ -31366,7 +30971,7 @@ export namespace Prisma {
     eventId?: StringFilter<"Appointment"> | string
     requesterId?: StringFilter<"Appointment"> | string
     recipientId?: StringFilter<"Appointment"> | string
-    status?: EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
+    status?: StringFilter<"Appointment"> | string
     message?: StringNullableFilter<"Appointment"> | string | null
     proposedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
     confirmedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
@@ -31405,7 +31010,7 @@ export namespace Prisma {
     eventId?: StringWithAggregatesFilter<"Appointment"> | string
     requesterId?: StringWithAggregatesFilter<"Appointment"> | string
     recipientId?: StringWithAggregatesFilter<"Appointment"> | string
-    status?: EnumAppointmentStatusWithAggregatesFilter<"Appointment"> | $Enums.AppointmentStatus
+    status?: StringWithAggregatesFilter<"Appointment"> | string
     message?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     proposedTime?: DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
     confirmedTime?: DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
@@ -31422,20 +31027,20 @@ export namespace Prisma {
     id?: StringFilter<"OtpCode"> | string
     email?: StringFilter<"OtpCode"> | string
     code?: StringFilter<"OtpCode"> | string
-    eventId?: StringNullableFilter<"OtpCode"> | string | null
-    expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
+    event_id?: StringNullableFilter<"OtpCode"> | string | null
+    expires_at?: DateTimeFilter<"OtpCode"> | Date | string
     used?: BoolFilter<"OtpCode"> | boolean
-    createdAt?: DateTimeFilter<"OtpCode"> | Date | string
+    created_at?: DateTimeFilter<"OtpCode"> | Date | string
   }
 
   export type OtpCodeOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
     code?: SortOrder
-    eventId?: SortOrderInput | SortOrder
-    expiresAt?: SortOrder
+    event_id?: SortOrderInput | SortOrder
+    expires_at?: SortOrder
     used?: SortOrder
-    createdAt?: SortOrder
+    created_at?: SortOrder
   }
 
   export type OtpCodeWhereUniqueInput = Prisma.AtLeast<{
@@ -31445,20 +31050,20 @@ export namespace Prisma {
     NOT?: OtpCodeWhereInput | OtpCodeWhereInput[]
     email?: StringFilter<"OtpCode"> | string
     code?: StringFilter<"OtpCode"> | string
-    eventId?: StringNullableFilter<"OtpCode"> | string | null
-    expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
+    event_id?: StringNullableFilter<"OtpCode"> | string | null
+    expires_at?: DateTimeFilter<"OtpCode"> | Date | string
     used?: BoolFilter<"OtpCode"> | boolean
-    createdAt?: DateTimeFilter<"OtpCode"> | Date | string
+    created_at?: DateTimeFilter<"OtpCode"> | Date | string
   }, "id">
 
   export type OtpCodeOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
     code?: SortOrder
-    eventId?: SortOrderInput | SortOrder
-    expiresAt?: SortOrder
+    event_id?: SortOrderInput | SortOrder
+    expires_at?: SortOrder
     used?: SortOrder
-    createdAt?: SortOrder
+    created_at?: SortOrder
     _count?: OtpCodeCountOrderByAggregateInput
     _max?: OtpCodeMaxOrderByAggregateInput
     _min?: OtpCodeMinOrderByAggregateInput
@@ -31471,10 +31076,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"OtpCode"> | string
     email?: StringWithAggregatesFilter<"OtpCode"> | string
     code?: StringWithAggregatesFilter<"OtpCode"> | string
-    eventId?: StringNullableWithAggregatesFilter<"OtpCode"> | string | null
-    expiresAt?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
+    event_id?: StringNullableWithAggregatesFilter<"OtpCode"> | string | null
+    expires_at?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
     used?: BoolWithAggregatesFilter<"OtpCode"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
+    created_at?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
   }
 
   export type BadgeWhereInput = {
@@ -31628,7 +31233,7 @@ export namespace Prisma {
     registrationId?: StringFilter<"ParticipantBadge"> | string
     eventId?: StringFilter<"ParticipantBadge"> | string
     templateId?: StringFilter<"ParticipantBadge"> | string
-    status?: EnumBadgeStatusFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    status?: StringFilter<"ParticipantBadge"> | string
     generatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
     printedAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
@@ -31668,7 +31273,7 @@ export namespace Prisma {
     registrationId?: StringFilter<"ParticipantBadge"> | string
     eventId?: StringFilter<"ParticipantBadge"> | string
     templateId?: StringFilter<"ParticipantBadge"> | string
-    status?: EnumBadgeStatusFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    status?: StringFilter<"ParticipantBadge"> | string
     generatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
     printedAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
@@ -31707,7 +31312,7 @@ export namespace Prisma {
     registrationId?: StringWithAggregatesFilter<"ParticipantBadge"> | string
     eventId?: StringWithAggregatesFilter<"ParticipantBadge"> | string
     templateId?: StringWithAggregatesFilter<"ParticipantBadge"> | string
-    status?: EnumBadgeStatusWithAggregatesFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    status?: StringWithAggregatesFilter<"ParticipantBadge"> | string
     generatedAt?: DateTimeWithAggregatesFilter<"ParticipantBadge"> | Date | string
     printedAt?: DateTimeNullableWithAggregatesFilter<"ParticipantBadge"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"ParticipantBadge"> | Date | string | null
@@ -31725,12 +31330,12 @@ export namespace Prisma {
     eventId?: StringFilter<"EmailCampaign"> | string
     name?: StringFilter<"EmailCampaign"> | string
     description?: StringNullableFilter<"EmailCampaign"> | string | null
-    type?: EnumCampaignTypeFilter<"EmailCampaign"> | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFilter<"EmailCampaign"> | $Enums.RecipientType
+    type?: StringFilter<"EmailCampaign"> | string
+    recipientType?: StringFilter<"EmailCampaign"> | string
     subject?: StringFilter<"EmailCampaign"> | string
     htmlContent?: StringFilter<"EmailCampaign"> | string
     textContent?: StringNullableFilter<"EmailCampaign"> | string | null
-    status?: EnumCampaignStatusFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    status?: StringFilter<"EmailCampaign"> | string
     scheduledAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
     sentAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
     totalRecipients?: IntNullableFilter<"EmailCampaign"> | number | null
@@ -31772,12 +31377,12 @@ export namespace Prisma {
     eventId?: StringFilter<"EmailCampaign"> | string
     name?: StringFilter<"EmailCampaign"> | string
     description?: StringNullableFilter<"EmailCampaign"> | string | null
-    type?: EnumCampaignTypeFilter<"EmailCampaign"> | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFilter<"EmailCampaign"> | $Enums.RecipientType
+    type?: StringFilter<"EmailCampaign"> | string
+    recipientType?: StringFilter<"EmailCampaign"> | string
     subject?: StringFilter<"EmailCampaign"> | string
     htmlContent?: StringFilter<"EmailCampaign"> | string
     textContent?: StringNullableFilter<"EmailCampaign"> | string | null
-    status?: EnumCampaignStatusFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    status?: StringFilter<"EmailCampaign"> | string
     scheduledAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
     sentAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
     totalRecipients?: IntNullableFilter<"EmailCampaign"> | number | null
@@ -31822,12 +31427,12 @@ export namespace Prisma {
     eventId?: StringWithAggregatesFilter<"EmailCampaign"> | string
     name?: StringWithAggregatesFilter<"EmailCampaign"> | string
     description?: StringNullableWithAggregatesFilter<"EmailCampaign"> | string | null
-    type?: EnumCampaignTypeWithAggregatesFilter<"EmailCampaign"> | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeWithAggregatesFilter<"EmailCampaign"> | $Enums.RecipientType
+    type?: StringWithAggregatesFilter<"EmailCampaign"> | string
+    recipientType?: StringWithAggregatesFilter<"EmailCampaign"> | string
     subject?: StringWithAggregatesFilter<"EmailCampaign"> | string
     htmlContent?: StringWithAggregatesFilter<"EmailCampaign"> | string
     textContent?: StringNullableWithAggregatesFilter<"EmailCampaign"> | string | null
-    status?: EnumCampaignStatusWithAggregatesFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    status?: StringWithAggregatesFilter<"EmailCampaign"> | string
     scheduledAt?: DateTimeNullableWithAggregatesFilter<"EmailCampaign"> | Date | string | null
     sentAt?: DateTimeNullableWithAggregatesFilter<"EmailCampaign"> | Date | string | null
     totalRecipients?: IntNullableWithAggregatesFilter<"EmailCampaign"> | number | null
@@ -31847,8 +31452,8 @@ export namespace Prisma {
     subject?: StringFilter<"EmailTemplate"> | string
     htmlContent?: StringFilter<"EmailTemplate"> | string
     textContent?: StringNullableFilter<"EmailTemplate"> | string | null
-    type?: EnumCampaignTypeFilter<"EmailTemplate"> | $Enums.CampaignType
-    category?: EnumTemplateCategoryNullableFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    type?: StringFilter<"EmailTemplate"> | string
+    category?: StringNullableFilter<"EmailTemplate"> | string | null
     isGlobal?: BoolFilter<"EmailTemplate"> | boolean
     eventId?: StringNullableFilter<"EmailTemplate"> | string | null
     isActive?: BoolFilter<"EmailTemplate"> | boolean
@@ -31886,8 +31491,8 @@ export namespace Prisma {
     subject?: StringFilter<"EmailTemplate"> | string
     htmlContent?: StringFilter<"EmailTemplate"> | string
     textContent?: StringNullableFilter<"EmailTemplate"> | string | null
-    type?: EnumCampaignTypeFilter<"EmailTemplate"> | $Enums.CampaignType
-    category?: EnumTemplateCategoryNullableFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    type?: StringFilter<"EmailTemplate"> | string
+    category?: StringNullableFilter<"EmailTemplate"> | string | null
     isGlobal?: BoolFilter<"EmailTemplate"> | boolean
     eventId?: StringNullableFilter<"EmailTemplate"> | string | null
     isActive?: BoolFilter<"EmailTemplate"> | boolean
@@ -31927,8 +31532,8 @@ export namespace Prisma {
     subject?: StringWithAggregatesFilter<"EmailTemplate"> | string
     htmlContent?: StringWithAggregatesFilter<"EmailTemplate"> | string
     textContent?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
-    type?: EnumCampaignTypeWithAggregatesFilter<"EmailTemplate"> | $Enums.CampaignType
-    category?: EnumTemplateCategoryNullableWithAggregatesFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    type?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    category?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
     isGlobal?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
     eventId?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
     isActive?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
@@ -31945,7 +31550,7 @@ export namespace Prisma {
     campaignId?: StringFilter<"EmailLog"> | string
     recipientEmail?: StringFilter<"EmailLog"> | string
     recipientName?: StringNullableFilter<"EmailLog"> | string | null
-    status?: EnumEmailStatusFilter<"EmailLog"> | $Enums.EmailStatus
+    status?: StringFilter<"EmailLog"> | string
     errorMessage?: StringNullableFilter<"EmailLog"> | string | null
     sentAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
@@ -31980,7 +31585,7 @@ export namespace Prisma {
     campaignId?: StringFilter<"EmailLog"> | string
     recipientEmail?: StringFilter<"EmailLog"> | string
     recipientName?: StringNullableFilter<"EmailLog"> | string | null
-    status?: EnumEmailStatusFilter<"EmailLog"> | $Enums.EmailStatus
+    status?: StringFilter<"EmailLog"> | string
     errorMessage?: StringNullableFilter<"EmailLog"> | string | null
     sentAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
@@ -32017,7 +31622,7 @@ export namespace Prisma {
     campaignId?: StringWithAggregatesFilter<"EmailLog"> | string
     recipientEmail?: StringWithAggregatesFilter<"EmailLog"> | string
     recipientName?: StringNullableWithAggregatesFilter<"EmailLog"> | string | null
-    status?: EnumEmailStatusWithAggregatesFilter<"EmailLog"> | $Enums.EmailStatus
+    status?: StringWithAggregatesFilter<"EmailLog"> | string
     errorMessage?: StringNullableWithAggregatesFilter<"EmailLog"> | string | null
     sentAt?: DateTimeNullableWithAggregatesFilter<"EmailLog"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"EmailLog"> | Date | string | null
@@ -32034,7 +31639,7 @@ export namespace Prisma {
     id?: StringFilter<"Game"> | string
     eventId?: StringFilter<"Game"> | string
     participantId?: StringFilter<"Game"> | string
-    action?: EnumGameActionFilter<"Game"> | $Enums.GameAction
+    action?: StringFilter<"Game"> | string
     points?: IntFilter<"Game"> | number
     actionDetails?: StringNullableFilter<"Game"> | string | null
     relatedEntityId?: StringNullableFilter<"Game"> | string | null
@@ -32063,7 +31668,7 @@ export namespace Prisma {
     NOT?: GameWhereInput | GameWhereInput[]
     eventId?: StringFilter<"Game"> | string
     participantId?: StringFilter<"Game"> | string
-    action?: EnumGameActionFilter<"Game"> | $Enums.GameAction
+    action?: StringFilter<"Game"> | string
     points?: IntFilter<"Game"> | number
     actionDetails?: StringNullableFilter<"Game"> | string | null
     relatedEntityId?: StringNullableFilter<"Game"> | string | null
@@ -32095,7 +31700,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Game"> | string
     eventId?: StringWithAggregatesFilter<"Game"> | string
     participantId?: StringWithAggregatesFilter<"Game"> | string
-    action?: EnumGameActionWithAggregatesFilter<"Game"> | $Enums.GameAction
+    action?: StringWithAggregatesFilter<"Game"> | string
     points?: IntWithAggregatesFilter<"Game"> | number
     actionDetails?: StringNullableWithAggregatesFilter<"Game"> | string | null
     relatedEntityId?: StringNullableWithAggregatesFilter<"Game"> | string | null
@@ -32184,8 +31789,8 @@ export namespace Prisma {
     availability?: StringNullableListFilter<"UserMatchProfile">
     createdAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     updatedAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type UserMatchProfileOrderByWithRelationInput = {
@@ -32201,8 +31806,8 @@ export namespace Prisma {
     availability?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     event?: EventOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type UserMatchProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -32222,8 +31827,8 @@ export namespace Prisma {
     availability?: StringNullableListFilter<"UserMatchProfile">
     createdAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
     updatedAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_eventId">
 
   export type UserMatchProfileOrderByWithAggregationInput = {
@@ -32273,9 +31878,9 @@ export namespace Prisma {
     score?: FloatFilter<"MatchSuggestion"> | number
     reason?: StringNullableFilter<"MatchSuggestion"> | string | null
     createdAt?: DateTimeFilter<"MatchSuggestion"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    suggested?: XOR<UserScalarRelationFilter, UserWhereInput>
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    suggested?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type MatchSuggestionOrderByWithRelationInput = {
@@ -32286,9 +31891,9 @@ export namespace Prisma {
     score?: SortOrder
     reason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    suggested?: UserOrderByWithRelationInput
     event?: EventOrderByWithRelationInput
+    suggested?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type MatchSuggestionWhereUniqueInput = Prisma.AtLeast<{
@@ -32303,9 +31908,9 @@ export namespace Prisma {
     score?: FloatFilter<"MatchSuggestion"> | number
     reason?: StringNullableFilter<"MatchSuggestion"> | string | null
     createdAt?: DateTimeFilter<"MatchSuggestion"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    suggested?: XOR<UserScalarRelationFilter, UserWhereInput>
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    suggested?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_suggestedId_eventId">
 
   export type MatchSuggestionOrderByWithAggregationInput = {
@@ -32346,16 +31951,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     events?: EventCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -32368,16 +31973,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     events?: EventUncheckedCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
   }
 
   export type UserUpdateInput = {
@@ -32390,16 +31995,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     events?: EventUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -32412,16 +32017,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     events?: EventUncheckedUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -32434,10 +32039,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -32450,10 +32055,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -32466,10 +32071,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
   }
 
   export type AccountCreateInput = {
@@ -32695,14 +32300,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -32734,14 +32339,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -32773,14 +32378,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -32812,14 +32417,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -32913,11 +32518,11 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
   }
 
@@ -32940,9 +32545,9 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
-    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -32963,11 +32568,11 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -32990,9 +32595,9 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
-    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -33059,15 +32664,15 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    event: EventCreateNestedOneWithoutTicketsInput
     registrations?: RegistrationCreateNestedManyWithoutTicketInput
+    event: EventCreateNestedOneWithoutTicketsInput
   }
 
   export type TicketUncheckedCreateInput = {
@@ -33078,8 +32683,8 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
@@ -33097,15 +32702,15 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    event?: EventUpdateOneRequiredWithoutTicketsNestedInput
     registrations?: RegistrationUpdateManyWithoutTicketNestedInput
+    event?: EventUpdateOneRequiredWithoutTicketsNestedInput
   }
 
   export type TicketUncheckedUpdateInput = {
@@ -33116,8 +32721,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -33135,8 +32740,8 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
@@ -33153,8 +32758,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -33170,8 +32775,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -33322,7 +32927,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     website?: string | null
-    level?: $Enums.SponsorLevel
+    level?: string
     visible?: boolean
     location?: string | null
     address?: string | null
@@ -33344,7 +32949,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     website?: string | null
-    level?: $Enums.SponsorLevel
+    level?: string
     visible?: boolean
     eventId: string
     location?: string | null
@@ -33366,7 +32971,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     location?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33388,7 +32993,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     eventId?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33410,7 +33015,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     website?: string | null
-    level?: $Enums.SponsorLevel
+    level?: string
     visible?: boolean
     eventId: string
     location?: string | null
@@ -33432,7 +33037,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     location?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33453,7 +33058,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     eventId?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33532,7 +33137,7 @@ export namespace Prisma {
 
   export type AppointmentCreateInput = {
     id?: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -33550,7 +33155,7 @@ export namespace Prisma {
     eventId: string
     requesterId: string
     recipientId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -33562,7 +33167,7 @@ export namespace Prisma {
 
   export type AppointmentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33580,7 +33185,7 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     requesterId?: StringFieldUpdateOperationsInput | string
     recipientId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33595,7 +33200,7 @@ export namespace Prisma {
     eventId: string
     requesterId: string
     recipientId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -33607,7 +33212,7 @@ export namespace Prisma {
 
   export type AppointmentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33622,7 +33227,7 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     requesterId?: StringFieldUpdateOperationsInput | string
     recipientId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33636,70 +33241,70 @@ export namespace Prisma {
     id?: string
     email: string
     code: string
-    eventId?: string | null
-    expiresAt: Date | string
+    event_id?: string | null
+    expires_at: Date | string
     used?: boolean
-    createdAt?: Date | string
+    created_at?: Date | string
   }
 
   export type OtpCodeUncheckedCreateInput = {
     id?: string
     email: string
     code: string
-    eventId?: string | null
-    expiresAt: Date | string
+    event_id?: string | null
+    expires_at: Date | string
     used?: boolean
-    createdAt?: Date | string
+    created_at?: Date | string
   }
 
   export type OtpCodeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    eventId?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event_id?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
     used?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OtpCodeUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    eventId?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event_id?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
     used?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OtpCodeCreateManyInput = {
     id?: string
     email: string
     code: string
-    eventId?: string | null
-    expiresAt: Date | string
+    event_id?: string | null
+    expires_at: Date | string
     used?: boolean
-    createdAt?: Date | string
+    created_at?: Date | string
   }
 
   export type OtpCodeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    eventId?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event_id?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
     used?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OtpCodeUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    eventId?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event_id?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
     used?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BadgeCreateInput = {
@@ -33860,7 +33465,7 @@ export namespace Prisma {
 
   export type ParticipantBadgeCreateInput = {
     id?: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -33878,7 +33483,7 @@ export namespace Prisma {
     registrationId: string
     eventId: string
     templateId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -33890,7 +33495,7 @@ export namespace Prisma {
 
   export type ParticipantBadgeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33908,7 +33513,7 @@ export namespace Prisma {
     registrationId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33923,7 +33528,7 @@ export namespace Prisma {
     registrationId: string
     eventId: string
     templateId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -33935,7 +33540,7 @@ export namespace Prisma {
 
   export type ParticipantBadgeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33950,7 +33555,7 @@ export namespace Prisma {
     registrationId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33964,12 +33569,12 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -33986,12 +33591,12 @@ export namespace Prisma {
     eventId: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -34006,12 +33611,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -34028,12 +33633,12 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -34049,12 +33654,12 @@ export namespace Prisma {
     eventId: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -34068,12 +33673,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -34088,12 +33693,12 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -34110,8 +33715,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent?: string | null
-    type?: $Enums.CampaignType
-    category?: $Enums.TemplateCategory | null
+    type?: string
+    category?: string | null
     isGlobal?: boolean
     isActive?: boolean
     isDefault?: boolean
@@ -34127,8 +33732,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent?: string | null
-    type?: $Enums.CampaignType
-    category?: $Enums.TemplateCategory | null
+    type?: string
+    category?: string | null
     isGlobal?: boolean
     eventId?: string | null
     isActive?: boolean
@@ -34144,8 +33749,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDefault?: BoolFieldUpdateOperationsInput | boolean
@@ -34161,8 +33766,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -34178,8 +33783,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent?: string | null
-    type?: $Enums.CampaignType
-    category?: $Enums.TemplateCategory | null
+    type?: string
+    category?: string | null
     isGlobal?: boolean
     eventId?: string | null
     isActive?: boolean
@@ -34195,8 +33800,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDefault?: BoolFieldUpdateOperationsInput | boolean
@@ -34211,8 +33816,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -34225,7 +33830,7 @@ export namespace Prisma {
     id?: string
     recipientEmail: string
     recipientName?: string | null
-    status?: $Enums.EmailStatus
+    status?: string
     errorMessage?: string | null
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -34241,7 +33846,7 @@ export namespace Prisma {
     campaignId: string
     recipientEmail: string
     recipientName?: string | null
-    status?: $Enums.EmailStatus
+    status?: string
     errorMessage?: string | null
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -34255,7 +33860,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34271,7 +33876,7 @@ export namespace Prisma {
     campaignId?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34286,7 +33891,7 @@ export namespace Prisma {
     campaignId: string
     recipientEmail: string
     recipientName?: string | null
-    status?: $Enums.EmailStatus
+    status?: string
     errorMessage?: string | null
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -34300,7 +33905,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34315,7 +33920,7 @@ export namespace Prisma {
     campaignId?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34327,7 +33932,7 @@ export namespace Prisma {
 
   export type GameCreateInput = {
     id?: string
-    action: $Enums.GameAction
+    action: string
     points: number
     actionDetails?: string | null
     relatedEntityId?: string | null
@@ -34340,7 +33945,7 @@ export namespace Prisma {
     id?: string
     eventId: string
     participantId: string
-    action: $Enums.GameAction
+    action: string
     points: number
     actionDetails?: string | null
     relatedEntityId?: string | null
@@ -34349,7 +33954,7 @@ export namespace Prisma {
 
   export type GameUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
+    action?: StringFieldUpdateOperationsInput | string
     points?: IntFieldUpdateOperationsInput | number
     actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
     relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34362,7 +33967,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     participantId?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
+    action?: StringFieldUpdateOperationsInput | string
     points?: IntFieldUpdateOperationsInput | number
     actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
     relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34373,7 +33978,7 @@ export namespace Prisma {
     id?: string
     eventId: string
     participantId: string
-    action: $Enums.GameAction
+    action: string
     points: number
     actionDetails?: string | null
     relatedEntityId?: string | null
@@ -34382,7 +33987,7 @@ export namespace Prisma {
 
   export type GameUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
+    action?: StringFieldUpdateOperationsInput | string
     points?: IntFieldUpdateOperationsInput | number
     actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
     relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34393,7 +33998,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     participantId?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
+    action?: StringFieldUpdateOperationsInput | string
     points?: IntFieldUpdateOperationsInput | number
     actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
     relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34472,8 +34077,8 @@ export namespace Prisma {
     availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutMatchProfilesInput
     event: EventCreateNestedOneWithoutMatchProfilesInput
+    user: UserCreateNestedOneWithoutMatchProfilesInput
   }
 
   export type UserMatchProfileUncheckedCreateInput = {
@@ -34502,8 +34107,8 @@ export namespace Prisma {
     availability?: UserMatchProfileUpdateavailabilityInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutMatchProfilesNestedInput
     event?: EventUpdateOneRequiredWithoutMatchProfilesNestedInput
+    user?: UserUpdateOneRequiredWithoutMatchProfilesNestedInput
   }
 
   export type UserMatchProfileUncheckedUpdateInput = {
@@ -34569,9 +34174,9 @@ export namespace Prisma {
     score: number
     reason?: string | null
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSuggestionsInput
-    suggested: UserCreateNestedOneWithoutSuggestedForInput
     event: EventCreateNestedOneWithoutMatchSuggestionsInput
+    suggested: UserCreateNestedOneWithoutSuggestedForInput
+    user: UserCreateNestedOneWithoutSuggestionsInput
   }
 
   export type MatchSuggestionUncheckedCreateInput = {
@@ -34589,9 +34194,9 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSuggestionsNestedInput
-    suggested?: UserUpdateOneRequiredWithoutSuggestedForNestedInput
     event?: EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput
+    suggested?: UserUpdateOneRequiredWithoutSuggestedForNestedInput
+    user?: UserUpdateOneRequiredWithoutSuggestionsNestedInput
   }
 
   export type MatchSuggestionUncheckedUpdateInput = {
@@ -34691,20 +34296,6 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type EnumUserRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
-  }
-
-  export type EnumUserPlanFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserPlanFilter<$PrismaModel> | $Enums.UserPlan
-  }
-
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -34717,6 +34308,12 @@ export namespace Prisma {
     none?: EventWhereInput
   }
 
+  export type MatchSuggestionListRelationFilter = {
+    every?: MatchSuggestionWhereInput
+    some?: MatchSuggestionWhereInput
+    none?: MatchSuggestionWhereInput
+  }
+
   export type SessionListRelationFilter = {
     every?: SessionWhereInput
     some?: SessionWhereInput
@@ -34727,12 +34324,6 @@ export namespace Prisma {
     every?: UserMatchProfileWhereInput
     some?: UserMatchProfileWhereInput
     none?: UserMatchProfileWhereInput
-  }
-
-  export type MatchSuggestionListRelationFilter = {
-    every?: MatchSuggestionWhereInput
-    some?: MatchSuggestionWhereInput
-    none?: MatchSuggestionWhereInput
   }
 
   export type SortOrderInput = {
@@ -34748,15 +34339,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type MatchSuggestionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type UserMatchProfileOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type MatchSuggestionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34868,26 +34459,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserRoleFilter<$PrismaModel>
-    _max?: NestedEnumUserRoleFilter<$PrismaModel>
-  }
-
-  export type EnumUserPlanWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserPlanWithAggregatesFilter<$PrismaModel> | $Enums.UserPlan
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserPlanFilter<$PrismaModel>
-    _max?: NestedEnumUserPlanFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -35065,6 +34636,12 @@ export namespace Prisma {
     none?: event_sessionsWhereInput
   }
 
+  export type GameListRelationFilter = {
+    every?: GameWhereInput
+    some?: GameWhereInput
+    none?: GameWhereInput
+  }
+
   export type ParticipantBadgeListRelationFilter = {
     every?: ParticipantBadgeWhereInput
     some?: ParticipantBadgeWhereInput
@@ -35087,12 +34664,6 @@ export namespace Prisma {
     every?: TicketWhereInput
     some?: TicketWhereInput
     none?: TicketWhereInput
-  }
-
-  export type GameListRelationFilter = {
-    every?: GameWhereInput
-    some?: GameWhereInput
-    none?: GameWhereInput
   }
 
   export type UserEventScoreListRelationFilter = {
@@ -35125,6 +34696,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type GameOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ParticipantBadgeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -35138,10 +34713,6 @@ export namespace Prisma {
   }
 
   export type TicketOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type GameOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -35331,20 +34902,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type EnumTicketStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketStatus | EnumTicketStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketStatusFilter<$PrismaModel> | $Enums.TicketStatus
-  }
-
-  export type EnumTicketVisibilityFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketVisibility | EnumTicketVisibilityFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketVisibilityFilter<$PrismaModel> | $Enums.TicketVisibility
-  }
-
   export type TicketCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -35443,26 +35000,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type EnumTicketStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketStatus | EnumTicketStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketStatusWithAggregatesFilter<$PrismaModel> | $Enums.TicketStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTicketStatusFilter<$PrismaModel>
-    _max?: NestedEnumTicketStatusFilter<$PrismaModel>
-  }
-
-  export type EnumTicketVisibilityWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketVisibility | EnumTicketVisibilityFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.TicketVisibility
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTicketVisibilityFilter<$PrismaModel>
-    _max?: NestedEnumTicketVisibilityFilter<$PrismaModel>
-  }
-
   export type event_sessionsCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -35526,13 +35063,6 @@ export namespace Prisma {
 
   export type event_sessionsSumOrderByAggregateInput = {
     capacity?: SortOrder
-  }
-
-  export type EnumSponsorLevelFilter<$PrismaModel = never> = {
-    equals?: $Enums.SponsorLevel | EnumSponsorLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSponsorLevelFilter<$PrismaModel> | $Enums.SponsorLevel
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -35621,16 +35151,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
-
-  export type EnumSponsorLevelWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SponsorLevel | EnumSponsorLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSponsorLevelWithAggregatesFilter<$PrismaModel> | $Enums.SponsorLevel
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSponsorLevelFilter<$PrismaModel>
-    _max?: NestedEnumSponsorLevelFilter<$PrismaModel>
-  }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
@@ -35700,13 +35220,6 @@ export namespace Prisma {
     attendanceTime?: SortOrder
   }
 
-  export type EnumAppointmentStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAppointmentStatusFilter<$PrismaModel> | $Enums.AppointmentStatus
-  }
-
   export type AppointmentCountOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
@@ -35752,44 +35265,34 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumAppointmentStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAppointmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.AppointmentStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAppointmentStatusFilter<$PrismaModel>
-    _max?: NestedEnumAppointmentStatusFilter<$PrismaModel>
-  }
-
   export type OtpCodeCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     code?: SortOrder
-    eventId?: SortOrder
-    expiresAt?: SortOrder
+    event_id?: SortOrder
+    expires_at?: SortOrder
     used?: SortOrder
-    createdAt?: SortOrder
+    created_at?: SortOrder
   }
 
   export type OtpCodeMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     code?: SortOrder
-    eventId?: SortOrder
-    expiresAt?: SortOrder
+    event_id?: SortOrder
+    expires_at?: SortOrder
     used?: SortOrder
-    createdAt?: SortOrder
+    created_at?: SortOrder
   }
 
   export type OtpCodeMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     code?: SortOrder
-    eventId?: SortOrder
-    expiresAt?: SortOrder
+    event_id?: SortOrder
+    expires_at?: SortOrder
     used?: SortOrder
-    createdAt?: SortOrder
+    created_at?: SortOrder
   }
 
   export type BadgeCountOrderByAggregateInput = {
@@ -35863,13 +35366,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumBadgeStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumBadgeStatusFilter<$PrismaModel> | $Enums.BadgeStatus
-  }
-
   export type BadgeTemplateScalarRelationFilter = {
     is?: BadgeTemplateWhereInput
     isNot?: BadgeTemplateWhereInput
@@ -35923,37 +35419,6 @@ export namespace Prisma {
     qrCodeData?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type EnumBadgeStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumBadgeStatusWithAggregatesFilter<$PrismaModel> | $Enums.BadgeStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumBadgeStatusFilter<$PrismaModel>
-    _max?: NestedEnumBadgeStatusFilter<$PrismaModel>
-  }
-
-  export type EnumCampaignTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
-  }
-
-  export type EnumRecipientTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRecipientTypeFilter<$PrismaModel> | $Enums.RecipientType
-  }
-
-  export type EnumCampaignStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignStatusFilter<$PrismaModel> | $Enums.CampaignStatus
   }
 
   export type EmailLogListRelationFilter = {
@@ -36038,43 +35503,6 @@ export namespace Prisma {
     failureCount?: SortOrder
   }
 
-  export type EnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
-    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
-  }
-
-  export type EnumRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRecipientTypeWithAggregatesFilter<$PrismaModel> | $Enums.RecipientType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRecipientTypeFilter<$PrismaModel>
-    _max?: NestedEnumRecipientTypeFilter<$PrismaModel>
-  }
-
-  export type EnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel> | $Enums.CampaignStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCampaignStatusFilter<$PrismaModel>
-    _max?: NestedEnumCampaignStatusFilter<$PrismaModel>
-  }
-
-  export type EnumTemplateCategoryNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel> | $Enums.TemplateCategory | null
-  }
-
   export type EmailTemplateCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -36124,23 +35552,6 @@ export namespace Prisma {
     isDefault?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type EnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
-    _max?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
-  }
-
-  export type EnumEmailStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumEmailStatusFilter<$PrismaModel> | $Enums.EmailStatus
   }
 
   export type EmailCampaignScalarRelationFilter = {
@@ -36193,23 +35604,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumEmailStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumEmailStatusWithAggregatesFilter<$PrismaModel> | $Enums.EmailStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEmailStatusFilter<$PrismaModel>
-    _max?: NestedEnumEmailStatusFilter<$PrismaModel>
-  }
-
-  export type EnumGameActionFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameAction | EnumGameActionFieldRefInput<$PrismaModel>
-    in?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameActionFilter<$PrismaModel> | $Enums.GameAction
-  }
-
   export type GameCountOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
@@ -36249,16 +35643,6 @@ export namespace Prisma {
 
   export type GameSumOrderByAggregateInput = {
     points?: SortOrder
-  }
-
-  export type EnumGameActionWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameAction | EnumGameActionFieldRefInput<$PrismaModel>
-    in?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameActionWithAggregatesFilter<$PrismaModel> | $Enums.GameAction
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumGameActionFilter<$PrismaModel>
-    _max?: NestedEnumGameActionFilter<$PrismaModel>
   }
 
   export type UserEventScoreEventIdParticipantIdCompoundUniqueInput = {
@@ -36434,6 +35818,20 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
+  export type MatchSuggestionCreateNestedManyWithoutSuggestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
+    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+  }
+
+  export type MatchSuggestionCreateNestedManyWithoutUserInput = {
+    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
+    createMany?: MatchSuggestionCreateManyUserInputEnvelope
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -36446,20 +35844,6 @@ export namespace Prisma {
     connectOrCreate?: UserMatchProfileCreateOrConnectWithoutUserInput | UserMatchProfileCreateOrConnectWithoutUserInput[]
     createMany?: UserMatchProfileCreateManyUserInputEnvelope
     connect?: UserMatchProfileWhereUniqueInput | UserMatchProfileWhereUniqueInput[]
-  }
-
-  export type MatchSuggestionCreateNestedManyWithoutUserInput = {
-    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
-    createMany?: MatchSuggestionCreateManyUserInputEnvelope
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-  }
-
-  export type MatchSuggestionCreateNestedManyWithoutSuggestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
-    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
   }
 
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
@@ -36476,6 +35860,20 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
+  export type MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
+    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+  }
+
+  export type MatchSuggestionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
+    createMany?: MatchSuggestionCreateManyUserInputEnvelope
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -36488,20 +35886,6 @@ export namespace Prisma {
     connectOrCreate?: UserMatchProfileCreateOrConnectWithoutUserInput | UserMatchProfileCreateOrConnectWithoutUserInput[]
     createMany?: UserMatchProfileCreateManyUserInputEnvelope
     connect?: UserMatchProfileWhereUniqueInput | UserMatchProfileWhereUniqueInput[]
-  }
-
-  export type MatchSuggestionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
-    createMany?: MatchSuggestionCreateManyUserInputEnvelope
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-  }
-
-  export type MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
-    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -36523,14 +35907,6 @@ export namespace Prisma {
   export type UserUpdatepermissionsInput = {
     set?: string[]
     push?: string | string[]
-  }
-
-  export type EnumUserRoleFieldUpdateOperationsInput = {
-    set?: $Enums.UserRole
-  }
-
-  export type EnumUserPlanFieldUpdateOperationsInput = {
-    set?: $Enums.UserPlan
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -36561,6 +35937,34 @@ export namespace Prisma {
     deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
+  export type MatchSuggestionUpdateManyWithoutSuggestedNestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
+    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput[]
+    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
+    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    update?: MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput[]
+    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput | MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput[]
+    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+  }
+
+  export type MatchSuggestionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
+    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutUserInput | MatchSuggestionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MatchSuggestionCreateManyUserInputEnvelope
+    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    update?: MatchSuggestionUpdateWithWhereUniqueWithoutUserInput | MatchSuggestionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutUserInput | MatchSuggestionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+  }
+
   export type SessionUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -36587,34 +35991,6 @@ export namespace Prisma {
     update?: UserMatchProfileUpdateWithWhereUniqueWithoutUserInput | UserMatchProfileUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserMatchProfileUpdateManyWithWhereWithoutUserInput | UserMatchProfileUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserMatchProfileScalarWhereInput | UserMatchProfileScalarWhereInput[]
-  }
-
-  export type MatchSuggestionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
-    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutUserInput | MatchSuggestionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MatchSuggestionCreateManyUserInputEnvelope
-    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    update?: MatchSuggestionUpdateWithWhereUniqueWithoutUserInput | MatchSuggestionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutUserInput | MatchSuggestionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
-  }
-
-  export type MatchSuggestionUpdateManyWithoutSuggestedNestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
-    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput[]
-    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
-    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    update?: MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput[]
-    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput | MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput[]
-    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
   }
 
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
@@ -36645,6 +36021,34 @@ export namespace Prisma {
     deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
+  export type MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
+    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput[]
+    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
+    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    update?: MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput[]
+    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput | MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput[]
+    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+  }
+
+  export type MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
+    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutUserInput | MatchSuggestionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MatchSuggestionCreateManyUserInputEnvelope
+    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    update?: MatchSuggestionUpdateWithWhereUniqueWithoutUserInput | MatchSuggestionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutUserInput | MatchSuggestionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -36671,34 +36075,6 @@ export namespace Prisma {
     update?: UserMatchProfileUpdateWithWhereUniqueWithoutUserInput | UserMatchProfileUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserMatchProfileUpdateManyWithWhereWithoutUserInput | UserMatchProfileUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserMatchProfileScalarWhereInput | UserMatchProfileScalarWhereInput[]
-  }
-
-  export type MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput> | MatchSuggestionCreateWithoutUserInput[] | MatchSuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutUserInput | MatchSuggestionCreateOrConnectWithoutUserInput[]
-    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutUserInput | MatchSuggestionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MatchSuggestionCreateManyUserInputEnvelope
-    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    update?: MatchSuggestionUpdateWithWhereUniqueWithoutUserInput | MatchSuggestionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutUserInput | MatchSuggestionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
-  }
-
-  export type MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput> | MatchSuggestionCreateWithoutSuggestedInput[] | MatchSuggestionUncheckedCreateWithoutSuggestedInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutSuggestedInput | MatchSuggestionCreateOrConnectWithoutSuggestedInput[]
-    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput[]
-    createMany?: MatchSuggestionCreateManySuggestedInputEnvelope
-    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    update?: MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput | MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput[]
-    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput | MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput[]
-    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -36785,6 +36161,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type GameCreateNestedManyWithoutEventInput = {
+    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
+    createMany?: GameCreateManyEventInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+  }
+
+  export type MatchSuggestionCreateNestedManyWithoutEventInput = {
+    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
+    createMany?: MatchSuggestionCreateManyEventInputEnvelope
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+  }
+
   export type ParticipantBadgeCreateNestedManyWithoutEventInput = {
     create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
@@ -36813,13 +36203,6 @@ export namespace Prisma {
     connect?: TicketWhereUniqueInput | TicketWhereUniqueInput[]
   }
 
-  export type GameCreateNestedManyWithoutEventInput = {
-    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
-    createMany?: GameCreateManyEventInputEnvelope
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-  }
-
   export type UserEventScoreCreateNestedManyWithoutEventInput = {
     create?: XOR<UserEventScoreCreateWithoutEventInput, UserEventScoreUncheckedCreateWithoutEventInput> | UserEventScoreCreateWithoutEventInput[] | UserEventScoreUncheckedCreateWithoutEventInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutEventInput | UserEventScoreCreateOrConnectWithoutEventInput[]
@@ -36832,13 +36215,6 @@ export namespace Prisma {
     connectOrCreate?: UserMatchProfileCreateOrConnectWithoutEventInput | UserMatchProfileCreateOrConnectWithoutEventInput[]
     createMany?: UserMatchProfileCreateManyEventInputEnvelope
     connect?: UserMatchProfileWhereUniqueInput | UserMatchProfileWhereUniqueInput[]
-  }
-
-  export type MatchSuggestionCreateNestedManyWithoutEventInput = {
-    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
-    createMany?: MatchSuggestionCreateManyEventInputEnvelope
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
   }
 
   export type AppointmentUncheckedCreateNestedManyWithoutEventInput = {
@@ -36883,6 +36259,20 @@ export namespace Prisma {
     connect?: event_sessionsWhereUniqueInput | event_sessionsWhereUniqueInput[]
   }
 
+  export type GameUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
+    createMany?: GameCreateManyEventInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+  }
+
+  export type MatchSuggestionUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
+    createMany?: MatchSuggestionCreateManyEventInputEnvelope
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+  }
+
   export type ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
@@ -36911,13 +36301,6 @@ export namespace Prisma {
     connect?: TicketWhereUniqueInput | TicketWhereUniqueInput[]
   }
 
-  export type GameUncheckedCreateNestedManyWithoutEventInput = {
-    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
-    createMany?: GameCreateManyEventInputEnvelope
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-  }
-
   export type UserEventScoreUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<UserEventScoreCreateWithoutEventInput, UserEventScoreUncheckedCreateWithoutEventInput> | UserEventScoreCreateWithoutEventInput[] | UserEventScoreUncheckedCreateWithoutEventInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutEventInput | UserEventScoreCreateOrConnectWithoutEventInput[]
@@ -36930,13 +36313,6 @@ export namespace Prisma {
     connectOrCreate?: UserMatchProfileCreateOrConnectWithoutEventInput | UserMatchProfileCreateOrConnectWithoutEventInput[]
     createMany?: UserMatchProfileCreateManyEventInputEnvelope
     connect?: UserMatchProfileWhereUniqueInput | UserMatchProfileWhereUniqueInput[]
-  }
-
-  export type MatchSuggestionUncheckedCreateNestedManyWithoutEventInput = {
-    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
-    createMany?: MatchSuggestionCreateManyEventInputEnvelope
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -37035,6 +36411,34 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventsInput, UserUpdateWithoutEventsInput>, UserUncheckedUpdateWithoutEventsInput>
   }
 
+  export type GameUpdateManyWithoutEventNestedInput = {
+    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutEventInput | GameUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: GameCreateManyEventInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutEventInput | GameUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutEventInput | GameUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
+  }
+
+  export type MatchSuggestionUpdateManyWithoutEventNestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
+    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutEventInput | MatchSuggestionUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: MatchSuggestionCreateManyEventInputEnvelope
+    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    update?: MatchSuggestionUpdateWithWhereUniqueWithoutEventInput | MatchSuggestionUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutEventInput | MatchSuggestionUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+  }
+
   export type ParticipantBadgeUpdateManyWithoutEventNestedInput = {
     create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
@@ -37091,20 +36495,6 @@ export namespace Prisma {
     deleteMany?: TicketScalarWhereInput | TicketScalarWhereInput[]
   }
 
-  export type GameUpdateManyWithoutEventNestedInput = {
-    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
-    upsert?: GameUpsertWithWhereUniqueWithoutEventInput | GameUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: GameCreateManyEventInputEnvelope
-    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    update?: GameUpdateWithWhereUniqueWithoutEventInput | GameUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: GameUpdateManyWithWhereWithoutEventInput | GameUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
-  }
-
   export type UserEventScoreUpdateManyWithoutEventNestedInput = {
     create?: XOR<UserEventScoreCreateWithoutEventInput, UserEventScoreUncheckedCreateWithoutEventInput> | UserEventScoreCreateWithoutEventInput[] | UserEventScoreUncheckedCreateWithoutEventInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutEventInput | UserEventScoreCreateOrConnectWithoutEventInput[]
@@ -37131,20 +36521,6 @@ export namespace Prisma {
     update?: UserMatchProfileUpdateWithWhereUniqueWithoutEventInput | UserMatchProfileUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: UserMatchProfileUpdateManyWithWhereWithoutEventInput | UserMatchProfileUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: UserMatchProfileScalarWhereInput | UserMatchProfileScalarWhereInput[]
-  }
-
-  export type MatchSuggestionUpdateManyWithoutEventNestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
-    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutEventInput | MatchSuggestionUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: MatchSuggestionCreateManyEventInputEnvelope
-    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    update?: MatchSuggestionUpdateWithWhereUniqueWithoutEventInput | MatchSuggestionUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutEventInput | MatchSuggestionUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
   }
 
   export type AppointmentUncheckedUpdateManyWithoutEventNestedInput = {
@@ -37231,6 +36607,34 @@ export namespace Prisma {
     deleteMany?: event_sessionsScalarWhereInput | event_sessionsScalarWhereInput[]
   }
 
+  export type GameUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutEventInput | GameUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: GameCreateManyEventInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutEventInput | GameUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutEventInput | GameUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
+  }
+
+  export type MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
+    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutEventInput | MatchSuggestionUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: MatchSuggestionCreateManyEventInputEnvelope
+    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
+    update?: MatchSuggestionUpdateWithWhereUniqueWithoutEventInput | MatchSuggestionUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutEventInput | MatchSuggestionUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+  }
+
   export type ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ParticipantBadgeCreateWithoutEventInput, ParticipantBadgeUncheckedCreateWithoutEventInput> | ParticipantBadgeCreateWithoutEventInput[] | ParticipantBadgeUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutEventInput | ParticipantBadgeCreateOrConnectWithoutEventInput[]
@@ -37287,20 +36691,6 @@ export namespace Prisma {
     deleteMany?: TicketScalarWhereInput | TicketScalarWhereInput[]
   }
 
-  export type GameUncheckedUpdateManyWithoutEventNestedInput = {
-    create?: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput> | GameCreateWithoutEventInput[] | GameUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutEventInput | GameCreateOrConnectWithoutEventInput[]
-    upsert?: GameUpsertWithWhereUniqueWithoutEventInput | GameUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: GameCreateManyEventInputEnvelope
-    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    update?: GameUpdateWithWhereUniqueWithoutEventInput | GameUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: GameUpdateManyWithWhereWithoutEventInput | GameUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
-  }
-
   export type UserEventScoreUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<UserEventScoreCreateWithoutEventInput, UserEventScoreUncheckedCreateWithoutEventInput> | UserEventScoreCreateWithoutEventInput[] | UserEventScoreUncheckedCreateWithoutEventInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutEventInput | UserEventScoreCreateOrConnectWithoutEventInput[]
@@ -37329,20 +36719,6 @@ export namespace Prisma {
     deleteMany?: UserMatchProfileScalarWhereInput | UserMatchProfileScalarWhereInput[]
   }
 
-  export type MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput = {
-    create?: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput> | MatchSuggestionCreateWithoutEventInput[] | MatchSuggestionUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: MatchSuggestionCreateOrConnectWithoutEventInput | MatchSuggestionCreateOrConnectWithoutEventInput[]
-    upsert?: MatchSuggestionUpsertWithWhereUniqueWithoutEventInput | MatchSuggestionUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: MatchSuggestionCreateManyEventInputEnvelope
-    set?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    disconnect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    delete?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    connect?: MatchSuggestionWhereUniqueInput | MatchSuggestionWhereUniqueInput[]
-    update?: MatchSuggestionUpdateWithWhereUniqueWithoutEventInput | MatchSuggestionUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: MatchSuggestionUpdateManyWithWhereWithoutEventInput | MatchSuggestionUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
-  }
-
   export type AppointmentCreateNestedManyWithoutRecipientInput = {
     create?: XOR<AppointmentCreateWithoutRecipientInput, AppointmentUncheckedCreateWithoutRecipientInput> | AppointmentCreateWithoutRecipientInput[] | AppointmentUncheckedCreateWithoutRecipientInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutRecipientInput | AppointmentCreateOrConnectWithoutRecipientInput[]
@@ -37355,6 +36731,13 @@ export namespace Prisma {
     connectOrCreate?: AppointmentCreateOrConnectWithoutRequesterInput | AppointmentCreateOrConnectWithoutRequesterInput[]
     createMany?: AppointmentCreateManyRequesterInputEnvelope
     connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type GameCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
+    createMany?: GameCreateManyParticipantInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
   }
 
   export type ParticipantBadgeCreateNestedManyWithoutRegistrationInput = {
@@ -37383,13 +36766,6 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
-  export type GameCreateNestedManyWithoutParticipantInput = {
-    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
-    createMany?: GameCreateManyParticipantInputEnvelope
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-  }
-
   export type UserEventScoreCreateNestedManyWithoutParticipantInput = {
     create?: XOR<UserEventScoreCreateWithoutParticipantInput, UserEventScoreUncheckedCreateWithoutParticipantInput> | UserEventScoreCreateWithoutParticipantInput[] | UserEventScoreUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutParticipantInput | UserEventScoreCreateOrConnectWithoutParticipantInput[]
@@ -37411,6 +36787,13 @@ export namespace Prisma {
     connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
   }
 
+  export type GameUncheckedCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
+    createMany?: GameCreateManyParticipantInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+  }
+
   export type ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput = {
     create?: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput> | ParticipantBadgeCreateWithoutRegistrationInput[] | ParticipantBadgeUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutRegistrationInput | ParticipantBadgeCreateOrConnectWithoutRegistrationInput[]
@@ -37423,13 +36806,6 @@ export namespace Prisma {
     connectOrCreate?: SessionParticipantCreateOrConnectWithoutParticipantInput | SessionParticipantCreateOrConnectWithoutParticipantInput[]
     createMany?: SessionParticipantCreateManyParticipantInputEnvelope
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
-  }
-
-  export type GameUncheckedCreateNestedManyWithoutParticipantInput = {
-    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
-    createMany?: GameCreateManyParticipantInputEnvelope
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
   }
 
   export type UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput = {
@@ -37465,6 +36841,20 @@ export namespace Prisma {
     update?: AppointmentUpdateWithWhereUniqueWithoutRequesterInput | AppointmentUpdateWithWhereUniqueWithoutRequesterInput[]
     updateMany?: AppointmentUpdateManyWithWhereWithoutRequesterInput | AppointmentUpdateManyWithWhereWithoutRequesterInput[]
     deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type GameUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutParticipantInput | GameUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: GameCreateManyParticipantInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutParticipantInput | GameUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutParticipantInput | GameUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
   }
 
   export type ParticipantBadgeUpdateManyWithoutRegistrationNestedInput = {
@@ -37513,20 +36903,6 @@ export namespace Prisma {
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
-  export type GameUpdateManyWithoutParticipantNestedInput = {
-    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
-    upsert?: GameUpsertWithWhereUniqueWithoutParticipantInput | GameUpsertWithWhereUniqueWithoutParticipantInput[]
-    createMany?: GameCreateManyParticipantInputEnvelope
-    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    update?: GameUpdateWithWhereUniqueWithoutParticipantInput | GameUpdateWithWhereUniqueWithoutParticipantInput[]
-    updateMany?: GameUpdateManyWithWhereWithoutParticipantInput | GameUpdateManyWithWhereWithoutParticipantInput[]
-    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
-  }
-
   export type UserEventScoreUpdateManyWithoutParticipantNestedInput = {
     create?: XOR<UserEventScoreCreateWithoutParticipantInput, UserEventScoreUncheckedCreateWithoutParticipantInput> | UserEventScoreCreateWithoutParticipantInput[] | UserEventScoreUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutParticipantInput | UserEventScoreCreateOrConnectWithoutParticipantInput[]
@@ -37569,6 +36945,20 @@ export namespace Prisma {
     deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
   }
 
+  export type GameUncheckedUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutParticipantInput | GameUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: GameCreateManyParticipantInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutParticipantInput | GameUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutParticipantInput | GameUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
+  }
+
   export type ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput = {
     create?: XOR<ParticipantBadgeCreateWithoutRegistrationInput, ParticipantBadgeUncheckedCreateWithoutRegistrationInput> | ParticipantBadgeCreateWithoutRegistrationInput[] | ParticipantBadgeUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: ParticipantBadgeCreateOrConnectWithoutRegistrationInput | ParticipantBadgeCreateOrConnectWithoutRegistrationInput[]
@@ -37597,20 +36987,6 @@ export namespace Prisma {
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
-  export type GameUncheckedUpdateManyWithoutParticipantNestedInput = {
-    create?: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput> | GameCreateWithoutParticipantInput[] | GameUncheckedCreateWithoutParticipantInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutParticipantInput | GameCreateOrConnectWithoutParticipantInput[]
-    upsert?: GameUpsertWithWhereUniqueWithoutParticipantInput | GameUpsertWithWhereUniqueWithoutParticipantInput[]
-    createMany?: GameCreateManyParticipantInputEnvelope
-    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    update?: GameUpdateWithWhereUniqueWithoutParticipantInput | GameUpdateWithWhereUniqueWithoutParticipantInput[]
-    updateMany?: GameUpdateManyWithWhereWithoutParticipantInput | GameUpdateManyWithWhereWithoutParticipantInput[]
-    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
-  }
-
   export type UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput = {
     create?: XOR<UserEventScoreCreateWithoutParticipantInput, UserEventScoreUncheckedCreateWithoutParticipantInput> | UserEventScoreCreateWithoutParticipantInput[] | UserEventScoreUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: UserEventScoreCreateOrConnectWithoutParticipantInput | UserEventScoreCreateOrConnectWithoutParticipantInput[]
@@ -37625,17 +37001,17 @@ export namespace Prisma {
     deleteMany?: UserEventScoreScalarWhereInput | UserEventScoreScalarWhereInput[]
   }
 
-  export type EventCreateNestedOneWithoutTicketsInput = {
-    create?: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
-    connectOrCreate?: EventCreateOrConnectWithoutTicketsInput
-    connect?: EventWhereUniqueInput
-  }
-
   export type RegistrationCreateNestedManyWithoutTicketInput = {
     create?: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput> | RegistrationCreateWithoutTicketInput[] | RegistrationUncheckedCreateWithoutTicketInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutTicketInput | RegistrationCreateOrConnectWithoutTicketInput[]
     createMany?: RegistrationCreateManyTicketInputEnvelope
     connect?: RegistrationWhereUniqueInput | RegistrationWhereUniqueInput[]
+  }
+
+  export type EventCreateNestedOneWithoutTicketsInput = {
+    create?: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutTicketsInput
+    connect?: EventWhereUniqueInput
   }
 
   export type RegistrationUncheckedCreateNestedManyWithoutTicketInput = {
@@ -37661,22 +37037,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type EnumTicketStatusFieldUpdateOperationsInput = {
-    set?: $Enums.TicketStatus
-  }
-
-  export type EnumTicketVisibilityFieldUpdateOperationsInput = {
-    set?: $Enums.TicketVisibility
-  }
-
-  export type EventUpdateOneRequiredWithoutTicketsNestedInput = {
-    create?: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
-    connectOrCreate?: EventCreateOrConnectWithoutTicketsInput
-    upsert?: EventUpsertWithoutTicketsInput
-    connect?: EventWhereUniqueInput
-    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutTicketsInput, EventUpdateWithoutTicketsInput>, EventUncheckedUpdateWithoutTicketsInput>
-  }
-
   export type RegistrationUpdateManyWithoutTicketNestedInput = {
     create?: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput> | RegistrationCreateWithoutTicketInput[] | RegistrationUncheckedCreateWithoutTicketInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutTicketInput | RegistrationCreateOrConnectWithoutTicketInput[]
@@ -37689,6 +37049,14 @@ export namespace Prisma {
     update?: RegistrationUpdateWithWhereUniqueWithoutTicketInput | RegistrationUpdateWithWhereUniqueWithoutTicketInput[]
     updateMany?: RegistrationUpdateManyWithWhereWithoutTicketInput | RegistrationUpdateManyWithWhereWithoutTicketInput[]
     deleteMany?: RegistrationScalarWhereInput | RegistrationScalarWhereInput[]
+  }
+
+  export type EventUpdateOneRequiredWithoutTicketsNestedInput = {
+    create?: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutTicketsInput
+    upsert?: EventUpsertWithoutTicketsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutTicketsInput, EventUpdateWithoutTicketsInput>, EventUncheckedUpdateWithoutTicketsInput>
   }
 
   export type RegistrationUncheckedUpdateManyWithoutTicketNestedInput = {
@@ -37767,10 +37135,6 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput
   }
 
-  export type EnumSponsorLevelFieldUpdateOperationsInput = {
-    set?: $Enums.SponsorLevel
-  }
-
   export type EventUpdateOneRequiredWithoutSponsorsNestedInput = {
     create?: XOR<EventCreateWithoutSponsorsInput, EventUncheckedCreateWithoutSponsorsInput>
     connectOrCreate?: EventCreateOrConnectWithoutSponsorsInput
@@ -37823,10 +37187,6 @@ export namespace Prisma {
     create?: XOR<RegistrationCreateWithoutSentAppointmentsInput, RegistrationUncheckedCreateWithoutSentAppointmentsInput>
     connectOrCreate?: RegistrationCreateOrConnectWithoutSentAppointmentsInput
     connect?: RegistrationWhereUniqueInput
-  }
-
-  export type EnumAppointmentStatusFieldUpdateOperationsInput = {
-    set?: $Enums.AppointmentStatus
   }
 
   export type EventUpdateOneRequiredWithoutAppointmentsNestedInput = {
@@ -37943,10 +37303,6 @@ export namespace Prisma {
     connect?: BadgeTemplateWhereUniqueInput
   }
 
-  export type EnumBadgeStatusFieldUpdateOperationsInput = {
-    set?: $Enums.BadgeStatus
-  }
-
   export type EventUpdateOneRequiredWithoutParticipantBadgesNestedInput = {
     create?: XOR<EventCreateWithoutParticipantBadgesInput, EventUncheckedCreateWithoutParticipantBadgesInput>
     connectOrCreate?: EventCreateOrConnectWithoutParticipantBadgesInput
@@ -37991,18 +37347,6 @@ export namespace Prisma {
     connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
   }
 
-  export type EnumCampaignTypeFieldUpdateOperationsInput = {
-    set?: $Enums.CampaignType
-  }
-
-  export type EnumRecipientTypeFieldUpdateOperationsInput = {
-    set?: $Enums.RecipientType
-  }
-
-  export type EnumCampaignStatusFieldUpdateOperationsInput = {
-    set?: $Enums.CampaignStatus
-  }
-
   export type EventUpdateOneRequiredWithoutEmailCampaignsNestedInput = {
     create?: XOR<EventCreateWithoutEmailCampaignsInput, EventUncheckedCreateWithoutEmailCampaignsInput>
     connectOrCreate?: EventCreateOrConnectWithoutEmailCampaignsInput
@@ -38045,10 +37389,6 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput
   }
 
-  export type NullableEnumTemplateCategoryFieldUpdateOperationsInput = {
-    set?: $Enums.TemplateCategory | null
-  }
-
   export type EventUpdateOneWithoutEmailTemplatesNestedInput = {
     create?: XOR<EventCreateWithoutEmailTemplatesInput, EventUncheckedCreateWithoutEmailTemplatesInput>
     connectOrCreate?: EventCreateOrConnectWithoutEmailTemplatesInput
@@ -38063,10 +37403,6 @@ export namespace Prisma {
     create?: XOR<EmailCampaignCreateWithoutEmailLogsInput, EmailCampaignUncheckedCreateWithoutEmailLogsInput>
     connectOrCreate?: EmailCampaignCreateOrConnectWithoutEmailLogsInput
     connect?: EmailCampaignWhereUniqueInput
-  }
-
-  export type EnumEmailStatusFieldUpdateOperationsInput = {
-    set?: $Enums.EmailStatus
   }
 
   export type EmailCampaignUpdateOneRequiredWithoutEmailLogsNestedInput = {
@@ -38087,10 +37423,6 @@ export namespace Prisma {
     create?: XOR<RegistrationCreateWithoutGamesInput, RegistrationUncheckedCreateWithoutGamesInput>
     connectOrCreate?: RegistrationCreateOrConnectWithoutGamesInput
     connect?: RegistrationWhereUniqueInput
-  }
-
-  export type EnumGameActionFieldUpdateOperationsInput = {
-    set?: $Enums.GameAction
   }
 
   export type EventUpdateOneRequiredWithoutGamesNestedInput = {
@@ -38149,16 +37481,16 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type UserCreateNestedOneWithoutMatchProfilesInput = {
-    create?: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMatchProfilesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type EventCreateNestedOneWithoutMatchProfilesInput = {
     create?: XOR<EventCreateWithoutMatchProfilesInput, EventUncheckedCreateWithoutMatchProfilesInput>
     connectOrCreate?: EventCreateOrConnectWithoutMatchProfilesInput
     connect?: EventWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMatchProfilesInput = {
+    create?: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMatchProfilesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type UserMatchProfileUpdateinterestsInput = {
@@ -38176,14 +37508,6 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type UserUpdateOneRequiredWithoutMatchProfilesNestedInput = {
-    create?: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMatchProfilesInput
-    upsert?: UserUpsertWithoutMatchProfilesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMatchProfilesInput, UserUpdateWithoutMatchProfilesInput>, UserUncheckedUpdateWithoutMatchProfilesInput>
-  }
-
   export type EventUpdateOneRequiredWithoutMatchProfilesNestedInput = {
     create?: XOR<EventCreateWithoutMatchProfilesInput, EventUncheckedCreateWithoutMatchProfilesInput>
     connectOrCreate?: EventCreateOrConnectWithoutMatchProfilesInput
@@ -38192,10 +37516,18 @@ export namespace Prisma {
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutMatchProfilesInput, EventUpdateWithoutMatchProfilesInput>, EventUncheckedUpdateWithoutMatchProfilesInput>
   }
 
-  export type UserCreateNestedOneWithoutSuggestionsInput = {
-    create?: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSuggestionsInput
+  export type UserUpdateOneRequiredWithoutMatchProfilesNestedInput = {
+    create?: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMatchProfilesInput
+    upsert?: UserUpsertWithoutMatchProfilesInput
     connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMatchProfilesInput, UserUpdateWithoutMatchProfilesInput>, UserUncheckedUpdateWithoutMatchProfilesInput>
+  }
+
+  export type EventCreateNestedOneWithoutMatchSuggestionsInput = {
+    create?: XOR<EventCreateWithoutMatchSuggestionsInput, EventUncheckedCreateWithoutMatchSuggestionsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutMatchSuggestionsInput
+    connect?: EventWhereUniqueInput
   }
 
   export type UserCreateNestedOneWithoutSuggestedForInput = {
@@ -38204,10 +37536,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type EventCreateNestedOneWithoutMatchSuggestionsInput = {
-    create?: XOR<EventCreateWithoutMatchSuggestionsInput, EventUncheckedCreateWithoutMatchSuggestionsInput>
-    connectOrCreate?: EventCreateOrConnectWithoutMatchSuggestionsInput
-    connect?: EventWhereUniqueInput
+  export type UserCreateNestedOneWithoutSuggestionsInput = {
+    create?: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSuggestionsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -38218,12 +37550,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserUpdateOneRequiredWithoutSuggestionsNestedInput = {
-    create?: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSuggestionsInput
-    upsert?: UserUpsertWithoutSuggestionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSuggestionsInput, UserUpdateWithoutSuggestionsInput>, UserUncheckedUpdateWithoutSuggestionsInput>
+  export type EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput = {
+    create?: XOR<EventCreateWithoutMatchSuggestionsInput, EventUncheckedCreateWithoutMatchSuggestionsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutMatchSuggestionsInput
+    upsert?: EventUpsertWithoutMatchSuggestionsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutMatchSuggestionsInput, EventUpdateWithoutMatchSuggestionsInput>, EventUncheckedUpdateWithoutMatchSuggestionsInput>
   }
 
   export type UserUpdateOneRequiredWithoutSuggestedForNestedInput = {
@@ -38234,12 +37566,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSuggestedForInput, UserUpdateWithoutSuggestedForInput>, UserUncheckedUpdateWithoutSuggestedForInput>
   }
 
-  export type EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput = {
-    create?: XOR<EventCreateWithoutMatchSuggestionsInput, EventUncheckedCreateWithoutMatchSuggestionsInput>
-    connectOrCreate?: EventCreateOrConnectWithoutMatchSuggestionsInput
-    upsert?: EventUpsertWithoutMatchSuggestionsInput
-    connect?: EventWhereUniqueInput
-    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutMatchSuggestionsInput, EventUpdateWithoutMatchSuggestionsInput>, EventUncheckedUpdateWithoutMatchSuggestionsInput>
+  export type UserUpdateOneRequiredWithoutSuggestionsNestedInput = {
+    create?: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSuggestionsInput
+    upsert?: UserUpsertWithoutSuggestionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSuggestionsInput, UserUpdateWithoutSuggestionsInput>, UserUncheckedUpdateWithoutSuggestionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -38290,20 +37622,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
-  }
-
-  export type NestedEnumUserPlanFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserPlanFilter<$PrismaModel> | $Enums.UserPlan
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -38390,26 +37708,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserRoleFilter<$PrismaModel>
-    _max?: NestedEnumUserRoleFilter<$PrismaModel>
-  }
-
-  export type NestedEnumUserPlanWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserPlan | EnumUserPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserPlan[] | ListEnumUserPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserPlanWithAggregatesFilter<$PrismaModel> | $Enums.UserPlan
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserPlanFilter<$PrismaModel>
-    _max?: NestedEnumUserPlanFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -38461,20 +37759,6 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type NestedEnumTicketStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketStatus | EnumTicketStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketStatusFilter<$PrismaModel> | $Enums.TicketStatus
-  }
-
-  export type NestedEnumTicketVisibilityFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketVisibility | EnumTicketVisibilityFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketVisibilityFilter<$PrismaModel> | $Enums.TicketVisibility
-  }
-
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -38517,43 +37801,6 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
-
-  export type NestedEnumTicketStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketStatus | EnumTicketStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketStatusWithAggregatesFilter<$PrismaModel> | $Enums.TicketStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTicketStatusFilter<$PrismaModel>
-    _max?: NestedEnumTicketStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumTicketVisibilityWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TicketVisibility | EnumTicketVisibilityFieldRefInput<$PrismaModel>
-    in?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TicketVisibility[] | ListEnumTicketVisibilityFieldRefInput<$PrismaModel>
-    not?: NestedEnumTicketVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.TicketVisibility
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTicketVisibilityFilter<$PrismaModel>
-    _max?: NestedEnumTicketVisibilityFilter<$PrismaModel>
-  }
-
-  export type NestedEnumSponsorLevelFilter<$PrismaModel = never> = {
-    equals?: $Enums.SponsorLevel | EnumSponsorLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSponsorLevelFilter<$PrismaModel> | $Enums.SponsorLevel
-  }
-
-  export type NestedEnumSponsorLevelWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SponsorLevel | EnumSponsorLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SponsorLevel[] | ListEnumSponsorLevelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSponsorLevelWithAggregatesFilter<$PrismaModel> | $Enums.SponsorLevel
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSponsorLevelFilter<$PrismaModel>
-    _max?: NestedEnumSponsorLevelFilter<$PrismaModel>
-  }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -38576,142 +37823,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedEnumAppointmentStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAppointmentStatusFilter<$PrismaModel> | $Enums.AppointmentStatus
-  }
-
-  export type NestedEnumAppointmentStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AppointmentStatus | EnumAppointmentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AppointmentStatus[] | ListEnumAppointmentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAppointmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.AppointmentStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAppointmentStatusFilter<$PrismaModel>
-    _max?: NestedEnumAppointmentStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumBadgeStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumBadgeStatusFilter<$PrismaModel> | $Enums.BadgeStatus
-  }
-
-  export type NestedEnumBadgeStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.BadgeStatus | EnumBadgeStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BadgeStatus[] | ListEnumBadgeStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumBadgeStatusWithAggregatesFilter<$PrismaModel> | $Enums.BadgeStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumBadgeStatusFilter<$PrismaModel>
-    _max?: NestedEnumBadgeStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumCampaignTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
-  }
-
-  export type NestedEnumRecipientTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRecipientTypeFilter<$PrismaModel> | $Enums.RecipientType
-  }
-
-  export type NestedEnumCampaignStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignStatusFilter<$PrismaModel> | $Enums.CampaignStatus
-  }
-
-  export type NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
-    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RecipientType | EnumRecipientTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RecipientType[] | ListEnumRecipientTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRecipientTypeWithAggregatesFilter<$PrismaModel> | $Enums.RecipientType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRecipientTypeFilter<$PrismaModel>
-    _max?: NestedEnumRecipientTypeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel> | $Enums.CampaignStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCampaignStatusFilter<$PrismaModel>
-    _max?: NestedEnumCampaignStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumTemplateCategoryNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel> | $Enums.TemplateCategory | null
-  }
-
-  export type NestedEnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumTemplateCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
-    _max?: NestedEnumTemplateCategoryNullableFilter<$PrismaModel>
-  }
-
-  export type NestedEnumEmailStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumEmailStatusFilter<$PrismaModel> | $Enums.EmailStatus
-  }
-
-  export type NestedEnumEmailStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EmailStatus | EnumEmailStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EmailStatus[] | ListEnumEmailStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumEmailStatusWithAggregatesFilter<$PrismaModel> | $Enums.EmailStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEmailStatusFilter<$PrismaModel>
-    _max?: NestedEnumEmailStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumGameActionFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameAction | EnumGameActionFieldRefInput<$PrismaModel>
-    in?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameActionFilter<$PrismaModel> | $Enums.GameAction
-  }
-
-  export type NestedEnumGameActionWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameAction | EnumGameActionFieldRefInput<$PrismaModel>
-    in?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameAction[] | ListEnumGameActionFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameActionWithAggregatesFilter<$PrismaModel> | $Enums.GameAction
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumGameActionFilter<$PrismaModel>
-    _max?: NestedEnumGameActionFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -38796,14 +37907,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserInput = {
@@ -38834,14 +37945,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserInput = {
@@ -38851,6 +37962,62 @@ export namespace Prisma {
 
   export type EventCreateManyUserInputEnvelope = {
     data: EventCreateManyUserInput | EventCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchSuggestionCreateWithoutSuggestedInput = {
+    id?: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutMatchSuggestionsInput
+    user: UserCreateNestedOneWithoutSuggestionsInput
+  }
+
+  export type MatchSuggestionUncheckedCreateWithoutSuggestedInput = {
+    id?: string
+    userId: string
+    eventId: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MatchSuggestionCreateOrConnectWithoutSuggestedInput = {
+    where: MatchSuggestionWhereUniqueInput
+    create: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput>
+  }
+
+  export type MatchSuggestionCreateManySuggestedInputEnvelope = {
+    data: MatchSuggestionCreateManySuggestedInput | MatchSuggestionCreateManySuggestedInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchSuggestionCreateWithoutUserInput = {
+    id?: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutMatchSuggestionsInput
+    suggested: UserCreateNestedOneWithoutSuggestedForInput
+  }
+
+  export type MatchSuggestionUncheckedCreateWithoutUserInput = {
+    id?: string
+    suggestedId: string
+    eventId: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MatchSuggestionCreateOrConnectWithoutUserInput = {
+    where: MatchSuggestionWhereUniqueInput
+    create: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput>
+  }
+
+  export type MatchSuggestionCreateManyUserInputEnvelope = {
+    data: MatchSuggestionCreateManyUserInput | MatchSuggestionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -38911,62 +38078,6 @@ export namespace Prisma {
 
   export type UserMatchProfileCreateManyUserInputEnvelope = {
     data: UserMatchProfileCreateManyUserInput | UserMatchProfileCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MatchSuggestionCreateWithoutUserInput = {
-    id?: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-    suggested: UserCreateNestedOneWithoutSuggestedForInput
-    event: EventCreateNestedOneWithoutMatchSuggestionsInput
-  }
-
-  export type MatchSuggestionUncheckedCreateWithoutUserInput = {
-    id?: string
-    suggestedId: string
-    eventId: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-  }
-
-  export type MatchSuggestionCreateOrConnectWithoutUserInput = {
-    where: MatchSuggestionWhereUniqueInput
-    create: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput>
-  }
-
-  export type MatchSuggestionCreateManyUserInputEnvelope = {
-    data: MatchSuggestionCreateManyUserInput | MatchSuggestionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MatchSuggestionCreateWithoutSuggestedInput = {
-    id?: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSuggestionsInput
-    event: EventCreateNestedOneWithoutMatchSuggestionsInput
-  }
-
-  export type MatchSuggestionUncheckedCreateWithoutSuggestedInput = {
-    id?: string
-    userId: string
-    eventId: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-  }
-
-  export type MatchSuggestionCreateOrConnectWithoutSuggestedInput = {
-    where: MatchSuggestionWhereUniqueInput
-    create: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput>
-  }
-
-  export type MatchSuggestionCreateManySuggestedInputEnvelope = {
-    data: MatchSuggestionCreateManySuggestedInput | MatchSuggestionCreateManySuggestedInput[]
     skipDuplicates?: boolean
   }
 
@@ -39048,6 +38159,51 @@ export namespace Prisma {
     archivedAt?: DateTimeNullableFilter<"Event"> | Date | string | null
   }
 
+  export type MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput = {
+    where: MatchSuggestionWhereUniqueInput
+    update: XOR<MatchSuggestionUpdateWithoutSuggestedInput, MatchSuggestionUncheckedUpdateWithoutSuggestedInput>
+    create: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput>
+  }
+
+  export type MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput = {
+    where: MatchSuggestionWhereUniqueInput
+    data: XOR<MatchSuggestionUpdateWithoutSuggestedInput, MatchSuggestionUncheckedUpdateWithoutSuggestedInput>
+  }
+
+  export type MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput = {
+    where: MatchSuggestionScalarWhereInput
+    data: XOR<MatchSuggestionUpdateManyMutationInput, MatchSuggestionUncheckedUpdateManyWithoutSuggestedInput>
+  }
+
+  export type MatchSuggestionScalarWhereInput = {
+    AND?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+    OR?: MatchSuggestionScalarWhereInput[]
+    NOT?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
+    id?: StringFilter<"MatchSuggestion"> | string
+    userId?: StringFilter<"MatchSuggestion"> | string
+    suggestedId?: StringFilter<"MatchSuggestion"> | string
+    eventId?: StringFilter<"MatchSuggestion"> | string
+    score?: FloatFilter<"MatchSuggestion"> | number
+    reason?: StringNullableFilter<"MatchSuggestion"> | string | null
+    createdAt?: DateTimeFilter<"MatchSuggestion"> | Date | string
+  }
+
+  export type MatchSuggestionUpsertWithWhereUniqueWithoutUserInput = {
+    where: MatchSuggestionWhereUniqueInput
+    update: XOR<MatchSuggestionUpdateWithoutUserInput, MatchSuggestionUncheckedUpdateWithoutUserInput>
+    create: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput>
+  }
+
+  export type MatchSuggestionUpdateWithWhereUniqueWithoutUserInput = {
+    where: MatchSuggestionWhereUniqueInput
+    data: XOR<MatchSuggestionUpdateWithoutUserInput, MatchSuggestionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MatchSuggestionUpdateManyWithWhereWithoutUserInput = {
+    where: MatchSuggestionScalarWhereInput
+    data: XOR<MatchSuggestionUpdateManyMutationInput, MatchSuggestionUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -39108,51 +38264,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"UserMatchProfile"> | Date | string
   }
 
-  export type MatchSuggestionUpsertWithWhereUniqueWithoutUserInput = {
-    where: MatchSuggestionWhereUniqueInput
-    update: XOR<MatchSuggestionUpdateWithoutUserInput, MatchSuggestionUncheckedUpdateWithoutUserInput>
-    create: XOR<MatchSuggestionCreateWithoutUserInput, MatchSuggestionUncheckedCreateWithoutUserInput>
-  }
-
-  export type MatchSuggestionUpdateWithWhereUniqueWithoutUserInput = {
-    where: MatchSuggestionWhereUniqueInput
-    data: XOR<MatchSuggestionUpdateWithoutUserInput, MatchSuggestionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MatchSuggestionUpdateManyWithWhereWithoutUserInput = {
-    where: MatchSuggestionScalarWhereInput
-    data: XOR<MatchSuggestionUpdateManyMutationInput, MatchSuggestionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type MatchSuggestionScalarWhereInput = {
-    AND?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
-    OR?: MatchSuggestionScalarWhereInput[]
-    NOT?: MatchSuggestionScalarWhereInput | MatchSuggestionScalarWhereInput[]
-    id?: StringFilter<"MatchSuggestion"> | string
-    userId?: StringFilter<"MatchSuggestion"> | string
-    suggestedId?: StringFilter<"MatchSuggestion"> | string
-    eventId?: StringFilter<"MatchSuggestion"> | string
-    score?: FloatFilter<"MatchSuggestion"> | number
-    reason?: StringNullableFilter<"MatchSuggestion"> | string | null
-    createdAt?: DateTimeFilter<"MatchSuggestion"> | Date | string
-  }
-
-  export type MatchSuggestionUpsertWithWhereUniqueWithoutSuggestedInput = {
-    where: MatchSuggestionWhereUniqueInput
-    update: XOR<MatchSuggestionUpdateWithoutSuggestedInput, MatchSuggestionUncheckedUpdateWithoutSuggestedInput>
-    create: XOR<MatchSuggestionCreateWithoutSuggestedInput, MatchSuggestionUncheckedCreateWithoutSuggestedInput>
-  }
-
-  export type MatchSuggestionUpdateWithWhereUniqueWithoutSuggestedInput = {
-    where: MatchSuggestionWhereUniqueInput
-    data: XOR<MatchSuggestionUpdateWithoutSuggestedInput, MatchSuggestionUncheckedUpdateWithoutSuggestedInput>
-  }
-
-  export type MatchSuggestionUpdateManyWithWhereWithoutSuggestedInput = {
-    where: MatchSuggestionScalarWhereInput
-    data: XOR<MatchSuggestionUpdateManyMutationInput, MatchSuggestionUncheckedUpdateManyWithoutSuggestedInput>
-  }
-
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -39163,15 +38274,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     events?: EventCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -39184,15 +38295,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     events?: EventUncheckedCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -39221,15 +38332,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     events?: EventUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -39242,15 +38353,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     events?: EventUncheckedUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -39263,15 +38374,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     events?: EventCreateNestedManyWithoutUserInput
-    matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
     suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
+    matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -39284,15 +38395,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     events?: EventUncheckedCreateNestedManyWithoutUserInput
-    matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
     suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
+    matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -39321,15 +38432,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     events?: EventUpdateManyWithoutUserNestedInput
-    matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
     suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
+    matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -39342,20 +38453,20 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     events?: EventUncheckedUpdateManyWithoutUserNestedInput
-    matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
     suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
+    matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AppointmentCreateWithoutEventInput = {
     id?: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -39371,7 +38482,7 @@ export namespace Prisma {
     id?: string
     requesterId: string
     recipientId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -39457,12 +38568,12 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -39477,12 +38588,12 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -39510,8 +38621,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent?: string | null
-    type?: $Enums.CampaignType
-    category?: $Enums.TemplateCategory | null
+    type?: string
+    category?: string | null
     isGlobal?: boolean
     isActive?: boolean
     isDefault?: boolean
@@ -39526,8 +38637,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent?: string | null
-    type?: $Enums.CampaignType
-    category?: $Enums.TemplateCategory | null
+    type?: string
+    category?: string | null
     isGlobal?: boolean
     isActive?: boolean
     isDefault?: boolean
@@ -39603,15 +38714,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
   }
 
   export type UserUncheckedCreateWithoutEventsInput = {
@@ -39624,15 +38735,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
+    role?: string
     lastLogin?: Date | string | null
     phone?: string | null
-    plan?: $Enums.UserPlan
+    plan?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
   }
 
   export type UserCreateOrConnectWithoutEventsInput = {
@@ -39640,9 +38751,67 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutEventsInput, UserUncheckedCreateWithoutEventsInput>
   }
 
+  export type GameCreateWithoutEventInput = {
+    id?: string
+    action: string
+    points: number
+    actionDetails?: string | null
+    relatedEntityId?: string | null
+    createdAt?: Date | string
+    participant: RegistrationCreateNestedOneWithoutGamesInput
+  }
+
+  export type GameUncheckedCreateWithoutEventInput = {
+    id?: string
+    participantId: string
+    action: string
+    points: number
+    actionDetails?: string | null
+    relatedEntityId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type GameCreateOrConnectWithoutEventInput = {
+    where: GameWhereUniqueInput
+    create: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput>
+  }
+
+  export type GameCreateManyEventInputEnvelope = {
+    data: GameCreateManyEventInput | GameCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchSuggestionCreateWithoutEventInput = {
+    id?: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+    suggested: UserCreateNestedOneWithoutSuggestedForInput
+    user: UserCreateNestedOneWithoutSuggestionsInput
+  }
+
+  export type MatchSuggestionUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    suggestedId: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MatchSuggestionCreateOrConnectWithoutEventInput = {
+    where: MatchSuggestionWhereUniqueInput
+    create: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput>
+  }
+
+  export type MatchSuggestionCreateManyEventInputEnvelope = {
+    data: MatchSuggestionCreateManyEventInput | MatchSuggestionCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ParticipantBadgeCreateWithoutEventInput = {
     id?: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -39658,7 +38827,7 @@ export namespace Prisma {
     id?: string
     registrationId: string
     templateId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -39695,10 +38864,10 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
   }
 
@@ -39720,9 +38889,9 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
-    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -39742,7 +38911,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     website?: string | null
-    level?: $Enums.SponsorLevel
+    level?: string
     visible?: boolean
     location?: string | null
     address?: string | null
@@ -39763,7 +38932,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     website?: string | null
-    level?: $Enums.SponsorLevel
+    level?: string
     visible?: boolean
     location?: string | null
     address?: string | null
@@ -39796,8 +38965,8 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
@@ -39814,8 +38983,8 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
@@ -39831,36 +39000,6 @@ export namespace Prisma {
 
   export type TicketCreateManyEventInputEnvelope = {
     data: TicketCreateManyEventInput | TicketCreateManyEventInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type GameCreateWithoutEventInput = {
-    id?: string
-    action: $Enums.GameAction
-    points: number
-    actionDetails?: string | null
-    relatedEntityId?: string | null
-    createdAt?: Date | string
-    participant: RegistrationCreateNestedOneWithoutGamesInput
-  }
-
-  export type GameUncheckedCreateWithoutEventInput = {
-    id?: string
-    participantId: string
-    action: $Enums.GameAction
-    points: number
-    actionDetails?: string | null
-    relatedEntityId?: string | null
-    createdAt?: Date | string
-  }
-
-  export type GameCreateOrConnectWithoutEventInput = {
-    where: GameWhereUniqueInput
-    create: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput>
-  }
-
-  export type GameCreateManyEventInputEnvelope = {
-    data: GameCreateManyEventInput | GameCreateManyEventInput[]
     skipDuplicates?: boolean
   }
 
@@ -39928,34 +39067,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type MatchSuggestionCreateWithoutEventInput = {
-    id?: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSuggestionsInput
-    suggested: UserCreateNestedOneWithoutSuggestedForInput
-  }
-
-  export type MatchSuggestionUncheckedCreateWithoutEventInput = {
-    id?: string
-    userId: string
-    suggestedId: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-  }
-
-  export type MatchSuggestionCreateOrConnectWithoutEventInput = {
-    where: MatchSuggestionWhereUniqueInput
-    create: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput>
-  }
-
-  export type MatchSuggestionCreateManyEventInputEnvelope = {
-    data: MatchSuggestionCreateManyEventInput | MatchSuggestionCreateManyEventInput[]
-    skipDuplicates?: boolean
-  }
-
   export type AppointmentUpsertWithWhereUniqueWithoutEventInput = {
     where: AppointmentWhereUniqueInput
     update: XOR<AppointmentUpdateWithoutEventInput, AppointmentUncheckedUpdateWithoutEventInput>
@@ -39980,7 +39091,7 @@ export namespace Prisma {
     eventId?: StringFilter<"Appointment"> | string
     requesterId?: StringFilter<"Appointment"> | string
     recipientId?: StringFilter<"Appointment"> | string
-    status?: EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
+    status?: StringFilter<"Appointment"> | string
     message?: StringNullableFilter<"Appointment"> | string | null
     proposedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
     confirmedTime?: DateTimeNullableFilter<"Appointment"> | Date | string | null
@@ -40074,12 +39185,12 @@ export namespace Prisma {
     eventId?: StringFilter<"EmailCampaign"> | string
     name?: StringFilter<"EmailCampaign"> | string
     description?: StringNullableFilter<"EmailCampaign"> | string | null
-    type?: EnumCampaignTypeFilter<"EmailCampaign"> | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFilter<"EmailCampaign"> | $Enums.RecipientType
+    type?: StringFilter<"EmailCampaign"> | string
+    recipientType?: StringFilter<"EmailCampaign"> | string
     subject?: StringFilter<"EmailCampaign"> | string
     htmlContent?: StringFilter<"EmailCampaign"> | string
     textContent?: StringNullableFilter<"EmailCampaign"> | string | null
-    status?: EnumCampaignStatusFilter<"EmailCampaign"> | $Enums.CampaignStatus
+    status?: StringFilter<"EmailCampaign"> | string
     scheduledAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
     sentAt?: DateTimeNullableFilter<"EmailCampaign"> | Date | string | null
     totalRecipients?: IntNullableFilter<"EmailCampaign"> | number | null
@@ -40115,8 +39226,8 @@ export namespace Prisma {
     subject?: StringFilter<"EmailTemplate"> | string
     htmlContent?: StringFilter<"EmailTemplate"> | string
     textContent?: StringNullableFilter<"EmailTemplate"> | string | null
-    type?: EnumCampaignTypeFilter<"EmailTemplate"> | $Enums.CampaignType
-    category?: EnumTemplateCategoryNullableFilter<"EmailTemplate"> | $Enums.TemplateCategory | null
+    type?: StringFilter<"EmailTemplate"> | string
+    category?: StringNullableFilter<"EmailTemplate"> | string | null
     isGlobal?: BoolFilter<"EmailTemplate"> | boolean
     eventId?: StringNullableFilter<"EmailTemplate"> | string | null
     isActive?: BoolFilter<"EmailTemplate"> | boolean
@@ -40184,15 +39295,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventsInput = {
@@ -40205,15 +39316,61 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    role?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+    plan?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+  }
+
+  export type GameUpsertWithWhereUniqueWithoutEventInput = {
+    where: GameWhereUniqueInput
+    update: XOR<GameUpdateWithoutEventInput, GameUncheckedUpdateWithoutEventInput>
+    create: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput>
+  }
+
+  export type GameUpdateWithWhereUniqueWithoutEventInput = {
+    where: GameWhereUniqueInput
+    data: XOR<GameUpdateWithoutEventInput, GameUncheckedUpdateWithoutEventInput>
+  }
+
+  export type GameUpdateManyWithWhereWithoutEventInput = {
+    where: GameScalarWhereInput
+    data: XOR<GameUpdateManyMutationInput, GameUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type GameScalarWhereInput = {
+    AND?: GameScalarWhereInput | GameScalarWhereInput[]
+    OR?: GameScalarWhereInput[]
+    NOT?: GameScalarWhereInput | GameScalarWhereInput[]
+    id?: StringFilter<"Game"> | string
+    eventId?: StringFilter<"Game"> | string
+    participantId?: StringFilter<"Game"> | string
+    action?: StringFilter<"Game"> | string
+    points?: IntFilter<"Game"> | number
+    actionDetails?: StringNullableFilter<"Game"> | string | null
+    relatedEntityId?: StringNullableFilter<"Game"> | string | null
+    createdAt?: DateTimeFilter<"Game"> | Date | string
+  }
+
+  export type MatchSuggestionUpsertWithWhereUniqueWithoutEventInput = {
+    where: MatchSuggestionWhereUniqueInput
+    update: XOR<MatchSuggestionUpdateWithoutEventInput, MatchSuggestionUncheckedUpdateWithoutEventInput>
+    create: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput>
+  }
+
+  export type MatchSuggestionUpdateWithWhereUniqueWithoutEventInput = {
+    where: MatchSuggestionWhereUniqueInput
+    data: XOR<MatchSuggestionUpdateWithoutEventInput, MatchSuggestionUncheckedUpdateWithoutEventInput>
+  }
+
+  export type MatchSuggestionUpdateManyWithWhereWithoutEventInput = {
+    where: MatchSuggestionScalarWhereInput
+    data: XOR<MatchSuggestionUpdateManyMutationInput, MatchSuggestionUncheckedUpdateManyWithoutEventInput>
   }
 
   export type ParticipantBadgeUpsertWithWhereUniqueWithoutEventInput = {
@@ -40240,7 +39397,7 @@ export namespace Prisma {
     registrationId?: StringFilter<"ParticipantBadge"> | string
     eventId?: StringFilter<"ParticipantBadge"> | string
     templateId?: StringFilter<"ParticipantBadge"> | string
-    status?: EnumBadgeStatusFilter<"ParticipantBadge"> | $Enums.BadgeStatus
+    status?: StringFilter<"ParticipantBadge"> | string
     generatedAt?: DateTimeFilter<"ParticipantBadge"> | Date | string
     printedAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"ParticipantBadge"> | Date | string | null
@@ -40313,7 +39470,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Sponsor"> | string | null
     logo?: StringNullableFilter<"Sponsor"> | string | null
     website?: StringNullableFilter<"Sponsor"> | string | null
-    level?: EnumSponsorLevelFilter<"Sponsor"> | $Enums.SponsorLevel
+    level?: StringFilter<"Sponsor"> | string
     visible?: BoolFilter<"Sponsor"> | boolean
     eventId?: StringFilter<"Sponsor"> | string
     location?: StringNullableFilter<"Sponsor"> | string | null
@@ -40356,44 +39513,14 @@ export namespace Prisma {
     currency?: StringFilter<"Ticket"> | string
     quantity?: IntNullableFilter<"Ticket"> | number | null
     sold?: IntFilter<"Ticket"> | number
-    status?: EnumTicketStatusFilter<"Ticket"> | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFilter<"Ticket"> | $Enums.TicketVisibility
+    status?: StringFilter<"Ticket"> | string
+    visibility?: StringFilter<"Ticket"> | string
     validFrom?: DateTimeFilter<"Ticket"> | Date | string
     validUntil?: DateTimeFilter<"Ticket"> | Date | string
     group?: StringFilter<"Ticket"> | string
     eventId?: StringFilter<"Ticket"> | string
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     updatedAt?: DateTimeFilter<"Ticket"> | Date | string
-  }
-
-  export type GameUpsertWithWhereUniqueWithoutEventInput = {
-    where: GameWhereUniqueInput
-    update: XOR<GameUpdateWithoutEventInput, GameUncheckedUpdateWithoutEventInput>
-    create: XOR<GameCreateWithoutEventInput, GameUncheckedCreateWithoutEventInput>
-  }
-
-  export type GameUpdateWithWhereUniqueWithoutEventInput = {
-    where: GameWhereUniqueInput
-    data: XOR<GameUpdateWithoutEventInput, GameUncheckedUpdateWithoutEventInput>
-  }
-
-  export type GameUpdateManyWithWhereWithoutEventInput = {
-    where: GameScalarWhereInput
-    data: XOR<GameUpdateManyMutationInput, GameUncheckedUpdateManyWithoutEventInput>
-  }
-
-  export type GameScalarWhereInput = {
-    AND?: GameScalarWhereInput | GameScalarWhereInput[]
-    OR?: GameScalarWhereInput[]
-    NOT?: GameScalarWhereInput | GameScalarWhereInput[]
-    id?: StringFilter<"Game"> | string
-    eventId?: StringFilter<"Game"> | string
-    participantId?: StringFilter<"Game"> | string
-    action?: EnumGameActionFilter<"Game"> | $Enums.GameAction
-    points?: IntFilter<"Game"> | number
-    actionDetails?: StringNullableFilter<"Game"> | string | null
-    relatedEntityId?: StringNullableFilter<"Game"> | string | null
-    createdAt?: DateTimeFilter<"Game"> | Date | string
   }
 
   export type UserEventScoreUpsertWithWhereUniqueWithoutEventInput = {
@@ -40440,25 +39567,9 @@ export namespace Prisma {
     data: XOR<UserMatchProfileUpdateManyMutationInput, UserMatchProfileUncheckedUpdateManyWithoutEventInput>
   }
 
-  export type MatchSuggestionUpsertWithWhereUniqueWithoutEventInput = {
-    where: MatchSuggestionWhereUniqueInput
-    update: XOR<MatchSuggestionUpdateWithoutEventInput, MatchSuggestionUncheckedUpdateWithoutEventInput>
-    create: XOR<MatchSuggestionCreateWithoutEventInput, MatchSuggestionUncheckedCreateWithoutEventInput>
-  }
-
-  export type MatchSuggestionUpdateWithWhereUniqueWithoutEventInput = {
-    where: MatchSuggestionWhereUniqueInput
-    data: XOR<MatchSuggestionUpdateWithoutEventInput, MatchSuggestionUncheckedUpdateWithoutEventInput>
-  }
-
-  export type MatchSuggestionUpdateManyWithWhereWithoutEventInput = {
-    where: MatchSuggestionScalarWhereInput
-    data: XOR<MatchSuggestionUpdateManyMutationInput, MatchSuggestionUncheckedUpdateManyWithoutEventInput>
-  }
-
   export type AppointmentCreateWithoutRecipientInput = {
     id?: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -40474,7 +39585,7 @@ export namespace Prisma {
     id?: string
     eventId: string
     requesterId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -40496,7 +39607,7 @@ export namespace Prisma {
 
   export type AppointmentCreateWithoutRequesterInput = {
     id?: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -40512,7 +39623,7 @@ export namespace Prisma {
     id?: string
     eventId: string
     recipientId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -40532,9 +39643,39 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GameCreateWithoutParticipantInput = {
+    id?: string
+    action: string
+    points: number
+    actionDetails?: string | null
+    relatedEntityId?: string | null
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutGamesInput
+  }
+
+  export type GameUncheckedCreateWithoutParticipantInput = {
+    id?: string
+    eventId: string
+    action: string
+    points: number
+    actionDetails?: string | null
+    relatedEntityId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type GameCreateOrConnectWithoutParticipantInput = {
+    where: GameWhereUniqueInput
+    create: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type GameCreateManyParticipantInputEnvelope = {
+    data: GameCreateManyParticipantInput | GameCreateManyParticipantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ParticipantBadgeCreateWithoutRegistrationInput = {
     id?: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -40550,7 +39691,7 @@ export namespace Prisma {
     id?: string
     eventId: string
     templateId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -40599,13 +39740,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -40637,13 +39778,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -40659,8 +39800,8 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
@@ -40677,8 +39818,8 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
@@ -40715,36 +39856,6 @@ export namespace Prisma {
 
   export type SessionParticipantCreateManyParticipantInputEnvelope = {
     data: SessionParticipantCreateManyParticipantInput | SessionParticipantCreateManyParticipantInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type GameCreateWithoutParticipantInput = {
-    id?: string
-    action: $Enums.GameAction
-    points: number
-    actionDetails?: string | null
-    relatedEntityId?: string | null
-    createdAt?: Date | string
-    event: EventCreateNestedOneWithoutGamesInput
-  }
-
-  export type GameUncheckedCreateWithoutParticipantInput = {
-    id?: string
-    eventId: string
-    action: $Enums.GameAction
-    points: number
-    actionDetails?: string | null
-    relatedEntityId?: string | null
-    createdAt?: Date | string
-  }
-
-  export type GameCreateOrConnectWithoutParticipantInput = {
-    where: GameWhereUniqueInput
-    create: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput>
-  }
-
-  export type GameCreateManyParticipantInputEnvelope = {
-    data: GameCreateManyParticipantInput | GameCreateManyParticipantInput[]
     skipDuplicates?: boolean
   }
 
@@ -40806,6 +39917,22 @@ export namespace Prisma {
     data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutRequesterInput>
   }
 
+  export type GameUpsertWithWhereUniqueWithoutParticipantInput = {
+    where: GameWhereUniqueInput
+    update: XOR<GameUpdateWithoutParticipantInput, GameUncheckedUpdateWithoutParticipantInput>
+    create: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type GameUpdateWithWhereUniqueWithoutParticipantInput = {
+    where: GameWhereUniqueInput
+    data: XOR<GameUpdateWithoutParticipantInput, GameUncheckedUpdateWithoutParticipantInput>
+  }
+
+  export type GameUpdateManyWithWhereWithoutParticipantInput = {
+    where: GameScalarWhereInput
+    data: XOR<GameUpdateManyMutationInput, GameUncheckedUpdateManyWithoutParticipantInput>
+  }
+
   export type ParticipantBadgeUpsertWithWhereUniqueWithoutRegistrationInput = {
     where: ParticipantBadgeWhereUniqueInput
     update: XOR<ParticipantBadgeUpdateWithoutRegistrationInput, ParticipantBadgeUncheckedUpdateWithoutRegistrationInput>
@@ -40862,13 +39989,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -40900,13 +40027,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type TicketUpsertWithoutRegistrationsInput = {
@@ -40928,8 +40055,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -40946,8 +40073,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -40984,22 +40111,6 @@ export namespace Prisma {
     attendanceTime?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
   }
 
-  export type GameUpsertWithWhereUniqueWithoutParticipantInput = {
-    where: GameWhereUniqueInput
-    update: XOR<GameUpdateWithoutParticipantInput, GameUncheckedUpdateWithoutParticipantInput>
-    create: XOR<GameCreateWithoutParticipantInput, GameUncheckedCreateWithoutParticipantInput>
-  }
-
-  export type GameUpdateWithWhereUniqueWithoutParticipantInput = {
-    where: GameWhereUniqueInput
-    data: XOR<GameUpdateWithoutParticipantInput, GameUncheckedUpdateWithoutParticipantInput>
-  }
-
-  export type GameUpdateManyWithWhereWithoutParticipantInput = {
-    where: GameScalarWhereInput
-    data: XOR<GameUpdateManyMutationInput, GameUncheckedUpdateManyWithoutParticipantInput>
-  }
-
   export type UserEventScoreUpsertWithWhereUniqueWithoutParticipantInput = {
     where: UserEventScoreWhereUniqueInput
     update: XOR<UserEventScoreUpdateWithoutParticipantInput, UserEventScoreUncheckedUpdateWithoutParticipantInput>
@@ -41014,6 +40125,64 @@ export namespace Prisma {
   export type UserEventScoreUpdateManyWithWhereWithoutParticipantInput = {
     where: UserEventScoreScalarWhereInput
     data: XOR<UserEventScoreUpdateManyMutationInput, UserEventScoreUncheckedUpdateManyWithoutParticipantInput>
+  }
+
+  export type RegistrationCreateWithoutTicketInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    qrCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    shortCode?: string | null
+    company?: string | null
+    jobTitle?: string | null
+    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
+    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
+    event: EventCreateNestedOneWithoutRegistrationsInput
+    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
+    userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutTicketInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    type?: string
+    eventId: string
+    qrCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    checkedIn?: boolean
+    checkInTime?: Date | string | null
+    shortCode?: string | null
+    company?: string | null
+    jobTitle?: string | null
+    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
+    userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutTicketInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput>
+  }
+
+  export type RegistrationCreateManyTicketInputEnvelope = {
+    data: RegistrationCreateManyTicketInput | RegistrationCreateManyTicketInput[]
+    skipDuplicates?: boolean
   }
 
   export type EventCreateWithoutTicketsInput = {
@@ -41045,13 +40214,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -41083,13 +40252,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -41097,62 +40266,20 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutTicketsInput, EventUncheckedCreateWithoutTicketsInput>
   }
 
-  export type RegistrationCreateWithoutTicketInput = {
-    id?: string
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    type?: string
-    qrCode: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    checkedIn?: boolean
-    checkInTime?: Date | string | null
-    shortCode?: string | null
-    company?: string | null
-    jobTitle?: string | null
-    receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
-    sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
-    participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
-    event: EventCreateNestedOneWithoutRegistrationsInput
-    sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
-    userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
-  }
-
-  export type RegistrationUncheckedCreateWithoutTicketInput = {
-    id?: string
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    type?: string
-    eventId: string
-    qrCode: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    checkedIn?: boolean
-    checkInTime?: Date | string | null
-    shortCode?: string | null
-    company?: string | null
-    jobTitle?: string | null
-    receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
-    sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
-    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
-    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
-    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
-    userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
-  }
-
-  export type RegistrationCreateOrConnectWithoutTicketInput = {
+  export type RegistrationUpsertWithWhereUniqueWithoutTicketInput = {
     where: RegistrationWhereUniqueInput
+    update: XOR<RegistrationUpdateWithoutTicketInput, RegistrationUncheckedUpdateWithoutTicketInput>
     create: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput>
   }
 
-  export type RegistrationCreateManyTicketInputEnvelope = {
-    data: RegistrationCreateManyTicketInput | RegistrationCreateManyTicketInput[]
-    skipDuplicates?: boolean
+  export type RegistrationUpdateWithWhereUniqueWithoutTicketInput = {
+    where: RegistrationWhereUniqueInput
+    data: XOR<RegistrationUpdateWithoutTicketInput, RegistrationUncheckedUpdateWithoutTicketInput>
+  }
+
+  export type RegistrationUpdateManyWithWhereWithoutTicketInput = {
+    where: RegistrationScalarWhereInput
+    data: XOR<RegistrationUpdateManyMutationInput, RegistrationUncheckedUpdateManyWithoutTicketInput>
   }
 
   export type EventUpsertWithoutTicketsInput = {
@@ -41195,13 +40322,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -41233,29 +40360,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
-  }
-
-  export type RegistrationUpsertWithWhereUniqueWithoutTicketInput = {
-    where: RegistrationWhereUniqueInput
-    update: XOR<RegistrationUpdateWithoutTicketInput, RegistrationUncheckedUpdateWithoutTicketInput>
-    create: XOR<RegistrationCreateWithoutTicketInput, RegistrationUncheckedCreateWithoutTicketInput>
-  }
-
-  export type RegistrationUpdateWithWhereUniqueWithoutTicketInput = {
-    where: RegistrationWhereUniqueInput
-    data: XOR<RegistrationUpdateWithoutTicketInput, RegistrationUncheckedUpdateWithoutTicketInput>
-  }
-
-  export type RegistrationUpdateManyWithWhereWithoutTicketInput = {
-    where: RegistrationScalarWhereInput
-    data: XOR<RegistrationUpdateManyMutationInput, RegistrationUncheckedUpdateManyWithoutTicketInput>
   }
 
   export type EventCreateWithoutEvent_sessionsInput = {
@@ -41286,14 +40397,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutEvent_sessionsInput = {
@@ -41324,14 +40435,14 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutEvent_sessionsInput = {
@@ -41404,14 +40515,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutEvent_sessionsInput = {
@@ -41442,14 +40553,14 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SessionParticipantUpsertWithWhereUniqueWithoutSessionInput = {
@@ -41497,13 +40608,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorsInput = {
@@ -41535,13 +40646,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorsInput = {
@@ -41589,13 +40700,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorsInput = {
@@ -41627,13 +40738,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationCreateWithoutSessionsInput = {
@@ -41653,10 +40764,10 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
-    games?: GameCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
   }
 
@@ -41679,8 +40790,8 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
-    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     games?: GameUncheckedCreateNestedManyWithoutParticipantInput
+    participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -41760,10 +40871,10 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -41786,8 +40897,8 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
-    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
+    participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -41868,14 +40979,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutAppointmentsInput = {
@@ -41906,14 +41017,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutAppointmentsInput = {
@@ -41937,11 +41048,11 @@ export namespace Prisma {
     company?: string | null
     jobTitle?: string | null
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
   }
 
@@ -41963,9 +41074,9 @@ export namespace Prisma {
     company?: string | null
     jobTitle?: string | null
     sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
-    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -41990,11 +41101,11 @@ export namespace Prisma {
     company?: string | null
     jobTitle?: string | null
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
   }
 
@@ -42016,9 +41127,9 @@ export namespace Prisma {
     company?: string | null
     jobTitle?: string | null
     receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
+    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
-    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -42066,14 +41177,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutAppointmentsInput = {
@@ -42104,14 +41215,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutReceivedAppointmentsInput = {
@@ -42141,11 +41252,11 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -42167,9 +41278,9 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
-    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -42200,11 +41311,11 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -42226,9 +41337,9 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
+    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
-    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -42260,14 +41371,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgesInput = {
@@ -42298,14 +41409,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgesInput = {
@@ -42352,14 +41463,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgesInput = {
@@ -42390,14 +41501,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateWithoutBadgeTemplatesInput = {
@@ -42428,14 +41539,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgeTemplatesInput = {
@@ -42466,14 +41577,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgeTemplatesInput = {
@@ -42483,7 +41594,7 @@ export namespace Prisma {
 
   export type ParticipantBadgeCreateWithoutTemplateInput = {
     id?: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -42499,7 +41610,7 @@ export namespace Prisma {
     id?: string
     registrationId: string
     eventId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -42558,14 +41669,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgeTemplatesInput = {
@@ -42596,14 +41707,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ParticipantBadgeUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -42651,13 +41762,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutParticipantBadgesInput = {
@@ -42689,13 +41800,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutParticipantBadgesInput = {
@@ -42720,10 +41831,10 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     event: EventCreateNestedOneWithoutRegistrationsInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutParticipantInput
   }
 
@@ -42746,8 +41857,8 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
-    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
     games?: GameUncheckedCreateNestedManyWithoutParticipantInput
+    sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -42825,13 +41936,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutParticipantBadgesInput = {
@@ -42863,13 +41974,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutParticipantBadgesInput = {
@@ -42900,10 +42011,10 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -42926,8 +42037,8 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
-    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
     games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
+    sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -42994,14 +42105,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutEmailCampaignsInput = {
@@ -43032,14 +42143,14 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutEmailCampaignsInput = {
@@ -43051,7 +42162,7 @@ export namespace Prisma {
     id?: string
     recipientEmail: string
     recipientName?: string | null
-    status?: $Enums.EmailStatus
+    status?: string
     errorMessage?: string | null
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -43065,7 +42176,7 @@ export namespace Prisma {
     id?: string
     recipientEmail: string
     recipientName?: string | null
-    status?: $Enums.EmailStatus
+    status?: string
     errorMessage?: string | null
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -43124,14 +42235,14 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutEmailCampaignsInput = {
@@ -43162,14 +42273,14 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EmailLogUpsertWithWhereUniqueWithoutCampaignInput = {
@@ -43196,7 +42307,7 @@ export namespace Prisma {
     campaignId?: StringFilter<"EmailLog"> | string
     recipientEmail?: StringFilter<"EmailLog"> | string
     recipientName?: StringNullableFilter<"EmailLog"> | string | null
-    status?: EnumEmailStatusFilter<"EmailLog"> | $Enums.EmailStatus
+    status?: StringFilter<"EmailLog"> | string
     errorMessage?: StringNullableFilter<"EmailLog"> | string | null
     sentAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"EmailLog"> | Date | string | null
@@ -43234,14 +42345,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutEmailTemplatesInput = {
@@ -43272,14 +42383,14 @@ export namespace Prisma {
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutEmailTemplatesInput = {
@@ -43326,14 +42437,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutEmailTemplatesInput = {
@@ -43364,26 +42475,26 @@ export namespace Prisma {
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EmailCampaignCreateWithoutEmailLogsInput = {
     id?: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -43399,12 +42510,12 @@ export namespace Prisma {
     eventId: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -43434,12 +42545,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -43455,12 +42566,12 @@ export namespace Prisma {
     eventId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -43499,13 +42610,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutGamesInput = {
@@ -43537,13 +42648,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutGamesInput = {
@@ -43644,13 +42755,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutGamesInput = {
@@ -43682,13 +42793,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutGamesInput = {
@@ -43779,13 +42890,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserEventScoresInput = {
@@ -43817,13 +42928,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserEventScoresInput = {
@@ -43848,11 +42959,11 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentCreateNestedManyWithoutRequesterInput
+    games?: GameCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutRegistrationInput
     event: EventCreateNestedOneWithoutRegistrationsInput
     ticket?: TicketCreateNestedOneWithoutRegistrationsInput
     sessions?: SessionParticipantCreateNestedManyWithoutParticipantInput
-    games?: GameCreateNestedManyWithoutParticipantInput
   }
 
   export type RegistrationUncheckedCreateWithoutUserEventScoresInput = {
@@ -43874,9 +42985,9 @@ export namespace Prisma {
     jobTitle?: string | null
     receivedAppointments?: AppointmentUncheckedCreateNestedManyWithoutRecipientInput
     sentAppointments?: AppointmentUncheckedCreateNestedManyWithoutRequesterInput
+    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutRegistrationInput
     sessions?: SessionParticipantUncheckedCreateNestedManyWithoutParticipantInput
-    games?: GameUncheckedCreateNestedManyWithoutParticipantInput
   }
 
   export type RegistrationCreateOrConnectWithoutUserEventScoresInput = {
@@ -43924,13 +43035,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserEventScoresInput = {
@@ -43962,13 +43073,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutUserEventScoresInput = {
@@ -43999,11 +43110,11 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutUserEventScoresInput = {
@@ -44025,56 +43136,9 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
-    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
-  }
-
-  export type UserCreateWithoutMatchProfilesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
-    lastLogin?: Date | string | null
-    phone?: string | null
-    plan?: $Enums.UserPlan
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    events?: EventCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
-  }
-
-  export type UserUncheckedCreateWithoutMatchProfilesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
-    lastLogin?: Date | string | null
-    phone?: string | null
-    plan?: $Enums.UserPlan
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    events?: EventUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
-  }
-
-  export type UserCreateOrConnectWithoutMatchProfilesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
   }
 
   export type EventCreateWithoutMatchProfilesInput = {
@@ -44106,13 +43170,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutMatchProfilesInput = {
@@ -44144,13 +43208,13 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
+    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
-    matchSuggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutMatchProfilesInput = {
@@ -44158,57 +43222,51 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutMatchProfilesInput, EventUncheckedCreateWithoutMatchProfilesInput>
   }
 
-  export type UserUpsertWithoutMatchProfilesInput = {
-    update: XOR<UserUpdateWithoutMatchProfilesInput, UserUncheckedUpdateWithoutMatchProfilesInput>
+  export type UserCreateWithoutMatchProfilesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permissions?: UserCreatepermissionsInput | string[]
+    role?: string
+    lastLogin?: Date | string | null
+    phone?: string | null
+    plan?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    events?: EventCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMatchProfilesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permissions?: UserCreatepermissionsInput | string[]
+    role?: string
+    lastLogin?: Date | string | null
+    phone?: string | null
+    plan?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    events?: EventUncheckedCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMatchProfilesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutMatchProfilesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutMatchProfilesInput, UserUncheckedUpdateWithoutMatchProfilesInput>
-  }
-
-  export type UserUpdateWithoutMatchProfilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    events?: EventUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutMatchProfilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    events?: EventUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
   }
 
   export type EventUpsertWithoutMatchProfilesInput = {
@@ -44251,13 +43309,13 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutMatchProfilesInput = {
@@ -44289,107 +43347,66 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
-  export type UserCreateWithoutSuggestionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
-    lastLogin?: Date | string | null
-    phone?: string | null
-    plan?: $Enums.UserPlan
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    events?: EventCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+  export type UserUpsertWithoutMatchProfilesInput = {
+    update: XOR<UserUpdateWithoutMatchProfilesInput, UserUncheckedUpdateWithoutMatchProfilesInput>
+    create: XOR<UserCreateWithoutMatchProfilesInput, UserUncheckedCreateWithoutMatchProfilesInput>
+    where?: UserWhereInput
   }
 
-  export type UserUncheckedCreateWithoutSuggestionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
-    lastLogin?: Date | string | null
-    phone?: string | null
-    plan?: $Enums.UserPlan
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    events?: EventUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
-    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+  export type UserUpdateToOneWithWhereWithoutMatchProfilesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMatchProfilesInput, UserUncheckedUpdateWithoutMatchProfilesInput>
   }
 
-  export type UserCreateOrConnectWithoutSuggestionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
+  export type UserUpdateWithoutMatchProfilesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserUpdatepermissionsInput | string[]
+    role?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    events?: EventUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutSuggestedForInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
-    lastLogin?: Date | string | null
-    phone?: string | null
-    plan?: $Enums.UserPlan
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    events?: EventCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSuggestedForInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    password?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    permissions?: UserCreatepermissionsInput | string[]
-    role?: $Enums.UserRole
-    lastLogin?: Date | string | null
-    phone?: string | null
-    plan?: $Enums.UserPlan
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    events?: EventUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
-    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSuggestedForInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSuggestedForInput, UserUncheckedCreateWithoutSuggestedForInput>
+  export type UserUncheckedUpdateWithoutMatchProfilesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserUpdatepermissionsInput | string[]
+    role?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    events?: EventUncheckedUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutMatchSuggestionsInput = {
@@ -44421,11 +43438,11 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsCreateNestedManyWithoutEventsInput
     user: UserCreateNestedOneWithoutEventsInput
+    games?: GameCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
     sponsors?: SponsorCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
-    games?: GameCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileCreateNestedManyWithoutEventInput
   }
@@ -44459,11 +43476,11 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedCreateNestedManyWithoutEventInput
     emailTemplates?: EmailTemplateUncheckedCreateNestedManyWithoutEventInput
     event_sessions?: event_sessionsUncheckedCreateNestedManyWithoutEventsInput
+    games?: GameUncheckedCreateNestedManyWithoutEventInput
     participantBadges?: ParticipantBadgeUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
     sponsors?: SponsorUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
-    games?: GameUncheckedCreateNestedManyWithoutEventInput
     userEventScores?: UserEventScoreUncheckedCreateNestedManyWithoutEventInput
     matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutEventInput
   }
@@ -44473,110 +43490,98 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutMatchSuggestionsInput, EventUncheckedCreateWithoutMatchSuggestionsInput>
   }
 
-  export type UserUpsertWithoutSuggestionsInput = {
-    update: XOR<UserUpdateWithoutSuggestionsInput, UserUncheckedUpdateWithoutSuggestionsInput>
-    create: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
-    where?: UserWhereInput
+  export type UserCreateWithoutSuggestedForInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permissions?: UserCreatepermissionsInput | string[]
+    role?: string
+    lastLogin?: Date | string | null
+    phone?: string | null
+    plan?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    events?: EventCreateNestedManyWithoutUserInput
+    suggestions?: MatchSuggestionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutSuggestionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSuggestionsInput, UserUncheckedUpdateWithoutSuggestionsInput>
+  export type UserUncheckedCreateWithoutSuggestedForInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permissions?: UserCreatepermissionsInput | string[]
+    role?: string
+    lastLogin?: Date | string | null
+    phone?: string | null
+    plan?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    events?: EventUncheckedCreateNestedManyWithoutUserInput
+    suggestions?: MatchSuggestionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserUpdateWithoutSuggestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    events?: EventUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSuggestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    events?: EventUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
-    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
-  }
-
-  export type UserUpsertWithoutSuggestedForInput = {
-    update: XOR<UserUpdateWithoutSuggestedForInput, UserUncheckedUpdateWithoutSuggestedForInput>
+  export type UserCreateOrConnectWithoutSuggestedForInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSuggestedForInput, UserUncheckedCreateWithoutSuggestedForInput>
-    where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutSuggestedForInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSuggestedForInput, UserUncheckedUpdateWithoutSuggestedForInput>
+  export type UserCreateWithoutSuggestionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permissions?: UserCreatepermissionsInput | string[]
+    role?: string
+    lastLogin?: Date | string | null
+    phone?: string | null
+    plan?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    events?: EventCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionCreateNestedManyWithoutSuggestedInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    matchProfiles?: UserMatchProfileCreateNestedManyWithoutUserInput
   }
 
-  export type UserUpdateWithoutSuggestedForInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    events?: EventUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
+  export type UserUncheckedCreateWithoutSuggestionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permissions?: UserCreatepermissionsInput | string[]
+    role?: string
+    lastLogin?: Date | string | null
+    phone?: string | null
+    plan?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    events?: EventUncheckedCreateNestedManyWithoutUserInput
+    suggestedFor?: MatchSuggestionUncheckedCreateNestedManyWithoutSuggestedInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    matchProfiles?: UserMatchProfileUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedUpdateWithoutSuggestedForInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    permissions?: UserUpdatepermissionsInput | string[]
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    plan?: EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    events?: EventUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
-    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
+  export type UserCreateOrConnectWithoutSuggestionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
   }
 
   export type EventUpsertWithoutMatchSuggestionsInput = {
@@ -44619,11 +43624,11 @@ export namespace Prisma {
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
     user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
   }
@@ -44657,13 +43662,119 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type UserUpsertWithoutSuggestedForInput = {
+    update: XOR<UserUpdateWithoutSuggestedForInput, UserUncheckedUpdateWithoutSuggestedForInput>
+    create: XOR<UserCreateWithoutSuggestedForInput, UserUncheckedCreateWithoutSuggestedForInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSuggestedForInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSuggestedForInput, UserUncheckedUpdateWithoutSuggestedForInput>
+  }
+
+  export type UserUpdateWithoutSuggestedForInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserUpdatepermissionsInput | string[]
+    role?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    events?: EventUpdateManyWithoutUserNestedInput
+    suggestions?: MatchSuggestionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSuggestedForInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserUpdatepermissionsInput | string[]
+    role?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    events?: EventUncheckedUpdateManyWithoutUserNestedInput
+    suggestions?: MatchSuggestionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutSuggestionsInput = {
+    update: XOR<UserUpdateWithoutSuggestionsInput, UserUncheckedUpdateWithoutSuggestionsInput>
+    create: XOR<UserCreateWithoutSuggestionsInput, UserUncheckedCreateWithoutSuggestionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSuggestionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSuggestionsInput, UserUncheckedUpdateWithoutSuggestionsInput>
+  }
+
+  export type UserUpdateWithoutSuggestionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserUpdatepermissionsInput | string[]
+    role?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    events?: EventUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUpdateManyWithoutSuggestedNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    matchProfiles?: UserMatchProfileUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSuggestionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserUpdatepermissionsInput | string[]
+    role?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    events?: EventUncheckedUpdateManyWithoutUserNestedInput
+    suggestedFor?: MatchSuggestionUncheckedUpdateManyWithoutSuggestedNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -44704,6 +43815,24 @@ export namespace Prisma {
     archivedAt?: Date | string | null
   }
 
+  export type MatchSuggestionCreateManySuggestedInput = {
+    id?: string
+    userId: string
+    eventId: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MatchSuggestionCreateManyUserInput = {
+    id?: string
+    suggestedId: string
+    eventId: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
   export type SessionCreateManyUserInput = {
     id?: string
     sessionToken: string
@@ -44722,24 +43851,6 @@ export namespace Prisma {
     availability?: UserMatchProfileCreateavailabilityInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type MatchSuggestionCreateManyUserInput = {
-    id?: string
-    suggestedId: string
-    eventId: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-  }
-
-  export type MatchSuggestionCreateManySuggestedInput = {
-    id?: string
-    userId: string
-    eventId: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -44812,14 +43923,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUpdateManyWithoutEventsNestedInput
+    games?: GameUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
-    games?: GameUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserInput = {
@@ -44850,14 +43961,14 @@ export namespace Prisma {
     emailCampaigns?: EmailCampaignUncheckedUpdateManyWithoutEventNestedInput
     emailTemplates?: EmailTemplateUncheckedUpdateManyWithoutEventNestedInput
     event_sessions?: event_sessionsUncheckedUpdateManyWithoutEventsNestedInput
+    games?: GameUncheckedUpdateManyWithoutEventNestedInput
+    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
     sponsors?: SponsorUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    games?: GameUncheckedUpdateManyWithoutEventNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutEventNestedInput
     matchProfiles?: UserMatchProfileUncheckedUpdateManyWithoutEventNestedInput
-    matchSuggestions?: MatchSuggestionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutUserInput = {
@@ -44882,6 +43993,60 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MatchSuggestionUpdateWithoutSuggestedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput
+    user?: UserUpdateOneRequiredWithoutSuggestionsNestedInput
+  }
+
+  export type MatchSuggestionUncheckedUpdateWithoutSuggestedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchSuggestionUncheckedUpdateManyWithoutSuggestedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchSuggestionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput
+    suggested?: UserUpdateOneRequiredWithoutSuggestedForNestedInput
+  }
+
+  export type MatchSuggestionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    suggestedId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchSuggestionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    suggestedId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -44944,65 +44109,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MatchSuggestionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    suggested?: UserUpdateOneRequiredWithoutSuggestedForNestedInput
-    event?: EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput
-  }
-
-  export type MatchSuggestionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    suggestedId?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MatchSuggestionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    suggestedId?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MatchSuggestionUpdateWithoutSuggestedInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSuggestionsNestedInput
-    event?: EventUpdateOneRequiredWithoutMatchSuggestionsNestedInput
-  }
-
-  export type MatchSuggestionUncheckedUpdateWithoutSuggestedInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MatchSuggestionUncheckedUpdateManyWithoutSuggestedInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type AppointmentCreateManyEventInput = {
     id?: string
     requesterId: string
     recipientId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -45036,12 +44147,12 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    type?: $Enums.CampaignType
-    recipientType?: $Enums.RecipientType
+    type?: string
+    recipientType?: string
     subject: string
     htmlContent: string
     textContent?: string | null
-    status?: $Enums.CampaignStatus
+    status?: string
     scheduledAt?: Date | string | null
     sentAt?: Date | string | null
     totalRecipients?: number | null
@@ -45058,8 +44169,8 @@ export namespace Prisma {
     subject: string
     htmlContent: string
     textContent?: string | null
-    type?: $Enums.CampaignType
-    category?: $Enums.TemplateCategory | null
+    type?: string
+    category?: string | null
     isGlobal?: boolean
     isActive?: boolean
     isDefault?: boolean
@@ -45085,11 +44196,30 @@ export namespace Prisma {
     video_url?: string | null
   }
 
+  export type GameCreateManyEventInput = {
+    id?: string
+    participantId: string
+    action: string
+    points: number
+    actionDetails?: string | null
+    relatedEntityId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MatchSuggestionCreateManyEventInput = {
+    id?: string
+    userId: string
+    suggestedId: string
+    score: number
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
   export type ParticipantBadgeCreateManyEventInput = {
     id?: string
     registrationId: string
     templateId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -45123,7 +44253,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     website?: string | null
-    level?: $Enums.SponsorLevel
+    level?: string
     visible?: boolean
     location?: string | null
     address?: string | null
@@ -45146,23 +44276,13 @@ export namespace Prisma {
     currency?: string
     quantity?: number | null
     sold?: number
-    status?: $Enums.TicketStatus
-    visibility?: $Enums.TicketVisibility
+    status?: string
+    visibility?: string
     validFrom: Date | string
     validUntil: Date | string
     group?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type GameCreateManyEventInput = {
-    id?: string
-    participantId: string
-    action: $Enums.GameAction
-    points: number
-    actionDetails?: string | null
-    relatedEntityId?: string | null
-    createdAt?: Date | string
   }
 
   export type UserEventScoreCreateManyEventInput = {
@@ -45187,18 +44307,9 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type MatchSuggestionCreateManyEventInput = {
-    id?: string
-    userId: string
-    suggestedId: string
-    score: number
-    reason?: string | null
-    createdAt?: Date | string
-  }
-
   export type AppointmentUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45214,7 +44325,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     requesterId?: StringFieldUpdateOperationsInput | string
     recipientId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45228,7 +44339,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     requesterId?: StringFieldUpdateOperationsInput | string
     recipientId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45304,12 +44415,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45324,12 +44435,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45344,12 +44455,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    recipientType?: EnumRecipientTypeFieldUpdateOperationsInput | $Enums.RecipientType
+    type?: StringFieldUpdateOperationsInput | string
+    recipientType?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    status?: StringFieldUpdateOperationsInput | string
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalRecipients?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45366,8 +44477,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDefault?: BoolFieldUpdateOperationsInput | boolean
@@ -45382,8 +44493,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDefault?: BoolFieldUpdateOperationsInput | boolean
@@ -45398,8 +44509,8 @@ export namespace Prisma {
     subject?: StringFieldUpdateOperationsInput | string
     htmlContent?: StringFieldUpdateOperationsInput | string
     textContent?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
-    category?: NullableEnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     isGlobal?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDefault?: BoolFieldUpdateOperationsInput | boolean
@@ -45463,9 +44574,66 @@ export namespace Prisma {
     video_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type GameUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participant?: RegistrationUpdateOneRequiredWithoutGamesNestedInput
+  }
+
+  export type GameUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GameUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchSuggestionUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    suggested?: UserUpdateOneRequiredWithoutSuggestedForNestedInput
+    user?: UserUpdateOneRequiredWithoutSuggestionsNestedInput
+  }
+
+  export type MatchSuggestionUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    suggestedId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchSuggestionUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    suggestedId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ParticipantBadgeUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45481,7 +44649,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45495,7 +44663,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45522,10 +44690,10 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     ticket?: TicketUpdateOneWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -45547,9 +44715,9 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
-    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -45577,7 +44745,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     location?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45598,7 +44766,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     location?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45619,7 +44787,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: EnumSponsorLevelFieldUpdateOperationsInput | $Enums.SponsorLevel
+    level?: StringFieldUpdateOperationsInput | string
     visible?: BoolFieldUpdateOperationsInput | boolean
     location?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45642,8 +44810,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -45660,8 +44828,8 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
@@ -45678,43 +44846,13 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     sold?: IntFieldUpdateOperationsInput | number
-    status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
-    visibility?: EnumTicketVisibilityFieldUpdateOperationsInput | $Enums.TicketVisibility
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GameUpdateWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
-    points?: IntFieldUpdateOperationsInput | number
-    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    participant?: RegistrationUpdateOneRequiredWithoutGamesNestedInput
-  }
-
-  export type GameUncheckedUpdateWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    participantId?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
-    points?: IntFieldUpdateOperationsInput | number
-    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GameUncheckedUpdateManyWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    participantId?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
-    points?: IntFieldUpdateOperationsInput | number
-    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserEventScoreUpdateWithoutEventInput = {
@@ -45783,38 +44921,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MatchSuggestionUpdateWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSuggestionsNestedInput
-    suggested?: UserUpdateOneRequiredWithoutSuggestedForNestedInput
-  }
-
-  export type MatchSuggestionUncheckedUpdateWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    suggestedId?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MatchSuggestionUncheckedUpdateManyWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    suggestedId?: StringFieldUpdateOperationsInput | string
-    score?: FloatFieldUpdateOperationsInput | number
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type AppointmentCreateManyRecipientInput = {
     id?: string
     eventId: string
     requesterId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -45828,7 +44939,7 @@ export namespace Prisma {
     id?: string
     eventId: string
     recipientId: string
-    status?: $Enums.AppointmentStatus
+    status?: string
     message?: string | null
     proposedTime?: Date | string | null
     confirmedTime?: Date | string | null
@@ -45838,11 +44949,21 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type GameCreateManyParticipantInput = {
+    id?: string
+    eventId: string
+    action: string
+    points: number
+    actionDetails?: string | null
+    relatedEntityId?: string | null
+    createdAt?: Date | string
+  }
+
   export type ParticipantBadgeCreateManyRegistrationInput = {
     id?: string
     eventId: string
     templateId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -45860,16 +44981,6 @@ export namespace Prisma {
     attendanceTime?: Date | string | null
   }
 
-  export type GameCreateManyParticipantInput = {
-    id?: string
-    eventId: string
-    action: $Enums.GameAction
-    points: number
-    actionDetails?: string | null
-    relatedEntityId?: string | null
-    createdAt?: Date | string
-  }
-
   export type UserEventScoreCreateManyParticipantInput = {
     id?: string
     eventId: string
@@ -45880,7 +44991,7 @@ export namespace Prisma {
 
   export type AppointmentUpdateWithoutRecipientInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45896,7 +45007,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     requesterId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45910,7 +45021,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     requesterId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45922,7 +45033,7 @@ export namespace Prisma {
 
   export type AppointmentUpdateWithoutRequesterInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45938,7 +45049,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     recipientId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45952,7 +45063,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     recipientId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAppointmentStatusFieldUpdateOperationsInput | $Enums.AppointmentStatus
+    status?: StringFieldUpdateOperationsInput | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
     proposedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45962,9 +45073,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GameUpdateWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutGamesNestedInput
+  }
+
+  export type GameUncheckedUpdateWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GameUncheckedUpdateManyWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ParticipantBadgeUpdateWithoutRegistrationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45980,7 +45121,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45994,7 +45135,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46026,36 +45167,6 @@ export namespace Prisma {
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendedSession?: BoolFieldUpdateOperationsInput | boolean
     attendanceTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type GameUpdateWithoutParticipantInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
-    points?: IntFieldUpdateOperationsInput | number
-    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    event?: EventUpdateOneRequiredWithoutGamesNestedInput
-  }
-
-  export type GameUncheckedUpdateWithoutParticipantInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
-    points?: IntFieldUpdateOperationsInput | number
-    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GameUncheckedUpdateManyWithoutParticipantInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    action?: EnumGameActionFieldUpdateOperationsInput | $Enums.GameAction
-    points?: IntFieldUpdateOperationsInput | number
-    actionDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    relatedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserEventScoreUpdateWithoutParticipantInput = {
@@ -46117,10 +45228,10 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUpdateManyWithoutRequesterNestedInput
+    games?: GameUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUpdateManyWithoutRegistrationNestedInput
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
     sessions?: SessionParticipantUpdateManyWithoutParticipantNestedInput
-    games?: GameUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUpdateManyWithoutParticipantNestedInput
   }
 
@@ -46142,9 +45253,9 @@ export namespace Prisma {
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
     receivedAppointments?: AppointmentUncheckedUpdateManyWithoutRecipientNestedInput
     sentAppointments?: AppointmentUncheckedUpdateManyWithoutRequesterNestedInput
+    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     participantBadges?: ParticipantBadgeUncheckedUpdateManyWithoutRegistrationNestedInput
     sessions?: SessionParticipantUncheckedUpdateManyWithoutParticipantNestedInput
-    games?: GameUncheckedUpdateManyWithoutParticipantNestedInput
     userEventScores?: UserEventScoreUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -46202,7 +45313,7 @@ export namespace Prisma {
     id?: string
     registrationId: string
     eventId: string
-    status?: $Enums.BadgeStatus
+    status?: string
     generatedAt?: Date | string
     printedAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -46214,7 +45325,7 @@ export namespace Prisma {
 
   export type ParticipantBadgeUpdateWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46230,7 +45341,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46244,7 +45355,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBadgeStatusFieldUpdateOperationsInput | $Enums.BadgeStatus
+    status?: StringFieldUpdateOperationsInput | string
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     printedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46258,7 +45369,7 @@ export namespace Prisma {
     id?: string
     recipientEmail: string
     recipientName?: string | null
-    status?: $Enums.EmailStatus
+    status?: string
     errorMessage?: string | null
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -46272,7 +45383,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46286,7 +45397,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46300,7 +45411,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     recipientEmail?: StringFieldUpdateOperationsInput | string
     recipientName?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumEmailStatusFieldUpdateOperationsInput | $Enums.EmailStatus
+    status?: StringFieldUpdateOperationsInput | string
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

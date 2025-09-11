@@ -4,32 +4,32 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String            @id @default(cuid())
+  id            String             @id @default(cuid())
   name          String?
-  email         String?           @unique
-  emailVerified DateTime?         @map("email_verified")
+  email         String?            @unique
+  emailVerified DateTime?          @map("email_verified")
   image         String?
   password      String?
-  createdAt     DateTime          @default(now()) @map("created_at")
-  updatedAt     DateTime          @updatedAt @map("updated_at")
-  permissions   String[]          @default([])
-  role          UserRole          @default(USER)
-  lastLogin     DateTime?         @map("last_login")
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+  permissions   String[]           @default([])
+  role          String             @default("USER")
+  lastLogin     DateTime?          @map("last_login")
   phone         String?
-  plan          UserPlan          @default(STARTER)
+  plan          String             @default("STARTER")
   accounts      Account[]
   events        Event[]
+  suggestedFor  MatchSuggestion[]  @relation("SuggestedUsers")
+  suggestions   MatchSuggestion[]  @relation("UserSuggestions")
   sessions      Session[]
   matchProfiles UserMatchProfile[]
-  suggestions   MatchSuggestion[] @relation("UserSuggestions")
-  suggestedFor  MatchSuggestion[] @relation("SuggestedUsers")
 
+  @@index([email], map: "idx_users_email")
   @@map("users")
 }
 
@@ -46,9 +46,10 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([provider, providerAccountId])
+  @@index([userId], map: "idx_accounts_user_id")
   @@map("accounts")
 }
 
@@ -57,8 +58,9 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
+  @@index([userId], map: "idx_sessions_user_id")
   @@map("sessions")
 }
 
@@ -100,16 +102,17 @@ model Event {
   emailCampaigns    EmailCampaign[]
   emailTemplates    EmailTemplate[]
   event_sessions    event_sessions[]
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  games             Game[]
+  matchSuggestions  MatchSuggestion[]
   participantBadges ParticipantBadge[]
   registrations     Registration[]
   sponsors          Sponsor[]
   tickets           Ticket[]
-  games             Game[]
   userEventScores   UserEventScore[]
   matchProfiles     UserMatchProfile[]
-  matchSuggestions  MatchSuggestion[]
 
+  @@index([slug], map: "idx_events_slug")
   @@map("events")
 }
 
@@ -132,34 +135,36 @@ model Registration {
   jobTitle             String?              @map("job_title")
   receivedAppointments Appointment[]        @relation("RecipientRelation")
   sentAppointments     Appointment[]        @relation("RequesterRelation")
-  participantBadges    ParticipantBadge[]
-  event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  ticket               Ticket?              @relation(fields: [ticketId], references: [id])
-  sessions             SessionParticipant[]
   games                Game[]
+  participantBadges    ParticipantBadge[]
+  event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  ticket               Ticket?              @relation(fields: [ticketId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sessions             SessionParticipant[]
   userEventScores      UserEventScore[]
 
+  @@index([eventId], map: "idx_registrations_event_id")
+  @@index([qrCode], map: "idx_registrations_qr_code")
   @@map("registrations")
 }
 
 model Ticket {
-  id            String            @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String
   description   String?
-  price         Decimal           @default(0)
-  currency      String            @default("XOF")
-  quantity      Int?              // null = illimité
-  sold          Int               @default(0)
-  status        TicketStatus      @default(ACTIVE)
-  visibility    TicketVisibility  @default(VISIBLE)
-  validFrom     DateTime          @map("valid_from")
-  validUntil    DateTime          @map("valid_until")
-  group         String            @default("Attendees")
-  eventId       String            @map("event_id")
-  createdAt     DateTime          @default(now()) @map("created_at")
-  updatedAt     DateTime          @updatedAt @map("updated_at")
-  event         Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  price         Decimal        @default(0)
+  currency      String         @default("XOF")
+  quantity      Int?
+  sold          Int            @default(0)
+  status        String         @default("ACTIVE")
+  visibility    String         @default("VISIBLE")
+  validFrom     DateTime       @map("valid_from")
+  validUntil    DateTime       @map("valid_until")
+  group         String         @default("Attendees")
+  eventId       String         @map("event_id")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
   registrations Registration[]
+  event         Event          @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("tickets")
 }
@@ -181,38 +186,31 @@ model event_sessions {
   banner       String?
   format       String?
   video_url    String?
-  events       Event                @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  events       Event                @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   participants SessionParticipant[]
 }
 
 model Sponsor {
-  id          String       @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
   logo        String?
   website     String?
-  level       SponsorLevel @default(GOLD)
-  visible     Boolean      @default(true)
-  eventId     String       @map("event_id")
-  
-  // Emplacement et coordonnées
-  location    String?      // Lieu dans l'événement ou numéro de stand
-  address     String?      // Adresse complète
-  phone       String?      // Téléphone fixe
-  mobile      String?      // Téléphone mobile
-  email       String?      // Email de contact
-  
-  // Réseaux sociaux
-  linkedinUrl String?      @map("linkedin_url")
-  twitterUrl  String?      @map("twitter_url") // X (ex-Twitter)
-  facebookUrl String?      @map("facebook_url") // Meta (Facebook)
-  
-  // Documents
-  documents   Json?        // Array de documents joints
-  
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
-  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  level       String   @default("GOLD")
+  visible     Boolean  @default(true)
+  eventId     String   @map("event_id")
+  location    String?
+  address     String?
+  phone       String?
+  mobile      String?
+  email       String?
+  linkedinUrl String?  @map("linkedin_url")
+  twitterUrl  String?  @map("twitter_url")
+  facebookUrl String?  @map("facebook_url")
+  documents   Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("sponsors")
 }
@@ -224,41 +222,41 @@ model SessionParticipant {
   registeredAt    DateTime       @default(now()) @map("registered_at")
   attendedSession Boolean        @default(false) @map("attended_session")
   attendanceTime  DateTime?      @map("attendance_time")
-  participant     Registration   @relation(fields: [participantId], references: [id], onDelete: Cascade)
-  session         event_sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  participant     Registration   @relation(fields: [participantId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  session         event_sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([sessionId, participantId])
   @@map("session_participants")
 }
 
 model Appointment {
-  id            String            @id @default(cuid())
-  eventId       String            @map("event_id")
-  requesterId   String            @map("requester_id")
-  recipientId   String            @map("recipient_id")
-  status        AppointmentStatus @default(PENDING)
+  id            String       @id @default(cuid())
+  eventId       String       @map("event_id")
+  requesterId   String       @map("requester_id")
+  recipientId   String       @map("recipient_id")
+  status        String       @default("PENDING")
   message       String?
-  proposedTime  DateTime?         @map("proposed_time")
-  confirmedTime DateTime?         @map("confirmed_time")
+  proposedTime  DateTime?    @map("proposed_time")
+  confirmedTime DateTime?    @map("confirmed_time")
   location      String?
   notes         String?
-  createdAt     DateTime          @default(now()) @map("created_at")
-  updatedAt     DateTime          @updatedAt @map("updated_at")
-  event         Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  recipient     Registration      @relation("RecipientRelation", fields: [recipientId], references: [id], onDelete: Cascade)
-  requester     Registration      @relation("RequesterRelation", fields: [requesterId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recipient     Registration @relation("RecipientRelation", fields: [recipientId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  requester     Registration @relation("RequesterRelation", fields: [requesterId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("appointments")
 }
 
 model OtpCode {
-  id        String   @id @default(cuid())
-  email     String
-  code      String
-  eventId   String?
-  expiresAt DateTime
-  used      Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  email      String
+  code       String
+  event_id   String?
+  expires_at DateTime
+  used       Boolean  @default(false)
+  created_at DateTime @default(now())
 
   @@map("otp_codes")
 }
@@ -271,7 +269,7 @@ model Badge {
   isDefault  Boolean  @default(false) @map("is_default")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
-  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("badges")
 }
@@ -286,7 +284,7 @@ model BadgeTemplate {
   isActive          Boolean            @default(true) @map("is_active")
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
-  event             Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event             Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   participantBadges ParticipantBadge[]
 
   @@map("badge_templates")
@@ -297,7 +295,7 @@ model ParticipantBadge {
   registrationId String        @map("registration_id")
   eventId        String        @map("event_id")
   templateId     String        @map("template_id")
-  status         BadgeStatus   @default(GENERATED)
+  status         String        @default("GENERATED")
   generatedAt    DateTime      @default(now()) @map("generated_at")
   printedAt      DateTime?     @map("printed_at")
   deliveredAt    DateTime?     @map("delivered_at")
@@ -305,54 +303,54 @@ model ParticipantBadge {
   qrCodeData     String?       @map("qr_code_data")
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
-  event          Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  registration   Registration  @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-  template       BadgeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  event          Event         @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  registration   Registration  @relation(fields: [registrationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  template       BadgeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([registrationId, eventId])
   @@map("participant_badges")
 }
 
 model EmailCampaign {
-  id              String         @id @default(cuid())
-  eventId         String         @map("event_id")
+  id              String     @id @default(cuid())
+  eventId         String     @map("event_id")
   name            String
   description     String?
-  type            CampaignType   @default(CUSTOM)
-  recipientType   RecipientType  @default(ALL_PARTICIPANTS) @map("recipient_type")
+  type            String     @default("CUSTOM")
+  recipientType   String     @default("ALL_PARTICIPANTS") @map("recipient_type")
   subject         String
-  htmlContent     String         @map("html_content")
-  textContent     String?        @map("text_content")
-  status          CampaignStatus @default(DRAFT)
-  scheduledAt     DateTime?      @map("scheduled_at")
-  sentAt          DateTime?      @map("sent_at")
-  totalRecipients Int?           @map("total_recipients")
-  successCount    Int?           @map("success_count")
-  failureCount    Int?           @map("failure_count")
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  htmlContent     String     @map("html_content")
+  textContent     String?    @map("text_content")
+  status          String     @default("DRAFT")
+  scheduledAt     DateTime?  @map("scheduled_at")
+  sentAt          DateTime?  @map("sent_at")
+  totalRecipients Int?       @map("total_recipients")
+  successCount    Int?       @map("success_count")
+  failureCount    Int?       @map("failure_count")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  event           Event      @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   emailLogs       EmailLog[]
 
   @@map("email_campaigns")
 }
 
 model EmailTemplate {
-  id          String            @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
   subject     String
-  htmlContent String            @map("html_content")
-  textContent String?           @map("text_content")
-  type        CampaignType      @default(CUSTOM)
-  category    TemplateCategory?
-  isGlobal    Boolean           @default(false) @map("is_global")
-  eventId     String?           @map("event_id")
-  isActive    Boolean           @default(true) @map("is_active")
-  isDefault   Boolean           @default(false) @map("is_default")
-  createdAt   DateTime          @default(now()) @map("created_at")
-  updatedAt   DateTime          @updatedAt @map("updated_at")
-  event       Event?            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  htmlContent String   @map("html_content")
+  textContent String?  @map("text_content")
+  type        String   @default("CUSTOM")
+  category    String?
+  isGlobal    Boolean  @default(false) @map("is_global")
+  eventId     String?  @map("event_id")
+  isActive    Boolean  @default(true) @map("is_active")
+  isDefault   Boolean  @default(false) @map("is_default")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  event       Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("email_templates")
 }
@@ -362,7 +360,7 @@ model EmailLog {
   campaignId     String        @map("campaign_id")
   recipientEmail String        @map("recipient_email")
   recipientName  String?       @map("recipient_name")
-  status         EmailStatus   @default(PENDING)
+  status         String        @default("PENDING")
   errorMessage   String?       @map("error_message")
   sentAt         DateTime?     @map("sent_at")
   deliveredAt    DateTime?     @map("delivered_at")
@@ -370,22 +368,22 @@ model EmailLog {
   clickedAt      DateTime?     @map("clicked_at")
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
-  campaign       EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaign       EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("email_logs")
 }
 
 model Game {
-  id               String       @id @default(cuid())
-  eventId          String       @map("event_id")
-  participantId    String       @map("participant_id")
-  action           GameAction
-  points           Int
-  actionDetails    String?      @map("action_details") // JSON pour stocker des détails spécifiques
-  relatedEntityId  String?      @map("related_entity_id") // ID de la session, du participant scanné, etc.
-  createdAt        DateTime     @default(now()) @map("created_at")
-  event            Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  participant      Registration @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  id              String       @id @default(cuid())
+  eventId         String       @map("event_id")
+  participantId   String       @map("participant_id")
+  action          String
+  points          Int
+  actionDetails   String?      @map("action_details")
+  relatedEntityId String?      @map("related_entity_id")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  event           Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  participant     Registration @relation(fields: [participantId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("games")
 }
@@ -397,136 +395,28 @@ model UserEventScore {
   totalPoints   Int          @default(0) @map("total_points")
   lastUpdated   DateTime     @default(now()) @map("last_updated")
   createdAt     DateTime     @default(now()) @map("created_at")
-  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  participant   Registration @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  participant   Registration @relation(fields: [participantId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([eventId, participantId])
   @@map("user_event_scores")
 }
 
-enum UserRole {
-  USER
-  STAFF
-  ORGANIZER
-  ADMIN
-}
-
-enum UserPlan {
-  STARTER
-  PRO
-  PREMIUM
-}
-
-enum TicketStatus {
-  ACTIVE
-  TERMINATED
-  DRAFT
-}
-
-enum TicketVisibility {
-  VISIBLE
-  HIDDEN
-}
-
-enum SponsorLevel {
-  PLATINUM
-  GOLD
-  SILVER
-  BRONZE
-  PARTNER
-  MEDIA
-  OTHER
-}
-
-enum AppointmentStatus {
-  PENDING
-  ACCEPTED
-  DECLINED
-  COMPLETED
-}
-
-enum BadgeStatus {
-  GENERATED
-  PRINTED
-  DELIVERED
-}
-
-enum CampaignStatus {
-  DRAFT
-  SCHEDULED
-  SENDING
-  SENT
-  FAILED
-}
-
-enum CampaignType {
-  ANNOUNCEMENT
-  REMINDER
-  INVITATION
-  FOLLOW_UP
-  CUSTOM
-}
-
-enum RecipientType {
-  ALL_PARTICIPANTS
-  PARTICIPANTS
-  SPEAKERS
-  EXHIBITORS
-  SPONSORS
-  CUSTOM_LIST
-}
-
-enum TemplateCategory {
-  CONFIRMATION_INSCRIPTION
-  BIENVENUE_PARTICIPANT
-  RAPPEL_EVENEMENT
-  INFOS_PRATIQUES
-  SUIVI_POST_EVENEMENT
-  GUIDE_EXPOSANT
-  RAPPEL_INSTALLATION
-  INFOS_TECHNIQUES_STAND
-  BILAN_PARTICIPATION
-  CONFIRMATION_SPEAKER
-  INFOS_TECHNIQUES_PRESENTATION
-  RAPPEL_PRESENTATION
-  REMERCIEMENT_SPEAKER
-  CONFIRMATION_CHECKIN
-}
-
-enum EmailStatus {
-  PENDING
-  SENT
-  DELIVERED
-  FAILED
-  BOUNCED
-  OPENED
-  CLICKED
-}
-
-enum GameAction {
-  CHECK_IN
-  SESSION_ENTRY
-  SESSION_PARTICIPATION
-  PARTICIPANT_SCAN
-  APPOINTMENT_REQUEST
-  APPOINTMENT_CONFIRMED
-}
-
 model UserMatchProfile {
-  id          String   @id @default(cuid())
-  userId      String   @map("user_id")
-  eventId     String   @map("event_id")
-  headline    String?
-  bio         String?
-  jobTitle    String?  @map("job_title")
-  company     String?
-  interests   String[] @default([])
-  goals       String[] @default([])
-  availability String[] @default([]) // Créneaux horaires de disponibilité
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  eventId      String   @map("event_id")
+  headline     String?
+  bio          String?
+  jobTitle     String?  @map("job_title")
+  company      String?
+  interests    String[] @default([])
+  goals        String[] @default([])
+  availability String[] @default([])
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([userId, eventId])
   @@map("user_match_profiles")
@@ -540,9 +430,9 @@ model MatchSuggestion {
   score       Float
   reason      String?
   createdAt   DateTime @default(now()) @map("created_at")
-  user        User     @relation("UserSuggestions", fields: [userId], references: [id], onDelete: Cascade)
-  suggested   User     @relation("SuggestedUsers", fields: [suggestedId], references: [id], onDelete: Cascade)
-  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  suggested   User     @relation("SuggestedUsers", fields: [suggestedId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user        User     @relation("UserSuggestions", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([userId, suggestedId, eventId])
   @@map("match_suggestions")

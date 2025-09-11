@@ -1,5 +1,12 @@
 import { PrismaClient } from "../generated/prisma";
 
+// Check pour s'assurer qu'on n'utilise pas Accelerate avec client classique
+if (process.env.DATABASE_URL?.startsWith('prisma://')) {
+  console.warn('⚠️  WARNING: DATABASE_URL commence par prisma:// mais nous utilisons le client Prisma classique.');
+  console.warn('   Pour utiliser Accelerate, configurez withAccelerate() dans src/lib/prisma.ts');
+  console.warn('   Pour utiliser le client classique, utilisez une URL postgresql://');
+}
+
 // PrismaClient est attaché à l'objet global en développement pour éviter
 // d'épuiser le nombre de connexions à la DB au hot reload
 declare global {

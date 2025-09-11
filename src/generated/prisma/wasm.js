@@ -5,13 +5,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientInitializationError,
+  PrismaClientValidationError,
+  getPrismaClient,
+  sqltag,
+  empty,
+  join,
+  raw,
+  skip,
   Decimal,
+  Debug,
   objectEnumValues,
   makeStrictEnum,
+  Extensions,
+  warnOnce,
+  defineDmmfProperty,
   Public,
   getRuntime,
-  skip
-} = require('./runtime/index-browser.js')
+  createParam,
+} = require('./runtime/wasm-engine-edge.js')
 
 
 const Prisma = {}
@@ -20,79 +35,35 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.10.1
- * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
+ * Prisma Client JS version: 6.16.0
+ * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
  */
 Prisma.prismaVersion = {
-  client: "6.10.1",
-  engine: "9b628578b3b7cae625e8c927178f15a170e74a9c"
+  client: "6.16.0",
+  engine: "1c57fdcd7e44b29b9313256c76699e91c3ac3c43"
 }
 
-Prisma.PrismaClientKnownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientKnownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)};
-Prisma.PrismaClientUnknownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientUnknownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientRustPanicError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientRustPanicError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientInitializationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientInitializationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientValidationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientValidationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
+Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
+Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
+Prisma.PrismaClientInitializationError = PrismaClientInitializationError
+Prisma.PrismaClientValidationError = PrismaClientValidationError
 Prisma.Decimal = Decimal
 
 /**
  * Re-export of sql-template-tag
  */
-Prisma.sql = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`sqltag is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.empty = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`empty is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.join = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`join is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.raw = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`raw is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.sql = sqltag
+Prisma.empty = empty
+Prisma.join = join
+Prisma.raw = raw
 Prisma.validator = Public.validator
 
 /**
 * Extensions
 */
-Prisma.getExtensionContext = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.getExtensionContext is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.defineExtension = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.defineExtension is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.getExtensionContext = Extensions.getExtensionContext
+Prisma.defineExtension = Extensions.defineExtension
 
 /**
  * Shorthand utilities for JSON filtering
@@ -109,10 +80,11 @@ Prisma.NullTypes = {
 
 
 
+
+
 /**
  * Enums
  */
-
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
@@ -295,10 +267,10 @@ exports.Prisma.OtpCodeScalarFieldEnum = {
   id: 'id',
   email: 'email',
   code: 'code',
-  eventId: 'eventId',
-  expiresAt: 'expiresAt',
+  event_id: 'event_id',
+  expires_at: 'expires_at',
   used: 'used',
-  createdAt: 'createdAt'
+  created_at: 'created_at'
 };
 
 exports.Prisma.BadgeScalarFieldEnum = {
@@ -460,113 +432,7 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
-exports.UserRole = exports.$Enums.UserRole = {
-  USER: 'USER',
-  STAFF: 'STAFF',
-  ORGANIZER: 'ORGANIZER',
-  ADMIN: 'ADMIN'
-};
 
-exports.UserPlan = exports.$Enums.UserPlan = {
-  STARTER: 'STARTER',
-  PRO: 'PRO',
-  PREMIUM: 'PREMIUM'
-};
-
-exports.TicketStatus = exports.$Enums.TicketStatus = {
-  ACTIVE: 'ACTIVE',
-  TERMINATED: 'TERMINATED',
-  DRAFT: 'DRAFT'
-};
-
-exports.TicketVisibility = exports.$Enums.TicketVisibility = {
-  VISIBLE: 'VISIBLE',
-  HIDDEN: 'HIDDEN'
-};
-
-exports.SponsorLevel = exports.$Enums.SponsorLevel = {
-  PLATINUM: 'PLATINUM',
-  GOLD: 'GOLD',
-  SILVER: 'SILVER',
-  BRONZE: 'BRONZE',
-  PARTNER: 'PARTNER',
-  MEDIA: 'MEDIA',
-  OTHER: 'OTHER'
-};
-
-exports.AppointmentStatus = exports.$Enums.AppointmentStatus = {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  COMPLETED: 'COMPLETED'
-};
-
-exports.BadgeStatus = exports.$Enums.BadgeStatus = {
-  GENERATED: 'GENERATED',
-  PRINTED: 'PRINTED',
-  DELIVERED: 'DELIVERED'
-};
-
-exports.CampaignType = exports.$Enums.CampaignType = {
-  ANNOUNCEMENT: 'ANNOUNCEMENT',
-  REMINDER: 'REMINDER',
-  INVITATION: 'INVITATION',
-  FOLLOW_UP: 'FOLLOW_UP',
-  CUSTOM: 'CUSTOM'
-};
-
-exports.RecipientType = exports.$Enums.RecipientType = {
-  ALL_PARTICIPANTS: 'ALL_PARTICIPANTS',
-  PARTICIPANTS: 'PARTICIPANTS',
-  SPEAKERS: 'SPEAKERS',
-  EXHIBITORS: 'EXHIBITORS',
-  SPONSORS: 'SPONSORS',
-  CUSTOM_LIST: 'CUSTOM_LIST'
-};
-
-exports.CampaignStatus = exports.$Enums.CampaignStatus = {
-  DRAFT: 'DRAFT',
-  SCHEDULED: 'SCHEDULED',
-  SENDING: 'SENDING',
-  SENT: 'SENT',
-  FAILED: 'FAILED'
-};
-
-exports.TemplateCategory = exports.$Enums.TemplateCategory = {
-  CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
-  BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
-  RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
-  INFOS_PRATIQUES: 'INFOS_PRATIQUES',
-  SUIVI_POST_EVENEMENT: 'SUIVI_POST_EVENEMENT',
-  GUIDE_EXPOSANT: 'GUIDE_EXPOSANT',
-  RAPPEL_INSTALLATION: 'RAPPEL_INSTALLATION',
-  INFOS_TECHNIQUES_STAND: 'INFOS_TECHNIQUES_STAND',
-  BILAN_PARTICIPATION: 'BILAN_PARTICIPATION',
-  CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
-  INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
-  RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
-  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER',
-  CONFIRMATION_CHECKIN: 'CONFIRMATION_CHECKIN'
-};
-
-exports.EmailStatus = exports.$Enums.EmailStatus = {
-  PENDING: 'PENDING',
-  SENT: 'SENT',
-  DELIVERED: 'DELIVERED',
-  FAILED: 'FAILED',
-  BOUNCED: 'BOUNCED',
-  OPENED: 'OPENED',
-  CLICKED: 'CLICKED'
-};
-
-exports.GameAction = exports.$Enums.GameAction = {
-  CHECK_IN: 'CHECK_IN',
-  SESSION_ENTRY: 'SESSION_ENTRY',
-  SESSION_PARTICIPATION: 'SESSION_PARTICIPATION',
-  PARTICIPANT_SCAN: 'PARTICIPANT_SCAN',
-  APPOINTMENT_REQUEST: 'APPOINTMENT_REQUEST',
-  APPOINTMENT_CONFIRMED: 'APPOINTMENT_CONFIRMED'
-};
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -592,34 +458,76 @@ exports.Prisma.ModelName = {
   UserMatchProfile: 'UserMatchProfile',
   MatchSuggestion: 'MatchSuggestion'
 };
-
 /**
- * This is a stub Prisma Client that will error at runtime if called.
+ * Create the Client
  */
-class PrismaClient {
-  constructor() {
-    return new Proxy(this, {
-      get(target, prop) {
-        let message
-        const runtime = getRuntime()
-        if (runtime.isEdge) {
-          message = `PrismaClient is not configured to run in ${runtime.prettyName}. In order to run Prisma Client on edge runtime, either:
-- Use Prisma Accelerate: https://pris.ly/d/accelerate
-- Use Driver Adapters: https://pris.ly/d/driver-adapters
-`;
-        } else {
-          message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
-        }
-
-        message += `
-If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
-
-        throw new Error(message)
+const config = {
+  "generator": {
+    "name": "client",
+    "provider": {
+      "fromEnvVar": null,
+      "value": "prisma-client-js"
+    },
+    "output": {
+      "value": "/Users/mac/Downloads/inevent/src/generated/prisma",
+      "fromEnvVar": null
+    },
+    "config": {
+      "engineType": "library"
+    },
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "darwin-arm64",
+        "native": true
       }
-    })
+    ],
+    "previewFeatures": [],
+    "sourceFilePath": "/Users/mac/Downloads/inevent/prisma/schema.prisma",
+    "isCustomOutput": true
+  },
+  "relativeEnvPaths": {
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
+  },
+  "relativePath": "../../../prisma",
+  "clientVersion": "6.16.0",
+  "engineVersion": "1c57fdcd7e44b29b9313256c76699e91c3ac3c43",
+  "datasourceNames": [
+    "db"
+  ],
+  "activeProvider": "postgresql",
+  "postinstall": false,
+  "inlineDatasources": {
+    "db": {
+      "url": {
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
+      }
+    }
+  },
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id            String             @id @default(cuid())\n  name          String?\n  email         String?            @unique\n  emailVerified DateTime?          @map(\"email_verified\")\n  image         String?\n  password      String?\n  createdAt     DateTime           @default(now()) @map(\"created_at\")\n  updatedAt     DateTime           @updatedAt @map(\"updated_at\")\n  permissions   String[]           @default([])\n  role          String             @default(\"USER\")\n  lastLogin     DateTime?          @map(\"last_login\")\n  phone         String?\n  plan          String             @default(\"STARTER\")\n  accounts      Account[]\n  events        Event[]\n  suggestedFor  MatchSuggestion[]  @relation(\"SuggestedUsers\")\n  suggestions   MatchSuggestion[]  @relation(\"UserSuggestions\")\n  sessions      Session[]\n  matchProfiles UserMatchProfile[]\n\n  @@index([email], map: \"idx_users_email\")\n  @@map(\"users\")\n}\n\nmodel Account {\n  id                String  @id @default(cuid())\n  userId            String  @map(\"user_id\")\n  type              String\n  provider          String\n  providerAccountId String  @map(\"provider_account_id\")\n  refresh_token     String?\n  access_token      String?\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String?\n  session_state     String?\n  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@unique([provider, providerAccountId])\n  @@index([userId], map: \"idx_accounts_user_id\")\n  @@map(\"accounts\")\n}\n\nmodel Session {\n  id           String   @id @default(cuid())\n  sessionToken String   @unique @map(\"session_token\")\n  userId       String   @map(\"user_id\")\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@index([userId], map: \"idx_sessions_user_id\")\n  @@map(\"sessions\")\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String\n  expires    DateTime\n\n  @@unique([identifier, token])\n  @@map(\"verification_tokens\")\n}\n\nmodel Event {\n  id                String             @id @default(cuid())\n  name              String\n  description       String?\n  location          String\n  slug              String             @unique\n  banner            String?\n  startDate         DateTime           @map(\"start_date\")\n  endDate           DateTime           @map(\"end_date\")\n  startTime         String?            @map(\"start_time\")\n  endTime           String?            @map(\"end_time\")\n  sector            String?\n  type              String?\n  format            String?\n  timezone          String?\n  videoUrl          String?            @map(\"video_url\")\n  supportEmail      String?            @map(\"support_email\")\n  createdAt         DateTime           @default(now()) @map(\"created_at\")\n  updatedAt         DateTime           @updatedAt @map(\"updated_at\")\n  userId            String             @map(\"user_id\")\n  logo              String?            @map(\"logo\")\n  archived          Boolean            @default(false) @map(\"archived\")\n  archivedAt        DateTime?          @map(\"archived_at\")\n  appointments      Appointment[]\n  badgeTemplates    BadgeTemplate[]\n  badges            Badge[]\n  emailCampaigns    EmailCampaign[]\n  emailTemplates    EmailTemplate[]\n  event_sessions    event_sessions[]\n  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  games             Game[]\n  matchSuggestions  MatchSuggestion[]\n  participantBadges ParticipantBadge[]\n  registrations     Registration[]\n  sponsors          Sponsor[]\n  tickets           Ticket[]\n  userEventScores   UserEventScore[]\n  matchProfiles     UserMatchProfile[]\n\n  @@index([slug], map: \"idx_events_slug\")\n  @@map(\"events\")\n}\n\nmodel Registration {\n  id                   String               @id @default(cuid())\n  firstName            String               @map(\"first_name\")\n  lastName             String               @map(\"last_name\")\n  email                String\n  phone                String\n  type                 String               @default(\"PARTICIPANT\")\n  eventId              String               @map(\"event_id\")\n  ticketId             String?              @map(\"ticket_id\")\n  qrCode               String               @unique @map(\"qr_code\")\n  createdAt            DateTime             @default(now()) @map(\"created_at\")\n  updatedAt            DateTime             @updatedAt @map(\"updated_at\")\n  checkedIn            Boolean              @default(false) @map(\"checked_in\")\n  checkInTime          DateTime?            @map(\"check_in_time\")\n  shortCode            String?              @unique @map(\"short_code\")\n  company              String?              @map(\"company\")\n  jobTitle             String?              @map(\"job_title\")\n  receivedAppointments Appointment[]        @relation(\"RecipientRelation\")\n  sentAppointments     Appointment[]        @relation(\"RequesterRelation\")\n  games                Game[]\n  participantBadges    ParticipantBadge[]\n  event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  ticket               Ticket?              @relation(fields: [ticketId], references: [id], onDelete: NoAction, onUpdate: NoAction)\n  sessions             SessionParticipant[]\n  userEventScores      UserEventScore[]\n\n  @@index([eventId], map: \"idx_registrations_event_id\")\n  @@index([qrCode], map: \"idx_registrations_qr_code\")\n  @@map(\"registrations\")\n}\n\nmodel Ticket {\n  id            String         @id @default(cuid())\n  name          String\n  description   String?\n  price         Decimal        @default(0)\n  currency      String         @default(\"XOF\")\n  quantity      Int?\n  sold          Int            @default(0)\n  status        String         @default(\"ACTIVE\")\n  visibility    String         @default(\"VISIBLE\")\n  validFrom     DateTime       @map(\"valid_from\")\n  validUntil    DateTime       @map(\"valid_until\")\n  group         String         @default(\"Attendees\")\n  eventId       String         @map(\"event_id\")\n  createdAt     DateTime       @default(now()) @map(\"created_at\")\n  updatedAt     DateTime       @updatedAt @map(\"updated_at\")\n  registrations Registration[]\n  event         Event          @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"tickets\")\n}\n\nmodel event_sessions {\n  id           String               @id\n  title        String\n  description  String?\n  start_date   DateTime\n  end_date     DateTime\n  start_time   String\n  end_time     String\n  location     String?\n  speaker      String?\n  capacity     Int?\n  event_id     String\n  created_at   DateTime             @default(now())\n  updated_at   DateTime\n  banner       String?\n  format       String?\n  video_url    String?\n  events       Event                @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  participants SessionParticipant[]\n}\n\nmodel Sponsor {\n  id          String   @id @default(cuid())\n  name        String\n  description String?\n  logo        String?\n  website     String?\n  level       String   @default(\"GOLD\")\n  visible     Boolean  @default(true)\n  eventId     String   @map(\"event_id\")\n  location    String?\n  address     String?\n  phone       String?\n  mobile      String?\n  email       String?\n  linkedinUrl String?  @map(\"linkedin_url\")\n  twitterUrl  String?  @map(\"twitter_url\")\n  facebookUrl String?  @map(\"facebook_url\")\n  documents   Json?\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n  updatedAt   DateTime @updatedAt @map(\"updated_at\")\n  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"sponsors\")\n}\n\nmodel SessionParticipant {\n  id              String         @id @default(cuid())\n  sessionId       String         @map(\"session_id\")\n  participantId   String         @map(\"participant_id\")\n  registeredAt    DateTime       @default(now()) @map(\"registered_at\")\n  attendedSession Boolean        @default(false) @map(\"attended_session\")\n  attendanceTime  DateTime?      @map(\"attendance_time\")\n  participant     Registration   @relation(fields: [participantId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  session         event_sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@unique([sessionId, participantId])\n  @@map(\"session_participants\")\n}\n\nmodel Appointment {\n  id            String       @id @default(cuid())\n  eventId       String       @map(\"event_id\")\n  requesterId   String       @map(\"requester_id\")\n  recipientId   String       @map(\"recipient_id\")\n  status        String       @default(\"PENDING\")\n  message       String?\n  proposedTime  DateTime?    @map(\"proposed_time\")\n  confirmedTime DateTime?    @map(\"confirmed_time\")\n  location      String?\n  notes         String?\n  createdAt     DateTime     @default(now()) @map(\"created_at\")\n  updatedAt     DateTime     @updatedAt @map(\"updated_at\")\n  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  recipient     Registration @relation(\"RecipientRelation\", fields: [recipientId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  requester     Registration @relation(\"RequesterRelation\", fields: [requesterId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"appointments\")\n}\n\nmodel OtpCode {\n  id         String   @id @default(cuid())\n  email      String\n  code       String\n  event_id   String?\n  expires_at DateTime\n  used       Boolean  @default(false)\n  created_at DateTime @default(now())\n\n  @@map(\"otp_codes\")\n}\n\nmodel Badge {\n  id         String   @id @default(cuid())\n  eventId    String   @map(\"event_id\")\n  name       String?\n  canvasData String?  @map(\"canvas_data\")\n  isDefault  Boolean  @default(false) @map(\"is_default\")\n  createdAt  DateTime @default(now()) @map(\"created_at\")\n  updatedAt  DateTime @updatedAt @map(\"updated_at\")\n  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"badges\")\n}\n\nmodel BadgeTemplate {\n  id                String             @id @default(cuid())\n  name              String\n  description       String?\n  canvasData        String             @map(\"canvas_data\")\n  isGlobal          Boolean            @default(false) @map(\"is_global\")\n  eventId           String?            @map(\"event_id\")\n  isActive          Boolean            @default(true) @map(\"is_active\")\n  createdAt         DateTime           @default(now()) @map(\"created_at\")\n  updatedAt         DateTime           @updatedAt @map(\"updated_at\")\n  event             Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  participantBadges ParticipantBadge[]\n\n  @@map(\"badge_templates\")\n}\n\nmodel ParticipantBadge {\n  id             String        @id @default(cuid())\n  registrationId String        @map(\"registration_id\")\n  eventId        String        @map(\"event_id\")\n  templateId     String        @map(\"template_id\")\n  status         String        @default(\"GENERATED\")\n  generatedAt    DateTime      @default(now()) @map(\"generated_at\")\n  printedAt      DateTime?     @map(\"printed_at\")\n  deliveredAt    DateTime?     @map(\"delivered_at\")\n  customData     String?       @map(\"custom_data\")\n  qrCodeData     String?       @map(\"qr_code_data\")\n  createdAt      DateTime      @default(now()) @map(\"created_at\")\n  updatedAt      DateTime      @updatedAt @map(\"updated_at\")\n  event          Event         @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  registration   Registration  @relation(fields: [registrationId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  template       BadgeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@unique([registrationId, eventId])\n  @@map(\"participant_badges\")\n}\n\nmodel EmailCampaign {\n  id              String     @id @default(cuid())\n  eventId         String     @map(\"event_id\")\n  name            String\n  description     String?\n  type            String     @default(\"CUSTOM\")\n  recipientType   String     @default(\"ALL_PARTICIPANTS\") @map(\"recipient_type\")\n  subject         String\n  htmlContent     String     @map(\"html_content\")\n  textContent     String?    @map(\"text_content\")\n  status          String     @default(\"DRAFT\")\n  scheduledAt     DateTime?  @map(\"scheduled_at\")\n  sentAt          DateTime?  @map(\"sent_at\")\n  totalRecipients Int?       @map(\"total_recipients\")\n  successCount    Int?       @map(\"success_count\")\n  failureCount    Int?       @map(\"failure_count\")\n  createdAt       DateTime   @default(now()) @map(\"created_at\")\n  updatedAt       DateTime   @updatedAt @map(\"updated_at\")\n  event           Event      @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  emailLogs       EmailLog[]\n\n  @@map(\"email_campaigns\")\n}\n\nmodel EmailTemplate {\n  id          String   @id @default(cuid())\n  name        String\n  description String?\n  subject     String\n  htmlContent String   @map(\"html_content\")\n  textContent String?  @map(\"text_content\")\n  type        String   @default(\"CUSTOM\")\n  category    String?\n  isGlobal    Boolean  @default(false) @map(\"is_global\")\n  eventId     String?  @map(\"event_id\")\n  isActive    Boolean  @default(true) @map(\"is_active\")\n  isDefault   Boolean  @default(false) @map(\"is_default\")\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n  updatedAt   DateTime @updatedAt @map(\"updated_at\")\n  event       Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"email_templates\")\n}\n\nmodel EmailLog {\n  id             String        @id @default(cuid())\n  campaignId     String        @map(\"campaign_id\")\n  recipientEmail String        @map(\"recipient_email\")\n  recipientName  String?       @map(\"recipient_name\")\n  status         String        @default(\"PENDING\")\n  errorMessage   String?       @map(\"error_message\")\n  sentAt         DateTime?     @map(\"sent_at\")\n  deliveredAt    DateTime?     @map(\"delivered_at\")\n  openedAt       DateTime?     @map(\"opened_at\")\n  clickedAt      DateTime?     @map(\"clicked_at\")\n  createdAt      DateTime      @default(now()) @map(\"created_at\")\n  updatedAt      DateTime      @updatedAt @map(\"updated_at\")\n  campaign       EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"email_logs\")\n}\n\nmodel Game {\n  id              String       @id @default(cuid())\n  eventId         String       @map(\"event_id\")\n  participantId   String       @map(\"participant_id\")\n  action          String\n  points          Int\n  actionDetails   String?      @map(\"action_details\")\n  relatedEntityId String?      @map(\"related_entity_id\")\n  createdAt       DateTime     @default(now()) @map(\"created_at\")\n  event           Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  participant     Registration @relation(fields: [participantId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@map(\"games\")\n}\n\nmodel UserEventScore {\n  id            String       @id @default(cuid())\n  eventId       String       @map(\"event_id\")\n  participantId String       @map(\"participant_id\")\n  totalPoints   Int          @default(0) @map(\"total_points\")\n  lastUpdated   DateTime     @default(now()) @map(\"last_updated\")\n  createdAt     DateTime     @default(now()) @map(\"created_at\")\n  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  participant   Registration @relation(fields: [participantId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@unique([eventId, participantId])\n  @@map(\"user_event_scores\")\n}\n\nmodel UserMatchProfile {\n  id           String   @id @default(cuid())\n  userId       String   @map(\"user_id\")\n  eventId      String   @map(\"event_id\")\n  headline     String?\n  bio          String?\n  jobTitle     String?  @map(\"job_title\")\n  company      String?\n  interests    String[] @default([])\n  goals        String[] @default([])\n  availability String[] @default([])\n  createdAt    DateTime @default(now()) @map(\"created_at\")\n  updatedAt    DateTime @updatedAt @map(\"updated_at\")\n  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@unique([userId, eventId])\n  @@map(\"user_match_profiles\")\n}\n\nmodel MatchSuggestion {\n  id          String   @id @default(cuid())\n  userId      String   @map(\"user_id\")\n  suggestedId String   @map(\"suggested_id\")\n  eventId     String   @map(\"event_id\")\n  score       Float\n  reason      String?\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  suggested   User     @relation(\"SuggestedUsers\", fields: [suggestedId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n  user        User     @relation(\"UserSuggestions\", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)\n\n  @@unique([userId, suggestedId, eventId])\n  @@map(\"match_suggestions\")\n}\n",
+  "inlineSchemaHash": "f57d79d66afc9f708046edc1b4d37def01b61fd572daa409a0c0a2d74fc31c1c",
+  "copyEngine": false
+}
+config.dirname = '/'
+
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"email_verified\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"permissions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastLogin\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"last_login\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"plan\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"},{\"name\":\"events\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToUser\"},{\"name\":\"suggestedFor\",\"kind\":\"object\",\"type\":\"MatchSuggestion\",\"relationName\":\"SuggestedUsers\"},{\"name\":\"suggestions\",\"kind\":\"object\",\"type\":\"MatchSuggestion\",\"relationName\":\"UserSuggestions\"},{\"name\":\"sessions\",\"kind\":\"object\",\"type\":\"Session\",\"relationName\":\"SessionToUser\"},{\"name\":\"matchProfiles\",\"kind\":\"object\",\"type\":\"UserMatchProfile\",\"relationName\":\"UserToUserMatchProfile\"}],\"dbName\":\"users\"},\"Account\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerAccountId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"provider_account_id\"},{\"name\":\"refresh_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"access_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"token_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"scope\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"session_state\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"}],\"dbName\":\"accounts\"},\"Session\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sessionToken\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"session_token\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"expires\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SessionToUser\"}],\"dbName\":\"sessions\"},\"VerificationToken\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"verification_tokens\"},\"Event\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"banner\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"start_date\"},{\"name\":\"endDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"end_date\"},{\"name\":\"startTime\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"start_time\"},{\"name\":\"endTime\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"end_time\"},{\"name\":\"sector\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"format\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"videoUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"video_url\"},{\"name\":\"supportEmail\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"support_email\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"logo\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"logo\"},{\"name\":\"archived\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"archived\"},{\"name\":\"archivedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"archived_at\"},{\"name\":\"appointments\",\"kind\":\"object\",\"type\":\"Appointment\",\"relationName\":\"AppointmentToEvent\"},{\"name\":\"badgeTemplates\",\"kind\":\"object\",\"type\":\"BadgeTemplate\",\"relationName\":\"BadgeTemplateToEvent\"},{\"name\":\"badges\",\"kind\":\"object\",\"type\":\"Badge\",\"relationName\":\"BadgeToEvent\"},{\"name\":\"emailCampaigns\",\"kind\":\"object\",\"type\":\"EmailCampaign\",\"relationName\":\"EmailCampaignToEvent\"},{\"name\":\"emailTemplates\",\"kind\":\"object\",\"type\":\"EmailTemplate\",\"relationName\":\"EmailTemplateToEvent\"},{\"name\":\"event_sessions\",\"kind\":\"object\",\"type\":\"event_sessions\",\"relationName\":\"EventToevent_sessions\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"EventToUser\"},{\"name\":\"games\",\"kind\":\"object\",\"type\":\"Game\",\"relationName\":\"EventToGame\"},{\"name\":\"matchSuggestions\",\"kind\":\"object\",\"type\":\"MatchSuggestion\",\"relationName\":\"EventToMatchSuggestion\"},{\"name\":\"participantBadges\",\"kind\":\"object\",\"type\":\"ParticipantBadge\",\"relationName\":\"EventToParticipantBadge\"},{\"name\":\"registrations\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"EventToRegistration\"},{\"name\":\"sponsors\",\"kind\":\"object\",\"type\":\"Sponsor\",\"relationName\":\"EventToSponsor\"},{\"name\":\"tickets\",\"kind\":\"object\",\"type\":\"Ticket\",\"relationName\":\"EventToTicket\"},{\"name\":\"userEventScores\",\"kind\":\"object\",\"type\":\"UserEventScore\",\"relationName\":\"EventToUserEventScore\"},{\"name\":\"matchProfiles\",\"kind\":\"object\",\"type\":\"UserMatchProfile\",\"relationName\":\"EventToUserMatchProfile\"}],\"dbName\":\"events\"},\"Registration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"first_name\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"last_name\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"ticketId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"ticket_id\"},{\"name\":\"qrCode\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"qr_code\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"checkedIn\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"checked_in\"},{\"name\":\"checkInTime\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"check_in_time\"},{\"name\":\"shortCode\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"short_code\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"company\"},{\"name\":\"jobTitle\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"job_title\"},{\"name\":\"receivedAppointments\",\"kind\":\"object\",\"type\":\"Appointment\",\"relationName\":\"RecipientRelation\"},{\"name\":\"sentAppointments\",\"kind\":\"object\",\"type\":\"Appointment\",\"relationName\":\"RequesterRelation\"},{\"name\":\"games\",\"kind\":\"object\",\"type\":\"Game\",\"relationName\":\"GameToRegistration\"},{\"name\":\"participantBadges\",\"kind\":\"object\",\"type\":\"ParticipantBadge\",\"relationName\":\"ParticipantBadgeToRegistration\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToRegistration\"},{\"name\":\"ticket\",\"kind\":\"object\",\"type\":\"Ticket\",\"relationName\":\"RegistrationToTicket\"},{\"name\":\"sessions\",\"kind\":\"object\",\"type\":\"SessionParticipant\",\"relationName\":\"RegistrationToSessionParticipant\"},{\"name\":\"userEventScores\",\"kind\":\"object\",\"type\":\"UserEventScore\",\"relationName\":\"RegistrationToUserEventScore\"}],\"dbName\":\"registrations\"},\"Ticket\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sold\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"visibility\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"validFrom\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"valid_from\"},{\"name\":\"validUntil\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"valid_until\"},{\"name\":\"group\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"registrations\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"RegistrationToTicket\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToTicket\"}],\"dbName\":\"tickets\"},\"event_sessions\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"start_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"start_time\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"end_time\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"speaker\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"capacity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"event_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"banner\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"format\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"video_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"events\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToevent_sessions\"},{\"name\":\"participants\",\"kind\":\"object\",\"type\":\"SessionParticipant\",\"relationName\":\"SessionParticipantToevent_sessions\"}],\"dbName\":null},\"Sponsor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"level\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"visible\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mobile\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"linkedinUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"linkedin_url\"},{\"name\":\"twitterUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"twitter_url\"},{\"name\":\"facebookUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"facebook_url\"},{\"name\":\"documents\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToSponsor\"}],\"dbName\":\"sponsors\"},\"SessionParticipant\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sessionId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"session_id\"},{\"name\":\"participantId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"participant_id\"},{\"name\":\"registeredAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"registered_at\"},{\"name\":\"attendedSession\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"attended_session\"},{\"name\":\"attendanceTime\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"attendance_time\"},{\"name\":\"participant\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"RegistrationToSessionParticipant\"},{\"name\":\"session\",\"kind\":\"object\",\"type\":\"event_sessions\",\"relationName\":\"SessionParticipantToevent_sessions\"}],\"dbName\":\"session_participants\"},\"Appointment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"requesterId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"requester_id\"},{\"name\":\"recipientId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"recipient_id\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proposedTime\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"proposed_time\"},{\"name\":\"confirmedTime\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"confirmed_time\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"AppointmentToEvent\"},{\"name\":\"recipient\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"RecipientRelation\"},{\"name\":\"requester\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"RequesterRelation\"}],\"dbName\":\"appointments\"},\"OtpCode\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"event_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"otp_codes\"},\"Badge\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"canvasData\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"canvas_data\"},{\"name\":\"isDefault\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_default\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"BadgeToEvent\"}],\"dbName\":\"badges\"},\"BadgeTemplate\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"canvasData\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"canvas_data\"},{\"name\":\"isGlobal\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_global\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_active\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"BadgeTemplateToEvent\"},{\"name\":\"participantBadges\",\"kind\":\"object\",\"type\":\"ParticipantBadge\",\"relationName\":\"BadgeTemplateToParticipantBadge\"}],\"dbName\":\"badge_templates\"},\"ParticipantBadge\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"registrationId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"registration_id\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"templateId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"template_id\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"generatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"generated_at\"},{\"name\":\"printedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"printed_at\"},{\"name\":\"deliveredAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"delivered_at\"},{\"name\":\"customData\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"custom_data\"},{\"name\":\"qrCodeData\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"qr_code_data\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToParticipantBadge\"},{\"name\":\"registration\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"ParticipantBadgeToRegistration\"},{\"name\":\"template\",\"kind\":\"object\",\"type\":\"BadgeTemplate\",\"relationName\":\"BadgeTemplateToParticipantBadge\"}],\"dbName\":\"participant_badges\"},\"EmailCampaign\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"recipientType\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"recipient_type\"},{\"name\":\"subject\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"htmlContent\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"html_content\"},{\"name\":\"textContent\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"text_content\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"scheduledAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"scheduled_at\"},{\"name\":\"sentAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"sent_at\"},{\"name\":\"totalRecipients\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"total_recipients\"},{\"name\":\"successCount\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"success_count\"},{\"name\":\"failureCount\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"failure_count\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EmailCampaignToEvent\"},{\"name\":\"emailLogs\",\"kind\":\"object\",\"type\":\"EmailLog\",\"relationName\":\"EmailCampaignToEmailLog\"}],\"dbName\":\"email_campaigns\"},\"EmailTemplate\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subject\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"htmlContent\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"html_content\"},{\"name\":\"textContent\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"text_content\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isGlobal\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_global\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_active\"},{\"name\":\"isDefault\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_default\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EmailTemplateToEvent\"}],\"dbName\":\"email_templates\"},\"EmailLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"campaignId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"campaign_id\"},{\"name\":\"recipientEmail\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"recipient_email\"},{\"name\":\"recipientName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"recipient_name\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"errorMessage\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"error_message\"},{\"name\":\"sentAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"sent_at\"},{\"name\":\"deliveredAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"delivered_at\"},{\"name\":\"openedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"opened_at\"},{\"name\":\"clickedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"clicked_at\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"campaign\",\"kind\":\"object\",\"type\":\"EmailCampaign\",\"relationName\":\"EmailCampaignToEmailLog\"}],\"dbName\":\"email_logs\"},\"Game\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"participantId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"participant_id\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"points\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"actionDetails\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"action_details\"},{\"name\":\"relatedEntityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"related_entity_id\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToGame\"},{\"name\":\"participant\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"GameToRegistration\"}],\"dbName\":\"games\"},\"UserEventScore\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"participantId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"participant_id\"},{\"name\":\"totalPoints\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"total_points\"},{\"name\":\"lastUpdated\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"last_updated\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToUserEventScore\"},{\"name\":\"participant\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"RegistrationToUserEventScore\"}],\"dbName\":\"user_event_scores\"},\"UserMatchProfile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"headline\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bio\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobTitle\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"job_title\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"interests\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"goals\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"availability\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToUserMatchProfile\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserMatchProfile\"}],\"dbName\":\"user_match_profiles\"},\"MatchSuggestion\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"suggestedId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"suggested_id\"},{\"name\":\"eventId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"event_id\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"event\",\"kind\":\"object\",\"type\":\"Event\",\"relationName\":\"EventToMatchSuggestion\"},{\"name\":\"suggested\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SuggestedUsers\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserSuggestions\"}],\"dbName\":\"match_suggestions\"}},\"enums\":{},\"types\":{}}")
+defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
+config.engineWasm = undefined
+config.compilerWasm = undefined
+
+config.injectableEdgeEnv = () => ({
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
   }
+})
+
+if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
+  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined)
 }
 
+const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
-
 Object.assign(exports, Prisma)
+

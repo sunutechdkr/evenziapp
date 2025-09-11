@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.10.1
- * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
+ * Prisma Client JS version: 6.16.0
+ * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
  */
 Prisma.prismaVersion = {
-  client: "6.10.1",
-  engine: "9b628578b3b7cae625e8c927178f15a170e74a9c"
+  client: "6.16.0",
+  engine: "1c57fdcd7e44b29b9313256c76699e91c3ac3c43"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -295,10 +295,10 @@ exports.Prisma.OtpCodeScalarFieldEnum = {
   id: 'id',
   email: 'email',
   code: 'code',
-  eventId: 'eventId',
-  expiresAt: 'expiresAt',
+  event_id: 'event_id',
+  expires_at: 'expires_at',
   used: 'used',
-  createdAt: 'createdAt'
+  created_at: 'created_at'
 };
 
 exports.Prisma.BadgeScalarFieldEnum = {
@@ -460,113 +460,7 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
-exports.UserRole = exports.$Enums.UserRole = {
-  USER: 'USER',
-  STAFF: 'STAFF',
-  ORGANIZER: 'ORGANIZER',
-  ADMIN: 'ADMIN'
-};
 
-exports.UserPlan = exports.$Enums.UserPlan = {
-  STARTER: 'STARTER',
-  PRO: 'PRO',
-  PREMIUM: 'PREMIUM'
-};
-
-exports.TicketStatus = exports.$Enums.TicketStatus = {
-  ACTIVE: 'ACTIVE',
-  TERMINATED: 'TERMINATED',
-  DRAFT: 'DRAFT'
-};
-
-exports.TicketVisibility = exports.$Enums.TicketVisibility = {
-  VISIBLE: 'VISIBLE',
-  HIDDEN: 'HIDDEN'
-};
-
-exports.SponsorLevel = exports.$Enums.SponsorLevel = {
-  PLATINUM: 'PLATINUM',
-  GOLD: 'GOLD',
-  SILVER: 'SILVER',
-  BRONZE: 'BRONZE',
-  PARTNER: 'PARTNER',
-  MEDIA: 'MEDIA',
-  OTHER: 'OTHER'
-};
-
-exports.AppointmentStatus = exports.$Enums.AppointmentStatus = {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  COMPLETED: 'COMPLETED'
-};
-
-exports.BadgeStatus = exports.$Enums.BadgeStatus = {
-  GENERATED: 'GENERATED',
-  PRINTED: 'PRINTED',
-  DELIVERED: 'DELIVERED'
-};
-
-exports.CampaignType = exports.$Enums.CampaignType = {
-  ANNOUNCEMENT: 'ANNOUNCEMENT',
-  REMINDER: 'REMINDER',
-  INVITATION: 'INVITATION',
-  FOLLOW_UP: 'FOLLOW_UP',
-  CUSTOM: 'CUSTOM'
-};
-
-exports.RecipientType = exports.$Enums.RecipientType = {
-  ALL_PARTICIPANTS: 'ALL_PARTICIPANTS',
-  PARTICIPANTS: 'PARTICIPANTS',
-  SPEAKERS: 'SPEAKERS',
-  EXHIBITORS: 'EXHIBITORS',
-  SPONSORS: 'SPONSORS',
-  CUSTOM_LIST: 'CUSTOM_LIST'
-};
-
-exports.CampaignStatus = exports.$Enums.CampaignStatus = {
-  DRAFT: 'DRAFT',
-  SCHEDULED: 'SCHEDULED',
-  SENDING: 'SENDING',
-  SENT: 'SENT',
-  FAILED: 'FAILED'
-};
-
-exports.TemplateCategory = exports.$Enums.TemplateCategory = {
-  CONFIRMATION_INSCRIPTION: 'CONFIRMATION_INSCRIPTION',
-  BIENVENUE_PARTICIPANT: 'BIENVENUE_PARTICIPANT',
-  RAPPEL_EVENEMENT: 'RAPPEL_EVENEMENT',
-  INFOS_PRATIQUES: 'INFOS_PRATIQUES',
-  SUIVI_POST_EVENEMENT: 'SUIVI_POST_EVENEMENT',
-  GUIDE_EXPOSANT: 'GUIDE_EXPOSANT',
-  RAPPEL_INSTALLATION: 'RAPPEL_INSTALLATION',
-  INFOS_TECHNIQUES_STAND: 'INFOS_TECHNIQUES_STAND',
-  BILAN_PARTICIPATION: 'BILAN_PARTICIPATION',
-  CONFIRMATION_SPEAKER: 'CONFIRMATION_SPEAKER',
-  INFOS_TECHNIQUES_PRESENTATION: 'INFOS_TECHNIQUES_PRESENTATION',
-  RAPPEL_PRESENTATION: 'RAPPEL_PRESENTATION',
-  REMERCIEMENT_SPEAKER: 'REMERCIEMENT_SPEAKER',
-  CONFIRMATION_CHECKIN: 'CONFIRMATION_CHECKIN'
-};
-
-exports.EmailStatus = exports.$Enums.EmailStatus = {
-  PENDING: 'PENDING',
-  SENT: 'SENT',
-  DELIVERED: 'DELIVERED',
-  FAILED: 'FAILED',
-  BOUNCED: 'BOUNCED',
-  OPENED: 'OPENED',
-  CLICKED: 'CLICKED'
-};
-
-exports.GameAction = exports.$Enums.GameAction = {
-  CHECK_IN: 'CHECK_IN',
-  SESSION_ENTRY: 'SESSION_ENTRY',
-  SESSION_PARTICIPATION: 'SESSION_PARTICIPATION',
-  PARTICIPANT_SCAN: 'PARTICIPANT_SCAN',
-  APPOINTMENT_REQUEST: 'APPOINTMENT_REQUEST',
-  APPOINTMENT_CONFIRMED: 'APPOINTMENT_CONFIRMED'
-};
 
 exports.Prisma.ModelName = {
   User: 'User',
