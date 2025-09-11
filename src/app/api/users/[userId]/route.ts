@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { UserRole } from '@/types/models';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // GET /api/users/:id
 // Récupère les détails d'un utilisateur par son ID (admin uniquement)

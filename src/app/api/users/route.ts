@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { UserRole } from '@/types/models';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // POST /api/users
 // Crée un nouvel utilisateur (admin uniquement)
